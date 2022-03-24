@@ -1,0 +1,5 @@
+Copyright (c) 2021-2022 MLCommons
+
+cTuning foundation donated this project to MLCommons to benefit everyone. 
+
+Copyright (c) 2014-2021 cTuning foundation
