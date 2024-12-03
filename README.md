@@ -1,4 +1,4 @@
-## MLPerf Automations and Scripts
+# MLPerf Automations and Scripts
 
 This repository contains the automations and scripts used to run MLPerf benchmarks, primarily focusing on MLPerf inference benchmarks. The automations used here are largely based on and extended from the [Collective Mind script automations](https://github.com/mlcommons/cm4mlops/tree/main/automation/script).
 

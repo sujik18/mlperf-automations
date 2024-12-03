@@ -1,1 +1,0 @@
-cm run script --tags=gui --script="run mlperf inference generate-run-cmds" --prefix="gnome-terminal --"
