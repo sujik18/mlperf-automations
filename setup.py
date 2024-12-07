@@ -148,7 +148,6 @@ class CustomInstallCommand(install):
         r = cmind.access({'action': 'pull',
                           'automation': 'repo',
                           'artifact': 'mlcommons@mlperf-automations',
-                          'branch': 'main',
                           'checkout': commit_hash})
         # r = cmind.access({'action':'pull', 'automation':'repo', 'artifact':'mlcommons@mlperf-automations', 'checkout': commit_hash})
         print(r)
