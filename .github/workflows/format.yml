@@ -22,9 +22,11 @@ jobs:
           python-version: ${{ env.python_version }}
 
       - name: Format modified python files
+        env:
+          filter: ${{ github.event.before }}
         run: |
           python3 -m pip install autopep8
-          for FILE in $(git diff --name-only ${{ github.event.before }} | grep -E '.*\.py$')
+          for FILE in $(git diff --name-only $filter | grep -E '.*\.py$')
           do
             # Check if the file still exists in the working tree
             if [ -f "$FILE" ]; then
@@ -34,8 +36,10 @@ jobs:
           done
 
       - name: Format modified C++ files
+        env:
+          filter: ${{ github.event.before }}
         run: |
-          for FILE in $(git diff --name-only ${{ github.event.before }} | grep -E '.*\.(cc|cpp|h|hpp)$')
+          for FILE in $(git diff --name-only $filter | grep -E '.*\.(cc|cpp|h|hpp)$')
           do
             # Check if the file still exists in the working tree
             if [ -f "$FILE" ]; then
@@ -44,7 +48,7 @@ jobs:
             fi
           done
 
-      - name: Commit and create PR
+      - name: Commit and Push
         run: |
           HAS_CHANGES=$(git diff --staged --name-only)
           if [ ${#HAS_CHANGES} -gt 0 ]; then
@@ -54,13 +58,4 @@ jobs:
             git commit -m '[Automated Commit] Format Codebase'
             git push
       
-            # Push changes to a new branch
-            #BRANCH_NAME="auto/code-format"
-            #git branch $BRANCH_NAME
-            #git push origin $BRANCH_NAME --force
-      
-            # Create a pull request to the "code-format" branch
-            #gh pr create --base code-format --head $BRANCH_NAME --title "[Automated PR] Format Codebase" --body "This pull request contains automated code formatting changes."
           fi 
-        # env:
-        #  GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
