@@ -767,6 +767,20 @@ variations:
     env:
       CM_MODEL:
         rgat
+    posthook_deps:
+    - enable_if_env:
+        CM_MLPERF_LOADGEN_MODE:
+        - accuracy
+        - all
+        CM_MLPERF_ACCURACY_RESULTS_DIR:
+        - 'on'
+      skip_if_env:
+        CM_MLPERF_IMPLEMENTATION:
+        - nvidia
+      names:
+      - mlperf-accuracy-script
+      - 3d-unet-accuracy-script
+      tags: run,accuracy,mlperf,_igbh
 
   sdxl:
     group:
@@ -1645,6 +1659,25 @@ variations:
       CM_ENV_NVMITTEN_DOCKER_WHEEL_PATH: '/opt/nvmitten-0.1.3b0-cp38-cp38-linux_x86_64.whl'
       CM_MLPERF_INFERENCE_VERSION: '4.1'
 
+  r5.0-dev_default:
+    group:
+      reproducibility
+    add_deps_recursive:
+      nvidia-inference-common-code:
+        version: r4.1
+        tags: _mlcommons
+      nvidia-inference-server:
+        version: r4.1
+        tags: _mlcommons
+      intel-harness:
+        tags: _v4.1
+    default_env:
+      CM_SKIP_SYS_UTILS: 'yes'
+      CM_REGENERATE_MEASURE_FILES: 'yes'
+    env:
+      CM_ENV_NVMITTEN_DOCKER_WHEEL_PATH: '/opt/nvmitten-0.1.3b0-cp38-cp38-linux_x86_64.whl'
+
+
 invalid_variation_combinations:
   -
     - retinanet
@@ -1768,6 +1801,8 @@ docker:
    - "${{ CM_NVIDIA_LLAMA_DATASET_FILE_PATH }}:${{ CM_NVIDIA_LLAMA_DATASET_FILE_PATH }}"
    - "${{ SDXL_CHECKPOINT_PATH }}:${{ SDXL_CHECKPOINT_PATH }}"
    - "${{ CM_DATASET_KITS19_PREPROCESSED_PATH }}:${{ CM_DATASET_KITS19_PREPROCESSED_PATH }}"
+   - "${{ CM_DATASET_IGBH_PATH }}:${{ CM_DATASET_IGBH_PATH }}"
+   - "${{ CM_ML_MODEL_RGAT_CHECKPOINT_PATH }}:${{ CM_ML_MODEL_RGAT_CHECKPOINT_PATH }}"
   skip_run_cmd: 'no'
   shm_size: '32gb'
   interactive: True

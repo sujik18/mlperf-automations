@@ -1,4 +1,4 @@
-# Build a whl file for cm4mlperf-inference
+# Build a whl file for mlperf-automations
 
 from setuptools import setup
 from setuptools._distutils.dist import Distribution
@@ -147,10 +147,9 @@ class CustomInstallCommand(install):
                           'all': True})
         r = cmind.access({'action': 'pull',
                           'automation': 'repo',
-                          'artifact': 'mlcommons@cm4mlops',
-                          'branch': 'mlperf-inference',
+                          'artifact': 'mlcommons@mlperf-automations',
                           'checkout': commit_hash})
-        # r = cmind.access({'action':'pull', 'automation':'repo', 'artifact':'mlcommons@cm4mlops', 'checkout': commit_hash})
+        # r = cmind.access({'action':'pull', 'automation':'repo', 'artifact':'mlcommons@mlperf-automations', 'checkout': commit_hash})
         print(r)
         if r['return'] > 0:
             return r['return']

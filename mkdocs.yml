@@ -1,5 +1,5 @@
-site_name: CM Script Automation Documentation
-repo_url: https://github.com/mlcommons/cm4mlops
+site_name: MLPerf Automation Documentation
+repo_url: https://github.com/mlcommons/mlperf-automations
 theme:
   name: material
   logo: img/logo_v2.svg

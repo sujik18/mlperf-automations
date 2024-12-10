@@ -9,8 +9,7 @@ on:
   push:
     branches:
       - main
-      - docs
-      - mlperf-inference
+      - dev
     paths:
       - docs/**
       - mkdocs.yml

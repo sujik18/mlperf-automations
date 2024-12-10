@@ -5,12 +5,12 @@ This repository contains the automations and scripts used to run MLPerf benchmar
 
 ## Collective Mind (CM)
 
-**Collective Mind (CM)** is a Python package with a CLI and API designed for creating and managing automations. Two key automations developed using CM are **Script** and **Cache**, which streamline machine learning (ML) workflows, including managing Docker runs. Both Script and Cache automations are extended as part of this repository.
+**CM (Collective Mind)** is a Python package with a CLI and API designed to create and manage automations. Two key automations developed using CM are **Script** and **Cache**, which streamline ML workflows, including managing Docker runs.
+The CM Python package was developed by Grigori Fursin. The Script and Cache automations are part of the cm4mlops repository, created by Grigori Fursin and Arjun Suresh and sponsored by OctoML, cKnowledge, cTuning and MLCommons.
+The CM scripts, also housed in the cm4mlops repository, are created and maintained by Arjun Suresh and Anandhu Sooraj, and Grigori Fursin with the help of the MLCommons community.
 
-The CM scripts housed in this repository consist of hundreds of modular Python-wrapped scripts accompanied by `yaml` metadata, enabling the creation of robust and flexible ML workflows.
-
-- **CM Scripts Documentation**: [https://docs.mlcommons.org/cm4mlops/](https://docs.mlcommons.org/cm4mlops/)
-
+**CM CLI:** https://docs.mlcommons.org/ck/specs/cm-cli/ 
+**Documentation site for MLPerf Inference:** https://docs.mlcommons.org/inference/ 
 
 ## License
 

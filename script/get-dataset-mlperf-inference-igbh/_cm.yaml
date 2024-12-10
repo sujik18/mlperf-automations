@@ -11,7 +11,8 @@ tags:
 - inference
 uid: 824e61316c074253
 new_env_keys:
-  - CM_IGBH_DATASET_PATH
+  - CM_DATASET_IGBH_PATH
+  - CM_DATASET_IGBH_SIZE
 input_mapping:
   out_path: CM_IGBH_DATASET_OUT_PATH
 deps:
@@ -21,6 +22,9 @@ deps:
   - tags: get,python
     names:
       - get-python
+  - tags: get,generic-python-lib,_package.igb,_url.git+https://github.com/anandhu-eng/IGB-Datasets.git
+  - tags: get,generic-python-lib,_package.colorama
+  - tags: get,generic-python-lib,_package.tqdm
 prehook_deps:
   #paper  
   - env:
@@ -359,13 +363,13 @@ variations:
     default: true
     group: dataset-type
     env:
-      CM_IGBH_DATASET_TYPE: debug
-      CM_IGBH_DATASET_SIZE: tiny
+      CM_DATASET_IGBH_TYPE: debug
+      CM_DATASET_IGBH_SIZE: tiny
   full:
     group: dataset-type
     env:
-      CM_IGBH_DATASET_TYPE: full
-      CM_IGBH_DATASET_SIZE: full
+      CM_DATASET_IGBH_TYPE: debug
+      CM_DATASET_IGBH_SIZE: tiny
   glt:
     env:
       CM_IGBH_GRAPH_COMPRESS: yes
