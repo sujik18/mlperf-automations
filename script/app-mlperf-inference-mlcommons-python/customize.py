@@ -115,10 +115,12 @@ def preprocess(i):
     scenario_extra_options = ''
 
     NUM_THREADS = env['CM_NUM_THREADS']
-    if int(NUM_THREADS) > 2 and env['CM_MLPERF_DEVICE'] == "gpu":
+    if int(
+            NUM_THREADS) > 2 and env['CM_MLPERF_DEVICE'] == "gpu" and env['CM_MODEL'] != "rgat":
         NUM_THREADS = "2"  # Don't use more than 2 threads when run on GPU
 
-    if env['CM_MODEL'] in ['resnet50', 'retinanet', 'stable-diffusion-xl']:
+    if env['CM_MODEL'] in ['resnet50', 'retinanet',
+                           'stable-diffusion-xl', 'rgat']:
         scenario_extra_options += " --threads " + NUM_THREADS
 
     ml_model_name = env['CM_MODEL']
@@ -485,15 +487,16 @@ def get_run_cmd_reference(
         # have to add the condition for running in debug mode or real run mode
         cmd = env['CM_PYTHON_BIN_WITH_PATH'] + " main.py " \
             " --scenario " + env['CM_MLPERF_LOADGEN_SCENARIO'] + \
-            " --dataset-path " + env['CM_IGBH_DATASET_PATH'] + \
-            " --device " + device.replace("cuda", "cuda:0") + \
+            " --dataset-path " + env['CM_DATASET_IGBH_PATH'] + \
+            " --device " + device.replace("cuda", "gpu") + \
             env['CM_MLPERF_LOADGEN_EXTRA_OPTIONS'] + \
             scenario_extra_options + mode_extra_options + \
             " --output " + env['CM_MLPERF_OUTPUT_DIR'] + \
             ' --dtype ' + dtype_rgat + \
-            " --model-path " + env['RGAT_CHECKPOINT_PATH'] + \
-            " --mlperf_conf " + \
-            os.path.join(env['CM_MLPERF_INFERENCE_SOURCE'], "mlperf.conf")
+            " --model-path " + env['CM_ML_MODEL_RGAT_CHECKPOINT_PATH']
+
+        if env.get('CM_ACTIVATE_RGAT_IN_MEMORY', '') == "yes":
+            cmd += " --in-memory "
 
     if env.get('CM_NETWORK_LOADGEN', '') in ["lon", "sut"]:
         cmd = cmd + " " + "--network " + env['CM_NETWORK_LOADGEN']
