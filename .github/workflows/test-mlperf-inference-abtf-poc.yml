@@ -20,7 +20,7 @@ jobs:
         python-version: [ "3.8", "3.12" ]
         backend: [ "pytorch" ]
         implementation: [ "python" ]
-        docker: [ "", " --docker --docker_it=no --docker_cm_repo=gateoverflow@cm4mlops --docker_dt=yes" ]
+        docker: [ "", " --docker --docker_it=no --docker_cm_repo=mlcommons@mlperf-automations --docker_cm_repo_branch=dev --docker_dt=yes" ]
         extra-args: [ "--adr.compiler.tags=gcc", "--env.CM_MLPERF_LOADGEN_BUILD_FROM_SRC=off" ]
         exclude:
         - os: ubuntu-24.04
@@ -37,9 +37,9 @@ jobs:
         - os: macos-13
           python-version: "3.8"
         - os: macos-latest
-          docker: " --docker --docker_it=no --docker_cm_repo=gateoverflow@cm4mlops --docker_dt=yes"
+          docker: " --docker --docker_it=no --docker_cm_repo=mlcommons@mlperf-automations --docker_cm_repo_branch=dev --docker_dt=yes"
         - os: macos-13
-          docker: " --docker --docker_it=no --docker_cm_repo=gateoverflow@cm4mlops --docker_dt=yes"
+          docker: " --docker --docker_it=no --docker_cm_repo=mlcommons@mlperf-automations --docker_cm_repo_branch=dev --docker_dt=yes"
 
     steps:
     - uses: actions/checkout@v3
