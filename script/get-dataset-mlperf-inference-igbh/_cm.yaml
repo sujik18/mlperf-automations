@@ -15,6 +15,8 @@ new_env_keys:
   - CM_DATASET_IGBH_SIZE
 input_mapping:
   out_path: CM_DATASET_IGBH_OUT_PATH
+env:
+  SKIP_USER_PROMPT: yes
 deps:
   - tags: mlperf,inference,source
     names:
@@ -22,7 +24,7 @@ deps:
   - tags: get,python
     names:
       - get-python
-  - tags: get,generic-python-lib,_package.igb,_url.git+https://github.com/anandhu-eng/IGB-Datasets.git
+  - tags: get,generic-python-lib,_package.igb,_url.git+https://github.com/gateoverflow/IGB-Datasets.git
   - tags: get,generic-python-lib,_package.colorama
   - tags: get,generic-python-lib,_package.tqdm
 
