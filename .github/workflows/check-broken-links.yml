@@ -18,3 +18,4 @@ jobs:
       with:
         use-quiet-mode: 'yes'
         check-modified-files-only: 'yes'
+        base-branch: dev
