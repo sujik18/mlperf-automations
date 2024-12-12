@@ -25,6 +25,7 @@ def postprocess(i):
     elif env.get('CM_ML_MODEL_PATH', '') == '':
         env['CM_ML_MODEL_PATH'] = env['CM_ML_MODEL_RGAT_CHECKPOINT_PATH']
 
+    env['RGAT_CHECKPOINT_PATH'] = env['CM_ML_MODEL_RGAT_CHECKPOINT_PATH']
     env['CM_GET_DEPENDENT_CACHED_PATH'] = env['CM_ML_MODEL_RGAT_CHECKPOINT_PATH']
 
     return {'return': 0}
