@@ -31,8 +31,8 @@ deps:
     - 'on'
   tags: get,mlperf,submission,dir
 docker:
-  cm_repo: mlcommons@cm4mlops
-  cm_repo_branch: mlperf-inference
+  cm_repo: mlcommons@mlperf-automations
+  cm_repo_branch: dev
   deps:
   - names: get-mlperf-inference-results-dir
     skip_if_env:
