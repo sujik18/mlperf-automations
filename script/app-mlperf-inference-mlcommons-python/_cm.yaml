@@ -487,7 +487,7 @@ deps:
       CM_MODEL:
       - rgat
     skip_if_env:
-      CM_ML_MODEL_RGAT_CHECKPOINT_PATH:
+      RGAT_CHECKPOINT_PATH:
         - 'on'
 
   ########################################################################
@@ -1226,27 +1226,23 @@ variations:
     group: models
     env:
       CM_MODEL: rgat
-    adr:
-      pytorch:
-        version: 2.1.0
     deps:
       - tags: get,generic-python-lib,_package.colorama
       - tags: get,generic-python-lib,_package.tqdm
       - tags: get,generic-python-lib,_package.requests
       - tags: get,generic-python-lib,_package.torchdata
-        version: 0.7.0
       - tags: get,generic-python-lib,_package.torchvision
-        version: 0.16.0
       - tags: get,generic-python-lib,_package.pybind11
       - tags: get,generic-python-lib,_package.PyYAML
       - tags: get,generic-python-lib,_package.numpy
-        version: 1.26.4
       - tags: get,generic-python-lib,_package.pydantic 
       - tags: get,generic-python-lib,_package.igb,_url.git+https://github.com/IllinoisGraphBenchmark/IGB-Datasets.git
       
   rgat,cuda:
     deps:
-      - tags: get,generic-python-lib,_package.dgl,_find_links_url.https://data.dgl.ai/wheels/torch-2.1/cu121/repo.html
+      - tags: get,generic-python-lib,_package.dgl
+        env:
+          CM_GENERIC_PYTHON_PIP_EXTRA_FIND_LINKS_URL: "https://data.pyg.org/whl/torch-<<<CM_TORCH_VERSION>>>+cpu.html"
       - tags: get,generic-python-lib,_package.torch-scatter
       - tags: get,generic-python-lib,_package.torch-sparse
       - tags: get,generic-python-lib,_package.torch-geometric
@@ -1264,7 +1260,9 @@ variations:
       - tags: get,generic-python-lib,_package.torch-sparse
         env:
           CM_GENERIC_PYTHON_PIP_EXTRA_FIND_LINKS_URL: "https://data.pyg.org/whl/torch-<<<CM_TORCH_VERSION>>>+cpu.html"
-      - tags: get,generic-python-lib,_package.dgl,_find_links_url.https://data.dgl.ai/wheels/torch-2.1/repo.html
+      - tags: get,generic-python-lib,_package.dgl
+        env:
+          CM_GENERIC_PYTHON_PIP_EXTRA_FIND_LINKS_URL: "https://data.pyg.org/whl/torch-<<<CM_TORCH_VERSION>>>+cpu.html"
 
   # Target devices
   cpu:
