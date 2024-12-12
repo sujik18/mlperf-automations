@@ -8,9 +8,6 @@ category: Modular MLPerf inference benchmark pipeline
 
 developers: "[Arjun Suresh](https://www.linkedin.com/in/arjunsuresh), [Grigori Fursin](https://cKnowledge.org/gfursin)"
 
-gui:
-  title: CM GUI to run MLPerf inference benchmarks and prepare submissions
-
 clean_output_files:
 - open.tar.gz
 - summary.csv
@@ -202,11 +199,6 @@ variations:
     env:
       CM_MLPERF_LOADGEN_COMPLIANCE: 'yes'
 
-  dashboard:
-    default_gui: false
-    env:
-      CM_MLPERF_DASHBOARD: 'on'
-
   find-performance:
     env:
       CM_MLPERF_FIND_PERFORMANCE_MODE: 'yes'
@@ -396,7 +388,6 @@ variations:
   submission:
     base:
     - all-modes
-    default_gui: true
     default_variations:
       submission-generation-style: full
     env:
