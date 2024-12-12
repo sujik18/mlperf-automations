@@ -619,9 +619,14 @@ deps:
     enable_if_env:
       CM_MODEL:
       - rgat
-    skip_if_env:
+    skip_if_any_env:
       CM_DATASET_IGBH_PATH:
       - "on"
+    skip_if_env:
+      CM_RUN_STATE_DOCKER:
+      - 'yes'
+      CM_USE_DATASET_FROM_HOST:
+      - 'yes'
 
   ########################################################################
   # Install MLPerf inference dependencies
