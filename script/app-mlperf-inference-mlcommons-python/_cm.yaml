@@ -1226,9 +1226,10 @@ variations:
     group: models
     env:
       CM_MODEL: rgat
-    adr:
+    add_deps_recursive:
       pytorch:
-        version: "2.1.0"
+        version_max: "2.4.1"
+        version_max_usable: "2.4.1"
     deps:
       - tags: get,generic-python-lib,_package.colorama
       - tags: get,generic-python-lib,_package.tqdm
@@ -1254,7 +1255,7 @@ variations:
         update_tags_from_env_with_prefix:
           _find_links_url.: 
             - CM_TMP_GENERIC_PYTHON_PIP_EXTRA_FIND_LINKS_URL
-      - tags: get,generic-python-lib,_package.dgl #,_url.git+https://github.com/dmlc/dgl.git
+      - tags: get,generic-python-lib,_package.dgl
         update_tags_from_env_with_prefix:
           _find_links_url.: 
             - CM_TMP_GENERIC_PYTHON_PIP_EXTRA_FIND_LINKS_URL_DGL
@@ -1262,11 +1263,12 @@ variations:
   rgat,cuda:
     env:
       CM_TMP_GENERIC_PYTHON_PIP_EXTRA_FIND_LINKS_URL: "https://data.pyg.org/whl/torch-<<<CM_TORCH_VERSION>>>.html"
-      CM_TMP_GENERIC_PYTHON_PIP_EXTRA_FIND_LINKS_URL_DGL: "https://data.dgl.ai/wheels/torch-<<<CM_TORCH_VERSION>>>/cu121/repo.html"
+      CM_TMP_GENERIC_PYTHON_PIP_EXTRA_FIND_LINKS_URL_DGL: "https://data.dgl.ai/wheels/torch-<<<CM_TORCH_VERSION_MAJOR_MINOR>>>/cu121/repo.html"
           
   rgat,cpu:
     env:
       CM_TMP_GENERIC_PYTHON_PIP_EXTRA_FIND_LINKS_URL: "https://data.pyg.org/whl/torch-<<<CM_TORCH_VERSION>>>+cpu.html"
+      CM_TMP_GENERIC_PYTHON_PIP_EXTRA_FIND_LINKS_URL_DGL: "https://data.dgl.ai/wheels/torch-<<<CM_TORCH_VERSION_MAJOR_MINOR>>>/repo.html"
 
   # Target devices
   cpu:
