@@ -222,6 +222,7 @@ deps:
       CM_MODEL:
         - dlrm-v2-99
         - dlrm-v2-99.9
+        - rgat
     enable_if_env:
       CM_MLPERF_BACKEND:
       - pytorch
@@ -234,6 +235,11 @@ deps:
     names:
     - ml-engine-torchvision
     - torchvision
+    skip_if_env:
+      CM_MODEL:
+        - dlrm-v2-99
+        - dlrm-v2-99.9
+        - rgat
     enable_if_env:
       CM_MLPERF_BACKEND:
       - pytorch
