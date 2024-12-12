@@ -781,6 +781,15 @@ variations:
       - mlperf-accuracy-script
       - 3d-unet-accuracy-script
       tags: run,accuracy,mlperf,_igbh
+    docker:
+      deps:
+      - tags: get,dataset,igbh
+        enable_if_env:
+          CM_USE_DATASET_FROM_HOST:
+          - 'yes'
+        names:
+          - igbh-original
+          - igbh-dataset
 
   sdxl:
     group:
