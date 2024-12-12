@@ -1226,6 +1226,9 @@ variations:
     group: models
     env:
       CM_MODEL: rgat
+    adr:
+      pytorch:
+        version: "2.1.0"
     deps:
       - tags: get,generic-python-lib,_package.colorama
       - tags: get,generic-python-lib,_package.tqdm
@@ -1235,6 +1238,8 @@ variations:
       - tags: get,generic-python-lib,_package.pybind11
       - tags: get,generic-python-lib,_package.PyYAML
       - tags: get,generic-python-lib,_package.numpy
+        version_max: "1.26.4"
+        version_max_usable: "1.26.4"
       - tags: get,generic-python-lib,_package.pydantic 
       - tags: get,generic-python-lib,_package.igb,_url.git+https://github.com/IllinoisGraphBenchmark/IGB-Datasets.git
       - tags: get,generic-python-lib,_package.torch-geometric
