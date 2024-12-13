@@ -77,6 +77,6 @@ def postprocess(i):
 
     env['CM_DOCKER_VERSION'] = version
     
-    env['CM_DOCKER_TOOL'] = tool
+    env['CM_CONTAINER_TOOL'] = tool
 
     return {'return': 0, 'version': version}
