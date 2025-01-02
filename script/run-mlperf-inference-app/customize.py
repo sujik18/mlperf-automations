@@ -233,7 +233,7 @@ def preprocess(i):
         inp = {}
         if str(docker_dt).lower() in ["yes", "true", "1"]:
             # turning it off for the first run and after that we turn it on
-            if env.get('CM_DOCKER_REUSE_EXISTING_CONTAINER', '') == '': 
+            if env.get('CM_DOCKER_REUSE_EXISTING_CONTAINER', '') == '':
                 env['CM_DOCKER_REUSE_EXISTING_CONTAINER'] = 'no'
             env['CM_DOCKER_DETACHED_MODE'] = 'yes'
 
