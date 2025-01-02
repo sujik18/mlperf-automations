@@ -12,14 +12,6 @@ jobs:
   format-code:
     runs-on: ubuntu-latest
     steps:
-      - name: Retrieve secrets from Keeper
-        id: ksecrets
-        uses: Keeper-Security/ksm-action@master
-        with:
-          keeper-secret-config: ${{ secrets.KSM_CONFIG }}
-          secrets: |-
-            v2h4jKiZlJywDSoKzRMnRw/field/Access Token > env:PAT  # Fetch PAT and store in environment variable
-
       - name: Checkout code
         uses: actions/checkout@v4
         with:
@@ -58,8 +50,6 @@ jobs:
           done
 
       - name: Commit and push changes
-        env:
-          PAT: ${{ env.PAT }}  # Use PAT fetched from Keeper
         run: |
           HAS_CHANGES=$(git diff --staged --name-only)
           if [ ${#HAS_CHANGES} -gt 0 ]; then
@@ -68,5 +58,5 @@ jobs:
             # Commit changes
             git commit -m '[Automated Commit] Format Codebase'
             # Use the PAT to push changes
-            git push https://x-access-token:${PAT}@github.com/${{ github.repository }} HEAD:${{ github.ref_name }}
+            git push 
           fi
