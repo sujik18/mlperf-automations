@@ -70,7 +70,7 @@ def preprocess(i):
         }
 
     if len(out) > 0 and str(env.get('CM_DOCKER_REUSE_EXISTING_CONTAINER',
-                                         '')).lower() in ["1", "true", "yes"]:  # container exists
+                                    '')).lower() in ["1", "true", "yes"]:  # container exists
         out_json = json.loads(out)
         existing_container_id = out_json[0]['Id']
         print(f"Reusing existing container {existing_container_id}")
