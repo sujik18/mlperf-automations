@@ -6,7 +6,7 @@ default_env:
   CM_MLPERF_SUBMISSION_URL: https://submissions-ui.mlcommons.org
 
 input_mapping:
-  input: CM_MLPERF_SUBMISSION_FILENAME
+  input: CM_MLPERF_SUBMISSION_FILE
   submitter_id: CM_MLPERF_SUBMITTER_ID
 tags:
 - submit

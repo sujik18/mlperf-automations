@@ -15,18 +15,18 @@ def preprocess(i):
     server = env['CM_MLPERF_SUBMISSION_URL']
     benchmark = env['CM_MLPERF_BENCHMARK']
     submitter_id = env['CM_MLPERF_SUBMITTER_ID']
-    filename = env['CM_MLPERF_SUBMISSION_FILENAME']
-
-    r = get_signed_url(server, benchmark, submitter_id, filename)
+    file_path = env['CM_MLPERF_SUBMISSION_FILE']
+    
+    r = get_signed_url(server, benchmark, submitter_id, file_path)
     if r['return'] > 0:
         return r
 
     signed_url = r['signed_url']
     submission_id = r['submission_id']
 
-    # print(signed_url)
-    # print(submission_id)
-    r = upload_file_to_signed_url(filename, signed_url)
+    #print(signed_url)
+    #print(submission_id)
+    r = upload_file_to_signed_url(file_path, signed_url)
     if r['return'] > 0:
         return r
 
@@ -37,8 +37,7 @@ def preprocess(i):
 
     return {'return': 0}
 
-
-def get_signed_url(server, benchmark, submitter_id, filename):
+def get_signed_url(server, benchmark, submitter_id, file_path):
     # Define the URL
     url = f"{server}/index/url"
 
@@ -51,7 +50,7 @@ def get_signed_url(server, benchmark, submitter_id, filename):
     payload = {
         "submitter_id": submitter_id,
         "benchmark": benchmark,
-        "filename": filename
+        "filename": file_path
     }
 
     try:
@@ -170,10 +169,10 @@ def trigger_submission_checker(
         response = requests.post(url, data=payload, headers=headers)
 
         if response.ok:
-            print("Request successful!")
+            print("Submission Check Request successful!")
             pass
         else:
-            print(f"Request failed with status code: {response.status_code}")
+            print(f"Submission Check Request failed with status code: {response.status_code}")
             print("Response:", response.text)
 
         return {
