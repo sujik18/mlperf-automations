@@ -1,8 +1,6 @@
 from cmind import utils
 import os
 import shutil
-
-
 def preprocess(i):
 
     os_info = i['os_info']
