@@ -409,7 +409,7 @@ variations:
   nvidia-original:
     docker:
       interactive: True
-      extra_run_args: ' --ulimit memlock=-1 --cap-add SYS_ADMIN --cap-add SYS_TIME --security-opt apparmor=unconfined --security-opt seccomp=unconfined'
+      extra_run_args: ' --cap-add SYS_ADMIN --cap-add SYS_TIME --security-opt apparmor=unconfined --security-opt seccomp=unconfined'
       base_image: nvcr.io/nvidia/mlperf/mlperf-inference:mlpinf-v3.1-cuda12.2-cudnn8.9-x86_64-ubuntu20.04-l4-public
       os: "ubuntu"
       os_version: "20.04"
@@ -434,7 +434,7 @@ variations:
          CM_HOST_OS_VERSION:
            - 20.04
         docker:
-          extra_run_args: ' --runtime=nvidia --ulimit memlock=-1 --cap-add SYS_ADMIN --cap-add SYS_TIME --security-opt apparmor=unconfined --security-opt seccomp=unconfined'
+          extra_run_args: ' --runtime=nvidia  --cap-add SYS_ADMIN --cap-add SYS_TIME --security-opt apparmor=unconfined --security-opt seccomp=unconfined'
 
     default_variations:
       backend: tensorrt
@@ -1775,13 +1775,32 @@ input_description:
   debug: 
     desc: "Debug MLPerf script"
 
-gui:
-  title: "CM GUI for the MLPerf inference benchmark"
+update_meta_if_env:
+  - enable_if_env:
+      CM_CONTAINER_TOOL:
+      - podman
+    # podman maps the host userid to the root user inside the container
+    docker:
+      use_host_group_id: False
+      use_host_user_id: False
+      pass_user_group: False #useful if docker is run by a different user from the one who built it and under the same group
+    default_env:
+      CM_DOCKER_USE_DEFAULT_USER: 'yes'
+  - skip_if_env:
+      CM_CONTAINER_TOOL:
+      - podman
+    docker:
+      use_host_group_id: True
+      use_host_user_id: True
+      pass_user_group: True #useful if docker is run by a different user from the one who built it and under the same group
+  - enable_if_env:
+      CM_HOST_OS_TYPE:
+        - linux
+      adr:
+        compiler:
+          tags: gcc
 
 docker:
-  use_host_group_id: True
-  use_host_user_id: True
-  pass_user_group: True #useful if docker is run by a different user fromt he one who built it and under the same group
   deps:
     - tags: get,mlperf,inference,results,dir,local
       names:
@@ -1816,7 +1835,7 @@ docker:
   skip_run_cmd: 'no'
   shm_size: '32gb'
   interactive: True
-  extra_run_args: ' --dns 8.8.8.8 --dns 8.8.4.4 --ulimit memlock=-1 --cap-add SYS_ADMIN --cap-add SYS_TIME --security-opt apparmor=unconfined --security-opt seccomp=unconfined'
+  extra_run_args: ' --dns 8.8.8.8 --dns 8.8.4.4 --cap-add SYS_ADMIN  --cap-add SYS_TIME --security-opt apparmor=unconfined --security-opt seccomp=unconfined'
   os: ubuntu
   cm_repo: mlcommons@mlperf-automations
   cm_repo_branch: dev
