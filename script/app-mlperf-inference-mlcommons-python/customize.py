@@ -499,7 +499,7 @@ def get_run_cmd_reference(
 
         if env.get('CM_ACTIVATE_RGAT_IN_MEMORY', '') == "yes":
             cmd += " --in-memory "
-    
+
     elif "llama3" in env['CM_MODEL']:
         env['RUN_DIR'] = os.path.join(
             env['CM_MLPERF_INFERENCE_SOURCE'],
@@ -520,11 +520,9 @@ def get_run_cmd_reference(
 
         if env.get('CM_MLPERF_INFERENCE_NUM_WORKERS', '') != '':
             cmd += f" --num-workers {env['CM_MLPERF_INFERENCE_NUM_WORKERS']}"
-            
-        
+
         cmd = cmd.replace("--count", "--total-sample-count")
         cmd = cmd.replace("--max-batchsize", "--batch-size")
-
 
     if env.get('CM_NETWORK_LOADGEN', '') in ["lon", "sut"]:
         cmd = cmd + " " + "--network " + env['CM_NETWORK_LOADGEN']
