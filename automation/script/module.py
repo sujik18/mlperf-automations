@@ -32,6 +32,7 @@ class CAutomation(Automation):
         self.run_state['fake_deps'] = False
         self.run_state['parent'] = None
         self.run_state['version_info'] = []
+        self.run_state['cache'] = False
 
         self.file_with_cached_state = 'cm-cached-state.json'
 
@@ -74,7 +75,8 @@ class CAutomation(Automation):
                                              'accept_license',
                                              'skip_system_deps',
                                              'git_ssh',
-                                             'gh_token']
+                                             'gh_token',
+                                             'hf_token']
 
     ############################################################
 
@@ -826,6 +828,7 @@ class CAutomation(Automation):
             'alias', '')
         run_state['script_repo_git'] = script_artifact.repo_meta.get(
             'git', False)
+        run_state['cache'] = meta.get('cache', False)
 
         if not recursion:
             run_state['script_entry_repo_to_report_errors'] = meta.get(
@@ -1125,7 +1128,7 @@ class CAutomation(Automation):
         # Check if the output of a selected script should be cached
         cache = False if i.get(
             'skip_cache',
-            False) else meta.get(
+            False) else run_state.get(
             'cache',
             False)
         cache = cache or (
@@ -6162,6 +6165,9 @@ def update_state_from_meta(meta, env, state, const, const_state, deps, post_deps
     """
     Internal: update env and state from meta
     """
+
+    if meta.get('cache', '') != '':
+        run_state['cache'] = meta['cache']
 
     default_env = meta.get('default_env', {})
     for key in default_env:
