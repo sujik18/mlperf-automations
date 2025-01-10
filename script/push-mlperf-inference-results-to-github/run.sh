@@ -18,6 +18,7 @@ test $? -eq 0 || exit $?
 git commit -a -m "${CM_MLPERF_RESULTS_REPO_COMMIT_MESSAGE}"
 
 if [[ -n ${CM_SET_REMOTE_URL_CMD} ]]; then
+  echo ${CM_SET_REMOTE_URL_CMD}
   ${CM_SET_REMOTE_URL_CMD}
 fi
 
