@@ -75,5 +75,4 @@ jobs:
       run: |
         git config --global user.name mlcommons-bot
         git config --global user.email "mlcommons-bot@users.noreply.github.com"
-        git clone -b auto-update mlperf_inference_test_submissions_v5.0
         cm run script --tags=push,github,mlperf,inference,submission --env.CM_GITHUB_PAT=${{ env.PAT }} --repo_url=https://github.com/mlcommons/mlperf_inference_test_submissions_v5.0 --repo_branch=auto-update --commit_message="Results from R50 GH action on ${{ matrix.os }}" --quiet
