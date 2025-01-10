@@ -70,9 +70,7 @@ jobs:
 
     - name: Push Results
       if: github.repository_owner == 'mlcommons'
-      env:
-          GITHUB_TOKEN: ${{ env.PAT }}
       run: |
         git config --global user.name mlcommons-bot
         git config --global user.email "mlcommons-bot@users.noreply.github.com"
-        cm run script --tags=push,github,mlperf,inference,submission --env.CM_GITHUB_PAT=$GITHUB_TOKEN --repo_url=https://github.com/mlcommons/mlperf_inference_test_submissions_v5.0 --repo_branch=auto-update --commit_message="Results from R50 GH action on ${{ matrix.os }}" --quiet
+        cm run script --tags=push,github,mlperf,inference,submission --env.CM_GITHUB_PAT=$PAT --repo_url=https://github.com/mlcommons/mlperf_inference_test_submissions_v5.0 --repo_branch=auto-update --commit_message="Results from R50 GH action on ${{ matrix.os }}" --quiet
