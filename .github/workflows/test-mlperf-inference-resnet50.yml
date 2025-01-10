@@ -66,15 +66,13 @@ jobs:
       with:
         keeper-secret-config: ${{ secrets.KSM_CONFIG }}
         secrets: |-
-          ubwkjh-Ii8UJDpG2EoU6GQ/field/Access_Token > env:PAT  # Fetch PAT and store in environment variable
+          ubwkjh-Ii8UJDpG2EoU6GQ/field/Access Token > env:PAT  # Fetch PAT and store in environment variable
     - name: Use secret
-      env:
-          MY_SECRET: ${{ env.PAT }}
       run: |
-          echo "Using secret: $MY_SECRET"
+          echo "Using PAT: ${{ env.PAT }}"
     - name: Push Results
       if: github.repository_owner == 'mlcommons'
       run: |
         git config --global user.name mlcommons-bot
         git config --global user.email "mlcommons-bot@users.noreply.github.com"
-        cm run script --tags=push,github,mlperf,inference,submission --env.CM_GITHUB_PAT=${{ env.MY_SECRET }} --repo_url=https://github.com/mlcommons/mlperf_inference_test_submissions_v5.0 --repo_branch=auto-update --commit_message="Results from R50 GH action on ${{ matrix.os }}" --quiet
+        cm run script --tags=push,github,mlperf,inference,submission --env.CM_GITHUB_PAT=${{ env.PAT }} --repo_url=https://github.com/mlcommons/mlperf_inference_test_submissions_v5.0 --repo_branch=auto-update --commit_message="Results from R50 GH action on ${{ matrix.os }}" --quiet
