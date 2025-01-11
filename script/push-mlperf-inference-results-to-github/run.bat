@@ -28,7 +28,8 @@ git commit -a -m "%CM_MLPERF_RESULTS_REPO_COMMIT_MESSAGE%"
 
 if defined CM_MLPERF_INFERENCE_SUBMISSION_DIR call %CM_SET_REMOTE_URL_CMD%
 
-git push
+echo "%CM_GIT_PUSH_CMD%"
+%CM_GIT_PUSH_CMD%
 
 REM Check if the previous command was successful
 if %errorlevel% neq 0 exit /b %errorlevel%
