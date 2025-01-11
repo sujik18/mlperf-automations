@@ -68,6 +68,8 @@ jobs:
         secrets: |-
           ubwkjh-Ii8UJDpG2EoU6GQ/field/Access Token > env:PAT  # Fetch PAT and store in environment variable
     - name: Push Results
+      env:
+        PAT: ${{ env.PAT }}
       if: github.repository_owner == 'mlcommons'
       run: |
         git config --global user.name mlcommons-bot
