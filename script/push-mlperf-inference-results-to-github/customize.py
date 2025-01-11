@@ -37,9 +37,9 @@ def preprocess(i):
     if env.get('CM_GITHUB_PAT', '') != '':
         token = env['CM_GITHUB_PAT']
         if token == "PAT":
-            env['CM_SET_REMOTE_URL_CMD'] = f"""git remote set-url origin https://git:\\$PAT@{p.host}/{p.owner}/{p.repo}"""
+            env['CM_SET_REMOTE_URL_CMD'] = f"""git remote set-url origin https://\\$PAT@{p.host}/{p.owner}/{p.repo}"""
         else:
-            env['CM_SET_REMOTE_URL_CMD'] = f"""git remote set-url origin https://git:{token}@{p.host}/{p.owner}/{p.repo}"""
+            env['CM_SET_REMOTE_URL_CMD'] = f"""git remote set-url origin https://{token}@{p.host}/{p.owner}/{p.repo}"""
 
     return {'return': 0}
 
