@@ -4763,7 +4763,7 @@ with more details about installing CM and dependencies across different platform
           (docker_os_version) (str): force docker OS version (default: 22.04)
           (docker_image_tag_extra) (str): add extra tag (default:-latest)
 
-          (docker_cm_repo) (str): force CM automation repository when building Docker (default: cm4mlops)
+          (docker_cm_repo) (str): force CM automation repository when building Docker (default: mlperf-automations)
           (docker_cm_repos)
           (docker_cm_repo_flags)
 
