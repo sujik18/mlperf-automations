@@ -36,11 +36,7 @@ def preprocess(i):
     p = parse(repo)
     if env.get('CM_GITHUB_PAT', '') != '':
         token = env['CM_GITHUB_PAT']
-        if token == "PAT":
-            env['CM_GIT_PUSH_CMD'] = r"""git push https://x-access-token:\$PAT@""" + \
-                f"""{p.host}/{p.owner}/{p.repo}"""
-        else:
-            env['CM_GIT_PUSH_CMD'] = F"""git push https://x-access-token:{env['CM_GITHUB_PAT']}@{p.host}/{p.owner}/{p.repo}"""
+        env['CM_GIT_PUSH_CMD'] = f"""git push https://x-access-token:{env['CM_GITHUB_PAT']}@{p.host}/{p.owner}/{p.repo}"""
 
     return {'return': 0}
 
