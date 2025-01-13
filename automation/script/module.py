@@ -18,8 +18,6 @@ from main import __version__ as current_mlc_version
 
 class ScriptAutomation(Automation):
 
-
-
     """
     CM "script" automation actions
     (making native scripts more portable, deterministic, reusable and reproducible)
@@ -27,7 +25,7 @@ class ScriptAutomation(Automation):
 
     ############################################################
     def __init__(self, cmind, automation_file):
-        #super().__init__(cmind, __file__)
+        # super().__init__(cmind, __file__)
         super().__init__(cmind)
         logging.basicConfig(level=logging.INFO)
         self.os_info = {}
@@ -263,8 +261,8 @@ class ScriptAutomation(Automation):
 
             # Check if has default config
             r = self.action_object.access({'action': 'load',
-                                   'automation': 'cfg,88dce9c160324c5d',
-                                   'artifact': 'default'})
+                                           'automation': 'cfg,88dce9c160324c5d',
+                                           'artifact': 'default'})
             if r['return'] == 0:
                 config = r['config']
 
@@ -480,7 +478,7 @@ class ScriptAutomation(Automation):
         # manage OS environment
         if len(self.os_info) == 0:
             r = get_host_os_info()
-            #r = self.access({'action': 'get_host_os_info',
+            # r = self.access({'action': 'get_host_os_info',
             #                       'automation': 'utils,dc2743f8450541e3'})
             if r['return'] > 0:
                 return r
