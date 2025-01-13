@@ -11,12 +11,15 @@
 import os
 import logging
 
-from cmind.automation import Automation
-from cmind import utils
-from cmind import __version__ as current_cm_version
+from main import Automation
+from utils import *
+from main import __version__ as current_mlc_version
 
 
-class CAutomation(Automation):
+class ScriptAutomation(Automation):
+
+
+
     """
     CM "script" automation actions
     (making native scripts more portable, deterministic, reusable and reproducible)
@@ -24,7 +27,8 @@ class CAutomation(Automation):
 
     ############################################################
     def __init__(self, cmind, automation_file):
-        super().__init__(cmind, __file__)
+        #super().__init__(cmind, __file__)
+        super().__init__(cmind)
         logging.basicConfig(level=logging.INFO)
         self.os_info = {}
         self.run_state = {}
@@ -258,7 +262,7 @@ class CAutomation(Automation):
                     'return': 1, 'error': 'Current directory "{}" is not writable - please change it'.format(os.getcwd())}
 
             # Check if has default config
-            r = self.cmind.access({'action': 'load',
+            r = self.action_object.access({'action': 'load',
                                    'automation': 'cfg,88dce9c160324c5d',
                                    'artifact': 'default'})
             if r['return'] == 0:
@@ -475,8 +479,9 @@ class CAutomation(Automation):
         # Get and cache minimal host OS info to be able to run scripts and
         # manage OS environment
         if len(self.os_info) == 0:
-            r = self.cmind.access({'action': 'get_host_os_info',
-                                   'automation': 'utils,dc2743f8450541e3'})
+            r = get_host_os_info()
+            #r = self.access({'action': 'get_host_os_info',
+            #                       'automation': 'utils,dc2743f8450541e3'})
             if r['return'] > 0:
                 return r
 
@@ -527,7 +532,7 @@ class CAutomation(Automation):
 
         tags_string = i.get('tags', '').strip()
 
-        ii = utils.sub_input(i, self.cmind.cfg['artifact_keys'])
+        ii = utils.sub_input(i, self.action_object.cfg['artifact_keys'])
 
         ii['tags'] = tags_string
         ii['out'] = None
@@ -2836,7 +2841,7 @@ class CAutomation(Automation):
         i['out'] = None
         i['common'] = True
 
-        r = super(CAutomation, self).search(i)
+        r = super(ScriptAutomation, self).search(i)
         if r['return'] > 0:
             return r
 
