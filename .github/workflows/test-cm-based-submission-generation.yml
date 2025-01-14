@@ -62,6 +62,7 @@ jobs:
     - name: Pull repo where test cases are uploaded
       run: |
         git clone -b submission-generation-tests https://github.com/mlcommons/inference.git submission_generation_tests
+    
     - name: Run Submission Generation - ${{ matrix.case }} ${{ matrix.action }} ${{ matrix.category }} ${{ matrix.division }} 
       continue-on-error: true
       run: |
