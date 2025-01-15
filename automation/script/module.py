@@ -12,7 +12,7 @@ import os
 import logging
 
 from mlc.main import Automation
-#from mlc.utils import *
+# from mlc.utils import *
 import mlc.utils as utils
 from mlc.main import __version__ as current_mlc_version
 from utils import *
@@ -27,7 +27,7 @@ class ScriptAutomation(Automation):
 
     ############################################################
     def __init__(self, cmind, automation_file):
-        #super().__init__(cmind, __file__)
+        # super().__init__(cmind, __file__)
         super().__init__(cmind, "script")
         print("Base init over")
         logging.basicConfig(level=logging.INFO)
@@ -229,7 +229,7 @@ class ScriptAutomation(Automation):
 
     def _run(self, i):
 
-        #from cmind import utils
+        # from cmind import utils
         import copy
         import time
         import shutil

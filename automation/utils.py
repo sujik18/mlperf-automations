@@ -1,5 +1,6 @@
 from mlc.utils import *
 
+
 def get_host_os_info(i={}):
     """
     Get some host platform name (currently windows or linux) and OS bits
