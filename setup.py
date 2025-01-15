@@ -192,7 +192,7 @@ setup(
     version=version_,
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url="https://github.com/mlcommons/cm4mlops",
+    url="https://github.com/mlcommons/mlperf-automations",
     packages=[],
     install_requires=[
         "setuptools>=60",
