@@ -38,6 +38,10 @@ class ScriptAutomation(Automation):
         self.run_state['parent'] = None
         self.run_state['version_info'] = []
         self.run_state['cache'] = False
+        self.meta = {
+                'uid': '5b4e0237da074764',
+                'alias': 'script'
+                }
 
         self.file_with_cached_state = 'cm-cached-state.json'
 
@@ -798,6 +802,7 @@ class ScriptAutomation(Automation):
         script_artifact = list_of_found_scripts[select_script]
 
         meta = script_artifact.meta
+        #print(meta)
         path = script_artifact.path
 
         # Check min CM version requirement
@@ -3728,6 +3733,8 @@ class ScriptAutomation(Automation):
                     utils.merge_dicts(
                         {'dict1': ii, 'dict2': d, 'append_lists': True, 'append_unique': True})
 
+                    #print(f"d = {d}")
+                    #print(f" ii = {ii}")
                     r = self.cmind.access(ii)
                     if r['return'] > 0:
                         return r
