@@ -28,7 +28,7 @@ class ScriptAutomation(Automation):
     ############################################################
     def __init__(self, cmind, automation_file):
         # super().__init__(cmind, __file__)
-        super().__init__(cmind, "script")
+        super().__init__(cmind, "script", automation_file)
         print("Base init over")
         logging.basicConfig(level=logging.INFO)
         self.os_info = {}
@@ -38,11 +38,6 @@ class ScriptAutomation(Automation):
         self.run_state['parent'] = None
         self.run_state['version_info'] = []
         self.run_state['cache'] = False
-        self.meta = {
-            'uid': '5b4e0237da074764',
-            'alias': 'script'
-        }
-
         self.file_with_cached_state = 'cm-cached-state.json'
 
         self.tmp_file_env = 'tmp-env'
@@ -345,7 +340,9 @@ class ScriptAutomation(Automation):
                                    'dict2': i['local_' + key],
                                    'append_lists': True,
                                    'append_unique': True})
+                #print(f"Merged local {key}: {i[key]}")
 
+        #print(f"env = {env}")
         add_deps = i.get('ad', {})
         if not add_deps:
             add_deps = i.get('add_deps', {})
@@ -891,7 +888,10 @@ class ScriptAutomation(Automation):
         # Force env from meta['env'] as a CONST
         # (env OVERWRITE)
         script_artifact_env = meta.get('env', {})
+        #print(f"script meta env= {script_artifact_env}")
+
         env.update(script_artifact_env)
+        #print(f"env = {env}")
 
         script_artifact_state = meta.get('state', {})
         utils.merge_dicts({'dict1': state,
@@ -1337,9 +1337,12 @@ class ScriptAutomation(Automation):
                         return r
                     new_env = r['new_env']
 
+                    #print(f"env = {env}, new_env={new_env}")
                     utils.merge_dicts(
                         {'dict1': env, 'dict2': new_env, 'append_lists': True, 'append_unique': True})
 
+                    #print(f"merged_env:")
+                    #utils.print_env(env)
                     new_state = cached_state['new_state']
                     utils.merge_dicts({'dict1': state,
                                        'dict2': new_state,
@@ -1675,6 +1678,8 @@ class ScriptAutomation(Automation):
                         return r
 
             # Check chain of dependencies on other CM scripts
+            #print(f"before deps: ")
+            #utils.print_env(env)
             if len(deps) > 0:
                 logging.debug(recursion_spaces +
                               '  - Checking dependencies on other CM scripts:')
@@ -1692,6 +1697,8 @@ class ScriptAutomation(Automation):
                 if r['return'] > 0:
                     return r
 
+            #print(f"after deps:")
+            #utils.print_env(env)
             # Clean some output files
             clean_tmp_files(clean_files, recursion_spaces)
 
@@ -1806,6 +1813,8 @@ class ScriptAutomation(Automation):
             if 'preprocess' in dir(customize_code) and not fake_run:
 
                 logging.debug(recursion_spaces + '  - Running preprocess ...')
+                #print(f"preprocess_env:")
+                #utils.print_env(env)
 
                 run_script_input['run_state'] = run_state
 
@@ -1969,6 +1978,8 @@ class ScriptAutomation(Automation):
             new_state_keys = i['force_new_state_keys']
         else:
             new_state_keys = new_state_keys_from_meta
+        #print("Env:")
+        #utils.print_env(env)
 
         r = detect_state_diff(
             env,
@@ -3214,7 +3225,10 @@ class ScriptAutomation(Automation):
                         'error': 'file {} not found'.format(script_name)}
 
         # Move tags from input to meta of the newly created script artifact
-        tags_list = utils.convert_tags_to_list(i)
+        res = utils.convert_tags_to_list(i['tags'])
+        if res['return'] > 0:
+            return res
+        tags_list = res['tags']
         if 'tags' in i:
             del (i['tags'])
 
@@ -3706,6 +3720,7 @@ class ScriptAutomation(Automation):
                     # Not very efficient but allows logging - can be optimized
                     # later
 
+                    #print(f"env about to call deps {d}= {env}")
                     ii = {
                         'action': 'run',
                         'automation': utils.assemble_cm_object(self.meta['alias'], self.meta['uid']),
@@ -3730,11 +3745,10 @@ class ScriptAutomation(Automation):
                         if d.get(key):
                             d[key] = {}
 
+                    #print(f"ii = {ii}, d = {d}")
                     utils.merge_dicts(
                         {'dict1': ii, 'dict2': d, 'append_lists': True, 'append_unique': True})
 
-                    # print(f"d = {d}")
-                    # print(f" ii = {ii}")
                     r = self.cmind.access(ii)
                     if r['return'] > 0:
                         return r
@@ -3766,12 +3780,18 @@ class ScriptAutomation(Automation):
             return {'return': 0}
         for dep in dict1:
             if 'tags' in dict1[dep]:
-                dict1[dep]['tags_list'] = utils.convert_tags_to_list(
-                    dict1[dep])
+                res = utils.convert_tags_to_list(
+                    dict1[dep]['tags'])
+                if res['return'] > 0:
+                    return res
+                dict1[dep]['tags_list'] = res['tags']
         for dep in dict2:
             if 'tags' in dict2[dep]:
-                dict2[dep]['tags_list'] = utils.convert_tags_to_list(
-                    dict2[dep])
+                res = utils.convert_tags_to_list(
+                    dict2[dep]['tags'])
+                if res['return'] > 0:
+                    return res
+                dict2[dep]['tags_list'] = res['tags']
         utils.merge_dicts({'dict1': dict1, 'dict2': dict2,
                           'append_lists': True, 'append_unique': True})
         for dep in dict1:
