@@ -811,13 +811,11 @@ class ScriptAutomation(Automation):
         # Check min CM version requirement
         min_mlc_version = meta.get('min_mlc_version', '').strip()
         if min_mlc_version != '':
-            # Check compare version while avoiding craches for older version
-            if 'compare_versions' in dir(utils):
-                comparison = utils.compare_versions(
-                    current_mlc_version, min_mlc_version)
-                if comparison < 0:
-                    return {'return': 1, 'error': 'This script requires MLC version >= {} while current MLC version is {} - please update using "pip install mlcflow -U"'.format(
-                        min_mlc_version, current_mlc_version)}
+            comparison = compare_versions(
+                current_mlc_version, min_mlc_version)
+            if comparison < 0:
+                return {'return': 1, 'error': 'This script requires MLC version >= {} while current MLC version is {} - please update using "pip install mlcflow -U"'.format(
+                    min_mlc_version, current_mlc_version)}
 
         # Check path to repo
         script_repo_path = script_artifact.repo_path
@@ -1514,10 +1512,8 @@ class ScriptAutomation(Automation):
                     version = default_version
 
                     if version_min != '':
-                        ry = self.action_object.access({'action': 'compare_versions',
-                                                        'automation': 'utils,dc2743f8450541e3',
-                                                        'version1': version,
-                                                        'version2': version_min})
+                        ry = compare_versions({'version1': version,
+                                                'version2': version_min})
                         if ry['return'] > 0:
                             return ry
 
@@ -1525,10 +1521,8 @@ class ScriptAutomation(Automation):
                             version = version_min
 
                     if version_max != '':
-                        ry = self.action_object.access({'action': 'compare_versions',
-                                                        'automation': 'utils,dc2743f8450541e3',
-                                                        'version1': version,
-                                                        'version2': version_max})
+                        ry = compare_versions({'version1': version,
+                                                'version2': version_max})
                         if ry['return'] > 0:
                             return ry
 
@@ -5350,8 +5344,7 @@ def check_version_constraints(i):
         skip = True
 
     if not skip and detected_version != '' and version_min != '':
-        ry = action_object.access({'action': 'compare_versions',
-                                   'automation': 'utils,dc2743f8450541e3',
+        ry = compare_versions({
                                    'version1': detected_version,
                                    'version2': version_min})
         if ry['return'] > 0:
@@ -5361,8 +5354,7 @@ def check_version_constraints(i):
             skip = True
 
     if not skip and detected_version != '' and version_max != '':
-        ry = action_object.access({'action': 'compare_versions',
-                                   'automation': 'utils,dc2743f8450541e3',
+        ry = compare_versions({
                                    'version1': detected_version,
                                    'version2': version_max})
         if ry['return'] > 0:
@@ -6390,8 +6382,7 @@ def check_versions(action_object, cached_script_version,
 
     if cached_script_version != '':
         if version_min != '':
-            ry = action_object.access({'action': 'compare_versions',
-                                       'automation': 'utils,dc2743f8450541e3',
+            ry = compare_versions({
                                        'version1': cached_script_version,
                                        'version2': version_min})
             if ry['return'] > 0:
@@ -6401,8 +6392,7 @@ def check_versions(action_object, cached_script_version,
                 skip_cached_script = True
 
         if not skip_cached_script and version_max != '':
-            ry = action_object.access({'action': 'compare_versions',
-                                       'automation': 'utils,dc2743f8450541e3',
+            ry = compare_versions({
                                        'version1': cached_script_version,
                                        'version2': version_max})
             if ry['return'] > 0:
