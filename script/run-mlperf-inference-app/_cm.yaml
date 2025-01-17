@@ -592,10 +592,8 @@ input_description:
     desc: Whether to run compliance tests (applicable only for closed division)
   dashboard_wb_project:
     desc: W&B dashboard project
-    default: cm-mlperf-dse-testing
   dashboard_wb_user:
     desc: W&B dashboard user
-    default: cmind
   hw_name:
     desc: MLPerf hardware name (for example "gcp.c3_standard_8", "nvidia_orin", "lenovo_p14s_gen_4_windows_11", "macbook_pro_m1_2", "thundercomm_rb6" ...)
   multistream_target_latency:

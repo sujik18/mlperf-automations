@@ -1,9 +1,9 @@
-from cmind import utils
+from mlc import utils
 import os
 import json
 import shutil
 import subprocess
-import cmind as cm
+import mlc
 import copy
 import mlperf_utils
 
@@ -275,7 +275,7 @@ def preprocess(i):
                 for k in docker_extra_input:
                     ii[k] = docker_extra_input[k]
 
-            r = cm.access(ii)
+            r = mlc.access(ii)
             if r['return'] > 0:
                 return r
 
@@ -308,7 +308,7 @@ def preprocess(i):
                 if action == "docker":
                     for k in docker_extra_input:
                         ii[k] = docker_extra_input[k]
-                r = cm.access(ii)
+                r = mlc.access(ii)
                 if r['return'] > 0:
                     return r
                 if state.get('docker', {}):

@@ -12,7 +12,6 @@ import os
 import logging
 
 from mlc.main import Automation
-# from mlc.utils import *
 import mlc.utils as utils
 from mlc.main import __version__ as current_mlc_version
 from utils import *
@@ -836,8 +835,6 @@ class ScriptAutomation(Automation):
             return utils.call_internal_module(self, __file__, 'module_help', 'print_help', {
                                               'meta': meta, 'path': path})
 
-        if not meta['alias']:
-            print(meta)
         run_state['script_id'] = meta['alias'] + "," + meta['uid']
         run_state['script_tags'] = script_tags
         run_state['script_variation_tags'] = variation_tags
@@ -1446,7 +1443,6 @@ class ScriptAutomation(Automation):
                       'force': True}
 
                 r = self.action_object.access(ii)
-                print(f"r ={r}")
                 if r['return'] > 0:
                     return r
 
@@ -2096,7 +2092,6 @@ class ScriptAutomation(Automation):
                       'replace_lists': True,  # To replace tags
                       'tags': ','.join(cached_tags)}
 
-                print(f"cached_tags = {cached_tags}")
                 r = self.action_object.access(ii)
                 if r['return'] > 0:
                     return r
@@ -2320,11 +2315,14 @@ class ScriptAutomation(Automation):
 
     ##########################################################################
     def _fix_cache_paths(self, env):
+        '''
         cm_repos_path = os.environ.get(
             'CM_REPOS', os.path.join(
                 os.path.expanduser("~"), "CM", "repos"))
         current_cache_path = os.path.realpath(
             os.path.join(cm_repos_path, "local", "cache"))
+        '''
+        current_cache_path = self.action_object.local_cache_path
 
         new_env = env  # just a reference
 
@@ -2871,6 +2869,7 @@ class ScriptAutomation(Automation):
         i['out'] = None
         i['common'] = True
 
+        i['target_name'] = "script"
         r = super(ScriptAutomation, self).search(i)
         if r['return'] > 0:
             return r
