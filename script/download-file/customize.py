@@ -1,7 +1,7 @@
 from mlc import utils
 import os
 import subprocess
-
+from utils import *
 
 def escape_special_chars(text, tool=None):
     special_chars = [
@@ -169,8 +169,7 @@ def preprocess(i):
             if cmutil_require_download == 1:
                 cm = automation.action_object
                 for i in range(1, 5):
-                    r = cm.access({'action': 'download_file',
-                                   'automation': 'utils,dc2743f8450541e3',
+                    r = download_file({
                                    'url': url,
                                    'verify': verify_ssl})
                     if r['return'] == 0:
