@@ -1,5 +1,5 @@
 import requests
-from cmind import utils
+from mlc import utils
 import cmind as cm
 import os
 import json

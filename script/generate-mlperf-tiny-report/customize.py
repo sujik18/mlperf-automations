@@ -1,5 +1,5 @@
 import cmind as cm
-from cmind import utils
+from mlc import utils
 
 import os
 import subprocess

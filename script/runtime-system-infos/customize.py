@@ -1,4 +1,4 @@
-from cmind import utils
+from mlc import utils
 import os
 import shutil
 # used to measure the system infos(have not tested for obtaining gpu info)

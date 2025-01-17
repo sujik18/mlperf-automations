@@ -1,4 +1,4 @@
-from cmind import utils
+from mlc import utils
 import cmind as cm
 import os
 import configparser

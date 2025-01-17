@@ -1,4 +1,4 @@
-from cmind import utils
+from mlc import utils
 import os
 
 lscpu_out = 'tmp-lscpu.out'
