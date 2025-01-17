@@ -171,7 +171,7 @@ def preprocess(i):
 
     cm = automation.action_object
 
-    r = download_file({'url':package_url})
+    r = download_file({'url': package_url})
     '''
     r = cm.access({'action': 'download_file',
                    'automation': 'utils,dc2743f8450541e3',
