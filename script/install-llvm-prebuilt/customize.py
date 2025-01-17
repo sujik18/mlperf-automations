@@ -1,4 +1,4 @@
-from cmind import utils
+from utils import *
 import os
 
 
@@ -171,9 +171,12 @@ def preprocess(i):
 
     cm = automation.action_object
 
+    r = download_file({'url':package_url})
+    '''
     r = cm.access({'action': 'download_file',
                    'automation': 'utils,dc2743f8450541e3',
                    'url': package_url})
+    '''
     if r['return'] > 0:
         return r
 
