@@ -182,12 +182,12 @@ def postprocess(i):
             state['CM_SUT_CONFIG_NAME']):
         state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']] = {}
     if not state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
-                                                ].get(model):
+                                                 ].get(model):
         state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']][model] = {}
     if not state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
-                                                ][model].get(scenario):
+                                                 ][model].get(scenario):
         state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
-                                             ][model][scenario] = {}
+                                              ][model][scenario] = {}
 
     # if env.get("CM_MLPERF_FIND_PERFORMANCE_MODE", '') == "yes" and mode ==
     # "performance" and scenario != "Server":
@@ -329,24 +329,24 @@ def postprocess(i):
                 power_efficiency = power_result_split[1]
 
         state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
-                                             ][model][scenario][mode] = result
+                                              ][model][scenario][mode] = result
         state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
-                                             ][model][scenario][mode + '_valid'] = valid.get(mode, False)
+                                              ][model][scenario][mode + '_valid'] = valid.get(mode, False)
 
         state['mlc-mlperf-inference-results-last'][mode] = result
         state['mlc-mlperf-inference-results-last'][mode +
-                                                  '_valid'] = valid.get(mode, False)
+                                                   '_valid'] = valid.get(mode, False)
 
         if power:
             state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
-                                                 ][model][scenario]['power'] = power
+                                                  ][model][scenario]['power'] = power
             state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
-                                                 ][model][scenario]['power_valid'] = valid['power']
+                                                  ][model][scenario]['power_valid'] = valid['power']
             state['mlc-mlperf-inference-results-last']['power'] = power
             state['mlc-mlperf-inference-results-last']['power_valid'] = valid['power']
         if power_efficiency:
             state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
-                                                 ][model][scenario]['power_efficiency'] = power_efficiency
+                                                  ][model][scenario]['power_efficiency'] = power_efficiency
             state['mlc-mlperf-inference-results-last']['power_efficiency'] = power_efficiency
 
         # Record basic host info
@@ -371,7 +371,8 @@ def postprocess(i):
         # Check CM automation repository
         repo_name = 'mlcommons@mlperf-automations'
         repo_hash = ''
-        r = mlc.access({'action': 'find', 'automation': 'repo', 'item': 'mlcommons@mlperf-automations,9e97bb72b0474657'})
+        r = mlc.access({'action': 'find', 'automation': 'repo',
+                       'item': 'mlcommons@mlperf-automations,9e97bb72b0474657'})
         if r['return'] == 0 and len(r['list']) == 1:
             repo_path = r['list'][0].path
             if os.path.isdir(repo_path):
@@ -381,8 +382,8 @@ def postprocess(i):
                 # if repo_name == 'cm4mlops': repo_name = 'mlcommons@cm4mlops'
 
                 r = utils.run_system_cmd({
-                               'path': repo_path,
-                               'cmd': 'git rev-parse HEAD'})
+                    'path': repo_path,
+                    'cmd': 'git rev-parse HEAD'})
                 if r['return'] == 0:
                     repo_hash = r['output']
 
@@ -404,7 +405,7 @@ def postprocess(i):
         readme_init = "*Check [CM MLPerf docs](https://docs.mlcommons.org/inference) for more details.*\n\n"
 
         readme_body = "## Host platform\n\n* OS version: {}\n* CPU version: {}\n* Python version: {}\n* MLC version: {}\n\n".format(platform.platform(),
-                                                                                                                                             platform.processor(), sys.version, mlc.__version__)
+                                                                                                                                    platform.processor(), sys.version, mlc.__version__)
 
         x = repo_name
         if repo_hash != '':
@@ -428,15 +429,15 @@ def postprocess(i):
             script_adr = inp.get('adr', {})
 
             mlc_input = {'action': 'run',
-                        'automation': 'script',
-                        'tags': script_tags,
-                        'adr': script_adr,
-                        'print_deps': True,
-                        'env': env,
-                        'quiet': True,
-                        'silent': True,
-                        'fake_run': True
-                        }
+                         'automation': 'script',
+                         'tags': script_tags,
+                         'adr': script_adr,
+                         'print_deps': True,
+                         'env': env,
+                         'quiet': True,
+                         'silent': True,
+                         'fake_run': True
+                         }
             r = mlc.access(mlc_input)
             if r['return'] > 0:
                 return r
@@ -555,7 +556,7 @@ def postprocess(i):
         is_valid = checker.check_compliance_perf_dir(
             COMPLIANCE_DIR) if test != "TEST06" else True
         state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
-                                             ][model][scenario][test] = "passed" if is_valid else "failed"
+                                              ][model][scenario][test] = "passed" if is_valid else "failed"
 
     # portion of the code where the avg utilisation and system informations are extracted
     # NOTE: The section is under development and print statements are added
@@ -654,13 +655,13 @@ def postprocess(i):
 def dump_script_output(script_tags, env, state, output_key, dump_file):
 
     mlc_input = {'action': 'run',
-                'automation': 'script',
-                'tags': script_tags,
-                'env': env,
-                'state': state,
-                'quiet': True,
-                'silent': True,
-                }
+                 'automation': 'script',
+                 'tags': script_tags,
+                 'env': env,
+                 'state': state,
+                 'quiet': True,
+                 'silent': True,
+                 }
     r = mlc.access(mlc_input)
     if r['return'] > 0:
         return r

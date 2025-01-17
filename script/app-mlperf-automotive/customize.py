@@ -84,20 +84,20 @@ def postprocess(i):
             state['CM_SUT_CONFIG_NAME']):
         state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']] = {}
     if not state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
-                                                ].get(model):
+                                                 ].get(model):
         state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']][model] = {}
     if not state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
-                                                ][model].get(scenario):
+                                                 ][model].get(scenario):
         state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
-                                             ][model][scenario] = {}
+                                              ][model][scenario] = {}
 
     state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
-                                         ][model][scenario][mode] = result
+                                          ][model][scenario][mode] = result
     state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
-                                         ][model][scenario][mode + '_valid'] = valid.get(mode, False)
+                                          ][model][scenario][mode + '_valid'] = valid.get(mode, False)
 
     state['mlc-mlperf-inference-results-last'][mode] = result
     state['mlc-mlperf-inference-results-last'][mode +
-                                              '_valid'] = valid.get(mode, False)
+                                               '_valid'] = valid.get(mode, False)
 
     return {'return': 0}
