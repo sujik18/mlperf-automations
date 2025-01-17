@@ -2,6 +2,7 @@ from mlc import utils
 import os
 from utils import download_file
 
+
 def preprocess(i):
 
     os_info = i['os_info']
@@ -73,7 +74,7 @@ def preprocess(i):
     cm = automation.action_object
 
     r = download_file({
-                   'url': package_url})
+        'url': package_url})
     if r['return'] > 0:
         return r
 

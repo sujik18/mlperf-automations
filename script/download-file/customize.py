@@ -3,6 +3,7 @@ import os
 import subprocess
 from utils import *
 
+
 def escape_special_chars(text, tool=None):
     special_chars = [
         '&', '|', '(', ')'
@@ -170,8 +171,8 @@ def preprocess(i):
                 cm = automation.action_object
                 for i in range(1, 5):
                     r = download_file({
-                                   'url': url,
-                                   'verify': verify_ssl})
+                        'url': url,
+                        'verify': verify_ssl})
                     if r['return'] == 0:
                         break
                     oldurl = url
