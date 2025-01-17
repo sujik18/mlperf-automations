@@ -5,7 +5,7 @@ import json
 import shutil
 import subprocess
 import copy
-import cmind as cm
+import mlc
 import platform
 import sys
 import mlperf_utils
@@ -174,19 +174,19 @@ def postprocess(i):
             # {model}'}
     scenario = env['CM_MLPERF_LOADGEN_SCENARIO']
 
-    if not state.get('cm-mlperf-inference-results'):
-        state['cm-mlperf-inference-results'] = {}
-    if not state.get('cm-mlperf-inference-results-last'):
-        state['cm-mlperf-inference-results-last'] = {}
-    if not state['cm-mlperf-inference-results'].get(
+    if not state.get('mlc-mlperf-inference-results'):
+        state['mlc-mlperf-inference-results'] = {}
+    if not state.get('mlc-mlperf-inference-results-last'):
+        state['mlc-mlperf-inference-results-last'] = {}
+    if not state['mlc-mlperf-inference-results'].get(
             state['CM_SUT_CONFIG_NAME']):
-        state['cm-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']] = {}
-    if not state['cm-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
+        state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']] = {}
+    if not state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
                                                 ].get(model):
-        state['cm-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']][model] = {}
-    if not state['cm-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
+        state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']][model] = {}
+    if not state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
                                                 ][model].get(scenario):
-        state['cm-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
+        state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
                                              ][model][scenario] = {}
 
     # if env.get("CM_MLPERF_FIND_PERFORMANCE_MODE", '') == "yes" and mode ==
@@ -328,33 +328,33 @@ def postprocess(i):
                 power = power_result_split[0]
                 power_efficiency = power_result_split[1]
 
-        state['cm-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
+        state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
                                              ][model][scenario][mode] = result
-        state['cm-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
+        state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
                                              ][model][scenario][mode + '_valid'] = valid.get(mode, False)
 
-        state['cm-mlperf-inference-results-last'][mode] = result
-        state['cm-mlperf-inference-results-last'][mode +
+        state['mlc-mlperf-inference-results-last'][mode] = result
+        state['mlc-mlperf-inference-results-last'][mode +
                                                   '_valid'] = valid.get(mode, False)
 
         if power:
-            state['cm-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
+            state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
                                                  ][model][scenario]['power'] = power
-            state['cm-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
+            state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
                                                  ][model][scenario]['power_valid'] = valid['power']
-            state['cm-mlperf-inference-results-last']['power'] = power
-            state['cm-mlperf-inference-results-last']['power_valid'] = valid['power']
+            state['mlc-mlperf-inference-results-last']['power'] = power
+            state['mlc-mlperf-inference-results-last']['power_valid'] = valid['power']
         if power_efficiency:
-            state['cm-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
+            state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
                                                  ][model][scenario]['power_efficiency'] = power_efficiency
-            state['cm-mlperf-inference-results-last']['power_efficiency'] = power_efficiency
+            state['mlc-mlperf-inference-results-last']['power_efficiency'] = power_efficiency
 
         # Record basic host info
         host_info = {
             "os_version": platform.platform(),
             "cpu_version": platform.processor(),
             "python_version": sys.version,
-            "cm_version": cm.__version__
+            "mlc_version": mlc.__version__
         }
 
         x = ''
@@ -371,8 +371,7 @@ def postprocess(i):
         # Check CM automation repository
         repo_name = 'mlcommons@mlperf-automations'
         repo_hash = ''
-        r = cm.access({'action': 'find', 'automation': 'repo',
-                      'artifact': 'mlcommons@cm4mlops,9e97bb72b0474657'})
+        r = mlc.access({'action': 'find', 'automation': 'repo', 'item': 'mlcommons@mlperf-automations,9e97bb72b0474657'})
         if r['return'] == 0 and len(r['list']) == 1:
             repo_path = r['list'][0].path
             if os.path.isdir(repo_path):
@@ -381,23 +380,22 @@ def postprocess(i):
                 # Check dev
                 # if repo_name == 'cm4mlops': repo_name = 'mlcommons@cm4mlops'
 
-                r = cm.access({'action': 'system',
-                               'automation': 'utils',
+                r = utils.run_system_cmd({
                                'path': repo_path,
                                'cmd': 'git rev-parse HEAD'})
-                if r['return'] == 0 and r['ret'] == 0:
-                    repo_hash = r['stdout']
+                if r['return'] == 0:
+                    repo_hash = r['output']
 
-                    host_info['cm_repo_name'] = repo_name
-                    host_info['cm_repo_git_hash'] = repo_hash
+                    host_info['mlc_repo_name'] = repo_name
+                    host_info['mlc_repo_git_hash'] = repo_hash
 
-        with open("cm-host-info.json", "w") as fp:
+        with open("mlc-host-info.json", "w") as fp:
             fp.write(json.dumps(host_info, indent=2) + '\n')
 
         # Prepare README
         if "cmd" in inp:
-            cmd = "cm run script \\\n\t" + " \\\n\t".join(inp['cmd'])
-            xcmd = "cm run script " + xsep + "\n\t" + \
+            cmd = "mlc run script \\\n\t" + " \\\n\t".join(inp['cmd'])
+            xcmd = "mlc run script " + xsep + "\n\t" + \
                 (" " + xsep + "\n\t").join(inp['cmd'])
         else:
             cmd = ""
@@ -405,31 +403,31 @@ def postprocess(i):
 
         readme_init = "*Check [CM MLPerf docs](https://docs.mlcommons.org/inference) for more details.*\n\n"
 
-        readme_body = "## Host platform\n\n* OS version: {}\n* CPU version: {}\n* Python version: {}\n* MLCommons CM version: {}\n\n".format(platform.platform(),
-                                                                                                                                             platform.processor(), sys.version, cm.__version__)
+        readme_body = "## Host platform\n\n* OS version: {}\n* CPU version: {}\n* Python version: {}\n* MLC version: {}\n\n".format(platform.platform(),
+                                                                                                                                             platform.processor(), sys.version, mlc.__version__)
 
         x = repo_name
         if repo_hash != '':
             x += ' --checkout=' + str(repo_hash)
 
         readme_body += "## CM Run Command\n\nSee [CM installation guide](https://docs.mlcommons.org/inference/install/).\n\n" + \
-            "```bash\npip install -U cmind\n\ncm rm cache -f\n\ncm pull repo {}\n\n{}\n```".format(
+            "```bash\npip install -U mlcflow\n\nmlc rm cache -f\n\nmlc pull repo {}\n\n{}\n```".format(
                 x, xcmd)
 
-        readme_body += "\n*Note that if you want to use the [latest automation recipes](https://docs.mlcommons.org/inference) for MLPerf (CM scripts),\n" + \
-                       " you should simply reload {} without checkout and clean CM cache as follows:*\n\n".format(repo_name) + \
-                       "```bash\ncm rm repo {}\ncm pull repo {}\ncm rm cache -f\n\n```".format(
+        readme_body += "\n*Note that if you want to use the [latest automation recipes](https://docs.mlcommons.org/inference) for MLPerf,\n" + \
+                       " you should simply reload {} without checkout and clean MLC cache as follows:*\n\n".format(repo_name) + \
+                       "```bash\nmlc rm repo {}\nmlc pull repo {}\nmlc rm cache -f\n\n```".format(
                            repo_name, repo_name)
 
         extra_readme_init = ''
         extra_readme_body = ''
-        if env.get('CM_MLPERF_README', '') == "yes":
-            extra_readme_body += "\n## Dependent CM scripts\n\n"
+        if env.get('MLC_MLPERF_README', '') == "yes":
+            extra_readme_body += "\n## Dependent MLPerf Automation scripts\n\n"
 
             script_tags = inp['tags']
             script_adr = inp.get('adr', {})
 
-            cm_input = {'action': 'run',
+            mlc_input = {'action': 'run',
                         'automation': 'script',
                         'tags': script_tags,
                         'adr': script_adr,
@@ -439,7 +437,7 @@ def postprocess(i):
                         'silent': True,
                         'fake_run': True
                         }
-            r = cm.access(cm_input)
+            r = mlc.access(mlc_input)
             if r['return'] > 0:
                 return r
 
@@ -452,7 +450,7 @@ def postprocess(i):
             if state.get(
                     'mlperf-inference-implementation') and state['mlperf-inference-implementation'].get('print_deps'):
 
-                extra_readme_body += "\n## Dependent CM scripts for the MLPerf Inference Implementation\n"
+                extra_readme_body += "\n## Dependent automation scripts for the MLPerf Inference Implementation\n"
 
                 print_deps = state['mlperf-inference-implementation']['print_deps']
                 count = 1
@@ -556,7 +554,7 @@ def postprocess(i):
         import submission_checker as checker
         is_valid = checker.check_compliance_perf_dir(
             COMPLIANCE_DIR) if test != "TEST06" else True
-        state['cm-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
+        state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
                                              ][model][scenario][test] = "passed" if is_valid else "failed"
 
     # portion of the code where the avg utilisation and system informations are extracted
@@ -611,12 +609,12 @@ def postprocess(i):
     if state.get(
             'mlperf-inference-implementation') and state['mlperf-inference-implementation'].get('version_info'):
         env['CM_MLPERF_RUN_JSON_VERSION_INFO_FILE'] = os.path.join(
-            output_dir, "cm-version-info.json")
+            output_dir, "mlc-version-info.json")
         env['CM_MLPERF_RUN_DEPS_GRAPH'] = os.path.join(
-            output_dir, "cm-deps.png")
+            output_dir, "mlc-deps.png")
         env['CM_MLPERF_RUN_DEPS_MERMAID'] = os.path.join(
-            output_dir, "cm-deps.mmd")
-        with open(os.path.join(output_dir, "cm-version-info.json"), "w") as f:
+            output_dir, "mlc-deps.mmd")
+        with open(os.path.join(output_dir, "mlc-version-info.json"), "w") as f:
             f.write(
                 json.dumps(
                     state['mlperf-inference-implementation']['version_info'],
@@ -655,7 +653,7 @@ def postprocess(i):
 
 def dump_script_output(script_tags, env, state, output_key, dump_file):
 
-    cm_input = {'action': 'run',
+    mlc_input = {'action': 'run',
                 'automation': 'script',
                 'tags': script_tags,
                 'env': env,
@@ -663,7 +661,7 @@ def dump_script_output(script_tags, env, state, output_key, dump_file):
                 'quiet': True,
                 'silent': True,
                 }
-    r = cm.access(cm_input)
+    r = mlc.access(mlc_input)
     if r['return'] > 0:
         return r
     with open(dump_file, "w") as f:
