@@ -1513,7 +1513,7 @@ class ScriptAutomation(Automation):
 
                     if version_min != '':
                         ry = compare_versions({'version1': version,
-                                                'version2': version_min})
+                                               'version2': version_min})
                         if ry['return'] > 0:
                             return ry
 
@@ -1522,7 +1522,7 @@ class ScriptAutomation(Automation):
 
                     if version_max != '':
                         ry = compare_versions({'version1': version,
-                                                'version2': version_max})
+                                               'version2': version_max})
                         if ry['return'] > 0:
                             return ry
 
@@ -5345,8 +5345,8 @@ def check_version_constraints(i):
 
     if not skip and detected_version != '' and version_min != '':
         ry = compare_versions({
-                                   'version1': detected_version,
-                                   'version2': version_min})
+            'version1': detected_version,
+            'version2': version_min})
         if ry['return'] > 0:
             return ry
 
@@ -5355,8 +5355,8 @@ def check_version_constraints(i):
 
     if not skip and detected_version != '' and version_max != '':
         ry = compare_versions({
-                                   'version1': detected_version,
-                                   'version2': version_max})
+            'version1': detected_version,
+            'version2': version_max})
         if ry['return'] > 0:
             return ry
 
@@ -6383,8 +6383,8 @@ def check_versions(action_object, cached_script_version,
     if cached_script_version != '':
         if version_min != '':
             ry = compare_versions({
-                                       'version1': cached_script_version,
-                                       'version2': version_min})
+                'version1': cached_script_version,
+                'version2': version_min})
             if ry['return'] > 0:
                 return ry
 
@@ -6393,8 +6393,8 @@ def check_versions(action_object, cached_script_version,
 
         if not skip_cached_script and version_max != '':
             ry = compare_versions({
-                                       'version1': cached_script_version,
-                                       'version2': version_max})
+                'version1': cached_script_version,
+                'version2': version_max})
             if ry['return'] > 0:
                 return ry
 
