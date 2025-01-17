@@ -9,7 +9,7 @@ def preprocess(i):
     env = i['env']
 
     automation = i['automation']
-    cm = automation.cmind
+    cm = automation.action_object
 
     if env.get('CM_HOST_OS_FLAVOR', '') == 'amzn':
         env['CM_PACKAGE_TOOL'] = "yum"

@@ -56,7 +56,7 @@ def postprocess(i):
     env = i['env']
 
     automation = i['automation']
-    cm = automation.cmind
+    cm = automation.action_object
 
     cur_dir = os.getcwd()
 

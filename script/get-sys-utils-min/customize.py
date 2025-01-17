@@ -9,7 +9,7 @@ def preprocess(i):
     env = i['env']
 
     automation = i['automation']
-    cm = automation.cmind
+    cm = automation.action_object
 
     # If windows, download here otherwise use run.sh
     if os_info['platform'] == 'windows':

@@ -36,7 +36,7 @@ def postprocess(i):
         # If was not created, sometimes issues on Windows
         # There is another workaround
         if os_info['platform'] == 'windows':
-            r = automation.cmind.access({'action': 'system',
+            r = automation.action_object.access({'action': 'system',
                                          'automation': 'utils',
                                          'cmd': 'py -m pip freeze',
                                          'stdout': pip_freeze_file})

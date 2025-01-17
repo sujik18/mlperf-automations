@@ -12,7 +12,7 @@ def preprocess(i):
 
     automation = i['automation']
 
-    cm = automation.cmind
+    cm = automation.action_object
 
     path = os.getcwd()
 
