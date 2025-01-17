@@ -341,9 +341,9 @@ class ScriptAutomation(Automation):
                                    'dict2': i['local_' + key],
                                    'append_lists': True,
                                    'append_unique': True})
-                #print(f"Merged local {key}: {i[key]}")
+                # print(f"Merged local {key}: {i[key]}")
 
-        #print(f"env = {env}")
+        # print(f"env = {env}")
         add_deps = i.get('ad', {})
         if not add_deps:
             add_deps = i.get('add_deps', {})
@@ -535,12 +535,13 @@ class ScriptAutomation(Automation):
 
         tags_string = i.get('tags', '').strip()
 
-        #ii = utils.sub_input(i, self.action_object.cfg['artifact_keys'])
+        # ii = utils.sub_input(i, self.action_object.cfg['artifact_keys'])
 
         ii = {}
         ii['tags'] = tags_string
         ii['out'] = None
-        for key in ["automation", "parsed_automation", "artifact", "parsed_artifact"]:
+        for key in ["automation", "parsed_automation",
+                    "artifact", "parsed_artifact"]:
             if i.get(key):
                 ii[key] = i[key]
 
@@ -896,10 +897,10 @@ class ScriptAutomation(Automation):
         # Force env from meta['env'] as a CONST
         # (env OVERWRITE)
         script_artifact_env = meta.get('env', {})
-        #print(f"script meta env= {script_artifact_env}")
+        # print(f"script meta env= {script_artifact_env}")
 
         env.update(script_artifact_env)
-        #print(f"env = {env}")
+        # print(f"env = {env}")
 
         script_artifact_state = meta.get('state', {})
         utils.merge_dicts({'dict1': state,
@@ -1345,12 +1346,12 @@ class ScriptAutomation(Automation):
                         return r
                     new_env = r['new_env']
 
-                    #print(f"env = {env}, new_env={new_env}")
+                    # print(f"env = {env}, new_env={new_env}")
                     utils.merge_dicts(
                         {'dict1': env, 'dict2': new_env, 'append_lists': True, 'append_unique': True})
 
-                    #print(f"merged_env:")
-                    #utils.print_env(env)
+                    # print(f"merged_env:")
+                    # utils.print_env(env)
                     new_state = cached_state['new_state']
                     utils.merge_dicts({'dict1': state,
                                        'dict2': new_state,
@@ -1518,9 +1519,9 @@ class ScriptAutomation(Automation):
 
                     if version_min != '':
                         ry = self.action_object.access({'action': 'compare_versions',
-                                                'automation': 'utils,dc2743f8450541e3',
-                                                'version1': version,
-                                                'version2': version_min})
+                                                        'automation': 'utils,dc2743f8450541e3',
+                                                        'version1': version,
+                                                        'version2': version_min})
                         if ry['return'] > 0:
                             return ry
 
@@ -1529,9 +1530,9 @@ class ScriptAutomation(Automation):
 
                     if version_max != '':
                         ry = self.action_object.access({'action': 'compare_versions',
-                                                'automation': 'utils,dc2743f8450541e3',
-                                                'version1': version,
-                                                'version2': version_max})
+                                                        'automation': 'utils,dc2743f8450541e3',
+                                                        'version1': version,
+                                                        'version2': version_max})
                         if ry['return'] > 0:
                             return ry
 
@@ -1688,8 +1689,8 @@ class ScriptAutomation(Automation):
                         return r
 
             # Check chain of dependencies on other CM scripts
-            #print(f"before deps: ")
-            #utils.print_env(env)
+            # print(f"before deps: ")
+            # utils.print_env(env)
             if len(deps) > 0:
                 logging.debug(recursion_spaces +
                               '  - Checking dependencies on other CM scripts:')
@@ -1707,8 +1708,8 @@ class ScriptAutomation(Automation):
                 if r['return'] > 0:
                     return r
 
-            #print(f"after deps:")
-            #utils.print_env(env)
+            # print(f"after deps:")
+            # utils.print_env(env)
             # Clean some output files
             clean_tmp_files(clean_files, recursion_spaces)
 
@@ -1823,8 +1824,8 @@ class ScriptAutomation(Automation):
             if 'preprocess' in dir(customize_code) and not fake_run:
 
                 logging.debug(recursion_spaces + '  - Running preprocess ...')
-                #print(f"preprocess_env:")
-                #utils.print_env(env)
+                # print(f"preprocess_env:")
+                # utils.print_env(env)
 
                 run_script_input['run_state'] = run_state
 
@@ -1988,8 +1989,8 @@ class ScriptAutomation(Automation):
             new_state_keys = i['force_new_state_keys']
         else:
             new_state_keys = new_state_keys_from_meta
-        #print("Env:")
-        #utils.print_env(env)
+        # print("Env:")
+        # utils.print_env(env)
 
         r = detect_state_diff(
             env,
@@ -3219,12 +3220,13 @@ class ScriptAutomation(Automation):
         console = i.get('out') == 'con'
 
         # Try to find script artifact by alias and/or tags
-        #ii = utils.sub_input(i, self.cmind.cfg['artifact_keys'])
+        # ii = utils.sub_input(i, self.cmind.cfg['artifact_keys'])
         ii = {}
         ii['tags'] = tags_string
         ii['out'] = None
 
-        for key in ["automation", "parsed_automation", "artifact", "parsed_artifact"]:
+        for key in ["automation", "parsed_automation",
+                    "artifact", "parsed_artifact"]:
             if i.get(key):
                 ii[key] = i[key]
 
@@ -3306,7 +3308,9 @@ class ScriptAutomation(Automation):
             #                 'input_description':{}
         }
 
-        fmeta = os.path.join(template_path, self.action_object.cfg['file_cmeta'])
+        fmeta = os.path.join(
+            template_path,
+            self.action_object.cfg['file_cmeta'])
 
         r = utils.load_yaml_and_json(fmeta)
         if r['return'] == 0:
@@ -3739,7 +3743,7 @@ class ScriptAutomation(Automation):
                     # Not very efficient but allows logging - can be optimized
                     # later
 
-                    #print(f"env about to call deps {d}= {env}")
+                    # print(f"env about to call deps {d}= {env}")
                     ii = {
                         'action': 'run',
                         'automation': utils.assemble_object(self.meta['alias'], self.meta['uid']),
@@ -3764,7 +3768,7 @@ class ScriptAutomation(Automation):
                         if d.get(key):
                             d[key] = {}
 
-                    #print(f"ii = {ii}, d = {d}")
+                    # print(f"ii = {ii}, d = {d}")
                     utils.merge_dicts(
                         {'dict1': ii, 'dict2': d, 'append_lists': True, 'append_unique': True})
 
@@ -5056,8 +5060,8 @@ def find_cached_script(i):
             '    - Searching for cached script outputs with the following tags: {}'.format(search_tags))
 
         r = self_obj.action_object.access({'action': 'find',
-                                   'automation': self_obj.meta['deps']['cache'],
-                                   'tags': search_tags})
+                                           'automation': self_obj.meta['deps']['cache'],
+                                           'tags': search_tags})
         if r['return'] > 0:
             return r
 
@@ -5348,9 +5352,9 @@ def check_version_constraints(i):
 
     if not skip and detected_version != '' and version_min != '':
         ry = action_object.access({'action': 'compare_versions',
-                           'automation': 'utils,dc2743f8450541e3',
-                           'version1': detected_version,
-                           'version2': version_min})
+                                   'automation': 'utils,dc2743f8450541e3',
+                                   'version1': detected_version,
+                                   'version2': version_min})
         if ry['return'] > 0:
             return ry
 
@@ -5359,9 +5363,9 @@ def check_version_constraints(i):
 
     if not skip and detected_version != '' and version_max != '':
         ry = action_object.access({'action': 'compare_versions',
-                           'automation': 'utils,dc2743f8450541e3',
-                           'version1': detected_version,
-                           'version2': version_max})
+                                   'automation': 'utils,dc2743f8450541e3',
+                                   'version1': detected_version,
+                                   'version2': version_max})
         if ry['return'] > 0:
             return ry
 
@@ -6378,7 +6382,8 @@ def select_script_artifact(lst, text, recursion_spaces,
 ##############################################################################
 
 
-def check_versions(action_object, cached_script_version, version_min, version_max):
+def check_versions(action_object, cached_script_version,
+                   version_min, version_max):
     """
     Internal: check versions of the cached script
     """
@@ -6387,9 +6392,9 @@ def check_versions(action_object, cached_script_version, version_min, version_ma
     if cached_script_version != '':
         if version_min != '':
             ry = action_object.access({'action': 'compare_versions',
-                               'automation': 'utils,dc2743f8450541e3',
-                               'version1': cached_script_version,
-                               'version2': version_min})
+                                       'automation': 'utils,dc2743f8450541e3',
+                                       'version1': cached_script_version,
+                                       'version2': version_min})
             if ry['return'] > 0:
                 return ry
 
@@ -6398,9 +6403,9 @@ def check_versions(action_object, cached_script_version, version_min, version_ma
 
         if not skip_cached_script and version_max != '':
             ry = action_object.access({'action': 'compare_versions',
-                               'automation': 'utils,dc2743f8450541e3',
-                               'version1': cached_script_version,
-                               'version2': version_max})
+                                       'automation': 'utils,dc2743f8450541e3',
+                                       'version1': cached_script_version,
+                                       'version2': version_max})
             if ry['return'] > 0:
                 return ry
 

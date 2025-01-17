@@ -37,9 +37,9 @@ def postprocess(i):
         # There is another workaround
         if os_info['platform'] == 'windows':
             r = automation.action_object.access({'action': 'system',
-                                         'automation': 'utils',
-                                         'cmd': 'py -m pip freeze',
-                                         'stdout': pip_freeze_file})
+                                                 'automation': 'utils',
+                                                 'cmd': 'py -m pip freeze',
+                                                 'stdout': pip_freeze_file})
             # skip output
 
     if os.path.isfile(pip_freeze_file):
