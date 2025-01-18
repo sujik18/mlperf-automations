@@ -171,7 +171,7 @@ class CustomInstallCommand(install):
 
 def read_file(file_name, default=""):
     if os.path.isfile(file_name):
-        with open(file_name, "r") as f:
+        with open(file_name, "r", encoding="utf-8") as f:
             return f.read().strip()
     return default
 
@@ -192,7 +192,7 @@ setup(
     version=version_,
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url="https://github.com/mlcommons/cm4mlops",
+    url="https://github.com/mlcommons/mlperf-automations",
     packages=[],
     install_requires=[
         "setuptools>=60",
