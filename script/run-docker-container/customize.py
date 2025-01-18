@@ -26,7 +26,7 @@ def preprocess(i):
 
     r = mlc.access({'action': 'search',
                    'automation': 'script',
-                   'tags': env['CM_DOCKER_RUN_SCRIPT_TAGS']})
+                    'tags': env['CM_DOCKER_RUN_SCRIPT_TAGS']})
     if len(r['list']) < 1:
         raise Exception(
             'CM script with tags ' +

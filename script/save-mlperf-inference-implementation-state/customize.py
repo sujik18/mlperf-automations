@@ -30,15 +30,15 @@ def preprocess(i):
 
         if script_tags != '':
             mlc_input = {'action': 'run',
-                        'automation': 'script',
-                        'tags': script_tags,
-                        'adr': script_adr,
-                        'env': env,
-                        'print_deps': True,
-                        'quiet': True,
-                        'silent': True,
-                        'fake_run': True
-                        }
+                         'automation': 'script',
+                         'tags': script_tags,
+                         'adr': script_adr,
+                         'env': env,
+                         'print_deps': True,
+                         'quiet': True,
+                         'silent': True,
+                         'fake_run': True
+                         }
 
             r = mlc.access(cm_input)
             if r['return'] > 0:

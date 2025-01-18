@@ -695,11 +695,11 @@ def generate_submission(env, state, inp, submission_division):
         else:
             if env.get('CM_GET_PLATFORM_DETAILS', '') == "yes":
                 mlc_input = {'action': 'run',
-                            'automation': 'script',
-                            'tags': 'get,platform,details',
-                            'env': {'CM_PLATFORM_DETAILS_FILE_PATH': os.path.join(measurement_path, "system_info.txt")},
-                            'quiet': True
-                            }
+                             'automation': 'script',
+                             'tags': 'get,platform,details',
+                             'env': {'CM_PLATFORM_DETAILS_FILE_PATH': os.path.join(measurement_path, "system_info.txt")},
+                             'quiet': True
+                             }
                 r = mlc.access(mlc_input)
                 if r['return'] > 0:
                     return r

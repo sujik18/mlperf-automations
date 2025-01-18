@@ -18,7 +18,7 @@ def preprocess(i):
 
     r = mlc.access({'action': 'find',
                    'automation': 'cache,541d6f712a6b464e',
-                   'tags': 'get,repo,mlperf-tiny-results' + xtags})
+                    'tags': 'get,repo,mlperf-tiny-results' + xtags})
     if r['return'] > 0:
         return r
 

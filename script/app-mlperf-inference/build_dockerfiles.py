@@ -65,20 +65,20 @@ for _os in docker_os:
                             file_name_ext +
                             '.Dockerfile')
                         mlc_input = {'action': 'run',
-                                    'automation': 'script',
-                                    'tags': 'app,mlperf,inference,generic' + variation_string,
-                                    'adr': {'compiler':
-                                            {'tags': 'gcc'},
-                                            'inference-src':
-                                            {'tags': '_octoml'},
-                                            'openimages-preprocessed':
-                                            {'tags': '_50'}
-                                            },
-                                    'print_deps': True,
-                                    'quiet': True,
-                                    'silent': True,
-                                    'fake_run': True
-                                    }
+                                     'automation': 'script',
+                                     'tags': 'app,mlperf,inference,generic' + variation_string,
+                                     'adr': {'compiler':
+                                             {'tags': 'gcc'},
+                                             'inference-src':
+                                             {'tags': '_octoml'},
+                                             'openimages-preprocessed':
+                                             {'tags': '_50'}
+                                             },
+                                     'print_deps': True,
+                                     'quiet': True,
+                                     'silent': True,
+                                     'fake_run': True
+                                     }
                         r = mlc.access(mlc_input)
                         print_deps = r['new_state']['print_deps']
                         comments = ["#RUN " + dep for dep in print_deps]
@@ -86,18 +86,18 @@ for _os in docker_os:
                         comments.append(
                             "# Run CM workflow for MLPerf inference")
                         mlc_docker_input = {'action': 'run',
-                                           'automation': 'script',
-                                           'tags': 'build,dockerfile',
-                                           'docker_os': _os,
-                                           'docker_os_version': version,
-                                           'file_path': dockerfile_path,
-                                           'comments': comments,
-                                           'run_cmd': 'mlc run script --tags=app,mlperf,inference,generic' + variation_string + ' --adr.compiler.tags=gcc --adr.inference-src.tags=_octoml',
-                                           'script_tags': 'app,mlperf,inference,generic',
-                                           'quiet': True,
-                                           'print_deps': True,
-                                           'real_run': True
-                                           }
+                                            'automation': 'script',
+                                            'tags': 'build,dockerfile',
+                                            'docker_os': _os,
+                                            'docker_os_version': version,
+                                            'file_path': dockerfile_path,
+                                            'comments': comments,
+                                            'run_cmd': 'mlc run script --tags=app,mlperf,inference,generic' + variation_string + ' --adr.compiler.tags=gcc --adr.inference-src.tags=_octoml',
+                                            'script_tags': 'app,mlperf,inference,generic',
+                                            'quiet': True,
+                                            'print_deps': True,
+                                            'real_run': True
+                                            }
                         r = mlc.access(mlc_docker_input)
                         if r['return'] > 0:
                             print(r)
