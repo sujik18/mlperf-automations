@@ -2,6 +2,7 @@ from mlc import utils
 import os
 import mlc
 
+
 def preprocess(i):
 
     os_info = i['os_info']
@@ -31,7 +32,7 @@ def preprocess(i):
                         return r
                 r = mlc.access({'action': 'run', 'automation': 'script', 'tags': tags, 'quiet': 'true', 'env': env,
                                'input': inp, 'state': state, 'add_deps': inp.get('add_deps', {}), 'add_deps_recursive':
-                               inp.get('add_deps_recursive', {})})
+                                inp.get('add_deps_recursive', {})})
                 if r['return'] > 0:
                     return r
 

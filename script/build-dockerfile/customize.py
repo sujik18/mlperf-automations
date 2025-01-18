@@ -394,14 +394,14 @@ def preprocess(i):
     if env.get('CM_DOCKER_RUN_SCRIPT_TAGS', '') != '' and str(env.get(
             'CM_DOCKER_ADD_DEPENDENT_SCRIPTS_RUN_COMMANDS', '')).lower() in ["yes", "1", "true"]:
         mlc_input = {'action': 'run',
-                    'automation': 'script',
-                    'tags': f"""{env['CM_DOCKER_RUN_SCRIPT_TAGS']}""",
-                    'print_deps': True,
-                    'quiet': True,
-                    'silent': True,
-                    'fake_run': True,
-                    'fake_deps': True
-                    }
+                     'automation': 'script',
+                     'tags': f"""{env['CM_DOCKER_RUN_SCRIPT_TAGS']}""",
+                     'print_deps': True,
+                     'quiet': True,
+                     'silent': True,
+                     'fake_run': True,
+                     'fake_deps': True
+                     }
         r = self_module.mlc.access(mlc_input)
         if r['return'] > 0:
             return r
