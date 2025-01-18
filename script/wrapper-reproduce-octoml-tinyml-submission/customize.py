@@ -1,7 +1,6 @@
 from mlc import utils
 import os
-import cmind as cm
-
+import mlc
 
 def preprocess(i):
 
@@ -26,11 +25,11 @@ def preprocess(i):
                 variation_tags_string = "_" + board + ",_" + microtvm_variant + ",_" + model
                 tags = script_tags + "," + variation_tags_string
                 if 'CM_RECREATE_BINARY' in env:
-                    r = cm.access(
+                    r = mlc.access(
                         {'action': 'rm', 'automation': 'cache', 'tags': tags, 'force': 'true'})
                     if r['return'] > 0:
                         return r
-                r = cm.access({'action': 'run', 'automation': 'script', 'tags': tags, 'quiet': 'true', 'env': env,
+                r = mlc.access({'action': 'run', 'automation': 'script', 'tags': tags, 'quiet': 'true', 'env': env,
                                'input': inp, 'state': state, 'add_deps': inp.get('add_deps', {}), 'add_deps_recursive':
                                inp.get('add_deps_recursive', {})})
                 if r['return'] > 0:

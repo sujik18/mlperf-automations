@@ -1,6 +1,6 @@
 from mlc import utils
-import cmind as cm
 import os
+import mlc
 import json
 import re
 import shutil
@@ -92,8 +92,8 @@ def preprocess(i):
 
         try:
             print(
-                f"Copying repository from {cm_repo_path} to {repo_build_context_path}")
-            shutil.copytree(cm_repo_path, repo_build_context_path)
+                f"Copying repository from {mlc_repo_path} to {repo_build_context_path}")
+            shutil.copytree(mlc_repo_path, repo_build_context_path)
         except Exception as e:
             return {
                 'return': 1, 'error': f"Failed to copy repository to build context: {str(e)}"}
@@ -105,7 +105,7 @@ def preprocess(i):
         # (Optional) Verify the copy
         if not os.path.isdir(repo_build_context_path):
             return {
-                'return': 1, 'error': f"cm_repo was not successfully copied to the build context at {repo_build_context_path}"}
+                'return': 1, 'error': f"mlc_repo was not successfully copied to the build context at {repo_build_context_path}"}
         else:
             print(
                 f"mlc_repo is present in the build context at {repo_build_context_path}")
@@ -271,7 +271,7 @@ def preprocess(i):
             ' ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers' +
             EOL)
         f.write('USER ' + docker_user + ":" + docker_group + EOL)
-        f.write('ENV HOME=/home/cmuser' + EOL)
+        f.write('ENV HOME=/home/mlcuser' + EOL)
 
     else:
         f.write('ENV HOME=/root' + EOL)
@@ -283,7 +283,7 @@ def preprocess(i):
             docker_env_key + "=" + str(dockerfile_env[docker_env_key])
 
     workdir = get_value(env, config, 'WORKDIR', 'CM_DOCKER_WORKDIR')
-    if workdir and ("/home/cmuser" not in workdir or str(env.get('CM_DOCKER_USE_DEFAULT_USER', '')).lower() not in [
+    if workdir and ("/home/mlcuser" not in workdir or str(env.get('CM_DOCKER_USE_DEFAULT_USER', '')).lower() not in [
             "yes", "1", "true"]):
         f.write('WORKDIR ' + workdir + EOL)
 
@@ -292,9 +292,9 @@ def preprocess(i):
 
     docker_use_virtual_python = env.get('CM_DOCKER_USE_VIRTUAL_PYTHON', "yes")
     if str(docker_use_virtual_python).lower() not in ["no", "0", "false"]:
-        f.write('RUN {} -m venv $HOME/venv/cm'.format(python) + " " + EOL)
-        f.write('ENV PATH="$HOME/venv/cm/bin:$PATH"' + EOL)
-    # f.write('RUN . /opt/venv/cm/bin/activate' + EOL)
+        f.write('RUN {} -m venv $HOME/venv/mlc'.format(python) + " " + EOL)
+        f.write('ENV PATH="$HOME/venv/mlc/bin:$PATH"' + EOL)
+    # f.write('RUN . /opt/venv/mlc/bin/activate' + EOL)
 
     f.write(
         'RUN {} -m pip install '.format(python) +
@@ -308,26 +308,26 @@ def preprocess(i):
         ' ' +
         EOL)
 
-    f.write(EOL + '# Download CM repo for scripts' + EOL)
+    f.write(EOL + '# Download MLC repo for scripts' + EOL)
 
     if use_copy_repo:
-        docker_repo_dest = "$HOME/CM/repos/mlcommons@mlperf-automations"
+        docker_repo_dest = "$HOME/MLC/repos/mlcommons@mlperf-automations"
         f.write(
-            f'COPY --chown=cmuser:cm {relative_repo_path} {docker_repo_dest}' +
+            f'COPY --chown=mlcuser:mlc {relative_repo_path} {docker_repo_dest}' +
             EOL)
 
-        f.write(EOL + '# Register CM repository' + EOL)
-        f.write('RUN cm pull repo --url={} --quiet'.format(docker_repo_dest) + EOL)
+        f.write(EOL + '# Register MLC repository' + EOL)
+        f.write('RUN mlc pull repo --url={} --quiet'.format(docker_repo_dest) + EOL)
         f.write(EOL)
 
     else:
-        # Use cm pull repo as before
+        # Use mlc pull repo as before
         x = env.get('CM_DOCKER_ADD_FLAG_TO_CM_MLOPS_REPO', '')
         if x != '':
             x = ' ' + x
 
         f.write(
-            'RUN cm pull repo ' +
+            'RUN mlc pull repo ' +
             cm_mlops_repo +
             cm_mlops_repo_branch_string +
             x +
@@ -342,7 +342,7 @@ def preprocess(i):
     if str(env.get('CM_DOCKER_SKIP_CM_SYS_UPGRADE', False)
            ).lower() not in ["true", "1", "yes"]:
         f.write(EOL + '# Install all system dependencies' + EOL)
-        f.write('RUN cm run script --tags=get,sys-utils-cm --quiet' + EOL)
+        f.write('RUN mlc run script --tags=get,sys-utils-cm --quiet' + EOL)
 
     if 'CM_DOCKER_PRE_RUN_COMMANDS' in env:
         for pre_run_cmd in env['CM_DOCKER_PRE_RUN_COMMANDS']:
@@ -362,18 +362,18 @@ def preprocess(i):
     if 'CM_DOCKER_RUN_CMD' not in env:
         env['CM_DOCKER_RUN_CMD'] = ""
         if 'CM_DOCKER_RUN_SCRIPT_TAGS' not in env:
-            env['CM_DOCKER_RUN_CMD'] += "cm version"
+            env['CM_DOCKER_RUN_CMD'] += "mlc version"
             skip_extra = True
         else:
             if str(env.get('CM_DOCKER_NOT_PULL_UPDATE', 'False')
                    ).lower() not in ["yes", "1", "true"]:
-                env['CM_DOCKER_RUN_CMD'] += "cm pull repo && "
-            env['CM_DOCKER_RUN_CMD'] += "cm run script --tags=" + \
+                env['CM_DOCKER_RUN_CMD'] += "mlc pull repo && "
+            env['CM_DOCKER_RUN_CMD'] += "mlc run script --tags=" + \
                 env['CM_DOCKER_RUN_SCRIPT_TAGS'] + ' --quiet'
     else:
         if str(env.get('CM_DOCKER_NOT_PULL_UPDATE', 'False')
                ).lower() not in ["yes", "1", "true"]:
-            env['CM_DOCKER_RUN_CMD'] = "cm pull repo && " + \
+            env['CM_DOCKER_RUN_CMD'] = "mlc pull repo && " + \
                 env['CM_DOCKER_RUN_CMD']
 
     print(env['CM_DOCKER_RUN_CMD'])
@@ -393,7 +393,7 @@ def preprocess(i):
 
     if env.get('CM_DOCKER_RUN_SCRIPT_TAGS', '') != '' and str(env.get(
             'CM_DOCKER_ADD_DEPENDENT_SCRIPTS_RUN_COMMANDS', '')).lower() in ["yes", "1", "true"]:
-        cm_input = {'action': 'run',
+        mlc_input = {'action': 'run',
                     'automation': 'script',
                     'tags': f"""{env['CM_DOCKER_RUN_SCRIPT_TAGS']}""",
                     'print_deps': True,
@@ -402,7 +402,7 @@ def preprocess(i):
                     'fake_run': True,
                     'fake_deps': True
                     }
-        r = self_module.cmind.access(cm_input)
+        r = self_module.mlc.access(mlc_input)
         if r['return'] > 0:
             return r
         print_deps = r['new_state']['print_deps']
