@@ -1,5 +1,4 @@
 from mlc import utils
-import cmind as cm
 import os
 from giturlparse import parse
 

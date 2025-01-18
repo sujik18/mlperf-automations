@@ -1,5 +1,5 @@
 from mlc import utils
-import cmind as cm
+import mlc
 import os
 import subprocess
 from os.path import exists
@@ -19,12 +19,12 @@ def preprocess(i):
 
     if 'CM_DOCKER_RUN_SCRIPT_TAGS' not in env:
         env['CM_DOCKER_RUN_SCRIPT_TAGS'] = "run,docker,container"
-        CM_RUN_CMD = "cm version"
+        CM_RUN_CMD = "mlc version"
     else:
-        CM_RUN_CMD = "cm run script --tags=" + \
+        CM_RUN_CMD = "mlc run script --tags=" + \
             env['CM_DOCKER_RUN_SCRIPT_TAGS'] + ' --quiet'
 
-    r = cm.access({'action': 'search',
+    r = mlc.access({'action': 'search',
                    'automation': 'script',
                    'tags': env['CM_DOCKER_RUN_SCRIPT_TAGS']})
     if len(r['list']) < 1:

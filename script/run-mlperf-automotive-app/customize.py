@@ -3,7 +3,7 @@ import os
 import json
 import shutil
 import subprocess
-import cmind as cm
+import mlc
 import copy
 from tabulate import tabulate
 
@@ -249,7 +249,7 @@ def preprocess(i):
             if action == "docker":
                 for k in docker_extra_input:
                     ii[k] = docker_extra_input[k]
-            r = cm.access(ii)
+            r = mlc.access(ii)
             if r['return'] > 0:
                 return r
             if action == "docker":
@@ -278,7 +278,7 @@ def preprocess(i):
                 if action == "docker":
                     for k in docker_extra_input:
                         ii[k] = docker_extra_input[k]
-                r = cm.access(ii)
+                r = mlc.access(ii)
                 if r['return'] > 0:
                     return r
                 if state.get('docker', {}):

@@ -27,7 +27,7 @@ def preprocess(i):
 
     if env.get('CM_DOCKER_RUN_SCRIPT_TAGS', '') != '':
         script_tags = env['CM_DOCKER_RUN_SCRIPT_TAGS']
-        found_scripts = cm.access(
+        found_scripts = mlc.access(
             {'action': 'search', 'automation': 'script', 'tags': script_tags})
         scripts_list = found_scripts['list']
 
@@ -61,18 +61,18 @@ def preprocess(i):
             'return': 1, 'error': f"Version \"{env['CM_DOCKER_OS_VERSION']}\" is not supported yet for \"{env['CM_DOCKER_OS']}\" "}
 
     # Handle cm_mlops Repository
-    if env.get("CM_REPO_PATH", "") != "":
+    if env.get("MLC_REPO_PATH", "") != "":
         use_copy_repo = True
-        cm_repo_path = os.path.abspath(env["CM_REPO_PATH"])
+        mlc_repo_path = os.path.abspath(env["MLC_REPO_PATH"])
 
-        if not os.path.exists(cm_repo_path):
+        if not os.path.exists(mlc_repo_path):
             return {
-                'return': 1, 'error': f"Specified CM_REPO_PATH does not exist: {cm_repo_path}"}
+                'return': 1, 'error': f"Specified MLC_REPO_PATH does not exist: {mlc_repo_path}"}
 
-        cmr_yml_path = os.path.join(cm_repo_path, "cmr.yaml")
-        if not os.path.isfile(cmr_yml_path):
+        meta_yml_path = os.path.join(mlc_repo_path, "meta.yaml")
+        if not os.path.isfile(meta_yml_path):
             return {
-                'return': 1, 'error': f"cmr.yaml not found in CM_REPO_PATH: {cm_repo_path}"}
+                'return': 1, 'error': f"meta.yaml not found in MLC_REPO_PATH: {mlc_repo_path}"}
 
         # Define the build context directory (where the Dockerfile will be)
         build_context_dir = os.path.dirname(
@@ -83,8 +83,8 @@ def preprocess(i):
                     "Dockerfile")))
         os.makedirs(build_context_dir, exist_ok=True)
 
-        # Create cm_repo directory relative to the build context
-        repo_build_context_path = os.path.join(build_context_dir, "cm_repo")
+        # Create mlc_repo directory relative to the build context
+        repo_build_context_path = os.path.join(build_context_dir, "mlc_repo")
 
         # Remove existing directory if it exists
         if os.path.exists(repo_build_context_path):
@@ -108,12 +108,12 @@ def preprocess(i):
                 'return': 1, 'error': f"cm_repo was not successfully copied to the build context at {repo_build_context_path}"}
         else:
             print(
-                f"cm_repo is present in the build context at {repo_build_context_path}")
+                f"mlc_repo is present in the build context at {repo_build_context_path}")
 
         relative_repo_path = os.path.relpath(
             repo_build_context_path, build_context_dir)
     else:
-        # CM_REPO_PATH is not set; use cm pull repo as before
+        # MLC_REPO_PATH is not set; use mlc pull repo as before
         use_copy_repo = False
 
         if env.get("CM_MLOPS_REPO", "") != "":

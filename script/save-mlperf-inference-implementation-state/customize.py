@@ -20,7 +20,7 @@ def preprocess(i):
         return {'return': 0}
 
     if env.get('CM_MLPERF_README', "") == "yes":
-        import cmind as cm
+        import mlc
         inp = i['input']
 
         script_tags = state['mlperf-inference-implementation'].get(
@@ -29,7 +29,7 @@ def preprocess(i):
             'script_adr', {})
 
         if script_tags != '':
-            cm_input = {'action': 'run',
+            mlc_input = {'action': 'run',
                         'automation': 'script',
                         'tags': script_tags,
                         'adr': script_adr,
@@ -40,7 +40,7 @@ def preprocess(i):
                         'fake_run': True
                         }
 
-            r = cm.access(cm_input)
+            r = mlc.access(cm_input)
             if r['return'] > 0:
                 return r
 
