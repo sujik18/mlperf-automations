@@ -293,7 +293,6 @@ class ScriptAutomation(Automation):
                                'append_lists': True,
                                'append_unique': True})
 
-
         # Check if has extra tags as a second artifact
         # Example: cmr . "_python _tiny"
 
@@ -593,7 +592,7 @@ class ScriptAutomation(Automation):
 
         if len(list_of_found_scripts) == 0:
             return {
-                    'return': 16, 'error': f"""no scripts were found with tags: {tags_string} \n {r.get('warning', '')}"""}
+                'return': 16, 'error': f"""no scripts were found with tags: {tags_string} \n {r.get('warning', '')}"""}
 
         # Sometimes there is an ambiguity when someone adds a script
         # while duplicating a UID. In such case, we will return >1 script
@@ -2772,7 +2771,6 @@ class ScriptAutomation(Automation):
         """
 
         console = i.get('out') == 'con'
-
 
         #######################################################################
         # Process tags to find script(s) and separate variations
