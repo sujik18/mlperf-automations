@@ -191,7 +191,7 @@ class ScriptAutomation(Automation):
 
           (print_readme) (bool): if True, will print README with all CM steps (deps) to run a given script
 
-          (script_call_prefix) (str): how to call script in logs and READMEs (cm run script)
+          (script_call_prefix) (str): how to call script in logs and READMEs (mlc run script)
 
           (skip_sys_utils) (bool): if True, set env['CM_SKIP_SYS_UTILS']='yes'
                                    to skip CM sys installation
@@ -293,15 +293,6 @@ class ScriptAutomation(Automation):
                                'append_lists': True,
                                'append_unique': True})
 
-        # Check simplified CMD: cm run script "get compiler"
-        # If artifact has spaces, treat them as tags!
-        artifact = i.get('artifact', '')
-        if ' ' in artifact:  # or ',' in artifact:
-            del (i['artifact'])
-            if 'parsed_artifact' in i:
-                del (i['parsed_artifact'])
-            # Force substitute tags
-            i['tags'] = artifact.replace(' ', ',')
 
         # Check if has extra tags as a second artifact
         # Example: cmr . "_python _tiny"
@@ -563,71 +554,46 @@ class ScriptAutomation(Automation):
 
         variation_tags = r['variation_tags']
 
-#        # Print what was searched!
-#        cm_script_info = 'CM script'
-#
-#        x = 'with'
-#        if parsed_script_alias !='' :
-#            cm_script_info += ' '+x+' alias "{}"'.format(parsed_script_alias)
-#            x = 'and'
-#
-#        if len(script_tags)>0:
-#            cm_script_info += ' '+x+' tags "{}"'.format(script_tags_string.replace(',',' '))
-#            x = 'and'
-#
-#        if len(variation_tags)>0:
-#            x_variation_tags = ['_'+v for v in variation_tags]
-#            cm_script_info += ' '+x+' variations "{}"'.format(" ".join(x_variation_tags))
-#
-#        if verbose:
-#            logging.info('')
-#            logging.info(recursion_spaces + '* Searching for ' + cm_script_info)
-#        else:
-#            logging.info(recursion_spaces + '* Running ' + cm_script_info)
+        mlc_script_info = i.get('script_call_prefix', '').strip()
+        if mlc_script_info == '':
+            mlc_script_info = 'mlc run script'
+        if not mlc_script_info.endswith(' '):
+            mlc_script_info += ' '
 
-        cm_script_info = i.get('script_call_prefix', '').strip()
-        if cm_script_info == '':
-            cm_script_info = 'cm run script'
-        if not cm_script_info.endswith(' '):
-            cm_script_info += ' '
-
-        x = '"'
-        y = ' '
+        x = '--tags='
+        y = ','
         if parsed_script_alias != '':
-            cm_script_info += parsed_script_alias
-            x = ' --tags="'
-            y = ','
+            mlc_script_info += parsed_script_alias
+            x = '--tags="'
 
         if len(script_tags) > 0 or len(variation_tags) > 0:
-            cm_script_info += x
+            mlc_script_info += x
 
             if len(script_tags) > 0:
-                cm_script_info += script_tags_string.replace(',', y)
+                mlc_script_info += script_tags_string
 
             if len(variation_tags) > 0:
                 if len(script_tags) > 0:
-                    cm_script_info += ' '
+                    mlc_script_info += ','
 
                 x_variation_tags = ['_' + v for v in variation_tags]
-                cm_script_info += y.join(x_variation_tags)
-
-            cm_script_info += '"'
+                mlc_script_info += y.join(x_variation_tags)
 
 #        if verbose:
 #            logging.info('')
 
         if not run_state.get('tmp_silent', False):
-            logging.info(recursion_spaces + '* ' + cm_script_info)
+            logging.info(recursion_spaces + '* ' + mlc_script_info)
 
         #######################################################################
         # Report if scripts were not found or there is an ambiguity with UIDs
         if not r['found_scripts']:
             return {
-                'return': 1, 'error': 'no scripts were found with above tags (when variations ignored)'}
+                'return': 1, 'error': f"""no scripts were found with tags: {tags_string} (when variations ignored)"""}
 
         if len(list_of_found_scripts) == 0:
             return {
-                'return': 16, 'error': 'no scripts were found with above tags and variations\n' + r.get('warning', '')}
+                    'return': 16, 'error': f"""no scripts were found with tags: {tags_string} \n {r.get('warning', '')}"""}
 
         # Sometimes there is an ambiguity when someone adds a script
         # while duplicating a UID. In such case, we will return >1 script
@@ -737,7 +703,7 @@ class ScriptAutomation(Automation):
 
         if len(list_of_found_scripts) > 0:
             # If only tags are used, check if there are no cached scripts with tags - then we will reuse them
-            # The use case: cm run script --tags=get,compiler
+            # The use case: mlc run script --tags=get,compiler
             # CM script will always ask to select gcc,llvm,etc even if any of
             # them will be already cached
             if len(cache_list) > 0:
@@ -2807,15 +2773,6 @@ class ScriptAutomation(Automation):
 
         console = i.get('out') == 'con'
 
-        # Check simplified CMD: cm run script "get compiler"
-        # If artifact has spaces, treat them as tags!
-        artifact = i.get('artifact', '')
-        if ' ' in artifact:  # or ',' in artifact:
-            del (i['artifact'])
-            if 'parsed_artifact' in i:
-                del (i['parsed_artifact'])
-            # Force substitute tags
-            i['tags'] = artifact.replace(' ', ',')
 
         #######################################################################
         # Process tags to find script(s) and separate variations
@@ -3838,10 +3795,10 @@ class ScriptAutomation(Automation):
         content += """
 *This README was automatically generated.*
 
-## Install CM
+## Install MLC
 
 ```bash
-pip install cm4mlops
+pip install mlcflow
 ```
 
 Check [this readme](https://github.com/mlcommons/ck/blob/master/docs/installation.md)
@@ -3850,20 +3807,20 @@ with more details about installing CM and dependencies across different platform
 
 """
 
-        current_cm_repo = run_state['script_repo_alias']
-        if current_cm_repo not in [
-                'mlcommons@mlperf-automations', 'mlcommons@cm4mlops']:
-            content += '\ncm pull repo ' + \
+        current_mlc_repo = run_state['script_repo_alias']
+        if current_mlc_repo not in [
+                'mlcommons@mlperf-automations']:
+            content += '\nmlc pull repo ' + \
                 run_state['script_repo_alias'] + '\n'
 
         content += """```
 
-## Run CM script
+## Run Automation script
 
 ```bash
 """
 
-        cmd = "cm run script "
+        cmd = "mlc run script "
 
         for cmd_part in cmd_parts:
             x = '"' if ' ' in cmd_part and not cmd_part.startswith('-') else ''
@@ -3873,7 +3830,7 @@ with more details about installing CM and dependencies across different platform
 
         content += """```
 
-## Run individual CM scripts to customize dependencies (optional)
+## Run individual Automation scripts to customize dependencies (optional)
 
 """
         deps_ = ''
@@ -3886,7 +3843,7 @@ with more details about installing CM and dependencies across different platform
                 xversion = ' --version={}\n'.format(version)
 
             content += "```bash\n"
-            content += "cm run script --tags=" + \
+            content += "mlc run script --tags=" + \
                 dep_tags + "{}\n".format(xversion)
             content += "```\n\n"
 
@@ -3949,7 +3906,7 @@ with more details about installing CM and dependencies across different platform
         run_cmds = []
 
         for dep_tags in deps:
-            run_cmds.append("cm run script --tags=" + dep_tags)
+            run_cmds.append("mlc run script --tags=" + dep_tags)
 
         return run_cmds
 
