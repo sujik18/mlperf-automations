@@ -38,26 +38,16 @@ def preprocess(i):
 
             print('')
             print('Downloading from {}'.format(url))
-
-            r = cm.access({'action': 'download_file',
-                           'automation': 'utils,dc2743f8450541e3',
+            env['CM_DAE_FINAL_ENV_NAME'] = 'FILENAME'
+            env['CM_OUTDIRNAME'] = os.curdir()
+            r = cm.access({'action': 'run',
+                           'target': 'script'
+                           'env': env,
+                           'tags': 'download-and-extract'
                            'url': url})
             if r['return'] > 0:
                 return r
 
-            filename = r['filename']
-
-            print('Unzipping file {}'.format(filename))
-
-            r = cm.access({'action': 'unzip_file',
-                           'automation': 'utils,dc2743f8450541e3',
-                           'filename': filename})
-            if r['return'] > 0:
-                return r
-
-            if os.path.isfile(filename):
-                print('Removing file {}'.format(filename))
-                os.remove(filename)
 
         print('')
 
