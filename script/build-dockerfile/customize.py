@@ -26,8 +26,7 @@ def preprocess(i):
     copy_files = []
     automation = i['automation']
 
-
-    #print(env['CM_DOCKER_RUN_SCRIPT_TAGS'])
+    # print(env['CM_DOCKER_RUN_SCRIPT_TAGS'])
     if env.get('CM_DOCKER_RUN_SCRIPT_TAGS', '') != '':
         script_tags = env['CM_DOCKER_RUN_SCRIPT_TAGS']
         found_scripts = automation.action_object.access(

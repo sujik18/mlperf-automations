@@ -6,6 +6,7 @@ from pathlib import PureWindowsPath, PurePosixPath
 from script.docker_utils import *
 import copy
 
+
 def process_mounts(mounts, env, i, docker_settings):
     """
     Processes and updates the Docker mounts based on the provided inputs and environment variables.
@@ -49,7 +50,9 @@ def prepare_docker_inputs(i, docker_settings, script_path):
         Tuple with Docker inputs dictionary and Dockerfile path or None in case of an error.
     """
     try:
-        dockerfile_path = os.path.join(script_path, docker_settings.get('dockerfile', 'Dockerfile'))
+        dockerfile_path = os.path.join(
+            script_path, docker_settings.get(
+                'dockerfile', 'Dockerfile'))
         docker_args = docker_settings.get('args', {})
         docker_image = i.get('docker_image', docker_settings.get('image', ''))
 
@@ -92,9 +95,11 @@ def update_docker_paths(path, mounts=None, force_target_path=''):
         container_path = '/' + container_path
 
     # Prepend default container mount base unless overridden.
-    container_path = '/mlc-mount' + container_path if not force_target_path else force_target_path
+    container_path = '/mlc-mount' + \
+        container_path if not force_target_path else force_target_path
 
-    # Determine the mount string based on whether the path is a file or directory.
+    # Determine the mount string based on whether the path is a file or
+    # directory.
     if os.path.isfile(host_path) or not os.path.isdir(host_path):
         mount_entry = f"{os.path.dirname(host_path)}:{os.path.dirname(container_path)}"
     else:
@@ -128,26 +133,26 @@ def regenerate_script_cmd(i):
             if isinstance(value, str) and (
                     os.path.join("local", "cache", "") in value or
                     os.path.join("MLC", "repos", "") in value
-                    ):
+            ):
                 del env[key]
 
             # Check if the value is a list and remove matching items
             elif isinstance(value, list):
                 # Identify values to remove
                 values_to_remove = [
-                        val for val in value
-                        if isinstance(val, str) and (
-                            os.path.join("local", "cache", "") in val or
-                            os.path.join("MLC", "repos", "") in val
-                            )
-                        ]
+                    val for val in value
+                    if isinstance(val, str) and (
+                        os.path.join("local", "cache", "") in val or
+                        os.path.join("MLC", "repos", "") in val
+                    )
+                ]
 
                 # Remove key if all values match; otherwise, filter the list
                 if len(values_to_remove) == len(value):
                     del env[key]
                 else:
-                    env[key] = [val for val in value if val not in values_to_remove]
-
+                    env[key] = [
+                        val for val in value if val not in values_to_remove]
 
     docker_run_cmd_prefix = i.get('docker_run_cmd_prefix', '')
 
@@ -155,7 +160,7 @@ def regenerate_script_cmd(i):
     run_cmd = 'mlc run script'
 
     skip_input_for_fake_run = docker_settings.get(
-            'skip_input_for_fake_run', [])
+        'skip_input_for_fake_run', [])
     add_quotes_to_keys = docker_settings.get('add_quotes_to_keys', [])
 
     def rebuild_flags(
@@ -164,7 +169,7 @@ def regenerate_script_cmd(i):
             skip_keys_for_fake_run,
             quote_keys,
             prefix
-            ):
+    ):
         """
         Recursively rebuilds command-line flags from a dictionary of inputs.
 
@@ -194,22 +199,22 @@ def regenerate_script_cmd(i):
             # Recursively process nested dictionaries.
             if isinstance(value, dict):
                 command_line += rebuild_flags(
-                        value,
-                        is_fake_run,
-                        skip_keys_for_fake_run,
-                        quote_keys,
-                        full_key
-                        )
+                    value,
+                    is_fake_run,
+                    skip_keys_for_fake_run,
+                    quote_keys,
+                    full_key
+                )
             # Process lists by concatenating values with commas.
             elif isinstance(value, list):
-                list_values = ",".join(f"{quote}{str(item)}{quote}" for item in value)
+                list_values = ",".join(
+                    f"{quote}{str(item)}{quote}" for item in value)
                 command_line += f" --{full_key},={list_values}"
             # Process scalar values.
             else:
                 command_line += f" --{full_key}={quote}{str(value)}{quote}"
 
         return command_line
-
 
     run_cmd += rebuild_flags(i_run_cmd,
                              fake_run,
@@ -218,21 +223,22 @@ def regenerate_script_cmd(i):
                              '')
 
     run_cmd = docker_run_cmd_prefix + ' && ' + \
-            run_cmd if docker_run_cmd_prefix != '' else run_cmd
+        run_cmd if docker_run_cmd_prefix != '' else run_cmd
 
     return {'return': 0, 'run_cmd_string': run_cmd}
 
+
 def get_docker_default(key):
     defaults = {
-            "mlc_repo": "mlcommons@mlperf-automations",
-            "mlc_repo_branch": "mlc",
-            "os": "ubuntu",
-            "os_version": "24.04",
-            "fake_run_deps": False,
-            "run_final_cmds": [],
-            "skip_run_cmd": False,
-            "image_tag_extra": "-latest"
-            }
+        "mlc_repo": "mlcommons@mlperf-automations",
+        "mlc_repo_branch": "mlc",
+        "os": "ubuntu",
+        "os_version": "24.04",
+        "fake_run_deps": False,
+        "run_final_cmds": [],
+        "skip_run_cmd": False,
+        "image_tag_extra": "-latest"
+    }
     if key in defaults:
         return defaults[key]
     return None
@@ -269,11 +275,9 @@ def get_container_path(value):
         repo_entry_index = path_split.index("local")
         if len(path_split) >= repo_entry_index + 3:
             new_path_split1 = new_path_split + \
-                    path_split[repo_entry_index:repo_entry_index + 3]
+                path_split[repo_entry_index:repo_entry_index + 3]
             new_path_split2 = new_path_split + path_split[repo_entry_index:]
             return "/".join(new_path_split1), "/".join(new_path_split2)
     else:
         orig_path, target_path = update_path_for_docker(path=value)
         return target_path, target_path
-
-
