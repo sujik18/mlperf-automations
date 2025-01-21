@@ -39,11 +39,11 @@ def preprocess(i):
             print('')
             print('Downloading from {}'.format(url))
             env['CM_DAE_FINAL_ENV_NAME'] = 'FILENAME'
-            env['CM_OUTDIRNAME'] = os.curdir()
+            env['CM_OUTDIRNAME'] = os.getcwd()
             r = cm.access({'action': 'run',
-                           'target': 'script'
+                           'target': 'script',
                            'env': env,
-                           'tags': 'download-and-extract'
+                           'tags': 'download-and-extract,_extract',
                            'url': url})
             if r['return'] > 0:
                 return r
