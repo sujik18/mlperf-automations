@@ -599,7 +599,7 @@ class ScriptAutomation(Automation):
         # and will start searching in the cache ...
         # We are detecing such cases here:
         if len(list_of_found_scripts) > 1 and script_tags_string == '' and parsed_script_alias != '' and '?' not in parsed_script_alias and '*' not in parsed_script_alias:
-            x = 'Ambiguity in the following scripts have the same UID - please change that in _cm.json or _cm.yaml:\n'
+            x = 'Ambiguity in the following scripts have the same UID - please change that in meta.json or meta.yaml:\n'
             for y in list_of_found_scripts:
                 x += ' * ' + y.path + '\n'
 
