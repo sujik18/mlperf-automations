@@ -1,6 +1,6 @@
 from mlc import utils
 import os
-from utils import download_file
+from utils import download_file, unzip_file
 
 
 def preprocess(i):
@@ -84,7 +84,7 @@ def preprocess(i):
     if os_info['platform'] == 'windows':
         print('Unzipping file {}'.format(filename))
 
-        r = extract_file({
+        r = unzip_file({
             'strip_folders': 1,
             'filename': filename})
         if r['return'] > 0:
