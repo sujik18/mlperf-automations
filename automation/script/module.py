@@ -783,12 +783,12 @@ class ScriptAutomation(Automation):
                     min_mlc_version, current_mlc_version)}
 
         # Check path to repo
-        script_repo_path = script_artifact.repo_path
+        script_repo_path = script_artifact.repo.path
 
-        script_repo_path_with_prefix = script_artifact.repo_path
-        if script_artifact.repo_meta.get('prefix', '') != '':
+        script_repo_path_with_prefix = script_artifact.repo.path
+        if script_artifact.repo.meta.get('prefix', '') != '':
             script_repo_path_with_prefix = os.path.join(
-                script_repo_path, script_artifact.repo_meta['prefix'])
+                script_repo_path, script_artifact.repo.meta['prefix'])
 
         env['CM_TMP_CURRENT_SCRIPT_REPO_PATH'] = script_repo_path
         env['CM_TMP_CURRENT_SCRIPT_REPO_PATH_WITH_PREFIX'] = script_repo_path_with_prefix
@@ -801,18 +801,18 @@ class ScriptAutomation(Automation):
         run_state['script_id'] = meta['alias'] + "," + meta['uid']
         run_state['script_tags'] = script_tags
         run_state['script_variation_tags'] = variation_tags
-        run_state['script_repo_alias'] = script_artifact.repo_meta.get(
+        run_state['script_repo_alias'] = script_artifact.repo.meta.get(
             'alias', '')
-        run_state['script_repo_git'] = script_artifact.repo_meta.get(
+        run_state['script_repo_git'] = script_artifact.repo.meta.get(
             'git', False)
         run_state['cache'] = meta.get('cache', False)
 
         if not recursion:
             run_state['script_entry_repo_to_report_errors'] = meta.get(
                 'repo_to_report_errors', '')
-            run_state['script_entry_repo_alias'] = script_artifact.repo_meta.get(
+            run_state['script_entry_repo_alias'] = script_artifact.repo.meta.get(
                 'alias', '')
-            run_state['script_entry_repo_git'] = script_artifact.repo_meta.get(
+            run_state['script_entry_repo_git'] = script_artifact.repo.meta.get(
                 'git', False)
 
         deps = meta.get('deps', [])

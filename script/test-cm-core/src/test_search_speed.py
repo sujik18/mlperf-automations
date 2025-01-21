@@ -1,4 +1,4 @@
-﻿import cmind as cm
+﻿import mlc
 import time
 
 times = []
@@ -10,13 +10,13 @@ print('Running search with tags {} times ...'.format(steps))
 for step in range(steps):
 
     start = time.time()
-    r = cm.access({'action': 'search',
+    r = mlc.access({'action': 'search',
                    'automation': 'script',
                    'tags': 'detect,os'})
     timer = time.time() - start
 
     if r['return'] > 0:
-        cm.error(r)
+        mlc.error(r)
 
     times.append(timer)
 
