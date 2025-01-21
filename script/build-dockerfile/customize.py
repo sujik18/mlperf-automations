@@ -248,8 +248,8 @@ def preprocess(i):
         f.write('RUN ' + cmd + EOL)
 
     f.write(EOL + '# Setup docker user' + EOL)
-    docker_user = get_value(env, config, 'USER', 'CM_DOCKER_USER')
-    docker_group = get_value(env, config, 'GROUP', 'CM_DOCKER_GROUP')
+    docker_user = get_value(env, config, 'USER', 'MLC_DOCKER_USER')
+    docker_group = get_value(env, config, 'GROUP', 'MLC_DOCKER_GROUP')
 
     if env.get('CM_CONTAINER_TOOL', '') == 'podman' and env.get(
             'CM_DOCKER_USE_DEFAULT_USER', '') == '':
