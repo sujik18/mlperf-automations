@@ -84,10 +84,9 @@ def preprocess(i):
     if os_info['platform'] == 'windows':
         print('Unzipping file {}'.format(filename))
 
-        r = cm.access({'action': 'unzip_file',
-                       'automation': 'utils,dc2743f8450541e3',
-                       'strip_folders': 1,
-                       'filename': filename})
+        r = extract_file({
+            'strip_folders': 1,
+            'filename': filename})
         if r['return'] > 0:
             return r
 
