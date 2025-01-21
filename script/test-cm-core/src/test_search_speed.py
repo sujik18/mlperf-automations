@@ -12,7 +12,7 @@ for step in range(steps):
     start = time.time()
     r = mlc.access({'action': 'search',
                    'automation': 'script',
-                   'tags': 'detect,os'})
+                    'tags': 'detect,os'})
     timer = time.time() - start
 
     if r['return'] > 0:
