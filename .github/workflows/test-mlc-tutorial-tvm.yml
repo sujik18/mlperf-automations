@@ -35,4 +35,4 @@ jobs:
         mlcr --quiet --tags=get,sys-utils-cm
     - name: Test MLC Tutorial TVM
       run: |
-        mlcr --tags=run-mlperf,inference,_submission,_short --adr.python.name=mlperf --adr.python.version_min=3.8 --submitter=Community --implementation=python --hw_name=default --model=resnet50--backend=tvm-onnx --device=cpu --scenario=Offline --mode=accuracy --test_query_count=5 --clean --quiet ${{ matrix.extra-options }}
+        mlcr --tags=run-mlperf,inference,_submission,_short --adr.python.name=mlperf --adr.python.version_min=3.8 --submitter=Community --implementation=python --hw_name=default --model=resnet50 --backend=tvm-onnx --device=cpu --scenario=Offline --mode=accuracy --test_query_count=5 --clean --quiet ${{ matrix.extra-options }}
