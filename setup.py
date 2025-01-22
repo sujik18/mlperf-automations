@@ -9,6 +9,7 @@ try:
 except ImportError:
     import toml  # For older Python versions (requires `pip install toml`)
 
+
 def get_project_meta(file_path="pyproject.toml"):
     """
     Extracts project metadata from the given pyproject.toml file.
@@ -37,23 +38,28 @@ def get_project_meta(file_path="pyproject.toml"):
     return {}
 
 
-
 def check_prerequisites():
     """Check if Git and python-venv are installed on the system."""
     try:
         # Check for Git
-        subprocess.run(["git", "--version"], check=True, stdout=subprocess.DEVNULL)
+        subprocess.run(["git", "--version"], check=True,
+                       stdout=subprocess.DEVNULL)
     except FileNotFoundError:
-        sys.exit("Error: Git is not installed on the system. Please install Git and try again.")
+        sys.exit(
+            "Error: Git is not installed on the system. Please install Git and try again.")
 
     try:
         # Check for python-venv
-        subprocess.run([sys.executable, "-m", "venv", "--help"], check=True, stdout=subprocess.DEVNULL)
+        subprocess.run([sys.executable, "-m", "venv", "--help"],
+                       check=True, stdout=subprocess.DEVNULL)
     except subprocess.CalledProcessError:
-        sys.exit("Error: python-venv module is not available. Please install it and try again.")
+        sys.exit(
+            "Error: python-venv module is not available. Please install it and try again.")
+
 
 class CustomInstallCommand(install):
     """Custom install command to run a custom command after installation."""
+
     def run(self):
         # Run the standard install process
         install.run(self)
@@ -75,9 +81,10 @@ class CustomInstallCommand(install):
             if res['return'] > 0:
                 return res['return']
 
-            #subprocess.run(["echo", "Custom command executed!"], check=True)
+            # subprocess.run(["echo", "Custom command executed!"], check=True)
         except Exception as e:
             sys.exit(f"Error running post-install command: {e}")
+
 
 def get_commit_hash():
     try:
@@ -85,6 +92,7 @@ def get_commit_hash():
             return f.read().strip()
     except FileNotFoundError:
         return "unknown"
+
 
 # Check prerequisites before setup
 check_prerequisites()
@@ -97,8 +105,10 @@ setup(
     name=project_meta.get("name", "mlperf"),
     version=project_meta.get("version", "0.0.1"),
     description=project_meta.get("description", "MLPerf Automations."),
-    author=", ".join(a.get("name", "") for a in project_meta.get("authors", [])),
-    author_email=", ".join(a.get("email", "") for a in project_meta.get("authors", [])),
+    author=", ".join(a.get("name", "")
+                     for a in project_meta.get("authors", [])),
+    author_email=", ".join(a.get("email", "")
+                           for a in project_meta.get("authors", [])),
     packages=find_packages(),
     install_requires=project_meta.get("dependencies", []),
     python_requires=project_meta.get("python-requires", ">=3.8"),
