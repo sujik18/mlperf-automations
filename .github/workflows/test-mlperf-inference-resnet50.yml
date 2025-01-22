@@ -3,7 +3,7 @@
 name: MLPerf inference ResNet50
 
 on:
-  pull_request_target:
+  pull_request:
     branches: [ "main", "dev" ]
     paths:
       - '.github/workflows/test-mlperf-inference-resnet50.yml'
@@ -39,9 +39,10 @@ jobs:
       run: |
         git config --system core.longpaths true
 
-    - name: Install cm4mlops on Windows
+    - name: Install mlcflow
       run: |
         pip install mlcflow
+        pip install tabulate
 
     - name: Pull MLOps repo
       run: |
