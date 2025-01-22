@@ -54,6 +54,7 @@ jobs:
     - name: Install mlcflow
       run: |
         pip install mlcflow
+        pip install tabulate
     - name: Pull MLOps repository
       run: |
         mlc pull repo ${{ github.event.pull_request.head.repo.html_url }} --branch=${{ github.event.pull_request.head.ref }}
