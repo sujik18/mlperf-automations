@@ -60,6 +60,7 @@ def check_prerequisites():
 class CustomInstallCommand(install):
     """Custom install command to run a custom command after installation."""
 
+
     def run(self):
         # Run the standard install process
         install.run(self)
@@ -85,6 +86,13 @@ class CustomInstallCommand(install):
         except Exception as e:
             sys.exit(f"Error running post-install command: {e}")
 
+def read_file(file_name, default=""):
+    if os.path.isfile(file_name):
+        with open(file_name, "r", encoding="utf-8") as f:
+            return f.read().strip()
+    return default
+
+
 
 def get_commit_hash():
     try:
@@ -102,6 +110,7 @@ check_prerequisites()
 project_meta = get_project_meta()
 
 setup(
+
     name=project_meta.get("name", "mlperf"),
     version=project_meta.get("version", "0.0.1"),
     description=project_meta.get("description", "MLPerf Automations."),
