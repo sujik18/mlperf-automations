@@ -1,12 +1,10 @@
-# This workflow will test the submission generation capability of CM f
-
-name: CM based Submission Generation
+name: MLC based Submission Generation
 
 on:
   pull_request:
-    branches: [ "main", "dev", "mlperf-inference" ]
+    branches: [ "main", "dev" ]
     paths:
-      - '.github/workflows/test-cm-based-submission-generation.yml'
+      - '.github/workflows/test-mlc-based-submission-generation.yml'
       - '**'  
       - '!**.md'
 jobs:
@@ -48,17 +46,12 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install cm4mlops on Windows
-      if: matrix.os == 'windows-latest'
+    - name: Install mlcflow
       run: |
-        $env:CM_PULL_DEFAULT_MLOPS_REPO = "no"; pip install cm4mlops
-    - name: Install dependencies on Unix Platforms
-      if: matrix.os != 'windows-latest'
-      run: |
-        CM_PULL_DEFAULT_MLOPS_REPO=no pip install cm4mlops
+        pip install mlcflow
     - name: Pull MLOps repository
       run: |
-        cm pull repo --url=${{ github.event.pull_request.head.repo.html_url }} --checkout=${{ github.event.pull_request.head.ref }}
+        mlc pull repo ${{ github.event.pull_request.head.repo.html_url }} --branch=${{ github.event.pull_request.head.ref }}
     - name: Pull repo where test cases are uploaded
       run: |
         git clone -b submission-generation-tests https://github.com/mlcommons/inference.git submission_generation_tests
@@ -88,7 +81,7 @@ jobs:
         fi
         # Dynamically set the log group to simulate a dynamic step name
         echo "::group::$description"
-        cm ${{ matrix.action }} script --tags=generate,inference,submission  --version=v4.1 --clean --preprocess_submission=yes --results_dir=$PWD/submission_generation_tests/${{ matrix.case }}/ --run-checker --submitter=MLCommons --tar=yes --env.CM_TAR_OUTFILE=submission.tar.gz --division=${{ matrix.division }} --env.CM_DETERMINE_MEMORY_CONFIGURATION=yes --quiet $extra_run_args
+        mlc ${{ matrix.action }} script --tags=generate,inference,submission  --version=v4.1 --clean --preprocess_submission=yes --results_dir=$PWD/submission_generation_tests/${{ matrix.case }}/ --run-checker --submitter=MLCommons --tar=yes --env.CM_TAR_OUTFILE=submission.tar.gz --division=${{ matrix.division }} --env.CM_DETERMINE_MEMORY_CONFIGURATION=yes --quiet $extra_run_args
         exit_status=$?
         echo "Exit status for the job ${description} ${exit_status}"
         if [[ "${{ matrix.case }}" == "case-5" || "${{ matrix.case }}" == "case-6" ]]; then
