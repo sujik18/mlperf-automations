@@ -9,7 +9,7 @@ def preprocess(i):
 
     cm_cache_dataset_path = env.get(
         'CM_CUSTOM_CACHE_ENTRY_DATASET_MLCOMMONS_COGNATA_PATH', '').strip()
-    
+
     res = utils.load_json(
         os.path.join(
             cm_cache_dataset_path,
