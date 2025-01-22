@@ -10,7 +10,7 @@ on:
       - '**'
       - '!**.md'
 jobs:
-  build:
+  mlperf-inference-r50:
     runs-on: ${{ matrix.os }}
     env:
       CM_INDEX: "on"
