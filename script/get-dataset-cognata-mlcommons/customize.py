@@ -2,13 +2,17 @@ from mlc import utils
 import os
 import json
 
+
 def preprocess(i):
 
     env = i['env']
 
     cm_cache_dataset_path = env.get(
         'CM_CUSTOM_CACHE_ENTRY_DATASET_MLCOMMONS_COGNATA_PATH', '').strip()
-    cfg = utils.load_json(os.path.join(cm_cache_dataset_path, 'cfg.json'))['meta']
+    cfg = utils.load_json(
+        os.path.join(
+            cm_cache_dataset_path,
+            'cfg.json'))['meta']
     if cfg.get('imported', False):
         env['CM_DATASET_MLCOMMONS_COGNATA_IMPORTED'] = 'yes'
 
@@ -173,11 +177,11 @@ def postprocess(i):
 
         r = mlc.access({'action': 'run',
                        'automation': 'script',
-                       'tags': 'download,file,_wget',
-                       'verify': 'no',
-                       'url': first_url_export,
-                       'output_file': file_first_xlsx,
-                       'store': dataset_path1})
+                        'tags': 'download,file,_wget',
+                        'verify': 'no',
+                        'url': first_url_export,
+                        'output_file': file_first_xlsx,
+                        'store': dataset_path1})
         if r['return'] > 0:
             return r
 
@@ -249,11 +253,11 @@ def postprocess(i):
 
             r = mlc.access({'action': 'run',
                            'automation': 'script',
-                           'tags': 'download,file,_wget',
-                           'verify': 'no',
-                           'url': url_export,
-                           'output_file': serial_file,
-                           'store': dataset_path1})
+                            'tags': 'download,file,_wget',
+                            'verify': 'no',
+                            'url': url_export,
+                            'output_file': serial_file,
+                            'store': dataset_path1})
             if r['return'] > 0:
                 return r
 
