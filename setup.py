@@ -61,13 +61,16 @@ class CustomInstallCommand(install):
         # Run custom post-install command
         try:
             print("Running custom post-install command...")
+            commit_hash = get_commit_hash()
             import mlc
             branch = os.environ.get('MLC_REPO_BRANCH', 'mlc')
 
             res = mlc.access({'action': 'pull',
                               'automation': 'repo',
                               'url': 'mlcommons@mlperf-automations',
-                              'branch': branch})
+                              'branch': branch,
+                              'checkout': commit_hash
+                              })
             print(res)
             if res['return'] > 0:
                 return res['return']
@@ -75,6 +78,13 @@ class CustomInstallCommand(install):
             #subprocess.run(["echo", "Custom command executed!"], check=True)
         except Exception as e:
             sys.exit(f"Error running post-install command: {e}")
+
+def get_commit_hash():
+    try:
+        with open(os.path.join(os.path.dirname(__file__), 'git_commit_hash.txt'), 'r') as f:
+            return f.read().strip()
+    except FileNotFoundError:
+        return "unknown"
 
 # Check prerequisites before setup
 check_prerequisites()
