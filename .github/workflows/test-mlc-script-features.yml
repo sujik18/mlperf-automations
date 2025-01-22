@@ -31,7 +31,7 @@ jobs:
     - name: Pull MLOps repository
       run: |
         pip install mlcflow
-        mlc pull repo --url=${{ github.event.pull_request.head.repo.html_url }} --branch=${{ github.event.pull_request.head.ref }}
+        mlc pull repo ${{ github.event.pull_request.head.repo.html_url }} --branch=${{ github.event.pull_request.head.ref }}
   
     - name: Test Python venv
       run: |
