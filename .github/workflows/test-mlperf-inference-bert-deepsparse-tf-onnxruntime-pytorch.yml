@@ -2,7 +2,7 @@ name: MLPerf inference bert (deepsparse, tf, onnxruntime, pytorch)
 
 on:
   pull_request:
-    branches: [ "main", "dev", "mlperf-inference" ]
+    branches: [ "main", "dev" ]
     paths:
       - '.github/workflows/test-mlperf-inference-bert-deepsparse-tf-onnxruntime-pytorch.yml'
       - '**'
@@ -38,7 +38,7 @@ jobs:
         pip install tabulate
     - name: Pull MLOps repository
       run: |
-        mlcr ${{ github.event.pull_request.head.repo.html_url }} --branch=${{ github.event.pull_request.head.ref }}
+        mlc pull repo ${{ github.event.pull_request.head.repo.html_url }} --branch=${{ github.event.pull_request.head.ref }}
     - name: Test MLPerf Inference Bert ${{ matrix.backend }} on ${{ matrix.os }}
       if: matrix.os == 'windows-latest'
       run: |

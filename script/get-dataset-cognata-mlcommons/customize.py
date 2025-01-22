@@ -9,10 +9,12 @@ def preprocess(i):
 
     cm_cache_dataset_path = env.get(
         'CM_CUSTOM_CACHE_ENTRY_DATASET_MLCOMMONS_COGNATA_PATH', '').strip()
-    cfg = utils.load_json(
+    
+    res = utils.load_json(
         os.path.join(
             cm_cache_dataset_path,
-            'cfg.json'))['meta']
+            'cfg.json'))
+    cfg = res.get('meta', {})
     if cfg.get('imported', False):
         env['CM_DATASET_MLCOMMONS_COGNATA_IMPORTED'] = 'yes'
 
@@ -81,7 +83,8 @@ def postprocess(i):
     cm_cache_dataset_cfg_file = os.path.join(cm_cache_dataset_path, 'cfg.json')
     env['CM_DATASET_MLCOMMONS_COGNATA_CFG_FILE'] = cm_cache_dataset_cfg_file
 
-    cfg = utils.load_json(cm_cache_dataset_cfg_file)['meta']
+    res = utils.load_json(cm_cache_dataset_cfg_file)
+    cfg = res.get('meta', {})
 
     dataset_path = cfg.get('real_path', '')
     dataset_path_requested = env.get('CM_DATASET_MLCOMMONS_COGNATA_PATH', '')
