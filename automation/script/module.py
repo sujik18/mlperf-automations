@@ -2917,7 +2917,6 @@ class ScriptAutomation(Automation):
 
         import json
 
-
         console = i.get('out') == 'con'
 
         # Find CM artifact(s)
