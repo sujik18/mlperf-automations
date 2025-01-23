@@ -70,4 +70,10 @@ jobs:
       run: |
         git config --global user.name mlcommons-bot
         git config --global user.email "mlcommons-bot@users.noreply.github.com"
-        mlcr --tags=push,github,mlperf,inference,submission --env.CM_GITHUB_PAT=pat --repo_url=https://github.com/mlcommons/mlperf_inference_test_submissions_v5.0 --repo_branch=auto-update --commit_message="Results from R50 GH action on ${{ matrix.os }}" --quiet
+        git clone https://github.com/mlcommons/mlperf_inference_test_submissions_v5.0 tmp
+        cd tmp
+        echo "hello" >> README.md
+        git commit -a -m "Test commit"
+        git push https://x-access-token:$PAT@github.com/mlcommons/mlperf_inference_test_submissions_v5.0
+
+        # mlcr --tags=push,github,mlperf,inference,submission --env.CM_GITHUB_PAT=pat --repo_url=https://github.com/mlcommons/mlperf_inference_test_submissions_v5.0 --repo_branch=auto-update --commit_message="Results from R50 GH action on ${{ matrix.os }}" --quiet
