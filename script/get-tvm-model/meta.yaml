@@ -49,7 +49,7 @@ variations:
         tags: _fp32
     default: true
     group: precision
-  graph_executor:
+  graph-executor:
     env:
       CM_TVM_USE_VM: 'no'
     group: runtime
