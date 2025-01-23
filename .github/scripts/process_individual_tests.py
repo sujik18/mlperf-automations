@@ -1,7 +1,6 @@
 import sys
 import os
 import mlc
-import check as checks
 import json
 import yaml
 
