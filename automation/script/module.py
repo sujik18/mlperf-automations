@@ -11,20 +11,24 @@
 import os
 import logging
 
-from cmind.automation import Automation
-from cmind import utils
-from cmind import __version__ as current_cm_version
+from mlc.main import Automation
+import mlc.utils as utils
+from mlc.main import __version__ as current_mlc_version
+from utils import *
 
 
-class CAutomation(Automation):
+class ScriptAutomation(Automation):
+
     """
     CM "script" automation actions
     (making native scripts more portable, deterministic, reusable and reproducible)
     """
 
     ############################################################
-    def __init__(self, cmind, automation_file):
-        super().__init__(cmind, __file__)
+    def __init__(self, action_object, automation_file):
+        # super().__init__(cmind, __file__)
+        super().__init__(action_object, "script", automation_file)
+        # print("Base init over")
         logging.basicConfig(level=logging.INFO)
         self.os_info = {}
         self.run_state = {}
@@ -33,7 +37,6 @@ class CAutomation(Automation):
         self.run_state['parent'] = None
         self.run_state['version_info'] = []
         self.run_state['cache'] = False
-
         self.file_with_cached_state = 'cm-cached-state.json'
 
         self.tmp_file_env = 'tmp-env'
@@ -188,7 +191,7 @@ class CAutomation(Automation):
 
           (print_readme) (bool): if True, will print README with all CM steps (deps) to run a given script
 
-          (script_call_prefix) (str): how to call script in logs and READMEs (cm run script)
+          (script_call_prefix) (str): how to call script in logs and READMEs (mlc run script)
 
           (skip_sys_utils) (bool): if True, set env['CM_SKIP_SYS_UTILS']='yes'
                                    to skip CM sys installation
@@ -224,7 +227,7 @@ class CAutomation(Automation):
 
     def _run(self, i):
 
-        from cmind import utils
+        # from cmind import utils
         import copy
         import time
         import shutil
@@ -257,10 +260,11 @@ class CAutomation(Automation):
                 return {
                     'return': 1, 'error': 'Current directory "{}" is not writable - please change it'.format(os.getcwd())}
 
+            '''
             # Check if has default config
-            r = self.cmind.access({'action': 'load',
-                                   'automation': 'cfg,88dce9c160324c5d',
-                                   'artifact': 'default'})
+            r = self.action_object.access({'action': 'load',
+                                           'automation': 'cfg,88dce9c160324c5d',
+                                           'artifact': 'default'})
             if r['return'] == 0:
                 config = r['config']
 
@@ -268,7 +272,7 @@ class CAutomation(Automation):
 
                 if len(script_input) > 0:
                     utils.merge_dicts({'dict1': i, 'dict2': script_input})
-
+            '''
         recursion_int = int(i.get('recursion_int', 0)) + 1
 
         start_time = time.time()
@@ -288,16 +292,6 @@ class CAutomation(Automation):
                                'dict2': cm_input,
                                'append_lists': True,
                                'append_unique': True})
-
-        # Check simplified CMD: cm run script "get compiler"
-        # If artifact has spaces, treat them as tags!
-        artifact = i.get('artifact', '')
-        if ' ' in artifact:  # or ',' in artifact:
-            del (i['artifact'])
-            if 'parsed_artifact' in i:
-                del (i['parsed_artifact'])
-            # Force substitute tags
-            i['tags'] = artifact.replace(' ', ',')
 
         # Check if has extra tags as a second artifact
         # Example: cmr . "_python _tiny"
@@ -336,7 +330,9 @@ class CAutomation(Automation):
                                    'dict2': i['local_' + key],
                                    'append_lists': True,
                                    'append_unique': True})
+                # print(f"Merged local {key}: {i[key]}")
 
+        # print(f"env = {env}")
         add_deps = i.get('ad', {})
         if not add_deps:
             add_deps = i.get('add_deps', {})
@@ -475,8 +471,9 @@ class CAutomation(Automation):
         # Get and cache minimal host OS info to be able to run scripts and
         # manage OS environment
         if len(self.os_info) == 0:
-            r = self.cmind.access({'action': 'get_host_os_info',
-                                   'automation': 'utils,dc2743f8450541e3'})
+            r = get_host_os_info()
+            # r = self.access({'action': 'get_host_os_info',
+            #                       'automation': 'utils,dc2743f8450541e3'})
             if r['return'] > 0:
                 return r
 
@@ -527,10 +524,15 @@ class CAutomation(Automation):
 
         tags_string = i.get('tags', '').strip()
 
-        ii = utils.sub_input(i, self.cmind.cfg['artifact_keys'])
+        # ii = utils.sub_input(i, self.action_object.cfg['artifact_keys'])
 
+        ii = {}
         ii['tags'] = tags_string
         ii['out'] = None
+        for key in ["automation", "parsed_automation",
+                    "artifact", "parsed_artifact"]:
+            if i.get(key):
+                ii[key] = i[key]
 
         # if cm run script without tags/artifact and with --help
         if len(ii.get('parsed_artifact', [])) == 0 and ii.get(
@@ -551,78 +553,53 @@ class CAutomation(Automation):
 
         variation_tags = r['variation_tags']
 
-#        # Print what was searched!
-#        cm_script_info = 'CM script'
-#
-#        x = 'with'
-#        if parsed_script_alias !='' :
-#            cm_script_info += ' '+x+' alias "{}"'.format(parsed_script_alias)
-#            x = 'and'
-#
-#        if len(script_tags)>0:
-#            cm_script_info += ' '+x+' tags "{}"'.format(script_tags_string.replace(',',' '))
-#            x = 'and'
-#
-#        if len(variation_tags)>0:
-#            x_variation_tags = ['_'+v for v in variation_tags]
-#            cm_script_info += ' '+x+' variations "{}"'.format(" ".join(x_variation_tags))
-#
-#        if verbose:
-#            logging.info('')
-#            logging.info(recursion_spaces + '* Searching for ' + cm_script_info)
-#        else:
-#            logging.info(recursion_spaces + '* Running ' + cm_script_info)
+        mlc_script_info = i.get('script_call_prefix', '').strip()
+        if mlc_script_info == '':
+            mlc_script_info = 'mlc run script'
+        if not mlc_script_info.endswith(' '):
+            mlc_script_info += ' '
 
-        cm_script_info = i.get('script_call_prefix', '').strip()
-        if cm_script_info == '':
-            cm_script_info = 'cm run script'
-        if not cm_script_info.endswith(' '):
-            cm_script_info += ' '
-
-        x = '"'
-        y = ' '
+        x = '--tags='
+        y = ','
         if parsed_script_alias != '':
-            cm_script_info += parsed_script_alias
-            x = ' --tags="'
-            y = ','
+            mlc_script_info += parsed_script_alias
+            x = '--tags="'
 
         if len(script_tags) > 0 or len(variation_tags) > 0:
-            cm_script_info += x
+            mlc_script_info += x
 
             if len(script_tags) > 0:
-                cm_script_info += script_tags_string.replace(',', y)
+                mlc_script_info += script_tags_string
 
             if len(variation_tags) > 0:
                 if len(script_tags) > 0:
-                    cm_script_info += ' '
+                    mlc_script_info += ','
 
                 x_variation_tags = ['_' + v for v in variation_tags]
-                cm_script_info += y.join(x_variation_tags)
-
-            cm_script_info += '"'
+                mlc_script_info += y.join(x_variation_tags)
 
 #        if verbose:
 #            logging.info('')
 
         if not run_state.get('tmp_silent', False):
-            logging.info(recursion_spaces + '* ' + cm_script_info)
+            logging.info(recursion_spaces + '* ' + mlc_script_info)
 
         #######################################################################
         # Report if scripts were not found or there is an ambiguity with UIDs
         if not r['found_scripts']:
             return {
-                'return': 1, 'error': 'no scripts were found with above tags (when variations ignored)'}
+                'return': 1, 'error': f"""no scripts were found with tags: {tags_string} (when variations ignored)"""}
 
         if len(list_of_found_scripts) == 0:
             return {
-                'return': 16, 'error': 'no scripts were found with above tags and variations\n' + r.get('warning', '')}
+                'return': 16, 'error': f"""no scripts were found with tags: {tags_string} \n {r.get('warning', '')}"""}
 
         # Sometimes there is an ambiguity when someone adds a script
         # while duplicating a UID. In such case, we will return >1 script
         # and will start searching in the cache ...
         # We are detecing such cases here:
         if len(list_of_found_scripts) > 1 and script_tags_string == '' and parsed_script_alias != '' and '?' not in parsed_script_alias and '*' not in parsed_script_alias:
-            x = 'Ambiguity in the following scripts have the same UID - please change that in _cm.json or _cm.yaml:\n'
+            x = 'Ambiguity in the following scripts have the same UID - please change that in meta.json or meta.yaml:\n'
             for y in list_of_found_scripts:
                 x += ' * ' + y.path + '\n'
 
@@ -706,7 +683,7 @@ class CAutomation(Automation):
             search_cache = {'action': 'find',
                             'automation': self.meta['deps']['cache'],
                             'tags': cache_tags_without_tmp_string}
-            rc = self.cmind.access(search_cache)
+            rc = self.action_object.access(search_cache)
             if rc['return'] > 0:
                 return rc
 
@@ -725,7 +702,7 @@ class CAutomation(Automation):
 
         if len(list_of_found_scripts) > 0:
             # If only tags are used, check if there are no cached scripts with tags - then we will reuse them
-            # The use case: cm run script --tags=get,compiler
+            # The use case: mlc run script --tags=get,compiler
             # CM script will always ask to select gcc,llvm,etc even if any of
             # them will be already cached
             if len(cache_list) > 0:
@@ -791,27 +768,27 @@ class CAutomation(Automation):
         # Set some useful local variables
         script_artifact = list_of_found_scripts[select_script]
 
+        # print(list_of_found_scripts)
         meta = script_artifact.meta
+        # print(meta)
         path = script_artifact.path
 
         # Check min CM version requirement
-        min_cm_version = meta.get('min_cm_version', '').strip()
-        if min_cm_version != '':
-            # Check compare version while avoiding craches for older version
-            if 'compare_versions' in dir(utils):
-                comparison = utils.compare_versions(
-                    current_cm_version, min_cm_version)
-                if comparison < 0:
-                    return {'return': 1, 'error': 'CM script requires CM version >= {} while current CM version is {} - please update using "pip install cmind -U"'.format(
-                        min_cm_version, current_cm_version)}
+        min_mlc_version = meta.get('min_mlc_version', '').strip()
+        if min_mlc_version != '':
+            comparison = compare_versions(
+                current_mlc_version, min_mlc_version)
+            if comparison < 0:
+                return {'return': 1, 'error': 'This script requires MLC version >= {} while current MLC version is {} - please update using "pip install mlcflow -U"'.format(
+                    min_mlc_version, current_mlc_version)}
 
         # Check path to repo
-        script_repo_path = script_artifact.repo_path
+        script_repo_path = script_artifact.repo.path
 
-        script_repo_path_with_prefix = script_artifact.repo_path
-        if script_artifact.repo_meta.get('prefix', '') != '':
+        script_repo_path_with_prefix = script_artifact.repo.path
+        if script_artifact.repo.meta.get('prefix', '') != '':
             script_repo_path_with_prefix = os.path.join(
-                script_repo_path, script_artifact.repo_meta['prefix'])
+                script_repo_path, script_artifact.repo.meta['prefix'])
 
         env['CM_TMP_CURRENT_SCRIPT_REPO_PATH'] = script_repo_path
         env['CM_TMP_CURRENT_SCRIPT_REPO_PATH_WITH_PREFIX'] = script_repo_path_with_prefix
@@ -824,18 +801,18 @@ class CAutomation(Automation):
         run_state['script_id'] = meta['alias'] + "," + meta['uid']
         run_state['script_tags'] = script_tags
         run_state['script_variation_tags'] = variation_tags
-        run_state['script_repo_alias'] = script_artifact.repo_meta.get(
+        run_state['script_repo_alias'] = script_artifact.repo.meta.get(
             'alias', '')
-        run_state['script_repo_git'] = script_artifact.repo_meta.get(
+        run_state['script_repo_git'] = script_artifact.repo.meta.get(
             'git', False)
         run_state['cache'] = meta.get('cache', False)
 
         if not recursion:
             run_state['script_entry_repo_to_report_errors'] = meta.get(
                 'repo_to_report_errors', '')
-            run_state['script_entry_repo_alias'] = script_artifact.repo_meta.get(
+            run_state['script_entry_repo_alias'] = script_artifact.repo.meta.get(
                 'alias', '')
-            run_state['script_entry_repo_git'] = script_artifact.repo_meta.get(
+            run_state['script_entry_repo_git'] = script_artifact.repo.meta.get(
                 'git', False)
 
         deps = meta.get('deps', [])
@@ -851,7 +828,7 @@ class CAutomation(Automation):
         new_env_keys_from_meta = meta.get('new_env_keys', [])
         new_state_keys_from_meta = meta.get('new_state_keys', [])
 
-        found_script_artifact = utils.assemble_cm_object(
+        found_script_artifact = utils.assemble_object(
             meta['alias'], meta['uid'])
 
         found_script_tags = meta.get('tags', [])
@@ -880,7 +857,10 @@ class CAutomation(Automation):
         # Force env from meta['env'] as a CONST
         # (env OVERWRITE)
         script_artifact_env = meta.get('env', {})
+        # print(f"script meta env= {script_artifact_env}")
+
         env.update(script_artifact_env)
+        # print(f"env = {env}")
 
         script_artifact_state = meta.get('state', {})
         utils.merge_dicts({'dict1': state,
@@ -1326,9 +1306,12 @@ class CAutomation(Automation):
                         return r
                     new_env = r['new_env']
 
+                    # print(f"env = {env}, new_env={new_env}")
                     utils.merge_dicts(
                         {'dict1': env, 'dict2': new_env, 'append_lists': True, 'append_unique': True})
 
+                    # print(f"merged_env:")
+                    # utils.print_env(env)
                     new_state = cached_state['new_state']
                     utils.merge_dicts({'dict1': state,
                                        'dict2': new_state,
@@ -1417,11 +1400,12 @@ class CAutomation(Automation):
                 ii = {'action': 'update',
                       'automation': self.meta['deps']['cache'],
                       'search_tags': tmp_tags,
+                      'script_alias': meta['alias'],
                       'tags': ','.join(tmp_tags),
                       'meta': cached_meta,
                       'force': True}
 
-                r = self.cmind.access(ii)
+                r = self.action_object.access(ii)
                 if r['return'] > 0:
                     return r
 
@@ -1493,10 +1477,8 @@ class CAutomation(Automation):
                     version = default_version
 
                     if version_min != '':
-                        ry = self.cmind.access({'action': 'compare_versions',
-                                                'automation': 'utils,dc2743f8450541e3',
-                                                'version1': version,
-                                                'version2': version_min})
+                        ry = compare_versions({'version1': version,
+                                               'version2': version_min})
                         if ry['return'] > 0:
                             return ry
 
@@ -1504,10 +1486,8 @@ class CAutomation(Automation):
                             version = version_min
 
                     if version_max != '':
-                        ry = self.cmind.access({'action': 'compare_versions',
-                                                'automation': 'utils,dc2743f8450541e3',
-                                                'version1': version,
-                                                'version2': version_max})
+                        ry = compare_versions({'version1': version,
+                                               'version2': version_max})
                         if ry['return'] > 0:
                             return ry
 
@@ -1664,6 +1644,8 @@ class CAutomation(Automation):
                         return r
 
             # Check chain of dependencies on other CM scripts
+            # print(f"before deps: ")
+            # utils.print_env(env)
             if len(deps) > 0:
                 logging.debug(recursion_spaces +
                               '  - Checking dependencies on other CM scripts:')
@@ -1681,6 +1663,8 @@ class CAutomation(Automation):
                 if r['return'] > 0:
                     return r
 
+            # print(f"after deps:")
+            # utils.print_env(env)
             # Clean some output files
             clean_tmp_files(clean_files, recursion_spaces)
 
@@ -1795,6 +1779,8 @@ class CAutomation(Automation):
             if 'preprocess' in dir(customize_code) and not fake_run:
 
                 logging.debug(recursion_spaces + '  - Running preprocess ...')
+                # print(f"preprocess_env:")
+                # utils.print_env(env)
 
                 run_script_input['run_state'] = run_state
 
@@ -1830,7 +1816,7 @@ class CAutomation(Automation):
 
                     ii = {
                         'action': 'run',
-                        'automation': utils.assemble_cm_object(self.meta['alias'], self.meta['uid']),
+                        'automation': utils.assemble_object(self.meta['alias'], self.meta['uid']),
                         'recursion_spaces': recursion_spaces + extra_recursion_spaces,
                         'recursion': True,
                         'remembered_selections': remembered_selections,
@@ -1848,7 +1834,7 @@ class CAutomation(Automation):
                     os.chdir(current_path)
 
                     ###########################################################
-                    return self.cmind.access(ii)
+                    return self.action_object.access(ii)
 
                 # If return version
                 if cache:
@@ -1958,6 +1944,8 @@ class CAutomation(Automation):
             new_state_keys = i['force_new_state_keys']
         else:
             new_state_keys = new_state_keys_from_meta
+        # print("Env:")
+        # utils.print_env(env)
 
         r = detect_state_diff(
             env,
@@ -2057,12 +2045,13 @@ class CAutomation(Automation):
 
                 ii = {'action': 'update',
                       'automation': self.meta['deps']['cache'],
-                      'artifact': cached_uid,
+                      'uid': cached_uid,
                       'meta': cached_meta,
+                      'script_alias': meta['alias'],
                       'replace_lists': True,  # To replace tags
                       'tags': ','.join(cached_tags)}
 
-                r = self.cmind.access(ii)
+                r = self.action_object.access(ii)
                 if r['return'] > 0:
                     return r
 
@@ -2285,11 +2274,14 @@ class CAutomation(Automation):
 
     ##########################################################################
     def _fix_cache_paths(self, env):
+        '''
         cm_repos_path = os.environ.get(
             'CM_REPOS', os.path.join(
                 os.path.expanduser("~"), "CM", "repos"))
         current_cache_path = os.path.realpath(
             os.path.join(cm_repos_path, "local", "cache"))
+        '''
+        current_cache_path = self.action_object.local_cache_path
 
         new_env = env  # just a reference
 
@@ -2780,16 +2772,6 @@ class CAutomation(Automation):
 
         console = i.get('out') == 'con'
 
-        # Check simplified CMD: cm run script "get compiler"
-        # If artifact has spaces, treat them as tags!
-        artifact = i.get('artifact', '')
-        if ' ' in artifact:  # or ',' in artifact:
-            del (i['artifact'])
-            if 'parsed_artifact' in i:
-                del (i['parsed_artifact'])
-            # Force substitute tags
-            i['tags'] = artifact.replace(' ', ',')
-
         #######################################################################
         # Process tags to find script(s) and separate variations
         # (not needed to find scripts)
@@ -2836,7 +2818,8 @@ class CAutomation(Automation):
         i['out'] = None
         i['common'] = True
 
-        r = super(CAutomation, self).search(i)
+        i['target_name'] = "script"
+        r = super(ScriptAutomation, self).search(i)
         if r['return'] > 0:
             return r
 
@@ -2934,13 +2917,9 @@ class CAutomation(Automation):
 
         import json
 
-        # Check parsed automation
-        if 'parsed_automation' not in i:
-            return {'return': 1, 'error': 'automation is not specified'}
-
         console = i.get('out') == 'con'
 
-        # Find CM artifact(s)
+        # Find script item(s)
         i['out'] = None
         r = self.search(i)
 
@@ -2992,7 +2971,7 @@ class CAutomation(Automation):
                                 continue
 
                         ii = {'action': 'run',
-                              'automation': 'script',
+                              'target': 'script',
                               'quiet': i.get('quiet'),
                               }
                         test_all_variations = run_input.get(
@@ -3059,7 +3038,7 @@ class CAutomation(Automation):
                                 import copy
                                 ii['env'] = copy.deepcopy(i_env)
                             logging.info(ii)
-                            r = self.cmind.access(ii)
+                            r = self.action_object.access(ii)
                             if r['return'] > 0:
                                 return r
 
@@ -3185,7 +3164,15 @@ class CAutomation(Automation):
         console = i.get('out') == 'con'
 
         # Try to find script artifact by alias and/or tags
-        ii = utils.sub_input(i, self.cmind.cfg['artifact_keys'])
+        # ii = utils.sub_input(i, self.cmind.cfg['artifact_keys'])
+        ii = {}
+        ii['tags'] = tags_string
+        ii['out'] = None
+
+        for key in ["automation", "parsed_automation",
+                    "artifact", "parsed_artifact"]:
+            if i.get(key):
+                ii[key] = i[key]
 
         parsed_artifact = i.get('parsed_artifact', [])
 
@@ -3203,7 +3190,10 @@ class CAutomation(Automation):
                         'error': 'file {} not found'.format(script_name)}
 
         # Move tags from input to meta of the newly created script artifact
-        tags_list = utils.convert_tags_to_list(i)
+        res = utils.convert_tags_to_list(i['tags'])
+        if res['return'] > 0:
+            return res
+        tags_list = res['tags']
         if 'tags' in i:
             del (i['tags'])
 
@@ -3262,7 +3252,9 @@ class CAutomation(Automation):
             #                 'input_description':{}
         }
 
-        fmeta = os.path.join(template_path, self.cmind.cfg['file_cmeta'])
+        fmeta = os.path.join(
+            template_path,
+            self.action_object.cfg['file_cmeta'])
 
         r = utils.load_yaml_and_json(fmeta)
         if r['return'] == 0:
@@ -3308,10 +3300,10 @@ class CAutomation(Automation):
                 del ii[k]
 
         if artifact_repo is not None:
-            ii['artifact'] = utils.assemble_cm_object2(
-                artifact_repo) + ':' + utils.assemble_cm_object2(artifact_obj)
+            ii['artifact'] = utils.assemble_object2(
+                artifact_repo) + ':' + utils.assemble_object2(artifact_obj)
 
-        r_obj = self.cmind.access(ii)
+        r_obj = self.action_object.access(ii)
         if r_obj['return'] > 0:
             return r_obj
 
@@ -3695,9 +3687,10 @@ class CAutomation(Automation):
                     # Not very efficient but allows logging - can be optimized
                     # later
 
+                    # print(f"env about to call deps {d}= {env}")
                     ii = {
                         'action': 'run',
-                        'automation': utils.assemble_cm_object(self.meta['alias'], self.meta['uid']),
+                        'automation': utils.assemble_object(self.meta['alias'], self.meta['uid']),
                         'recursion_spaces': recursion_spaces,  # + extra_recursion_spaces,
                         'recursion': True,
                         'remembered_selections': remembered_selections,
@@ -3719,10 +3712,11 @@ class CAutomation(Automation):
                         if d.get(key):
                             d[key] = {}
 
+                    # print(f"ii = {ii}, d = {d}")
                     utils.merge_dicts(
                         {'dict1': ii, 'dict2': d, 'append_lists': True, 'append_unique': True})
 
-                    r = self.cmind.access(ii)
+                    r = self.action_object.access(ii)
                     if r['return'] > 0:
                         return r
 
@@ -3753,12 +3747,18 @@ class CAutomation(Automation):
             return {'return': 0}
         for dep in dict1:
             if 'tags' in dict1[dep]:
-                dict1[dep]['tags_list'] = utils.convert_tags_to_list(
-                    dict1[dep])
+                res = utils.convert_tags_to_list(
+                    dict1[dep]['tags'])
+                if res['return'] > 0:
+                    return res
+                dict1[dep]['tags_list'] = res['tags']
         for dep in dict2:
             if 'tags' in dict2[dep]:
-                dict2[dep]['tags_list'] = utils.convert_tags_to_list(
-                    dict2[dep])
+                res = utils.convert_tags_to_list(
+                    dict2[dep]['tags'])
+                if res['return'] > 0:
+                    return res
+                dict2[dep]['tags_list'] = res['tags']
         utils.merge_dicts({'dict1': dict1, 'dict2': dict2,
                           'append_lists': True, 'append_unique': True})
         for dep in dict1:
@@ -3789,10 +3789,10 @@ class CAutomation(Automation):
         content += """
 *This README was automatically generated.*
 
-## Install CM
+## Install MLC
 
 ```bash
-pip install cm4mlops
+pip install mlcflow
 ```
 
 Check [this readme](https://github.com/mlcommons/ck/blob/master/docs/installation.md)
@@ -3801,20 +3801,20 @@ with more details about installing CM and dependencies across different platform
 
 """
 
-        current_cm_repo = run_state['script_repo_alias']
-        if current_cm_repo not in [
-                'mlcommons@mlperf-automations', 'mlcommons@cm4mlops']:
-            content += '\ncm pull repo ' + \
+        current_mlc_repo = run_state['script_repo_alias']
+        if current_mlc_repo not in [
+                'mlcommons@mlperf-automations']:
+            content += '\nmlc pull repo ' + \
                 run_state['script_repo_alias'] + '\n'
 
         content += """```
 
-## Run CM script
+## Run Automation script
 
 ```bash
 """
 
-        cmd = "cm run script "
+        cmd = "mlc run script "
 
         for cmd_part in cmd_parts:
             x = '"' if ' ' in cmd_part and not cmd_part.startswith('-') else ''
@@ -3824,7 +3824,7 @@ with more details about installing CM and dependencies across different platform
 
         content += """```
 
-## Run individual CM scripts to customize dependencies (optional)
+## Run individual Automation scripts to customize dependencies (optional)
 
 """
         deps_ = ''
@@ -3837,7 +3837,7 @@ with more details about installing CM and dependencies across different platform
                 xversion = ' --version={}\n'.format(version)
 
             content += "```bash\n"
-            content += "cm run script --tags=" + \
+            content += "mlc run script --tags=" + \
                 dep_tags + "{}\n".format(xversion)
             content += "```\n\n"
 
@@ -3900,7 +3900,7 @@ with more details about installing CM and dependencies across different platform
         run_cmds = []
 
         for dep_tags in deps:
-            run_cmds.append("cm run script --tags=" + dep_tags)
+            run_cmds.append("mlc run script --tags=" + dep_tags)
 
         return run_cmds
 
@@ -4145,7 +4145,7 @@ with more details about installing CM and dependencies across different platform
                                                                 'version': version,
                                                                 'version_min': version_min,
                                                                 'version_max': version_max,
-                                                                'cmind': self.cmind})
+                                                                'action_object': self.action_object})
                                 if ry['return'] > 0:
                                     return ry
 
@@ -4268,7 +4268,7 @@ with more details about installing CM and dependencies across different platform
                                                 'version': version,
                                                 'version_min': version_min,
                                                 'version_max': version_max,
-                                                'cmind': self.cmind})
+                                                'action_object': self.action_object})
                 if ry['return'] > 0:
                     return ry
 
@@ -4699,105 +4699,13 @@ with more details about installing CM and dependencies across different platform
     ############################################################
 
     def dockerfile(self, i):
-        """
-        Generate Dockerfile for CM script.
-
-        Args:
-          (CM input dict):
-
-          (out) (str): if 'con', output to console
-
-          parsed_artifact (list): prepared in CM CLI or CM access function
-                                    [ (artifact alias, artifact UID) ] or
-                                    [ (artifact alias, artifact UID), (artifact repo alias, artifact repo UID) ]
-
-          (repos) (str): list of repositories to search for automations
-
-          (output_dir) (str): output directory (./ by default)
-
-        Returns:
-          (CM return dict):
-
-          * return (int): return code == 0 if no error and >0 if error
-          * (error) (str): error string if return>0
-
-        """
-
-        return utils.call_internal_module(
-            self, __file__, 'module_misc', 'dockerfile', i)
+        from script.docker import dockerfile
+        return dockerfile(self, i)
 
     ############################################################
     def docker(self, i):
-        """
-        Run CM script in an automatically-generated container.
-
-        Args:
-          (CM input dict):
-
-          (out) (str): if 'con', output to console
-
-          (repos) (str): list of repositories to search for automations
-
-          (output_dir) (str): output directory (./ by default)
-
-          (docker) (dict): convert keys into docker_{key} strings for CM >= 2.3.8.1
-
-
-          (docker_skip_build) (bool): do not generate Dockerfiles and do not recreate Docker image (must exist)
-            (docker_noregenerate) (bool): do not generate Dockerfiles
-            (docker_norecreate) (bool): do not recreate Docker image
-
-          (docker_cfg) (str): if True, show all available basic docker configurations, otherwise pre-select one
-          (docker_cfg_uid) (str): if True, select docker configuration with this UID
-
-          (docker_path) (str): where to create or find Dockerfile
-          (docker_gh_token) (str): GitHub token for private repositories
-          (docker_save_script) (str): if !='' name of script to save docker command
-          (docker_interactive) (bool): if True, run in interactive mode
-          (docker_it) (bool): the same as `docker_interactive`
-          (docker_detached) (bool): detach Docker
-          (docker_dt) (bool) the same as `docker_detached`
-
-          (docker_base_image) (str): force base image
-          (docker_os) (str): force docker OS (default: ubuntu)
-          (docker_os_version) (str): force docker OS version (default: 22.04)
-          (docker_image_tag_extra) (str): add extra tag (default:-latest)
-
-          (docker_cm_repo) (str): force CM automation repository when building Docker (default: mlperf-automations)
-          (docker_cm_repos)
-          (docker_cm_repo_flags)
-
-          (dockerfile_env)
-
-          (docker_skip_cm_sys_upgrade) (bool): if True, do not install CM sys deps
-
-          (docker_extra_sys_deps)
-
-          (fake_run_deps)
-          (docker_run_final_cmds)
-
-          (all_gpus)
-          (num_gpus)
-
-          (docker_device)
-
-          (docker_port_maps)
-
-          (docker_shm_size)
-
-          (docker_extra_run_args)
-
-
-        Returns:
-          (CM return dict):
-
-          * return (int): return code == 0 if no error and >0 if error
-          * (error) (str): error string if return>0
-
-        """
-
-        return utils.call_internal_module(
-            self, __file__, 'module_misc', 'docker', i)
+        from script.docker import docker_run
+        return docker_run(self, i)
 
     ##########################################################################
 
@@ -5003,9 +4911,9 @@ def find_cached_script(i):
             recursion_spaces +
             '    - Searching for cached script outputs with the following tags: {}'.format(search_tags))
 
-        r = self_obj.cmind.access({'action': 'find',
-                                   'automation': self_obj.meta['deps']['cache'],
-                                   'tags': search_tags})
+        r = self_obj.action_object.access({'action': 'find',
+                                           'automation': self_obj.meta['deps']['cache'],
+                                           'tags': search_tags})
         if r['return'] > 0:
             return r
 
@@ -5021,7 +4929,7 @@ def find_cached_script(i):
                         'version', '')
 
                     skip_cached_script = check_versions(
-                        self_obj.cmind, tmp_version_in_cached_script, version_min, version_max)
+                        self_obj.action_object, tmp_version_in_cached_script, version_min, version_max)
 
                     if skip_cached_script:
                         return {'return': 2, 'error': 'The version of the previously remembered selection for a given script ({}) mismatches the newly requested one'.format(
@@ -5048,8 +4956,8 @@ def find_cached_script(i):
                     # TODO Need to restrict the below check to within container
                     # env
                     i['tmp_dep_cached_path'] = dependent_cached_path
-                    r = utils.call_internal_module(
-                        self_obj, __file__, 'module_misc', 'get_container_path_script', i)
+                    import script.docker_utils
+                    r = docker_utils.utils.get_container_path_script(i)
                     if not os.path.exists(r['value_env']):
                         # Need to rm this cache entry
                         skip_cached_script = True
@@ -5119,7 +5027,7 @@ def find_cached_script(i):
                     continue
 
                 skip_cached_script = check_versions(
-                    self_obj.cmind, cached_script_version, version_min, version_max)
+                    self_obj.action_object, cached_script_version, version_min, version_max)
 
             if not skip_cached_script:
                 new_found_cached_scripts.append(cached_script)
@@ -5287,7 +5195,7 @@ def check_version_constraints(i):
     version_min = i.get('version_min', '')
     version_max = i.get('version_max', '')
 
-    cmind = i['cmind']
+    action_object = i['action_object']
 
     skip = False
 
@@ -5295,10 +5203,9 @@ def check_version_constraints(i):
         skip = True
 
     if not skip and detected_version != '' and version_min != '':
-        ry = cmind.access({'action': 'compare_versions',
-                           'automation': 'utils,dc2743f8450541e3',
-                           'version1': detected_version,
-                           'version2': version_min})
+        ry = compare_versions({
+            'version1': detected_version,
+            'version2': version_min})
         if ry['return'] > 0:
             return ry
 
@@ -5306,10 +5213,9 @@ def check_version_constraints(i):
             skip = True
 
     if not skip and detected_version != '' and version_max != '':
-        ry = cmind.access({'action': 'compare_versions',
-                           'automation': 'utils,dc2743f8450541e3',
-                           'version1': detected_version,
-                           'version2': version_max})
+        ry = compare_versions({
+            'version1': detected_version,
+            'version2': version_max})
         if ry['return'] > 0:
             return ry
 
@@ -6326,7 +6232,8 @@ def select_script_artifact(lst, text, recursion_spaces,
 ##############################################################################
 
 
-def check_versions(cmind, cached_script_version, version_min, version_max):
+def check_versions(action_object, cached_script_version,
+                   version_min, version_max):
     """
     Internal: check versions of the cached script
     """
@@ -6334,10 +6241,9 @@ def check_versions(cmind, cached_script_version, version_min, version_max):
 
     if cached_script_version != '':
         if version_min != '':
-            ry = cmind.access({'action': 'compare_versions',
-                               'automation': 'utils,dc2743f8450541e3',
-                               'version1': cached_script_version,
-                               'version2': version_min})
+            ry = compare_versions({
+                'version1': cached_script_version,
+                'version2': version_min})
             if ry['return'] > 0:
                 return ry
 
@@ -6345,10 +6251,9 @@ def check_versions(cmind, cached_script_version, version_min, version_max):
                 skip_cached_script = True
 
         if not skip_cached_script and version_max != '':
-            ry = cmind.access({'action': 'compare_versions',
-                               'automation': 'utils,dc2743f8450541e3',
-                               'version1': cached_script_version,
-                               'version2': version_max})
+            ry = compare_versions({
+                'version1': cached_script_version,
+                'version2': version_max})
             if ry['return'] > 0:
                 return ry
 
@@ -6543,10 +6448,10 @@ def dump_repro(repro_prefix, rr, run_state):
 
 
 ##############################################################################
-# Demo to show how to use CM components independently if needed
+# Demo to show how to use ScriptAutomation independently if needed
 if __name__ == "__main__":
-    import cmind
-    auto = CAutomation(cmind, __file__)
+    import mlc
+    auto = ScriptAutomation(Action, __file__)
 
     r = auto.test({'x': 'y'})
 

@@ -1,4 +1,4 @@
-from cmind import utils
+from mlc import utils
 import os
 
 
@@ -9,7 +9,7 @@ def preprocess(i):
     env = i['env']
 
     automation = i['automation']
-    cm = automation.cmind
+    cm = automation.action_object
 
     # If windows, download here otherwise use run.sh
     if os_info['platform'] == 'windows':
@@ -38,26 +38,15 @@ def preprocess(i):
 
             print('')
             print('Downloading from {}'.format(url))
-
-            r = cm.access({'action': 'download_file',
-                           'automation': 'utils,dc2743f8450541e3',
+            env['CM_DAE_FINAL_ENV_NAME'] = 'FILENAME'
+            env['CM_OUTDIRNAME'] = os.getcwd()
+            r = cm.access({'action': 'run',
+                           'target': 'script',
+                           'env': env,
+                           'tags': 'download-and-extract,_extract',
                            'url': url})
             if r['return'] > 0:
                 return r
-
-            filename = r['filename']
-
-            print('Unzipping file {}'.format(filename))
-
-            r = cm.access({'action': 'unzip_file',
-                           'automation': 'utils,dc2743f8450541e3',
-                           'filename': filename})
-            if r['return'] > 0:
-                return r
-
-            if os.path.isfile(filename):
-                print('Removing file {}'.format(filename))
-                os.remove(filename)
 
         print('')
 

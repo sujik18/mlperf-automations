@@ -1,4 +1,4 @@
-from cmind import utils
+from mlc import utils
 import os
 import json
 
@@ -9,7 +9,12 @@ def preprocess(i):
 
     cm_cache_dataset_path = env.get(
         'CM_CUSTOM_CACHE_ENTRY_DATASET_MLCOMMONS_COGNATA_PATH', '').strip()
-    cfg = utils.safe_load_json(cm_cache_dataset_path, 'cfg.json')['meta']
+
+    res = utils.load_json(
+        os.path.join(
+            cm_cache_dataset_path,
+            'cfg.json'))
+    cfg = res.get('meta', {})
     if cfg.get('imported', False):
         env['CM_DATASET_MLCOMMONS_COGNATA_IMPORTED'] = 'yes'
 
@@ -56,7 +61,7 @@ def postprocess(i):
     env = i['env']
 
     automation = i['automation']
-    cm = automation.cmind
+    mlc = automation.action_object
 
     cur_dir = os.getcwd()
 
@@ -78,7 +83,8 @@ def postprocess(i):
     cm_cache_dataset_cfg_file = os.path.join(cm_cache_dataset_path, 'cfg.json')
     env['CM_DATASET_MLCOMMONS_COGNATA_CFG_FILE'] = cm_cache_dataset_cfg_file
 
-    cfg = utils.safe_load_json('', cm_cache_dataset_cfg_file)['meta']
+    res = utils.load_json(cm_cache_dataset_cfg_file)
+    cfg = res.get('meta', {})
 
     dataset_path = cfg.get('real_path', '')
     dataset_path_requested = env.get('CM_DATASET_MLCOMMONS_COGNATA_PATH', '')
@@ -172,13 +178,13 @@ def postprocess(i):
             return {
                 'return': 1, 'error': 'can\'t parse URL for export: {}'.format(first_url)}
 
-        r = cm.access({'action': 'run',
+        r = mlc.access({'action': 'run',
                        'automation': 'script',
-                       'tags': 'download,file,_wget',
-                       'verify': 'no',
-                       'url': first_url_export,
-                       'output_file': file_first_xlsx,
-                       'store': dataset_path1})
+                        'tags': 'download,file,_wget',
+                        'verify': 'no',
+                        'url': first_url_export,
+                        'output_file': file_first_xlsx,
+                        'store': dataset_path1})
         if r['return'] > 0:
             return r
 
@@ -248,13 +254,13 @@ def postprocess(i):
             print('')
             print('Downloading {} ...'.format(url_export))
 
-            r = cm.access({'action': 'run',
+            r = mlc.access({'action': 'run',
                            'automation': 'script',
-                           'tags': 'download,file,_wget',
-                           'verify': 'no',
-                           'url': url_export,
-                           'output_file': serial_file,
-                           'store': dataset_path1})
+                            'tags': 'download,file,_wget',
+                            'verify': 'no',
+                            'url': url_export,
+                            'output_file': serial_file,
+                            'store': dataset_path1})
             if r['return'] > 0:
                 return r
 

@@ -1,6 +1,5 @@
-from cmind import utils
+from mlc import utils
 import os
-import cmind as cm
 
 
 def preprocess(i):

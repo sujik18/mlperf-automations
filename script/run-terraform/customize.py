@@ -1,5 +1,5 @@
-from cmind import utils
-import cmind as cm
+from mlc import utils
+import mlc
 import os
 import shutil
 import json
@@ -62,10 +62,8 @@ def postprocess(i):
                     "sudo apt-get update",
                     "sudo apt-get -y upgrade",
                     "sudo apt-get install -y python3-pip",
-                    "python3 -m pip install cmind",
-                    "source ~/.profile",
-                    "cm pull repo ctuning@mlcommons-ck",
-                    "cm run script --tags=get,sys-utils-cm"
+                    "python3 -m pip install mlc",
+                    "source ~/.profile"
                 ]
             }
             if env.get('CM_TERRAFORM_RUN_COMMANDS'):
@@ -74,7 +72,7 @@ def postprocess(i):
                     cmd = cmd.replace(":", "=")
                     cmd = cmd.replace(";;", ",")
                     run_input['run_cmds'].append(cmd)
-            r = cm.access(run_input)
+            r = mlc.access(run_input)
             if r['return'] > 0:
                 return r
             # print(r)

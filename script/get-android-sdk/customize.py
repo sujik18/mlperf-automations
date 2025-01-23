@@ -1,4 +1,4 @@
-from cmind import utils
+from mlc import utils
 import os
 
 
@@ -78,7 +78,7 @@ def preprocess(i):
         print('')
         print('Downloading from {} ...'.format(package_url))
 
-        cm = automation.cmind
+        cm = automation.action_object
 
         r = cm.access({'action': 'download_file',
                        'automation': 'utils,dc2743f8450541e3',

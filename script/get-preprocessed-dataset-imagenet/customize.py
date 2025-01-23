@@ -1,4 +1,4 @@
-from cmind import utils
+from mlc import utils
 import os
 from os.path import exists
 import shutil

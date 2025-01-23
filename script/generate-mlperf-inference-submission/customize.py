@@ -1,8 +1,8 @@
-from cmind import utils
+from mlc import utils
 import os
 import json
 import shutil
-import cmind
+import mlc
 import sys
 from tabulate import tabulate
 import mlperf_utils
@@ -203,19 +203,19 @@ def generate_submission(env, state, inp, submission_division):
         # check whether the root folder contains the sut infos
         # if yes then there is no need to check for meta files inside
         # individual model folders
-        if "cm-sut-info.json" in os.listdir(result_path):
+        if "mlc-sut-info.json" in os.listdir(result_path):
             sut_info = fill_from_json(
                 os.path.join(
                     result_path,
-                    "cm-sut-info.json"),
+                    "mlc-sut-info.json"),
                 sut_info.keys(),
                 sut_info)
             if sut_info == -1:
                 return {
-                    'return': 1, 'error': f"key value mismatch. Refer the populating dictionary:\n{sut_info}\n and file {os.path.join(result_path, 'cm-sut-info.json')}"}
+                    'return': 1, 'error': f"key value mismatch. Refer the populating dictionary:\n{sut_info}\n and file {os.path.join(result_path, 'mlc-sut-info.json')}"}
             if check_dict_filled(sut_info.keys(), sut_info):
                 print(
-                    f"sut info completely filled from {os.path.join(result_path, 'cm-sut-info.json')}!")
+                    f"sut info completely filled from {os.path.join(result_path, 'mlc-sut-info.json')}!")
 
         # Check whether the root folder contains the model mapping file
         # expects json file in the format:
@@ -597,7 +597,7 @@ def generate_submission(env, state, inp, submission_division):
                                 files.append(f)
                             elif f == "spl.txt":
                                 files.append(f)
-                            elif f in ["README.md", "README-extra.md", "cm-version-info.json", "os_info.json", "cpu_info.json", "pip_freeze.json", "system_info.txt", "cm-deps.png", "cm-deps.mmd"] and mode == "performance":
+                            elif f in ["README.md", "README-extra.md", "mlc-version-info.json", "os_info.json", "cpu_info.json", "pip_freeze.json", "system_info.txt", "mlc-deps.png", "mlc-deps.mmd"] and mode == "performance":
                                 shutil.copy(
                                     os.path.join(
                                         result_mode_path, f), os.path.join(
@@ -694,13 +694,13 @@ def generate_submission(env, state, inp, submission_division):
                     "system_info.txt"))
         else:
             if env.get('CM_GET_PLATFORM_DETAILS', '') == "yes":
-                cm_input = {'action': 'run',
-                            'automation': 'script',
-                            'tags': 'get,platform,details',
-                            'env': {'CM_PLATFORM_DETAILS_FILE_PATH': os.path.join(measurement_path, "system_info.txt")},
-                            'quiet': True
-                            }
-                r = cmind.access(cm_input)
+                mlc_input = {'action': 'run',
+                             'automation': 'script',
+                             'tags': 'get,platform,details',
+                             'env': {'CM_PLATFORM_DETAILS_FILE_PATH': os.path.join(measurement_path, "system_info.txt")},
+                             'quiet': True
+                             }
+                r = mlc.access(mlc_input)
                 if r['return'] > 0:
                     return r
 

@@ -1,4 +1,4 @@
-from cmind import utils
+from mlc import utils
 import os
 import json
 import shutil
@@ -76,28 +76,28 @@ def postprocess(i):
 
     # result, valid, power_result = mlperf_utils.get_result_from_log(env['CM_MLPERF_LAST_RELEASE'], model, scenario, output_dir, mode)
 
-    if not state.get('cm-mlperf-inference-results'):
-        state['cm-mlperf-inference-results'] = {}
-    if not state.get('cm-mlperf-inference-results-last'):
-        state['cm-mlperf-inference-results-last'] = {}
-    if not state['cm-mlperf-inference-results'].get(
+    if not state.get('mlc-mlperf-inference-results'):
+        state['mlc-mlperf-inference-results'] = {}
+    if not state.get('mlc-mlperf-inference-results-last'):
+        state['mlc-mlperf-inference-results-last'] = {}
+    if not state['mlc-mlperf-inference-results'].get(
             state['CM_SUT_CONFIG_NAME']):
-        state['cm-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']] = {}
-    if not state['cm-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
-                                                ].get(model):
-        state['cm-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']][model] = {}
-    if not state['cm-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
-                                                ][model].get(scenario):
-        state['cm-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
-                                             ][model][scenario] = {}
+        state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']] = {}
+    if not state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
+                                                 ].get(model):
+        state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']][model] = {}
+    if not state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
+                                                 ][model].get(scenario):
+        state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
+                                              ][model][scenario] = {}
 
-    state['cm-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
-                                         ][model][scenario][mode] = result
-    state['cm-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
-                                         ][model][scenario][mode + '_valid'] = valid.get(mode, False)
+    state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
+                                          ][model][scenario][mode] = result
+    state['mlc-mlperf-inference-results'][state['CM_SUT_CONFIG_NAME']
+                                          ][model][scenario][mode + '_valid'] = valid.get(mode, False)
 
-    state['cm-mlperf-inference-results-last'][mode] = result
-    state['cm-mlperf-inference-results-last'][mode +
-                                              '_valid'] = valid.get(mode, False)
+    state['mlc-mlperf-inference-results-last'][mode] = result
+    state['mlc-mlperf-inference-results-last'][mode +
+                                               '_valid'] = valid.get(mode, False)
 
     return {'return': 0}

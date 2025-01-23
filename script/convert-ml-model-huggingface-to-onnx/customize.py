@@ -1,4 +1,4 @@
-from cmind import utils
+from mlc import utils
 import os
 
 
@@ -13,7 +13,7 @@ def preprocess(i):
 
     automation = i['automation']
 
-    cm = automation.cmind
+    cm = automation.action_object
 
     path = os.getcwd()
 

@@ -1,5 +1,4 @@
-import cmind as cm
-from cmind import utils
+from mlc import utils
 
 import os
 import subprocess
@@ -17,9 +16,9 @@ def preprocess(i):
     env_repo_tags = env.get('CM_IMPORT_TINYMLPERF_REPO_TAGS', '').strip()
     xtags = '' if env_repo_tags == '' else ',version-' + env_repo_tags
 
-    r = cm.access({'action': 'find',
+    r = mlc.access({'action': 'find',
                    'automation': 'cache,541d6f712a6b464e',
-                   'tags': 'get,repo,mlperf-tiny-results' + xtags})
+                    'tags': 'get,repo,mlperf-tiny-results' + xtags})
     if r['return'] > 0:
         return r
 

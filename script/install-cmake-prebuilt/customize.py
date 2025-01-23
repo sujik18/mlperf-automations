@@ -1,5 +1,6 @@
-from cmind import utils
+from mlc import utils
 import os
+from utils import download_file, unzip_file
 
 
 def preprocess(i):
@@ -70,11 +71,10 @@ def preprocess(i):
     print('')
     print('Downloading from {} ...'.format(package_url))
 
-    cm = automation.cmind
+    cm = automation.action_object
 
-    r = cm.access({'action': 'download_file',
-                   'automation': 'utils,dc2743f8450541e3',
-                   'url': package_url})
+    r = download_file({
+        'url': package_url})
     if r['return'] > 0:
         return r
 
@@ -84,10 +84,9 @@ def preprocess(i):
     if os_info['platform'] == 'windows':
         print('Unzipping file {}'.format(filename))
 
-        r = cm.access({'action': 'unzip_file',
-                       'automation': 'utils,dc2743f8450541e3',
-                       'strip_folders': 1,
-                       'filename': filename})
+        r = unzip_file({
+            'strip_folders': 1,
+            'filename': filename})
         if r['return'] > 0:
             return r
 

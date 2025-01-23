@@ -1,6 +1,6 @@
-from cmind import utils
+from mlc import utils
 import os
-import cmind
+import mlc
 import sys
 
 
@@ -132,7 +132,7 @@ def preprocess(i):
                 if model == "efficientnet" and precision == "uint8":
                     precision = "int8"
 
-                cm_input = {
+                mlc_input = {
                     'action': 'run',
                     'automation': 'script',
                     'tags': f'generate-run-cmds,mlperf,inference,{var}',
@@ -157,37 +157,37 @@ def preprocess(i):
                 }
                 if add_deps_recursive:
                     # script automation will merge adr and add_deps_recursive
-                    cm_input['add_deps_recursive'] = add_deps_recursive
+                    mlc_input['add_deps_recursive'] = add_deps_recursive
 
                 if adr:
                     utils.merge_dicts(
-                        {'dict1': cm_input['adr'], 'dict2': adr, 'append_lists': True, 'append_unique': True})
+                        {'dict1': mlc_input['adr'], 'dict2': adr, 'append_lists': True, 'append_unique': True})
 
                 if env.get('CM_MLPERF_INFERENCE_RESULTS_DIR', '') != '':
-                    cm_input['results_dir'] = env['CM_MLPERF_INFERENCE_RESULTS_DIR']
+                    mlc_input['results_dir'] = env['CM_MLPERF_INFERENCE_RESULTS_DIR']
 
                 if env.get('CM_MLPERF_INFERENCE_SUBMISSION_DIR', '') != '':
-                    cm_input['submission_dir'] = env['CM_MLPERF_INFERENCE_SUBMISSION_DIR']
+                    mlc_input['submission_dir'] = env['CM_MLPERF_INFERENCE_SUBMISSION_DIR']
 
                 if env.get('CM_MLPERF_FIND_PERFORMANCE_MODE', '') == "yes" and env.get(
                         'CM_MLPERF_NO_RERUN', '') != 'yes':
-                    cm_input['rerun'] = True
+                    mlc_input['rerun'] = True
 
                 if env.get('CM_MLPERF_POWER', '') == "yes":
-                    cm_input['power'] = 'yes'
+                    mlc_input['power'] = 'yes'
 
                 if env.get('CM_MLPERF_ACCURACY_MODE', '') == "yes":
-                    cm_input['mode'] = 'accuracy'
-                    print(cm_input)
-                    r = cmind.access(cm_input)
+                    mlc_input['mode'] = 'accuracy'
+                    print(mlc_input)
+                    r = cmind.access(mlc_input)
                     if r['return'] > 0:
                         return r
 
                 if env.get('CM_MLPERF_PERFORMANCE_MODE', '') == "yes":
-                    cm_input['mode'] = 'performance'
+                    mlc_input['mode'] = 'performance'
 
-                    print(cm_input)
-                    r = cmind.access(cm_input)
+                    print(mlc_input)
+                    r = mlc.access(mlc_input)
                     if r['return'] > 0:
                         return r
 
@@ -202,7 +202,7 @@ def preprocess(i):
                     'v': verbose,
                     'f': 'True'
         }
-        r = cmind.access(clean_input)
+        r = mlc.access(clean_input)
         # if r['return'] > 0:
         #    return r
     return {'return': 0}

@@ -1,4 +1,4 @@
-from cmind import utils
+from mlc import utils
 import os
 
 
@@ -10,7 +10,7 @@ def preprocess(i):
 
     automation = i['automation']
 
-    cm = automation.cmind
+    cm = automation.action_object
 
     path = os.path.dirname(env['CM_ML_MODEL_FILE_WITH_PATH'])
 

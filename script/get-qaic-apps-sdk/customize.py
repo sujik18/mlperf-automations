@@ -1,4 +1,4 @@
-from cmind import utils
+from mlc import utils
 import os
 import xml.etree.ElementTree as et
 

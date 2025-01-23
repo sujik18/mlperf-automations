@@ -1,4 +1,4 @@
-from cmind import utils
+from mlc import utils
 import os
 
 lscpu_out = 'tmp-lscpu.out'
@@ -21,7 +21,7 @@ def postprocess(i):
     os_info = i['os_info']
 
     automation = i['automation']
-    logger = automation.cmind.logger
+    logger = automation.action_object.logger
 
     if os_info['platform'] == 'windows':
         sys = []

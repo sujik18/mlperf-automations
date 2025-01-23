@@ -1,5 +1,5 @@
-from cmind import utils
-import cmind as cm
+from mlc import utils
+import mlc
 import os
 import subprocess
 from os.path import exists
@@ -19,14 +19,14 @@ def preprocess(i):
 
     if 'CM_DOCKER_RUN_SCRIPT_TAGS' not in env:
         env['CM_DOCKER_RUN_SCRIPT_TAGS'] = "run,docker,container"
-        CM_RUN_CMD = "cm version"
+        CM_RUN_CMD = "mlc version"
     else:
-        CM_RUN_CMD = "cm run script --tags=" + \
+        CM_RUN_CMD = "mlc run script --tags=" + \
             env['CM_DOCKER_RUN_SCRIPT_TAGS'] + ' --quiet'
 
-    r = cm.access({'action': 'search',
+    r = mlc.access({'action': 'search',
                    'automation': 'script',
-                   'tags': env['CM_DOCKER_RUN_SCRIPT_TAGS']})
+                    'tags': env['CM_DOCKER_RUN_SCRIPT_TAGS']})
     if len(r['list']) < 1:
         raise Exception(
             'CM script with tags ' +
@@ -386,7 +386,7 @@ def update_docker_info(env):
     if env.get('CM_DOCKER_IMAGE_NAME', '') != '':
         docker_image_name = env['CM_DOCKER_IMAGE_NAME']
     else:
-        docker_image_name = 'cm-script-' + \
+        docker_image_name = 'mlc-script-' + \
             env['CM_DOCKER_RUN_SCRIPT_TAGS'].replace(
                 ',', '-').replace('_', '-').replace('+', 'plus')
         env['CM_DOCKER_IMAGE_NAME'] = docker_image_name

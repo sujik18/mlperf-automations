@@ -1,9 +1,8 @@
-from cmind import utils
+from mlc import utils
 import os
 import json
 import shutil
 import subprocess
-import cmind as cm
 import sys
 
 

@@ -1,9 +1,9 @@
-from cmind import utils
+from mlc import utils
 import os
 import json
 import shutil
 import subprocess
-import cmind as cm
+import mlc
 import copy
 import mlperf_utils
 
@@ -275,7 +275,7 @@ def preprocess(i):
                 for k in docker_extra_input:
                     ii[k] = docker_extra_input[k]
 
-            r = cm.access(ii)
+            r = mlc.access(ii)
             if r['return'] > 0:
                 return r
 
@@ -308,7 +308,7 @@ def preprocess(i):
                 if action == "docker":
                     for k in docker_extra_input:
                         ii[k] = docker_extra_input[k]
-                r = cm.access(ii)
+                r = mlc.access(ii)
                 if r['return'] > 0:
                     return r
                 if state.get('docker', {}):
@@ -320,9 +320,9 @@ def preprocess(i):
         CMD = f"docker kill {container_id}"
         docker_out = subprocess.check_output(CMD, shell=True).decode("utf-8")
 
-    if state.get("cm-mlperf-inference-results"):
-        # print(state["cm-mlperf-inference-results"])
-        for sut in state["cm-mlperf-inference-results"]:  # only one sut will be there
+    if state.get("mlc-mlperf-inference-results"):
+        # print(state["mlc-mlperf-inference-results"])
+        for sut in state["mlc-mlperf-inference-results"]:  # only one sut will be there
             # Better to do this in a stand alone CM script with proper deps but
             # currently we manage this by modifying the sys path of the python
             # executing CM
@@ -330,7 +330,7 @@ def preprocess(i):
 
             print(sut)
             result_table, headers = mlperf_utils.get_result_table(
-                state["cm-mlperf-inference-results"][sut])
+                state["mlc-mlperf-inference-results"][sut])
             print(tabulate(result_table, headers=headers, tablefmt="pretty"))
 
             print(
