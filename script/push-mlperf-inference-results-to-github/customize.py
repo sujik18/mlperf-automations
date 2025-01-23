@@ -32,9 +32,11 @@ def preprocess(i):
     env['CM_MLPERF_RESULTS_REPO_COMMIT_MESSAGE'] = env.get(
         'CM_MLPERF_RESULTS_REPO_COMMIT_MESSAGE', 'Added new results')
 
-    p = parse(repo)
     if env.get('CM_GITHUB_PAT', '') != '':
+        p = parse(repo)
         token = env['CM_GITHUB_PAT']
+        if token == 'pat':
+            token = "$PAT"
         env['CM_GIT_PUSH_CMD'] = f"""git push https://x-access-token:{token}@{p.host}/{p.owner}/{p.repo}"""
     else:
         env['CM_GIT_PUSH_CMD'] = "git push"
