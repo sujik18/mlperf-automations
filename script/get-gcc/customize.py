@@ -44,7 +44,7 @@ def preprocess(i):
 
 
 def detect_version(i):
-    r = i['automation'].parse_version({'match_text': r' \(.*\)\s*([\d.]+)',
+    r = i['automation'].parse_version({'match_text': r'\s+([\d.]+)',
                                        'group_number': 1,
                                        'env_key': 'CM_GCC_VERSION',
                                        'which_env': i['env']})
