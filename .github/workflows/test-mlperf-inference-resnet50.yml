@@ -64,8 +64,6 @@ jobs:
         secrets: |-
           ubwkjh-Ii8UJDpG2EoU6GQ/field/Access Token > env:PAT  # Fetch PAT and store in environment variable
     - name: Push Results
-      env:
-        PAT: ${{ env.PAT }}
       if: github.repository_owner == 'mlcommons'
       run: |
         git config --global user.name mlcommons-bot
@@ -74,6 +72,6 @@ jobs:
         cd tmp
         echo "hello" >> README.md
         git commit -a -m "Test commit"
-        git push https://x-access-token:$PAT@github.com/mlcommons/mlperf_inference_test_submissions_v5.0
+        git push https://x-access-token:${{ env.PAT }}@github.com/mlcommons/mlperf_inference_test_submissions_v5.0
 
         # mlcr --tags=push,github,mlperf,inference,submission --env.CM_GITHUB_PAT=pat --repo_url=https://github.com/mlcommons/mlperf_inference_test_submissions_v5.0 --repo_branch=auto-update --commit_message="Results from R50 GH action on ${{ matrix.os }}" --quiet
