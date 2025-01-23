@@ -2919,7 +2919,7 @@ class ScriptAutomation(Automation):
 
         console = i.get('out') == 'con'
 
-        # Find CM artifact(s)
+        # Find script item(s)
         i['out'] = None
         r = self.search(i)
 
@@ -2971,7 +2971,7 @@ class ScriptAutomation(Automation):
                                 continue
 
                         ii = {'action': 'run',
-                              'automation': 'script',
+                              'target': 'script',
                               'quiet': i.get('quiet'),
                               }
                         test_all_variations = run_input.get(
