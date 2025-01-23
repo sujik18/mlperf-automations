@@ -2917,9 +2917,6 @@ class ScriptAutomation(Automation):
 
         import json
 
-        # Check parsed automation
-        if 'parsed_automation' not in i:
-            return {'return': 1, 'error': 'automation is not specified'}
 
         console = i.get('out') == 'con'
 
