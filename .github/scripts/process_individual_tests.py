@@ -23,7 +23,7 @@ for file in files:
     uid = data['uid']
 
     ii = {
-        'action': 'test', 'automation': 'script', 'artifact': uid, 'quiet': 'yes', 'out': 'con'
+        'action': 'test', 'target': 'script', 'item': uid, 'quiet': 'yes', 'out': 'con'
     }
     if os.environ.get('DOCKER_CM_REPO', '') != '':
         ii['docker_cm_repo'] = os.environ['DOCKER_CM_REPO']
