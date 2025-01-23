@@ -1,6 +1,6 @@
 import sys
 import os
-import cmind as cm
+import mlc
 import check as checks
 import json
 import yaml
@@ -11,7 +11,7 @@ for file in files:
     print(file)
     if not os.path.isfile(file) or not "script" in file:
         continue
-    if not file.endswith("_cm.json") and not file.endswith("_cm.yaml"):
+    if not file.endswith("meta.json") and not file.endswith("meta.yaml"):
         continue
     script_path = os.path.dirname(file)
     f = open(file)
@@ -33,6 +33,6 @@ for file in files:
     if os.environ.get('TEST_INPUT_INDEX', '') != '':
         ii['test_input_index'] = os.environ['TEST_INPUT_INDEX']
     print(ii)
-    r = cm.access(ii)
-
-    checks.check_return(r)
+    ret = mlc.access(ii)
+    if ret['return'] > 0:
+        raise Exception(r['error'])
