@@ -156,8 +156,8 @@ for batch_idx in range(batch_count):
             i) for i in range(batch_size)]
 
     # Grigori: trick to test models:
-    if os.environ.get('CM_IMAGE', '') != '':
-        batch_filenames = [os.environ['CM_IMAGE']]
+    if os.environ.get('MLC_IMAGE', '') != '':
+        batch_filenames = [os.environ['MLC_IMAGE']]
 
     batch_data = load_a_batch(batch_filenames)
     # print(batch_data.shape)

@@ -14,4 +14,4 @@ uid: b16ed087abab459c
 variations:
   package.#:
     env:
-      CM_PIP_PACKAGE_NAME: "#"
+      MLC_PIP_PACKAGE_NAME: "#"

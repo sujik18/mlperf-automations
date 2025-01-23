@@ -5,7 +5,7 @@ cache: true
 category: AI/ML datasets
 new_env_keys:
 - +PYTHONPATH
-- CM_DATASET_IMAGENET_HELPER_PATH
+- MLC_DATASET_IMAGENET_HELPER_PATH
 tags:
 - get
 - imagenet

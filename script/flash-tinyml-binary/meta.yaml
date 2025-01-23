@@ -14,13 +14,13 @@ deps:
   tags: get,zephyr-sdk
 - inherit_variation_tags: 'True'
   skip_if_env:
-    CM_TINY_BUILD_DIR:
+    MLC_TINY_BUILD_DIR:
     - 'on'
   tags: reproduce,tiny,mlperf
 input_mapping:
-  build_dir: CM_TINY_BUILD_DIR
+  build_dir: MLC_TINY_BUILD_DIR
 local_env_keys:
-- CM_*
+- MLC_*
 tags:
 - flash
 - tiny

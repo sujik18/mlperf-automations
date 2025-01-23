@@ -13,27 +13,27 @@ deps:
 - tags: get,generic-sys-util,_rsync
 input_description: {}
 input_mapping:
-  data_dir: CM_DATA_DIR
+  data_dir: MLC_DATA_DIR
 new_env_keys:
-- CM_MLPERF_TRAINING_RESNET_*
-- CM_MLPERF_TRAINING_NVIDIA_RESNET_PREPROCESSED_PATH
+- MLC_MLPERF_TRAINING_RESNET_*
+- MLC_MLPERF_TRAINING_NVIDIA_RESNET_PREPROCESSED_PATH
 new_state_keys: []
 post_deps: []
 posthook_deps: []
 prehook_deps:
 - env:
-    CM_DOWNLOAD_CHECKSUM: ''
-    CM_DOWNLOAD_FINAL_ENV_NAME: CM_IMAGENET_LABELS_FILE_PATH
-    CM_DOWNLOAD_PATH: <<<CM_IMAGENET_LABELS_DOWNLOAD_DIR>>>
-    CM_DOWNLOAD_RENAME_FILE: synset_labels.txt
+    MLC_DOWNLOAD_CHECKSUM: ''
+    MLC_DOWNLOAD_FINAL_ENV_NAME: MLC_IMAGENET_LABELS_FILE_PATH
+    MLC_DOWNLOAD_PATH: <<<MLC_IMAGENET_LABELS_DOWNLOAD_DIR>>>
+    MLC_DOWNLOAD_RENAME_FILE: synset_labels.txt
   extra_cache_tags: imagenet,val,labels
   force_cache: true
   tags: download,file,_wget,_url.https://raw.githubusercontent.com/tensorflow/models/master/research/slim/datasets/imagenet_2012_validation_synset_labels.txt
 - enable_if_env:
-    CM_TMP_VARIATION:
+    MLC_TMP_VARIATION:
     - reference
   env:
-    CM_DOWNLOAD_FINAL_ENV_NAME: CM_IMAGENET_TO_GCS_SCRIPT_PATH
+    MLC_DOWNLOAD_FINAL_ENV_NAME: MLC_IMAGENET_TO_GCS_SCRIPT_PATH
   extra_cache_tags: imagenet_to_gcs,script
   force_cache: true
   tags: download,file,_wget,_url.https://raw.githubusercontent.com/tensorflow/tpu/master/tools/datasets/imagenet_to_gcs.py
@@ -48,7 +48,7 @@ uid: d42a8a8ca2704f9f
 variations:
   mxnet.#:
     env:
-      CM_MXNET_VERSION: '#'
+      MLC_MXNET_VERSION: '#'
   nvidia:
     default: true
     deps:
@@ -56,11 +56,11 @@ variations:
       - nvidia-training-code
       tags: get,mlperf,training,nvidia,code
     - env:
-        CM_GIT_CHECKOUT_PATH_ENV_NAME: CM_NVIDIA_DEEPLEARNING_EXAMPLES_REPO_PATH
+        MLC_GIT_CHECKOUT_PATH_ENV_NAME: MLC_NVIDIA_DEEPLEARNING_EXAMPLES_REPO_PATH
       extra_cache_tags: nvidia,deeplearning_examples
       tags: get,git,repo,_repo.https://github.com/NVIDIA/DeepLearningExamples,_sha.81ee705868a11d6fe18c12d237abe4a08aab5fd6
     env:
-      CM_TMP_VARIATION: nvidia
+      MLC_TMP_VARIATION: nvidia
     group: implementation
   reference:
     deps:
@@ -73,6 +73,6 @@ variations:
     - tags: get,generic-python-lib,_tensorflow
     - tags: get,generic-python-lib,_protobuf
     env:
-      CM_TMP_VARIATION: reference
+      MLC_TMP_VARIATION: reference
     group: implementation
 versions: {}

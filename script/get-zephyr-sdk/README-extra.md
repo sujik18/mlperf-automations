@@ -6,8 +6,8 @@ This [CM script](https://github.com/mlcommons/ck/blob/master/cm/docs/specs/scrip
 cm run script --tags=get,zephyr-sdk --version=0.13.2
 ```
 ## Exported Variables
-1. [ZEPHYR_SDK_INSTALL_DIR](https://github.com/mlcommons/ck/blob/master/cm-mlops/script/get-zephyr-sdk/customize.py#L13): Location in CM cache where Zephyr SDK is installed. 
-2. [ZEPHYR_TOOLCHAIN_VARIANT](https://github.com/mlcommons/ck/blob/master/cm-mlops/script/get-zephyr-sdk/customize.py#L12)
+1. [ZEPHYR_SDK_INSTALL_DIR](https://github.com/mlcommons/ck/blob/master/mlc-mlops/script/get-zephyr-sdk/customize.py#L13): Location in CM cache where Zephyr SDK is installed. 
+2. [ZEPHYR_TOOLCHAIN_VARIANT](https://github.com/mlcommons/ck/blob/master/mlc-mlops/script/get-zephyr-sdk/customize.py#L12)
 
 ## Supported Versions
 1. 0.13.1

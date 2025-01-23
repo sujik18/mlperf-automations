@@ -17,70 +17,70 @@ tags:
 
 # Default environment
 default_env:
-  CM_MLPERF_LOADGEN_MODE: accuracy
-  CM_MLPERF_LOADGEN_SCENARIO: Offline
-  CM_MLPERF_LOADGEN_BUILD_FROM_SRC: 'on'
-  CM_OUTPUT_FOLDER_NAME: test_results
-  CM_MLPERF_RUN_STYLE: test
-  CM_TEST_QUERY_COUNT: '10'
-  CM_MLPERF_QUANTIZATION: off
-  CM_MLPERF_SUT_NAME_IMPLEMENTATION_PREFIX: reference
-  CM_MLPERF_SUT_NAME_RUN_CONFIG_SUFFIX: ''
+  MLC_MLPERF_LOADGEN_MODE: accuracy
+  MLC_MLPERF_LOADGEN_SCENARIO: Offline
+  MLC_MLPERF_LOADGEN_BUILD_FROM_SRC: 'on'
+  MLC_OUTPUT_FOLDER_NAME: test_results
+  MLC_MLPERF_RUN_STYLE: test
+  MLC_TEST_QUERY_COUNT: '10'
+  MLC_MLPERF_QUANTIZATION: off
+  MLC_MLPERF_SUT_NAME_IMPLEMENTATION_PREFIX: reference
+  MLC_MLPERF_SUT_NAME_RUN_CONFIG_SUFFIX: ''
 
 
 # Map script inputs to environment variables
 input_mapping:
-  device: CM_MLPERF_DEVICE
-  count: CM_MLPERF_LOADGEN_QUERY_COUNT
-  docker: CM_RUN_DOCKER_CONTAINER
-  hw_name: CM_HW_NAME
+  device: MLC_MLPERF_DEVICE
+  count: MLC_MLPERF_LOADGEN_QUERY_COUNT
+  docker: MLC_RUN_DOCKER_CONTAINER
+  hw_name: MLC_HW_NAME
   imagenet_path: IMAGENET_PATH
-  max_batchsize: CM_MLPERF_LOADGEN_MAX_BATCHSIZE
-  mode: CM_MLPERF_LOADGEN_MODE
-  num_threads: CM_NUM_THREADS
-  threads: CM_NUM_THREADS
-  dataset: CM_MLPERF_VISION_DATASET_OPTION
-  model: CM_MLPERF_CUSTOM_MODEL_PATH
+  max_batchsize: MLC_MLPERF_LOADGEN_MAX_BATCHSIZE
+  mode: MLC_MLPERF_LOADGEN_MODE
+  num_threads: MLC_NUM_THREADS
+  threads: MLC_NUM_THREADS
+  dataset: MLC_MLPERF_VISION_DATASET_OPTION
+  model: MLC_MLPERF_CUSTOM_MODEL_PATH
   output_dir: OUTPUT_BASE_DIR
-  power: CM_MLPERF_POWER
-  power_server: CM_MLPERF_POWER_SERVER_ADDRESS
-  ntp_server: CM_MLPERF_POWER_NTP_SERVER
-  max_amps: CM_MLPERF_POWER_MAX_AMPS
-  max_volts: CM_MLPERF_POWER_MAX_VOLTS
-  regenerate_files: CM_REGENERATE_MEASURE_FILES
-  rerun: CM_RERUN
-  scenario: CM_MLPERF_LOADGEN_SCENARIO
-  test_query_count: CM_TEST_QUERY_COUNT
-  clean: CM_MLPERF_CLEAN_SUBMISSION_DIR
-  dataset_args: CM_MLPERF_EXTRA_DATASET_ARGS
-  target_qps: CM_MLPERF_LOADGEN_TARGET_QPS
-  target_latency: CM_MLPERF_LOADGEN_TARGET_LATENCY
-  offline_target_qps: CM_MLPERF_LOADGEN_OFFLINE_TARGET_QPS
-  server_target_qps: CM_MLPERF_LOADGEN_SERVER_TARGET_QPS
-  singlestream_target_latency: CM_MLPERF_LOADGEN_SINGLESTREAM_TARGET_LATENCY
-  multistream_target_latency: CM_MLPERF_LOADGEN_MULTISTREAM_TARGET_LATENCY
-  output: CM_MLPERF_OUTPUT_DIR
+  power: MLC_MLPERF_POWER
+  power_server: MLC_MLPERF_POWER_SERVER_ADDRESS
+  ntp_server: MLC_MLPERF_POWER_NTP_SERVER
+  max_amps: MLC_MLPERF_POWER_MAX_AMPS
+  max_volts: MLC_MLPERF_POWER_MAX_VOLTS
+  regenerate_files: MLC_REGENERATE_MEASURE_FILES
+  rerun: MLC_RERUN
+  scenario: MLC_MLPERF_LOADGEN_SCENARIO
+  test_query_count: MLC_TEST_QUERY_COUNT
+  clean: MLC_MLPERF_CLEAN_SUBMISSION_DIR
+  dataset_args: MLC_MLPERF_EXTRA_DATASET_ARGS
+  target_qps: MLC_MLPERF_LOADGEN_TARGET_QPS
+  target_latency: MLC_MLPERF_LOADGEN_TARGET_LATENCY
+  offline_target_qps: MLC_MLPERF_LOADGEN_OFFLINE_TARGET_QPS
+  server_target_qps: MLC_MLPERF_LOADGEN_SERVER_TARGET_QPS
+  singlestream_target_latency: MLC_MLPERF_LOADGEN_SINGLESTREAM_TARGET_LATENCY
+  multistream_target_latency: MLC_MLPERF_LOADGEN_MULTISTREAM_TARGET_LATENCY
+  output: MLC_MLPERF_OUTPUT_DIR
 
 # Duplicate CM environment variables to the ones used in native apps
 env_key_mappings:
-  CM_HOST_: HOST_
-  CM_ML_: ML_
-  CM_MLPERF_TVM: MLPERF_TVM
-  CM_MLPERF_DELETE: MLPERF_DELETE
+  MLC_HOST_: HOST_
+  MLC_ML_: ML_
+  MLC_MLPERF_TVM: MLPERF_TVM
+  MLC_MLPERF_DELETE: MLPERF_DELETE
 
 # Env keys which are exposed to higher level scripts
 new_env_keys:
-  - CM_MLPERF_*
-  - CM_DATASET_*
-  - CM_HW_NAME
-  - CM_COGNATA_ACCURACY_DUMP_FILE
-  - CM_OUTPUT_PREDICTIONS_PATH
-  - CM_ML_MODEL_*
-  - CM_MAX_EXAMPLES
+  - MLC_MLPERF_*
+  - MLC_DATASET_*
+  - MLC_HW_NAME
+  - MLC_COGNATA_ACCURACY_DUMP_FILE
+  - MLC_OUTPUT_PREDICTIONS_PATH
+  - MLC_ML_MODEL_*
+  - MLC_MAX_EXAMPLES
 
 new_state_keys:
   - mlperf-inference-implementation
-  - CM_SUT_*
+  - MLC_SUT_*
 
 # Dependencies on other CM scripts
 deps:
@@ -123,10 +123,10 @@ deps:
     - ml-engine-onnxruntime
     - onnxruntime
     enable_if_env:
-      CM_MLPERF_BACKEND:
+      MLC_MLPERF_BACKEND:
       - onnxruntime
       - tvm-onnx
-      CM_MLPERF_DEVICE:
+      MLC_MLPERF_DEVICE:
       - cpu
       - rocm
 
@@ -135,36 +135,36 @@ deps:
     names:
     - ml-engine-onnxruntime-cuda
     enable_if_env:
-      CM_MLPERF_BACKEND:
+      MLC_MLPERF_BACKEND:
       - onnxruntime
       - tvm-onnx
-      CM_MLPERF_DEVICE:
+      MLC_MLPERF_DEVICE:
       - gpu
     skip_if_env:
-      CM_MODEL:
+      MLC_MODEL:
       - 3d-unet-99
       - 3d-unet-99.9
 
   ## resnet50 and 3d-unet need both onnxruntime and onnxruntime_gpu on cuda
   - tags: get,generic-python-lib,_onnxruntime
     enable_if_env:
-      CM_MLPERF_BACKEND:
+      MLC_MLPERF_BACKEND:
       - onnxruntime
-      CM_MLPERF_DEVICE:
+      MLC_MLPERF_DEVICE:
       - gpu
-      CM_MODEL:
+      MLC_MODEL:
       - 3d-unet-99
       - 3d-unet-99.9
       - resnet50
   - tags: get,generic-python-lib,_onnxruntime_gpu
     env:
-      CM_GENERIC_PYTHON_PIP_UNINSTALL_DEPS: ""
+      MLC_GENERIC_PYTHON_PIP_UNINSTALL_DEPS: ""
     enable_if_env:
-      CM_MLPERF_BACKEND:
+      MLC_MLPERF_BACKEND:
       - onnxruntime
-      CM_MLPERF_DEVICE:
+      MLC_MLPERF_DEVICE:
       - gpu
-      CM_MODEL:
+      MLC_MODEL:
       - 3d-unet-99
       - 3d-unet-99.9
       - resnet50
@@ -175,10 +175,10 @@ deps:
     - ml-engine-pytorch
     - pytorch
     enable_if_env:
-      CM_MLPERF_BACKEND:
+      MLC_MLPERF_BACKEND:
       - pytorch
       - tvm-pytorch
-      CM_MLPERF_DEVICE:
+      MLC_MLPERF_DEVICE:
       - cpu
       - rocm
 
@@ -188,11 +188,11 @@ deps:
     - ml-engine-pytorch
     - pytorch
     enable_if_env:
-      CM_MLPERF_BACKEND:
+      MLC_MLPERF_BACKEND:
       - pytorch
       - tvm-pytorch
       - ray
-      CM_MLPERF_DEVICE:
+      MLC_MLPERF_DEVICE:
       - gpu
 
   ## Torchvision (CPU)
@@ -200,10 +200,10 @@ deps:
     names:
     - ml-engine-torchvision
     enable_if_env:
-      CM_MLPERF_BACKEND:
+      MLC_MLPERF_BACKEND:
       - pytorch
       - tvm-pytorch
-      CM_MLPERF_DEVICE:
+      MLC_MLPERF_DEVICE:
       - cpu
 
   ## Torchvision (CUDA)
@@ -211,11 +211,11 @@ deps:
     names:
     - ml-engine-torchvision
     enable_if_env:
-      CM_MLPERF_BACKEND:
+      MLC_MLPERF_BACKEND:
       - pytorch
       - tvm-pytorch
       - ray
-      CM_MLPERF_DEVICE:
+      MLC_MLPERF_DEVICE:
       - gpu
 
   ## tensorrt
@@ -223,7 +223,7 @@ deps:
     names:
     - ml-engine-tensorrt
     enable_if_env:
-      CM_MLPERF_BACKEND:
+      MLC_MLPERF_BACKEND:
       - ray
 
   ## torch_tensorrt
@@ -231,7 +231,7 @@ deps:
     names:
     - ml-engine-torch_tensorrt
     enable_if_env:
-      CM_MLPERF_BACKEND:
+      MLC_MLPERF_BACKEND:
       - ray
 
   ## Ray
@@ -239,7 +239,7 @@ deps:
     names:
     - ray
     enable_if_env:
-      CM_MLPERF_BACKEND:
+      MLC_MLPERF_BACKEND:
         - ray
 
 
@@ -250,7 +250,7 @@ deps:
     - ml-engine-tensorflow
     - tensorflow
     enable_if_env:
-      CM_MLPERF_BACKEND:
+      MLC_MLPERF_BACKEND:
       - tf
       - tflite
 
@@ -267,7 +267,7 @@ deps:
   # Install MLPerf loadgen
   - tags: get,generic-python-lib,_package.mlcommons-loadgen
     enable_if_env:
-      CM_MLPERF_LOADGEN_BUILD_FROM_SRC:
+      MLC_MLPERF_LOADGEN_BUILD_FROM_SRC:
         - "off"
     names:
     - loadgen
@@ -275,7 +275,7 @@ deps:
 
   - tags: get,loadgen
     enable_if_any_env:
-      CM_MLPERF_LOADGEN_BUILD_FROM_SRC:
+      MLC_MLPERF_LOADGEN_BUILD_FROM_SRC:
         - "on"
     names:
     - loadgen
@@ -287,7 +287,7 @@ deps:
 #  # Download MLPerf inference source
 #  - tags: get,mlcommons,inference,src
 #    env:
-#      CM_GET_MLPERF_IMPLEMENTATION_ONLY: 'yes'
+#      MLC_GET_MLPERF_IMPLEMENTATION_ONLY: 'yes'
 #    names:
 #    - mlperf-implementation
 
@@ -301,7 +301,7 @@ prehook_deps:
     - remote-run-cmds
     tags: remote,run,cmds
     enable_if_env:
-      CM_ASSH_RUN_COMMANDS:
+      MLC_ASSH_RUN_COMMANDS:
       - "on"
 
 
@@ -311,7 +311,7 @@ posthook_deps:
     - mlperf-runner
     tags: benchmark-mlperf
     skip_if_env:
-      CM_MLPERF_SKIP_RUN:
+      MLC_MLPERF_SKIP_RUN:
       - "on"
 
 
@@ -331,23 +331,23 @@ variations:
     group: implementation
     default: true
     env:
-      CM_MLPERF_PYTHON: 'yes'
-      CM_MLPERF_IMPLEMENTATION: reference
+      MLC_MLPERF_PYTHON: 'yes'
+      MLC_MLPERF_IMPLEMENTATION: reference
 
 
   # ML engine
   onnxruntime:
     group: framework
     env:
-      CM_MLPERF_BACKEND: onnxruntime
+      MLC_MLPERF_BACKEND: onnxruntime
 
   onnxruntime,cpu:
     env:
-      CM_MLPERF_BACKEND_VERSION: <<<CM_ONNXRUNTIME_VERSION>>>
+      MLC_MLPERF_BACKEND_VERSION: <<<MLC_ONNXRUNTIME_VERSION>>>
 
   onnxruntime,cuda:
     env:
-      CM_MLPERF_BACKEND_VERSION: <<<CM_ONNXRUNTIME_GPU_VERSION>>>
+      MLC_MLPERF_BACKEND_VERSION: <<<MLC_ONNXRUNTIME_GPU_VERSION>>>
       ONNXRUNTIME_PREFERRED_EXECUTION_PROVIDER: "CUDAExecutionProvider"
 
 
@@ -362,8 +362,8 @@ variations:
       ml-model:
         tags: raw,_pytorch
     env:
-      CM_MLPERF_BACKEND: pytorch
-      CM_MLPERF_BACKEND_VERSION: <<<CM_TORCH_VERSION>>>
+      MLC_MLPERF_BACKEND: pytorch
+      MLC_MLPERF_BACKEND_VERSION: <<<MLC_TORCH_VERSION>>>
 
 
 
@@ -376,9 +376,9 @@ variations:
 #    - tags: get,generic-python-lib,_pycocotools
 #
 #    env:
-#      CM_MODEL: retinanet
-#      CM_MLPERF_USE_MLCOMMONS_RUN_SCRIPT: 'yes'
-#      CM_MLPERF_LOADGEN_MAX_BATCHSIZE: '1'
+#      MLC_MODEL: retinanet
+#      MLC_MLPERF_USE_MLCOMMONS_RUN_SCRIPT: 'yes'
+#      MLC_MLPERF_LOADGEN_MAX_BATCHSIZE: '1'
 
 
   abtf-demo-model:
@@ -401,7 +401,7 @@ variations:
         - ml-model-abtf
 
     env:
-      CM_MODEL: retinanet
+      MLC_MODEL: retinanet
 
   abtf-poc-model:
     group: models
@@ -420,7 +420,7 @@ variations:
         - cocoeval
       - tags: get,dataset,raw,mlcommons-cognata,_abtf-poc
         skip_if_env:
-          CM_RUN_STATE_DOCKER:
+          MLC_RUN_STATE_DOCKER:
             - 'yes'
         names:
         - raw-dataset-mlcommons-cognata
@@ -429,14 +429,14 @@ variations:
         - ml-model-abtf
 
     env:
-      CM_MODEL: retinanet
+      MLC_MODEL: retinanet
 
   # Target devices
   cpu:
     group: device
     default: true
     env:
-      CM_MLPERF_DEVICE: cpu
+      MLC_MLPERF_DEVICE: cpu
       CUDA_VISIBLE_DEVICES: ''
       USE_CUDA: no
       USE_GPU: no
@@ -444,7 +444,7 @@ variations:
   cuda:
     group: device
     env:
-      CM_MLPERF_DEVICE: gpu
+      MLC_MLPERF_DEVICE: gpu
       USE_CUDA: yes
       USE_GPU: yes
 
@@ -453,17 +453,17 @@ variations:
   # Loadgen scenarios
   offline:
     env:
-      CM_MLPERF_LOADGEN_SCENARIO: Offline
+      MLC_MLPERF_LOADGEN_SCENARIO: Offline
   multistream:
     env:
-      CM_MLPERF_LOADGEN_SCENARIO: MultiStream
+      MLC_MLPERF_LOADGEN_SCENARIO: MultiStream
   singlestream:
     env:
-      CM_MLPERF_LOADGEN_SCENARIO: SingleStream
-      CM_MLPERF_LOADGEN_MAX_BATCHSIZE: 1
+      MLC_MLPERF_LOADGEN_SCENARIO: SingleStream
+      MLC_MLPERF_LOADGEN_MAX_BATCHSIZE: 1
   server:
     env:
-      CM_MLPERF_LOADGEN_SCENARIO: Server
+      MLC_MLPERF_LOADGEN_SCENARIO: Server
 
   mvp_demo:
     env:

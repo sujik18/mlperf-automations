@@ -16,10 +16,10 @@ uid: c70ae1a7567f4a7b
 versions:
   0.13.1:
     env:
-      CM_ZEPHYR_SDK_VERSION: 0.13.1
+      MLC_ZEPHYR_SDK_VERSION: 0.13.1
   0.13.2:
     env:
-      CM_ZEPHYR_SDK_VERSION: 0.13.2
+      MLC_ZEPHYR_SDK_VERSION: 0.13.2
   0.15.0:
     env:
-      CM_ZEPHYR_SDK_VERSION: 0.15.0
+      MLC_ZEPHYR_SDK_VERSION: 0.15.0

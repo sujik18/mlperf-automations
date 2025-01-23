@@ -6,7 +6,7 @@ default_env: {}
 deps:
 - tags: detect,os
 input_mapping:
-  path: CM_GIT_CHECKOUT_PATH
+  path: MLC_GIT_CHECKOUT_PATH
 new_env_keys: []
 tags:
 - pull

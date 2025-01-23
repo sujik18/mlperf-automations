@@ -5,13 +5,13 @@ cache: true
 category: Detection or installation of tools and artifacts
 clean_files: []
 env:
-  CM_REQUIRE_INSTALL: 'no'
+  MLC_REQUIRE_INSTALL: 'no'
 new_env_keys:
-- CM_OPENSSL_*
+- MLC_OPENSSL_*
 - +LD_LIBRARY_PATH
 prehook_deps:
 - enable_if_env:
-    CM_REQUIRE_INSTALL:
+    MLC_REQUIRE_INSTALL:
     - 'yes'
   reuse_version: true
   tags: install,openssl

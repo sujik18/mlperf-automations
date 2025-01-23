@@ -7,10 +7,10 @@ default_version: '12'
 deps:
 - tags: detect,os
 env:
-  CM_GIT_URL: git://gcc.gnu.org/git/gcc.git
+  MLC_GIT_URL: git://gcc.gnu.org/git/gcc.git
 post_deps:
 - skip_if_env:
-    CM_REQUIRE_INSTALL:
+    MLC_REQUIRE_INSTALL:
     - 'yes'
   tags: get,gcc
 tags:
@@ -22,4 +22,4 @@ uid: faae0ebd6e1242db
 versions:
   master:
     env:
-      CM_GIT_CHECKOUT: master
+      MLC_GIT_CHECKOUT: master

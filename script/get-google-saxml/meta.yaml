@@ -20,10 +20,10 @@ deps:
     tags: get,python3
 
   - env:
-      CM_GIT_CHECKOUT_PATH_ENV_NAME: CM_GOOGLE_SAXML_SRC
+      MLC_GIT_CHECKOUT_PATH_ENV_NAME: MLC_GOOGLE_SAXML_SRC
     extra_cache_tags: google,saxsml,src
     force_env_keys:
-    - CM_GIT_CHECKOUT
+    - MLC_GIT_CHECKOUT
     names:
     - google-saxml-git-src
     tags: get,git,_repo.https://github.com/google/saxml
@@ -33,11 +33,11 @@ deps:
     - bazel
 
 extra_cache_tags_from_env:
-  - env: CM_PYTHON_CACHE_TAGS
+  - env: MLC_PYTHON_CACHE_TAGS
     prefix: python-
 
 new_env_keys:
-- CM_GOOGLE_SAXML*
+- MLC_GOOGLE_SAXML*
 
 tags:
 - get

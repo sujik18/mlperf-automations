@@ -13,13 +13,13 @@ def preprocess(i):
 
     automation = i['automation']
 
-    quiet = (env.get('CM_QUIET', False) == 'yes')
+    quiet = (env.get('MLC_QUIET', False) == 'yes')
 
     if not state.get(
             'mlperf-inference-implementation'):  # No state information. Just returning
         return {'return': 0}
 
-    if env.get('CM_MLPERF_README', "") == "yes":
+    if env.get('MLC_MLPERF_README', "") == "yes":
         import mlc
         inp = i['input']
 
@@ -46,7 +46,7 @@ def preprocess(i):
 
             state['mlperf-inference-implementation']['print_deps'] = r['new_state']['print_deps']
 
-    if env.get('CM_DUMP_VERSION_INFO', True):
+    if env.get('MLC_DUMP_VERSION_INFO', True):
 
         if state['mlperf-inference-implementation'].get('script_id', '') == '':
             state['mlperf-inference-implementation']['script_id'] = ''

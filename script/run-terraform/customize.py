@@ -12,21 +12,21 @@ def preprocess(i):
     script_dir = i['run_script_input']['path']
     config_dir = os.path.join(
         script_dir, env.get(
-            'CM_TERRAFORM_CONFIG_DIR_NAME', ''))
-    env['CM_TERRAFORM_CONFIG_DIR'] = config_dir
+            'MLC_TERRAFORM_CONFIG_DIR_NAME', ''))
+    env['MLC_TERRAFORM_CONFIG_DIR'] = config_dir
     cache_dir = os.getcwd()
 
     print(f"Running terraform from {cache_dir}")
 
     shutil.copy(os.path.join(config_dir, "main.tf"), cache_dir)
-    env['CM_TERRAFORM_RUN_DIR'] = cache_dir
+    env['MLC_TERRAFORM_RUN_DIR'] = cache_dir
 
     return {'return': 0}
 
 
 def postprocess(i):
     env = i['env']
-    if env.get('CM_DESTROY_TERRAFORM'):
+    if env.get('MLC_DESTROY_TERRAFORM'):
         return {'return': 0}
     state = i['state']
     with open("terraform.tfstate") as f:
@@ -38,14 +38,14 @@ def postprocess(i):
             aws_resource = resource
             break
     instances_state = aws_resource['instances']
-    state['CM_TF_NEW_INSTANCES_STATE'] = []
-    ssh_key_file = env.get('CM_SSH_KEY_FILE')
+    state['MLC_TF_NEW_INSTANCES_STATE'] = []
+    ssh_key_file = env.get('MLC_SSH_KEY_FILE')
     user = 'ubuntu'
     for instance_state in instances_state:
         instance_attributes = instance_state['attributes']
-        state['CM_TF_NEW_INSTANCES_STATE'].append(instance_attributes)
+        state['MLC_TF_NEW_INSTANCES_STATE'].append(instance_attributes)
         public_ip = instance_attributes['public_ip']
-        if env.get('CM_TERRAFORM_CM_INIT'):
+        if env.get('MLC_TERRAFORM_MLC_INIT'):
             run_input = {
                 'automation': 'script',
                 'action': 'run',
@@ -66,8 +66,8 @@ def postprocess(i):
                     "source ~/.profile"
                 ]
             }
-            if env.get('CM_TERRAFORM_RUN_COMMANDS'):
-                run_cmds = env.get('CM_TERRAFORM_RUN_COMMANDS')
+            if env.get('MLC_TERRAFORM_RUN_COMMANDS'):
+                run_cmds = env.get('MLC_TERRAFORM_RUN_COMMANDS')
                 for cmd in run_cmds:
                     cmd = cmd.replace(":", "=")
                     cmd = cmd.replace(";;", ",")

@@ -10,9 +10,9 @@ deps:
   tags: get,git,repo,_repo.https://github.com/quic/software-kit-for-qualcomm-cloud-ai-100-cc
   update_tags_from_env_with_prefix:
     _branch.:
-    - CM_GIT_CHECKOUT
+    - MLC_GIT_CHECKOUT
     _repo.:
-    - CM_GIT_URL
+    - MLC_GIT_URL
 - names:
   - cmake
   tags: get,cmake
@@ -26,7 +26,7 @@ deps:
 - tags: get,generic-sys-util,_ninja-build
 - tags: get,generic-sys-util,_rsync
 - env:
-    CM_EXTRACT_FINAL_ENV_NAME: CM_HEXAGON_TOOLS_INSTALLED_DIR
+    MLC_EXTRACT_FINAL_ENV_NAME: MLC_HEXAGON_TOOLS_INSTALLED_DIR
   extra_cache_tags: hexagon-compiler
   force_cache: true
   names:
@@ -36,7 +36,7 @@ input_description: {}
 input_mapping: {}
 new_env_keys:
 - +PATH
-- CM_QAIC_COMPUTE_SDK_PATH
+- MLC_QAIC_COMPUTE_SDK_PATH
 new_state_keys: []
 post_deps: []
 posthook_deps: []
@@ -54,27 +54,27 @@ uid: 9701bdda97fa4045
 variations:
   branch.#:
     env:
-      CM_GIT_CHECKOUT: '#'
+      MLC_GIT_CHECKOUT: '#'
   debug:
     env:
-      CM_QAIC_COMPUTE_SDK_INSTALL_MODE: debug
+      MLC_QAIC_COMPUTE_SDK_INSTALL_MODE: debug
     group: installation-mode
   release:
     default: true
     env:
-      CM_QAIC_COMPUTE_SDK_INSTALL_MODE: release
+      MLC_QAIC_COMPUTE_SDK_INSTALL_MODE: release
     group: installation-mode
   release-assert:
     env:
-      CM_QAIC_COMPUTE_SDK_INSTALL_MODE: release-assert
+      MLC_QAIC_COMPUTE_SDK_INSTALL_MODE: release-assert
     group: installation-mode
   repo.#:
     env:
-      CM_GIT_URL: '#'
+      MLC_GIT_URL: '#'
     group: repo-source
   repo.quic:
     default: true
     env:
-      CM_GIT_URL: https://github.com/quic/software-kit-for-qualcomm-cloud-ai-100-cc
+      MLC_GIT_URL: https://github.com/quic/software-kit-for-qualcomm-cloud-ai-100-cc
     group: repo-source
 versions: {}

@@ -14,8 +14,8 @@ cache: true
 category: CUDA automation
 
 default_env:
-  CM_INPUT: ''
-  CM_SUDO: sudo
+  MLC_INPUT: ''
+  MLC_SUDO: sudo
 
 deps:
 - tags: detect,os
@@ -23,9 +23,9 @@ deps:
 - names:
   - cuda
   skip_if_env:
-    CM_CUDA_PATH_INCLUDE:
+    MLC_CUDA_PATH_INCLUDE:
     - 'on'
-    CM_CUDA_PATH_LIB:
+    MLC_CUDA_PATH_LIB:
     - 'on'
   tags: get,cuda
 
@@ -36,14 +36,14 @@ input_description:
     desc: Full path to the cuDNN Tar file downloaded from Nvidia website (https://developer.nvidia.com/cudnn)
 
 input_mapping:
-  input: CM_INPUT
-  tar_file: CM_CUDNN_TAR_FILE_PATH
+  input: MLC_INPUT
+  tar_file: MLC_CUDNN_TAR_FILE_PATH
 
 new_env_keys:
-- CM_CUDNN_*
-- CM_CUDA_PATH_LIB_CUDNN
-- CM_CUDA_PATH_INCLUDE_CUDNN
-- CM_CUDA_PATH_LIB_CUDNN_EXISTS
+- MLC_CUDNN_*
+- MLC_CUDA_PATH_LIB_CUDNN
+- MLC_CUDA_PATH_INCLUDE_CUDNN
+- MLC_CUDA_PATH_LIB_CUDNN_EXISTS
 - +PATH
 - +C_INCLUDE_PATH
 - +CPLUS_INCLUDE_PATH
@@ -51,6 +51,6 @@ new_env_keys:
 - +DYLD_FALLBACK_LIBRARY_PATH
 
 print_env_at_the_end:
-  CM_CUDA_PATH_LIB_CUDNN: ''
-  CM_CUDA_PATH_INCLUDE_CUDNN: ''
-  CM_CUDNN_VERSION: ''
+  MLC_CUDA_PATH_LIB_CUDNN: ''
+  MLC_CUDA_PATH_INCLUDE_CUDNN: ''
+  MLC_CUDNN_VERSION: ''

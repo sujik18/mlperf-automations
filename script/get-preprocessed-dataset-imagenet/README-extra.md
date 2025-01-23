@@ -16,11 +16,11 @@ and the supported [VARIATIONS] (comma separated and beginning with _) are
 *`[NCHW]:` Preprocess the dataset with `Channel` component at beginning
 
 ## Input Variables coming from Dependencies
-* `[CM_DATASET_PATH]:` Folder path to Imagenet dataset
-* `[CM_DATASET_AUX_PATH]:` Folder path to Imagenet auxiliary dataset (to get image list)
-* `[CM_DATASET_IMAGES_LIST]:` File path containing the image names
+* `[MLC_DATASET_PATH]:` Folder path to Imagenet dataset
+* `[MLC_DATASET_AUX_PATH]:` Folder path to Imagenet auxiliary dataset (to get image list)
+* `[MLC_DATASET_IMAGES_LIST]:` File path containing the image names
 
 ## Exported Variables
-* `[CM_DATASET_PREPROCESSED_PATH]:` Directory where the preprocessed images are stored
+* `[MLC_DATASET_PREPROCESSED_PATH]:` Directory where the preprocessed images are stored
 
 

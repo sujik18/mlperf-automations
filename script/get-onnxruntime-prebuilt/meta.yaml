@@ -8,8 +8,8 @@ default_version: 1.16.3
 deps:
 - tags: detect,os
 new_env_keys:
-- CM_ONNXRUNTIME_LIB_PATH
-- CM_ONNXRUNTIME_INCLUDE_PATH
+- MLC_ONNXRUNTIME_LIB_PATH
+- MLC_ONNXRUNTIME_INCLUDE_PATH
 - +PATH
 - +C_INCLUDE_PATH
 - +CPLUS_INCLUDE_PATH
@@ -28,9 +28,9 @@ variations:
   cpu:
     default: true
     env:
-      CM_ONNXRUNTIME_DEVICE: ''
+      MLC_ONNXRUNTIME_DEVICE: ''
     group: device
   cuda:
     env:
-      CM_ONNXRUNTIME_DEVICE: gpu
+      MLC_ONNXRUNTIME_DEVICE: gpu
     group: device

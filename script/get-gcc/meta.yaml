@@ -8,16 +8,16 @@ deps:
 - tags: detect,os
 name: Detect or install GCC compiler
 new_env_keys:
-- CM_GCC_*
-- CM_C_COMPILER_*
-- CM_CXX_COMPILER_*
-- CM_COMPILER_*
-- CM_LINKER_*
+- MLC_GCC_*
+- MLC_C_COMPILER_*
+- MLC_CXX_COMPILER_*
+- MLC_COMPILER_*
+- MLC_LINKER_*
 - + CFLAGS
 - + CXXFLAGS
 - + FFLAGS
 - + LDFLAGS
-- +CM_HOST_OS_DEFAULT_INCLUDE_PATH
+- +MLC_HOST_OS_DEFAULT_INCLUDE_PATH
 - +PATH
 post_deps:
 - tags: get,compiler-flags

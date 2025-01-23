@@ -29,15 +29,15 @@ docker:
   skip_cm_sys_upgrade: 'yes'
   cm_repo_flags: '--checkout=dev'
   use_host_group_id: 'yes'
-  image_tag_extra: '-cm-dev'
+  image_tag_extra: '-mlc-dev'
 
 env:
-  CM_DETECT_USING_PYCUDA: 'no'
+  MLC_DETECT_USING_PYCUDA: 'no'
 
 new_env_keys:
-- CM_CUDA_DEVICE_*
-- CM_CUDA_NUM_DEVICES
-- CM_CUDA_VERSION
+- MLC_CUDA_DEVICE_*
+- MLC_CUDA_NUM_DEVICES
+- MLC_CUDA_VERSION
 
 new_state_keys:
 - cm_cuda_device_prop
@@ -50,7 +50,7 @@ print_files_if_script_error:
 variations:
   with-pycuda:
     env:
-      CM_DETECT_USING_PYCUDA: 'yes'
+      MLC_DETECT_USING_PYCUDA: 'yes'
     deps:
       - tags: get,python3
         names:

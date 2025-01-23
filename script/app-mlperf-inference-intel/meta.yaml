@@ -24,47 +24,47 @@ tags:
 
 # Default environment
 default_env:
-  CM_BATCH_COUNT: '1'
-  CM_BATCH_SIZE: '1'
-  CM_FAST_COMPILATION: 'yes'
-  CM_MLPERF_LOADGEN_SCENARIO: Offline
-  CM_MLPERF_LOADGEN_MODE: performance
-  CM_SKIP_PREPROCESS_DATASET: 'no'
-  CM_SKIP_MODEL_DOWNLOAD: 'no'
-  CM_MLPERF_SUT_NAME_IMPLEMENTATION_PREFIX: intel
-  CM_MLPERF_SKIP_RUN: 'no'
+  MLC_BATCH_COUNT: '1'
+  MLC_BATCH_SIZE: '1'
+  MLC_FAST_COMPILATION: 'yes'
+  MLC_MLPERF_LOADGEN_SCENARIO: Offline
+  MLC_MLPERF_LOADGEN_MODE: performance
+  MLC_SKIP_PREPROCESS_DATASET: 'no'
+  MLC_SKIP_MODEL_DOWNLOAD: 'no'
+  MLC_MLPERF_SUT_NAME_IMPLEMENTATION_PREFIX: intel
+  MLC_MLPERF_SKIP_RUN: 'no'
   verbosity: 1
   loadgen_trigger_cold_run: 0
 
 env:
-  CM_CALL_MLPERF_RUNNER: 'no'
+  MLC_CALL_MLPERF_RUNNER: 'no'
   CUDA_VISIBLE_DEVICES: ''
   USE_CUDA: '0'
 
 # Map script inputs to environment variables
 input_mapping:
-  count: CM_MLPERF_LOADGEN_QUERY_COUNT
-  max_batchsize: CM_MLPERF_LOADGEN_MAX_BATCHSIZE
-  mlperf_conf: CM_MLPERF_CONF
-  mode: CM_MLPERF_LOADGEN_MODE
-  output_dir: CM_MLPERF_OUTPUT_DIR
-  performance_sample_count: CM_MLPERF_LOADGEN_PERFORMANCE_SAMPLE_COUNT
-  scenario: CM_MLPERF_LOADGEN_SCENARIO
-  user_conf: CM_MLPERF_USER_CONF
-  skip_preprocess: CM_SKIP_PREPROCESS_DATASET
-  skip_preprocessing: CM_SKIP_PREPROCESS_DATASET
-  target_qps: CM_MLPERF_LOADGEN_TARGET_QPS
-  offline_target_qps: CM_MLPERF_LOADGEN_OFFLINE_TARGET_QPS
-  server_target_qps: CM_MLPERF_LOADGEN_SERVER_TARGET_QPS
-  target_latency: CM_MLPERF_LOADGEN_TARGET_LATENCY
-  singlestream_target_latency: CM_MLPERF_LOADGEN_SINGLESTREAM_TARGET_LATENCY
-  multistream_target_latency: CM_MLPERF_LOADGEN_MULTISTREAM_TARGET_LATENCY
-  performance_sample_count: CM_MLPERF_LOADGEN_PERFORMANCE_SAMPLE_COUNT
-  rerun: CM_RERUN
+  count: MLC_MLPERF_LOADGEN_QUERY_COUNT
+  max_batchsize: MLC_MLPERF_LOADGEN_MAX_BATCHSIZE
+  mlperf_conf: MLC_MLPERF_CONF
+  mode: MLC_MLPERF_LOADGEN_MODE
+  output_dir: MLC_MLPERF_OUTPUT_DIR
+  performance_sample_count: MLC_MLPERF_LOADGEN_PERFORMANCE_SAMPLE_COUNT
+  scenario: MLC_MLPERF_LOADGEN_SCENARIO
+  user_conf: MLC_MLPERF_USER_CONF
+  skip_preprocess: MLC_SKIP_PREPROCESS_DATASET
+  skip_preprocessing: MLC_SKIP_PREPROCESS_DATASET
+  target_qps: MLC_MLPERF_LOADGEN_TARGET_QPS
+  offline_target_qps: MLC_MLPERF_LOADGEN_OFFLINE_TARGET_QPS
+  server_target_qps: MLC_MLPERF_LOADGEN_SERVER_TARGET_QPS
+  target_latency: MLC_MLPERF_LOADGEN_TARGET_LATENCY
+  singlestream_target_latency: MLC_MLPERF_LOADGEN_SINGLESTREAM_TARGET_LATENCY
+  multistream_target_latency: MLC_MLPERF_LOADGEN_MULTISTREAM_TARGET_LATENCY
+  performance_sample_count: MLC_MLPERF_LOADGEN_PERFORMANCE_SAMPLE_COUNT
+  rerun: MLC_RERUN
 
 new_state_keys:
   - mlperf-inference-implementation
-  - CM_SUT_*
+  - MLC_SUT_*
 
 
 
@@ -92,7 +92,7 @@ deps:
   # Install ResNet50 model (ONNX) and ImageNet
  
   - enable_if_env:
-      CM_MODEL:
+      MLC_MODEL:
       - resnet50
     names:
       - resnet50-model
@@ -100,7 +100,7 @@ deps:
     tags: get,ml-model,resnet50,_fp32,_pytorch
 
   - enable_if_env:
-      CM_MODEL:
+      MLC_MODEL:
       - resnet50
     names:
       - imagenet-original
@@ -114,7 +114,7 @@ deps:
 
 
   - enable_if_env:
-      CM_MODEL:
+      MLC_MODEL:
       - retinanet
     names:
       - openimages-original
@@ -122,7 +122,7 @@ deps:
     tags: get,dataset,original,openimages,_validation,_custom-annotations,_full
 
   - enable_if_env:
-      CM_MODEL:
+      MLC_MODEL:
       - retinanet
     names:
       - openimages-calibration
@@ -139,11 +139,11 @@ post_deps:
     - runner
     - mlperf-runner
     skip_if_env:
-      CM_MLPERF_SKIP_RUN:
+      MLC_MLPERF_SKIP_RUN:
         - 'yes'
         - yes
     enable_if_env:
-      CM_LOCAL_MLPERF_INFERENCE_INTEL_RUN_MODE:
+      MLC_LOCAL_MLPERF_INFERENCE_INTEL_RUN_MODE:
         - run_harness
     tags: benchmark-mlperf
 
@@ -158,7 +158,7 @@ variations:
     group: version
     default: true
     env:
-      CM_MLPERF_INFERENCE_CODE_VERSION: "v4.0"
+      MLC_MLPERF_INFERENCE_CODE_VERSION: "v4.0"
     deps:
     - tags: get,mlperf,inference,results,_go
       names:
@@ -175,7 +175,7 @@ variations:
   v3.1:
     group: version
     env:
-      CM_MLPERF_INFERENCE_CODE_VERSION: "v3.1"
+      MLC_MLPERF_INFERENCE_CODE_VERSION: "v3.1"
     deps:
     - tags: get,mlperf,inference,results,_ctuning
       names:
@@ -200,15 +200,15 @@ variations:
     group: device
     default: true
     env:
-      CM_MLPERF_DEVICE: cpu
+      MLC_MLPERF_DEVICE: cpu
 
   # ML engine
   pytorch:
     group: framework
     default: true
     env:
-      CM_MLPERF_BACKEND: pytorch
-      CM_MLPERF_BACKEND_LIB_NAMESPEC: pytorch
+      MLC_MLPERF_BACKEND: pytorch
+      MLC_MLPERF_BACKEND_LIB_NAMESPEC: pytorch
 
   bs.#:
     env:
@@ -219,12 +219,12 @@ variations:
     group: model
     default: true
     env:
-      CM_MODEL: resnet50
-      CM_BENCHMARK: STANDALONE_CLASSIFICATION
+      MLC_MODEL: resnet50
+      MLC_BENCHMARK: STANDALONE_CLASSIFICATION
 
   resnet50,int8:
     env:
-      CM_IMAGENET_ACCURACY_DTYPE: int8
+      MLC_IMAGENET_ACCURACY_DTYPE: int8
 
   bert-99:
     deps:
@@ -232,15 +232,15 @@ variations:
         names:
           - bert-99-compiler
     env:
-      CM_ML_MODEL_WEIGHTS_DATA_TYPE: int8
-      CM_ML_MODEL_INPUTS_DATA_TYPE: int8
+      MLC_ML_MODEL_WEIGHTS_DATA_TYPE: int8
+      MLC_ML_MODEL_INPUTS_DATA_TYPE: int8
 
   retinanet:
     group: model
     env:
-      CM_MODEL: retinanet
-      CM_ML_MODEL_STARTING_WEIGHTS_FILENAME: "https://zenodo.org/record/6617981/files/resnext50_32x4d_fpn.pth"
-      CM_BENCHMARK: STANDALONE_OBJECT_DETECTION
+      MLC_MODEL: retinanet
+      MLC_ML_MODEL_STARTING_WEIGHTS_FILENAME: "https://zenodo.org/record/6617981/files/resnext50_32x4d_fpn.pth"
+      MLC_BENCHMARK: STANDALONE_OBJECT_DETECTION
 
     deps:
     - tags: get,generic-python-lib,_numpy
@@ -254,25 +254,25 @@ variations:
     base:
       - 3d-unet_
     env:
-      CM_MODEL: 3d-unet-99
+      MLC_MODEL: 3d-unet-99
 
   3d-unet-99.9:
     group: model
     base:
       - 3d-unet_
     env:
-      CM_MODEL: 3d-unet-99.9
+      MLC_MODEL: 3d-unet-99.9
 
   3d-unet_:
     env:
-      CM_BENCHMARK: MEDICAL_IMAGING
+      MLC_BENCHMARK: MEDICAL_IMAGING
     deps:
       - tags: get,dataset,kits19,preprocessed
       - tags: get,ml-model,medical-imaging,3d-unet,_pytorch,_weights
 
   bert_:
     env:
-      CM_BENCHMARK: STANDALONE_BERT
+      MLC_BENCHMARK: STANDALONE_BERT
 
   bert_,pytorch:
     deps:
@@ -308,7 +308,7 @@ variations:
 
   gptj_:
     env:
-      CM_BENCHMARK: STANDALONE_GPTJ
+      MLC_BENCHMARK: STANDALONE_GPTJ
 
   int4,gptj_,build-harness:
     deps:
@@ -322,7 +322,7 @@ variations:
           - sut
           - loadgen-batchsize
         enable_if_env:
-          CM_MLPERF_INFERENCE_CODE_VERSION:
+          MLC_MLPERF_INFERENCE_CODE_VERSION:
           - v3.1
         force_cache: true
       - tags: get,generic-python-lib,_package.optimum
@@ -333,8 +333,8 @@ variations:
   sdxl:
     group: model
     env:
-      CM_BENCHMARK: STANDALONE_SDXL
-      CM_MODEL: stable-diffusion-xl
+      MLC_BENCHMARK: STANDALONE_SDXL
+      MLC_MODEL: stable-diffusion-xl
 
   sdxl,pytorch:
     adr:
@@ -489,7 +489,7 @@ variations:
         names:
           - rapidjson-src
         env:
-          CM_GIT_CHECKOUT_PATH_ENV_NAME: CM_RAPIDJSON_SRC_REPO_PATH
+          MLC_GIT_CHECKOUT_PATH_ENV_NAME: MLC_RAPIDJSON_SRC_REPO_PATH
       - tags: install,gflags,from.src
         names:
           - gflags-from-src
@@ -588,7 +588,7 @@ variations:
       - tags: get,torchvision,from.src,_sha.8e078971b8aebdeb1746fea58851e3754f103053
         update_tags_from_env_with_prefix:
           "_python.":
-            - CM_PYTHON_BIN_WITH_PATH
+            - MLC_PYTHON_BIN_WITH_PATH
         names:
           - torchvision
       - tags: install,opencv,from.src,_branch.4.x
@@ -598,7 +598,7 @@ variations:
         names:
           - rapidjson-src
         env:
-          CM_GIT_CHECKOUT_PATH_ENV_NAME: CM_RAPIDJSON_SRC_REPO_PATH
+          MLC_GIT_CHECKOUT_PATH_ENV_NAME: MLC_RAPIDJSON_SRC_REPO_PATH
       - tags: install,gflags,from.src
         names:
           - gflags-from-src
@@ -641,13 +641,13 @@ variations:
         - run-mode
         - loadgen-scenario
       new_env_keys:
-        - CM_ML_MODEL_RETINANET_INT8_FILE_WITH_PATH
+        - MLC_ML_MODEL_RETINANET_INT8_FILE_WITH_PATH
 
   retinanet,compile-model:
     deps: 
     - tags: get,ml-model,retinanet,_pytorch,_fp32
     new_env_keys:
-      - CM_ML_MODEL_RETINANET_INT8_FILE_WITH_PATH
+      - MLC_ML_MODEL_RETINANET_INT8_FILE_WITH_PATH
 
   3d-unet_,pytorch:
     adr:
@@ -737,28 +737,28 @@ variations:
         - mkl
         tags: get,generic,conda-package,_package.mkl,_source.conda-forge
         enable_if_env:
-          CM_MLPERF_INFERENCE_CODE_VERSION:
+          MLC_MLPERF_INFERENCE_CODE_VERSION:
           -  v4.0
       - names:
         - conda-package
         - mkl-include
         tags: get,generic,conda-package,_package.mkl-include,_source.conda-forge
         enable_if_env:
-          CM_MLPERF_INFERENCE_CODE_VERSION:
+          MLC_MLPERF_INFERENCE_CODE_VERSION:
           -  v4.0
       - names:
         - conda-package
         - llvm-openmp
         tags: get,generic,conda-package,_package.llvm-openmp,_source.conda-forge
         enable_if_env:
-          CM_MLPERF_INFERENCE_CODE_VERSION:
+          MLC_MLPERF_INFERENCE_CODE_VERSION:
           -  v4.0
       - names:
         - conda-package
         - pybind11
         tags: get,generic,conda-package,_package.pybind11,_source.conda-forge
         enable_if_env:
-          CM_MLPERF_INFERENCE_CODE_VERSION:
+          MLC_MLPERF_INFERENCE_CODE_VERSION:
           -  v4.0
       - names:
         - conda-package
@@ -768,7 +768,7 @@ variations:
         names:
           - llvm-from-src
         enable_if_env:
-          CM_MLPERF_INFERENCE_CODE_VERSION:
+          MLC_MLPERF_INFERENCE_CODE_VERSION:
           -  v3.1
       - names:
         - conda-package
@@ -783,7 +783,7 @@ variations:
         names:
           - ipex-from-src
         enable_if_env:
-          CM_MLPERF_INFERENCE_CODE_VERSION:
+          MLC_MLPERF_INFERENCE_CODE_VERSION:
           -  v3.1
       - tags: get,generic,conda-package,_package.ninja
         names:
@@ -798,7 +798,7 @@ variations:
         enable_if_env:
           INTEL_GPTJ_INT4:
             - 'yes'
-          CM_MLPERF_INFERENCE_CODE_VERSION:
+          MLC_MLPERF_INFERENCE_CODE_VERSION:
           -  v3.1
       - tags: get,generic-python-lib,_package.transformers
         names:
@@ -826,7 +826,7 @@ variations:
           - accelerate
       - tags: get,generic-python-lib,_custom-python,_package.torch,_url.git+https://github.com/pytorch/pytorch.git@927dc662386af052018212c7d01309a506fc94cd
         enable_if_env:
-          CM_MLPERF_INFERENCE_CODE_VERSION:
+          MLC_MLPERF_INFERENCE_CODE_VERSION:
           -  v3.1
         env:
           "+ CXXFLAGS":
@@ -836,13 +836,13 @@ variations:
             - "-Wno-free-nonheap-object"
       - tags: get,generic-python-lib,_custom-python,_package.torch
         env:
-          CM_GENERIC_PYTHON_PIP_EXTRA_INDEX_URL: https://download.pytorch.org/whl/cpu
+          MLC_GENERIC_PYTHON_PIP_EXTRA_INDEX_URL: https://download.pytorch.org/whl/cpu
         enable_if_env:
-          CM_MLPERF_INFERENCE_CODE_VERSION:
+          MLC_MLPERF_INFERENCE_CODE_VERSION:
             - 'v4.0'
       - tags: install,intel-neural-speed,_for-intel-mlperf-inference-v4.0-gptj,_branch.mlperf-v4-0
         enable_if_env:
-          CM_MLPERF_INFERENCE_CODE_VERSION:
+          MLC_MLPERF_INFERENCE_CODE_VERSION:
             - 'v4.0'
 
 
@@ -851,18 +851,18 @@ variations:
     base:
     - gptj_
     env:
-      CM_MODEL: gptj-99
-      CM_NOT_ML_MODEL_STARTING_WEIGHTS_FILENAME: "https://zenodo.org/record/3733910/files/model.onnx"
-      CM_ML_MODEL_WEIGHTS_DATA_TYPE: int8
-      CM_ML_MODEL_INPUTS_DATA_TYPE: int8
+      MLC_MODEL: gptj-99
+      MLC_NOT_ML_MODEL_STARTING_WEIGHTS_FILENAME: "https://zenodo.org/record/3733910/files/model.onnx"
+      MLC_ML_MODEL_WEIGHTS_DATA_TYPE: int8
+      MLC_ML_MODEL_INPUTS_DATA_TYPE: int8
 
   gptj-99.9:
     group: model
     base:
     - gptj_
     env:
-      CM_MODEL: gptj-99.9
-      CM_NOT_ML_MODEL_STARTING_WEIGHTS_FILENAME: "https://zenodo.org/record/3733910/files/model.onnx"
+      MLC_MODEL: gptj-99.9
+      MLC_NOT_ML_MODEL_STARTING_WEIGHTS_FILENAME: "https://zenodo.org/record/3733910/files/model.onnx"
 
   dlrm-v2_,build-harness:
     deps: 
@@ -896,14 +896,14 @@ variations:
         - llvm-openmp
         tags: get,generic,conda-package,_package.llvm-openmp,_source.conda-forge
         enable_if_env:
-          CM_MLPERF_INFERENCE_CODE_VERSION:
+          MLC_MLPERF_INFERENCE_CODE_VERSION:
           -  v4.0
       - names:
         - conda-package
         - pybind11
         tags: get,generic,conda-package,_package.pybind11,_source.conda-forge
         enable_if_env:
-          CM_MLPERF_INFERENCE_CODE_VERSION:
+          MLC_MLPERF_INFERENCE_CODE_VERSION:
           -  v4.0
       - names:
         - conda-package
@@ -952,62 +952,62 @@ variations:
     base:
     - dlrm-v2_
     env:
-      CM_MODEL: dlrm-v2-99
-      CM_ML_MODEL_WEIGHTS_DATA_TYPE: int8
-      CM_ML_MODEL_INPUTS_DATA_TYPE: int8
+      MLC_MODEL: dlrm-v2-99
+      MLC_ML_MODEL_WEIGHTS_DATA_TYPE: int8
+      MLC_ML_MODEL_INPUTS_DATA_TYPE: int8
 
   dlrm-v2-99.9:
     group: model
     base:
     - dlrm-v2_
     env:
-      CM_MODEL: dlrm-v2-99.9
+      MLC_MODEL: dlrm-v2-99.9
 
   standalone:
     group: network-mode
     default: true
     env:
-      CM_MLPERF_NETWORK_RUN_MODE: standalone
+      MLC_MLPERF_NETWORK_RUN_MODE: standalone
 
   network-server:
     group: network-mode
     env:
-      CM_MLPERF_NETWORK_RUN_MODE: network-server
+      MLC_MLPERF_NETWORK_RUN_MODE: network-server
 
   network-client:
     group: network-run-mode
     env:
-      CM_MLPERF_NETWORK_RUN_MODE: network-client
+      MLC_MLPERF_NETWORK_RUN_MODE: network-client
 
   bert_,network-server:
     env:
-      CM_BENCHMARK: NETWORK_BERT_SERVER
+      MLC_BENCHMARK: NETWORK_BERT_SERVER
 
   bert_,network-client:
     env:
-      CM_BENCHMARK: NETWORK_BERT_CLIENT
+      MLC_BENCHMARK: NETWORK_BERT_CLIENT
 
   bert-99:
     group: model
     base:
     - bert_
     env:
-      CM_MODEL: bert-99
-      CM_SQUAD_ACCURACY_DTYPE: float32
-      CM_NOT_ML_MODEL_STARTING_WEIGHTS_FILENAME: "https://zenodo.org/record/3750364/files/bert_large_v1_1_fake_quant.onnx"
+      MLC_MODEL: bert-99
+      MLC_SQUAD_ACCURACY_DTYPE: float32
+      MLC_NOT_ML_MODEL_STARTING_WEIGHTS_FILENAME: "https://zenodo.org/record/3750364/files/bert_large_v1_1_fake_quant.onnx"
 
   bert-99.9:
     group: model
     base:
     - bert_
     env:
-      CM_MODEL: bert-99.9
-      CM_NOT_ML_MODEL_STARTING_WEIGHTS_FILENAME: "https://zenodo.org/record/3733910/files/model.onnx"
+      MLC_MODEL: bert-99.9
+      MLC_NOT_ML_MODEL_STARTING_WEIGHTS_FILENAME: "https://zenodo.org/record/3733910/files/model.onnx"
 
   batch_size.#:
     group: loadgen-batchsize
     env:
-      CM_MLPERF_LOADGEN_BATCH_SIZE: "#"
+      MLC_MLPERF_LOADGEN_BATCH_SIZE: "#"
 
 
   build-harness:
@@ -1015,23 +1015,23 @@ variations:
       real_run: false
     group: run-mode
     env:
-      CM_LOCAL_MLPERF_INFERENCE_INTEL_RUN_MODE: build_harness
+      MLC_LOCAL_MLPERF_INFERENCE_INTEL_RUN_MODE: build_harness
     new_env_keys:
-      - CM_MLPERF_INFERENCE_INTEL_HARNESS_PATH
-      - CM_ML_MODEL_*
+      - MLC_MLPERF_INFERENCE_INTEL_HARNESS_PATH
+      - MLC_ML_MODEL_*
       - DATA_PATH
 
   compile-model:
     group: run-mode
     env:
-      CM_LOCAL_MLPERF_INFERENCE_INTEL_RUN_MODE: compilation
+      MLC_LOCAL_MLPERF_INFERENCE_INTEL_RUN_MODE: compilation
 
   calibration:
     group: run-mode
     env:
-      CM_LOCAL_MLPERF_INFERENCE_INTEL_RUN_MODE: calibration
+      MLC_LOCAL_MLPERF_INFERENCE_INTEL_RUN_MODE: calibration
     new_env_keys:
-      - CM_ML_MODEL_*
+      - MLC_ML_MODEL_*
       - INT4_CALIBRATION_DIR
 
   calibration,gptj_:
@@ -1080,47 +1080,47 @@ variations:
       - tags: get,generic-sys-util,_rsync
 
     env:
-      CM_LOCAL_MLPERF_INFERENCE_INTEL_RUN_MODE: run_harness
+      MLC_LOCAL_MLPERF_INFERENCE_INTEL_RUN_MODE: run_harness
 
     # Env keys which are exposed to higher level scripts
     new_env_keys:
-      - CM_MLPERF_*
-      - CM_DATASET_*
-      - CM_HW_NAME
-      - CM_ML_MODEL_*
-      - CM_MAX_EXAMPLES
-      - CM_IMAGENET_ACCURACY_DTYPE
-      - CM_SQUAD_ACCURACY_DTYPE
+      - MLC_MLPERF_*
+      - MLC_DATASET_*
+      - MLC_HW_NAME
+      - MLC_ML_MODEL_*
+      - MLC_MAX_EXAMPLES
+      - MLC_IMAGENET_ACCURACY_DTYPE
+      - MLC_SQUAD_ACCURACY_DTYPE
 
 
 
   maxq:
     group: power-mode
     env:
-      CM_MLPERF_NVIDIA_HARNESS_MAXQ: yes
+      MLC_MLPERF_NVIDIA_HARNESS_MAXQ: yes
 
   maxn:
     group: power-mode
     env:
-      CM_MLPERF_NVIDIA_HARNESS_MAXN: yes
+      MLC_MLPERF_NVIDIA_HARNESS_MAXN: yes
 
   singlestream:
     group: loadgen-scenario
     env:
-      CM_MLPERF_LOADGEN_SCENARIO: SingleStream
+      MLC_MLPERF_LOADGEN_SCENARIO: SingleStream
 
   multistream:
     group: loadgen-scenario
     env:
-      CM_MLPERF_LOADGEN_SCENARIO: MultiStream
+      MLC_MLPERF_LOADGEN_SCENARIO: MultiStream
   offline:
     group: loadgen-scenario
     env:
-      CM_MLPERF_LOADGEN_SCENARIO: Offline
+      MLC_MLPERF_LOADGEN_SCENARIO: Offline
   server:
     group: loadgen-scenario
     env:
-      CM_MLPERF_LOADGEN_SCENARIO: Server
+      MLC_MLPERF_LOADGEN_SCENARIO: Server
 
   int4:
     group: precision
@@ -1148,7 +1148,7 @@ variations:
       dataset-preprocessed:
         tags: _float32,_rgb32
     env:
-      CM_IMAGENET_ACCURACY_DTYPE: float32
+      MLC_IMAGENET_ACCURACY_DTYPE: float32
 
   sapphire-rapids.112c:
     group: sut
@@ -1163,21 +1163,21 @@ variations:
       KMP_BLOCKTIME: 10
       WORKERS_PER_PROC: 1
     default_env:
-      CM_MLPERF_LOADGEN_BATCH_SIZE: 8
+      MLC_MLPERF_LOADGEN_BATCH_SIZE: 8
 
   sapphire-rapids.24c,gptj-99,offline,int4:
     env:
       KMP_BLOCKTIME: 10
       WORKERS_PER_PROC: 1
     default_env:
-      CM_MLPERF_LOADGEN_BATCH_SIZE: 8
+      MLC_MLPERF_LOADGEN_BATCH_SIZE: 8
 
   sapphire-rapids.112c,gptj-99,offline,int8:
     env:
       KMP_BLOCKTIME: 1
       WORKERS_PER_PROC: 2
     default_env:
-      CM_MLPERF_LOADGEN_BATCH_SIZE: 14
+      MLC_MLPERF_LOADGEN_BATCH_SIZE: 14
 
   sapphire-rapids.112c,gptj-99,offline,int4:
     env:
@@ -1185,21 +1185,21 @@ variations:
       KMP_BLOCKTIME: 1
       WORKERS_PER_PROC: 3
     default_env:
-      CM_MLPERF_LOADGEN_BATCH_SIZE: 8
+      MLC_MLPERF_LOADGEN_BATCH_SIZE: 8
 
   sapphire-rapids.112c,gptj-99,server,int8:
     env:
       KMP_BLOCKTIME: 1
       WORKERS_PER_PROC: 2
     default_env:
-      CM_MLPERF_LOADGEN_BATCH_SIZE: 1
+      MLC_MLPERF_LOADGEN_BATCH_SIZE: 1
 
   sapphire-rapids.112c,gptj-99,server,int4:
     env:
       KMP_BLOCKTIME: 1
       WORKERS_PER_PROC: 4
     default_env:
-      CM_MLPERF_LOADGEN_BATCH_SIZE: 1
+      MLC_MLPERF_LOADGEN_BATCH_SIZE: 1
 
   sapphire-rapids.24c,bert_:
     env:

@@ -11,7 +11,7 @@ deps:
 - tags: get,sut,system-description
 post_deps:
 - enable_if_env:
-    CM_MLPERF_RUN_STYLE:
+    MLC_MLPERF_RUN_STYLE:
     - valid
 tags:
 - generate

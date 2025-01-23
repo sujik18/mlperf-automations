@@ -5,22 +5,22 @@ cache: true
 category: AI/ML frameworks
 clean_files: []
 default_env:
-  CM_GIT_DEPTH: '1'
-  CM_GIT_URL: https://github.com/tensorflow/tensorflow
-  CM_TFLITE: 'off'
+  MLC_GIT_DEPTH: '1'
+  MLC_GIT_URL: https://github.com/tensorflow/tensorflow
+  MLC_TFLITE: 'off'
 default_version: master
 deps:
 - tags: detect,cpu
 - tags: detect,os
 - enable_if_env:
-    CM_HOST_OS_FLAVOR:
+    MLC_HOST_OS_FLAVOR:
     - ubuntu
-    CM_HOST_OS_VERSION:
+    MLC_HOST_OS_VERSION:
     - '18.04'
   tags: get,generic-sys-util,_zlib
 - tags: get,generic-python-lib,_package.numpy
 extra_cache_tags_from_env:
-- env: CM_PYTHON_CACHE_TAGS
+- env: MLC_PYTHON_CACHE_TAGS
   prefix: python-
 new_env_keys:
 - +C_INCLUDE_PATH
@@ -41,7 +41,7 @@ uid: a974533c4c854597
 variations:
   tflite:
     env:
-      CM_TFLITE: 'on'
+      MLC_TFLITE: 'on'
 versions:
   master:
     deps:
@@ -58,7 +58,7 @@ versions:
     - tags: get,bazel
       version: 6.5.0
     env:
-      CM_GIT_CHECKOUT: master
+      MLC_GIT_CHECKOUT: master
   v1.15.0:
     deps:
     - names:
@@ -73,7 +73,7 @@ versions:
     - tags: get,bazel
       version: 0.26.1
     env:
-      CM_GIT_CHECKOUT: v1.15.0
+      MLC_GIT_CHECKOUT: v1.15.0
   v2.0.0:
     deps:
     - names:
@@ -89,7 +89,7 @@ versions:
     - tags: get,bazel
       version: 0.26.1
     env:
-      CM_GIT_CHECKOUT: v2.0.0
+      MLC_GIT_CHECKOUT: v2.0.0
   v2.1.0:
     deps:
     - names:
@@ -105,7 +105,7 @@ versions:
     - tags: get,bazel
       version: 0.27.1
     env:
-      CM_GIT_CHECKOUT: v2.1.0
+      MLC_GIT_CHECKOUT: v2.1.0
   v2.10.0:
     deps:
     - names:
@@ -121,7 +121,7 @@ versions:
     - tags: get,bazel
       version: 5.1.1
     env:
-      CM_GIT_CHECKOUT: v2.10.0
+      MLC_GIT_CHECKOUT: v2.10.0
   v2.11.0:
     deps:
     - names:
@@ -137,7 +137,7 @@ versions:
     - tags: get,bazel
       version: 5.3.0
     env:
-      CM_GIT_CHECKOUT: v2.11.0
+      MLC_GIT_CHECKOUT: v2.11.0
   v2.12.0:
     deps:
     - names:
@@ -153,7 +153,7 @@ versions:
     - tags: get,bazel
       version: 5.3.0
     env:
-      CM_GIT_CHECKOUT: v2.12.0
+      MLC_GIT_CHECKOUT: v2.12.0
   v2.13.0:
     deps:
     - names:
@@ -168,7 +168,7 @@ versions:
     - tags: get,bazel
       version: 5.3.0
     env:
-      CM_GIT_CHECKOUT: v2.13.0
+      MLC_GIT_CHECKOUT: v2.13.0
   v2.14.0:
     deps:
     - names:
@@ -183,7 +183,7 @@ versions:
     - tags: get,bazel
       version: 6.1.0
     env:
-      CM_GIT_CHECKOUT: v2.14.0
+      MLC_GIT_CHECKOUT: v2.14.0
   v2.15.0:
     deps:
     - names:
@@ -198,7 +198,7 @@ versions:
     - tags: get,bazel
       version: 6.1.0
     env:
-      CM_GIT_CHECKOUT: v2.15.0
+      MLC_GIT_CHECKOUT: v2.15.0
   v2.16.1:
     deps:
     - names:
@@ -215,7 +215,7 @@ versions:
     - tags: get,bazel
       version: 6.5.0
     env:
-      CM_GIT_CHECKOUT: v2.16.1
+      MLC_GIT_CHECKOUT: v2.16.1
   v2.2.0:
     deps:
     - names:
@@ -231,7 +231,7 @@ versions:
     - tags: get,bazel
       version: 2.0.0
     env:
-      CM_GIT_CHECKOUT: v2.2.0
+      MLC_GIT_CHECKOUT: v2.2.0
   v2.3.0:
     deps:
     - names:
@@ -247,7 +247,7 @@ versions:
     - tags: get,bazel
       version: 3.1.0
     env:
-      CM_GIT_CHECKOUT: v2.3.0
+      MLC_GIT_CHECKOUT: v2.3.0
   v2.4.0:
     deps:
     - names:
@@ -263,7 +263,7 @@ versions:
     - tags: get,bazel
       version: 3.1.0
     env:
-      CM_GIT_CHECKOUT: v2.4.0
+      MLC_GIT_CHECKOUT: v2.4.0
   v2.5.0:
     deps:
     - names:
@@ -279,7 +279,7 @@ versions:
     - tags: get,bazel
       version: 3.7.2
     env:
-      CM_GIT_CHECKOUT: v2.5.0
+      MLC_GIT_CHECKOUT: v2.5.0
   v2.6.0:
     deps:
     - names:
@@ -295,7 +295,7 @@ versions:
     - tags: get,bazel
       version: 3.7.2
     env:
-      CM_GIT_CHECKOUT: v2.6.0
+      MLC_GIT_CHECKOUT: v2.6.0
   v2.7.0:
     deps:
     - names:
@@ -311,7 +311,7 @@ versions:
     - tags: get,bazel
       version: 3.7.2
     env:
-      CM_GIT_CHECKOUT: v2.7.0
+      MLC_GIT_CHECKOUT: v2.7.0
   v2.8.0:
     deps:
     - names:
@@ -327,7 +327,7 @@ versions:
     - tags: get,bazel
       version: 4.2.1
     env:
-      CM_GIT_CHECKOUT: v2.8.0
+      MLC_GIT_CHECKOUT: v2.8.0
   v2.9.0:
     deps:
     - names:
@@ -343,4 +343,4 @@ versions:
     - tags: get,bazel
       version: 5.0.0
     env:
-      CM_GIT_CHECKOUT: v2.9.0
+      MLC_GIT_CHECKOUT: v2.9.0

@@ -12,7 +12,7 @@ deps:
   tags: get,mlperf,inference,results,official,_code-only
 new_env_keys:
 - +PYTHONPATH
-- CM_MLPERF_INFERENCE_NVIDIA_CODE_PATH
+- MLC_MLPERF_INFERENCE_NVIDIA_CODE_PATH
 tags:
 - get
 - nvidia

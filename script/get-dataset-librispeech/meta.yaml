@@ -9,10 +9,10 @@ deps:
   - sys-utils
   tags: get,sys-utils-cm
 env:
-  CM_DATASET: LIBRISPEECH
-  CM_WGET_URL: http://www.openslr.org/resources/12/<<<CM_DATASET_ARCHIVE>>>
+  MLC_DATASET: LIBRISPEECH
+  MLC_WGET_URL: http://www.openslr.org/resources/12/<<<MLC_DATASET_ARCHIVE>>>
 new_env_keys:
-- CM_DATASET_*
+- MLC_DATASET_*
 tags:
 - get
 - dataset
@@ -27,29 +27,29 @@ uid: 09f29df607e0415d
 versions:
   dev-clean:
     env:
-      CM_DATASET_ARCHIVE: dev-clean.tar.gz
-      CM_DATASET_MD5: 42e2234ba48799c1f50f24a7926300a1
-      CM_DATASET_NAME: LibriSpeech Dev Clean dataset
+      MLC_DATASET_ARCHIVE: dev-clean.tar.gz
+      MLC_DATASET_MD5: 42e2234ba48799c1f50f24a7926300a1
+      MLC_DATASET_NAME: LibriSpeech Dev Clean dataset
   dev-other:
     env:
-      CM_DATASET_ARCHIVE: dev-other.tar.gz
-      CM_DATASET_MD5: c8d0bcc9cca99d4f8b62fcc847357931
-      CM_DATASET_NAME: LibriSpeech Dev Other dataset
+      MLC_DATASET_ARCHIVE: dev-other.tar.gz
+      MLC_DATASET_MD5: c8d0bcc9cca99d4f8b62fcc847357931
+      MLC_DATASET_NAME: LibriSpeech Dev Other dataset
   test-clean:
     env:
-      CM_DATASET_ARCHIVE: test-clean.tar.gz
-      CM_DATASET_MD5: 32fa31d27d2e1cad72775fee3f4849a9
-      CM_DATASET_NAME: LibriSpeech Test Clean dataset
+      MLC_DATASET_ARCHIVE: test-clean.tar.gz
+      MLC_DATASET_MD5: 32fa31d27d2e1cad72775fee3f4849a9
+      MLC_DATASET_NAME: LibriSpeech Test Clean dataset
   test-other:
     env:
-      CM_DATASET_ARCHIVE: test-other.tar.gz
-      CM_DATASET_MD5: fb5a50374b501bb3bac4815ee91d3135
-      CM_DATASET_NAME: LibriSpeech Test Other dataset
+      MLC_DATASET_ARCHIVE: test-other.tar.gz
+      MLC_DATASET_MD5: fb5a50374b501bb3bac4815ee91d3135
+      MLC_DATASET_NAME: LibriSpeech Test Other dataset
   train-clean-100:
     env:
-      CM_DATASET_ARCHIVE: train-clean-100.tar.gz
-      CM_DATASET_MD5: 2a93770f6d5c6c964bc36631d331a522
-      CM_DATASET_NAME: LibriSpeech Train Clean 100 dataset
+      MLC_DATASET_ARCHIVE: train-clean-100.tar.gz
+      MLC_DATASET_MD5: 2a93770f6d5c6c964bc36631d331a522
+      MLC_DATASET_NAME: LibriSpeech Train Clean 100 dataset
   train-clean-360:
     env:
       DATASET_ARCHIVE: train-clean-360.tar.gz

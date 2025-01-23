@@ -14,7 +14,7 @@ tags:
 - huggingface-cli
 - cli
 input_mapping:
-  token: CM_HF_TOKEN
+  token: MLC_HF_TOKEN
 uid: e9488a272f1d4160
 deps:
  - tags: get,generic-python-lib,_package.huggingface_hub[cli]
@@ -23,4 +23,4 @@ variations:
     cache: true
     force_cache: true
     env:
-      CM_HF_DO_LOGIN: yes
+      MLC_HF_DO_LOGIN: yes

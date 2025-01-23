@@ -5,13 +5,13 @@ cache: true
 category: Compiler automation
 clean_files: []
 env:
-  CM_REQUIRE_INSTALL: 'no'
+  MLC_REQUIRE_INSTALL: 'no'
 new_env_keys:
-- CM_GO_*
+- MLC_GO_*
 - +PATH
 prehook_deps:
 - enable_if_env:
-    CM_REQUIRE_INSTALL:
+    MLC_REQUIRE_INSTALL:
     - 'yes'
   reuse_version: true
   tags: install,go

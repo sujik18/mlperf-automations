@@ -10,32 +10,32 @@ deps:
   - python
   - python3
   skip_if_env:
-    CM_CONDA_ENV:
+    MLC_CONDA_ENV:
     - 'yes'
   tags: get,python3
 - names:
   - compiler
   tags: get,compiler
 - env:
-    CM_GIT_CHECKOUT_PATH_ENV_NAME: CM_PYTORCH_SRC_REPO_PATH
+    MLC_GIT_CHECKOUT_PATH_ENV_NAME: MLC_PYTORCH_SRC_REPO_PATH
   extra_cache_tags: pytorch,src,pytorch-src,pytorch-src-repo
   names:
   - pytorch-src-repo
   tags: get,git,repo
   update_tags_from_env_with_prefix:
     _branch.:
-    - CM_GIT_CHECKOUT
+    - MLC_GIT_CHECKOUT
     _repo.:
-    - CM_GIT_URL
+    - MLC_GIT_URL
     _sha.:
-    - CM_GIT_CHECKOUT_SHA
+    - MLC_GIT_CHECKOUT_SHA
     _tag.:
-    - CM_GIT_CHECKOUT_TAG
+    - MLC_GIT_CHECKOUT_TAG
 env:
-  CM_GIT_URL: https://github.com/pytorch/pytorch
+  MLC_GIT_URL: https://github.com/pytorch/pytorch
 name: Build pytorch from sources
 new_env_keys:
-- CM_PYTORCH_*
+- MLC_PYTORCH_*
 prehook_deps: []
 sort: 1000
 tags:
@@ -50,7 +50,7 @@ uid: 64eaf3e81de94f41
 variations:
   branch.#:
     env:
-      CM_GIT_CHECKOUT: '#'
+      MLC_GIT_CHECKOUT: '#'
   cherrypicks.#:
     ad:
       pytorch-src-repo:
@@ -62,10 +62,10 @@ variations:
       - cuda
       tags: get,cuda,_cudnn
     env:
-      CUDA_HOME: <<<CM_CUDA_INSTALLED_PATH>>>
-      CUDA_NVCC_EXECUTABLE: <<<CM_NVCC_BIN_WITH_PATH>>>
-      CUDNN_INCLUDE_PATH: <<<CM_CUDA_PATH_INCLUDE_CUDNN>>>
-      CUDNN_LIBRARY_PATH: <<<CM_CUDA_PATH_LIB_CUDNN>>>
+      CUDA_HOME: <<<MLC_CUDA_INSTALLED_PATH>>>
+      CUDA_NVCC_EXECUTABLE: <<<MLC_NVCC_BIN_WITH_PATH>>>
+      CUDNN_INCLUDE_PATH: <<<MLC_CUDA_PATH_INCLUDE_CUDNN>>>
+      CUDNN_LIBRARY_PATH: <<<MLC_CUDA_PATH_LIB_CUDNN>>>
       TORCH_CUDA_ARCH_LIST: Ampere Ada Hopper
       TORCH_CXX_FLAGS: -D_GLIBCXX_USE_CXX11_ABI=1
       USE_CUDA: '1'
@@ -108,9 +108,9 @@ variations:
       - libstdcxx-ng
       tags: get,generic,conda-package,_package.libstdcxx-ng,_source.conda-forge
     env:
-      CM_CONDA_ENV: 'yes'
-      CM_MLPERF_INFERENCE_INTEL: 'yes'
-      CM_MLPERF_INFERENCE_INTEL_MODEL: resnet50
+      MLC_CONDA_ENV: 'yes'
+      MLC_MLPERF_INFERENCE_INTEL: 'yes'
+      MLC_MLPERF_INFERENCE_INTEL_MODEL: resnet50
       USE_CUDA: '0'
   for-intel-mlperf-inference-retinanet:
     adr:
@@ -151,9 +151,9 @@ variations:
       - libstdcxx-ng
       tags: get,generic,conda-package,_package.libstdcxx-ng,_source.conda-forge
     env:
-      CM_CONDA_ENV: 'yes'
-      CM_MLPERF_INFERENCE_INTEL: 'yes'
-      CM_MLPERF_INFERENCE_INTEL_MODEL: retinanet
+      MLC_CONDA_ENV: 'yes'
+      MLC_MLPERF_INFERENCE_INTEL: 'yes'
+      MLC_MLPERF_INFERENCE_INTEL_MODEL: retinanet
       USE_CUDA: '0'
   for-intel-mlperf-inference-v3.1-bert:
     adr:
@@ -225,9 +225,9 @@ variations:
       - libstdcxx-ng
       tags: get,generic,conda-package,_package.libstdcxx-ng,_source.conda-forge
     env:
-      CM_CONDA_ENV: 'yes'
-      CM_MLPERF_INFERENCE_INTEL: 'yes'
-      CM_MLPERF_INFERENCE_INTEL_LANGUAGE_MODEL: 'yes'
+      MLC_CONDA_ENV: 'yes'
+      MLC_MLPERF_INFERENCE_INTEL: 'yes'
+      MLC_MLPERF_INFERENCE_INTEL_LANGUAGE_MODEL: 'yes'
       USE_CUDA: '0'
   for-intel-mlperf-inference-v3.1-dlrm-v2:
     ad:
@@ -269,20 +269,20 @@ variations:
     env: {}
   repo.#:
     env:
-      CM_GIT_URL: '#'
+      MLC_GIT_URL: '#'
     group: repo
   repo.https://github.com/pytorch/pytorch:
     default: true
     env:
-      CM_GIT_URL: https://github.com/pytorch/pytorch
+      MLC_GIT_URL: https://github.com/pytorch/pytorch
     group: repo
   sha.#:
     env:
-      CM_GIT_CHECKOUT_SHA: '#'
+      MLC_GIT_CHECKOUT_SHA: '#'
   tag.#:
     ad:
       pytorch-src-repo:
         tags: _no-recurse-submodules,_full-history
     env:
-      CM_GIT_CHECKOUT_TAG: '#'
+      MLC_GIT_CHECKOUT_TAG: '#'
 versions: {}

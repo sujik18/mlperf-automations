@@ -17,5 +17,5 @@ in 5 and 6 you can insert any suitable value instead of the symbol `#`, e.g. `mo
 
 ## Notes
 
-For PyTorch and TensorFlow frontends you should specify evironment variable `CM_ML_MODEL_INPUT_SHAPES` with input shapes of the model you want to compile (e.g. `"input": (16, 3, 224, 224)`) or separate variables `CM_ML_MODEL_IMAGE_NUM_CHANNELS`, `CM_ML_MODEL_IMAGE_WIDTH`, `CM_ML_MODEL_IMAGE_HEIGHT` for 2D CV models and `CM_ML_MODEL_MAX_SEQ_LENGTH` for language models.    
+For PyTorch and TensorFlow frontends you should specify evironment variable `MLC_ML_MODEL_INPUT_SHAPES` with input shapes of the model you want to compile (e.g. `"input": (16, 3, 224, 224)`) or separate variables `MLC_ML_MODEL_IMAGE_NUM_CHANNELS`, `MLC_ML_MODEL_IMAGE_WIDTH`, `MLC_ML_MODEL_IMAGE_HEIGHT` for 2D CV models and `MLC_ML_MODEL_MAX_SEQ_LENGTH` for language models.    
 If your model is in ONNX format then all input shapes can be extracted automatically.

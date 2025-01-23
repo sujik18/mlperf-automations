@@ -10,21 +10,21 @@ default_env:
 deps:
 - tags: get,terraform
 input_mapping:
-  cminit: CM_TERRAFORM_CM_INIT
-  destroy: CM_DESTROY_TERRAFORM
-  gcp_credentials_json_file: CM_GCP_CREDENTIALS_JSON_PATH
-  key_file: CM_SSH_KEY_FILE
-  run_cmds: CM_TERRAFORM_RUN_COMMANDS
-  ssh_key_file: CM_SSH_KEY_FILE
+  cminit: MLC_TERRAFORM_MLC_INIT
+  destroy: MLC_DESTROY_TERRAFORM
+  gcp_credentials_json_file: MLC_GCP_CREDENTIALS_JSON_PATH
+  key_file: MLC_SSH_KEY_FILE
+  run_cmds: MLC_TERRAFORM_RUN_COMMANDS
+  ssh_key_file: MLC_SSH_KEY_FILE
 new_env_keys:
-- CM_TERRAFORM_RUN_DIR
-- CM_TERRAFORM_CONFIG_DIR
+- MLC_TERRAFORM_RUN_DIR
+- MLC_TERRAFORM_CONFIG_DIR
 new_state_keys:
-- CM_TF_NEW_INSTANCES_STATE
+- MLC_TF_NEW_INSTANCES_STATE
 post_deps:
 - dynamic: true
   enable_if_env:
-    CM_DESTROY_TERRAFORM:
+    MLC_DESTROY_TERRAFORM:
     - 'on'
   names:
   - destroy-cmd
@@ -64,7 +64,7 @@ variations:
     group: aws-instance-image
   arm64:
     env:
-      CM_INSTANCE_PLATFORM: arm64
+      MLC_INSTANCE_PLATFORM: arm64
     group: platform
   aws:
     default: true
@@ -72,7 +72,7 @@ variations:
       aws-instance-type: t2.micro
       region: us-west-2
     env:
-      CM_TERRAFORM_CONFIG_DIR_NAME: aws
+      MLC_TERRAFORM_CONFIG_DIR_NAME: aws
     group: cloud-provider
   aws_instance_image.#:
     env:
@@ -136,7 +136,7 @@ variations:
       storage-size: storage_size.120
       zone: zone.us-west1-a
     env:
-      CM_TERRAFORM_CONFIG_DIR_NAME: gcp
+      MLC_TERRAFORM_CONFIG_DIR_NAME: gcp
     group: cloud-provider
   gcp_instance_image.#:
     env:
@@ -154,7 +154,7 @@ variations:
     default_variations:
       platform: arm64
     env:
-      CM_TERRAFORM_AWS_GRAVITON_INSTANCE: 'yes'
+      MLC_TERRAFORM_AWS_GRAVITON_INSTANCE: 'yes'
   inf1.2xlarge:
     base:
     - aws
@@ -187,7 +187,7 @@ variations:
     default_variations:
       platform: arm64
     env:
-      CM_TERRAFORM_AWS_INFERENTIA_INSTANCE: 'yes'
+      MLC_TERRAFORM_AWS_INFERENTIA_INSTANCE: 'yes'
   inferentia,amazon-linux-2-kernel.510:
     default_variations:
       aws-instance-image: amazon-linux-2-kernel.510,arm64,us-west-2
@@ -312,7 +312,7 @@ variations:
   x86:
     default: true
     env:
-      CM_INSTANCE_PLATFORM: x86
+      MLC_INSTANCE_PLATFORM: x86
     group: platform
   zone.#:
     env:

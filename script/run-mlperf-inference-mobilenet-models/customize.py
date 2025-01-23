@@ -18,8 +18,8 @@ def preprocess(i):
 
     automation = i['automation']
 
-    quiet = (env.get('CM_QUIET', False) == 'yes')
-    verbose = (env.get('CM_VERBOSE', False) == 'yes')
+    quiet = (env.get('MLC_QUIET', False) == 'yes')
+    verbose = (env.get('MLC_VERBOSE', False) == 'yes')
 
     models_all = {
         "mobilenet": {
@@ -49,18 +49,18 @@ def preprocess(i):
     }
 
     models = {}
-    if env.get('CM_MLPERF_RUN_MOBILENET_V1', '') == "yes":
+    if env.get('MLC_MLPERF_RUN_MOBILENET_V1', '') == "yes":
         models['mobilenet'] = {}
         models['mobilenet']['v1'] = models_all['mobilenet']['v1']
-    elif env.get('CM_MLPERF_RUN_MOBILENET_V2', '') == "yes":
+    elif env.get('MLC_MLPERF_RUN_MOBILENET_V2', '') == "yes":
         models['mobilenet'] = {}
         models['mobilenet']['v2'] = models_all['mobilenet']['v2']
-    elif env.get('CM_MLPERF_RUN_MOBILENET_V3', '') == "yes":
+    elif env.get('MLC_MLPERF_RUN_MOBILENET_V3', '') == "yes":
         models['mobilenet'] = {}
         models['mobilenet']['v3'] = models_all['mobilenet']['v3']
-    elif env.get('CM_MLPERF_RUN_MOBILENETS', '') == "yes":
+    elif env.get('MLC_MLPERF_RUN_MOBILENETS', '') == "yes":
         models['mobilenet'] = models_all['mobilenet']
-    elif env.get('CM_MLPERF_RUN_EFFICIENTNETS', '') == "yes":
+    elif env.get('MLC_MLPERF_RUN_EFFICIENTNETS', '') == "yes":
         models['efficientnet'] = models_all['efficientnet']
 
     variation_strings = {}
@@ -89,16 +89,16 @@ def preprocess(i):
                             variation_list.append("_" + k3)
                         variation_strings[t1].append(",".join(variation_list))
 
-    if env.get('CM_MLPERF_SUBMISSION_MODE', '') == "yes":
+    if env.get('MLC_MLPERF_SUBMISSION_MODE', '') == "yes":
         var = "_submission"
         execution_mode = "valid"
-    elif env.get('CM_MLPERF_ACCURACY_MODE', '') == "yes" and env.get('CM_MLPERF_PERFORMANCE_MODE', '') == "yes":
+    elif env.get('MLC_MLPERF_ACCURACY_MODE', '') == "yes" and env.get('MLC_MLPERF_PERFORMANCE_MODE', '') == "yes":
         var = "_full,_performance-and-accuracy"
         execution_mode = "valid"
-    elif env.get('CM_MLPERF_ACCURACY_MODE', '') == "yes":
+    elif env.get('MLC_MLPERF_ACCURACY_MODE', '') == "yes":
         var = "_full,_accuracy-only"
         execution_mode = "valid"
-    elif env.get('CM_MLPERF_PERFORMANCE_MODE', '') == "yes":
+    elif env.get('MLC_MLPERF_PERFORMANCE_MODE', '') == "yes":
         var = "_full,_performance-only"
         execution_mode = "valid"
     else:
@@ -106,17 +106,17 @@ def preprocess(i):
         execution_mode = "test"
 
     precisions = []
-    if env.get('CM_MLPERF_RUN_FP32', '') == "yes":
+    if env.get('MLC_MLPERF_RUN_FP32', '') == "yes":
         precisions.append("fp32")
-    if env.get('CM_MLPERF_RUN_INT8', '') == "yes":
+    if env.get('MLC_MLPERF_RUN_INT8', '') == "yes":
         precisions.append("uint8")
 
     implementation_tags = []
-    if env.get('CM_MLPERF_USE_ARMNN_LIBRARY', '') == "yes":
+    if env.get('MLC_MLPERF_USE_ARMNN_LIBRARY', '') == "yes":
         implementation_tags.append("_armnn")
-    if env.get('CM_MLPERF_TFLITE_ARMNN_NEON', '') == "yes":
+    if env.get('MLC_MLPERF_TFLITE_ARMNN_NEON', '') == "yes":
         implementation_tags.append("_use-neon")
-    if env.get('CM_MLPERF_TFLITE_ARMNN_OPENCL', '') == "yes":
+    if env.get('MLC_MLPERF_TFLITE_ARMNN_OPENCL', '') == "yes":
         implementation_tags.append("_use-opencl")
     implementation_tags_string = ",".join(implementation_tags)
 
@@ -163,27 +163,27 @@ def preprocess(i):
                     utils.merge_dicts(
                         {'dict1': mlc_input['adr'], 'dict2': adr, 'append_lists': True, 'append_unique': True})
 
-                if env.get('CM_MLPERF_INFERENCE_RESULTS_DIR', '') != '':
-                    mlc_input['results_dir'] = env['CM_MLPERF_INFERENCE_RESULTS_DIR']
+                if env.get('MLC_MLPERF_INFERENCE_RESULTS_DIR', '') != '':
+                    mlc_input['results_dir'] = env['MLC_MLPERF_INFERENCE_RESULTS_DIR']
 
-                if env.get('CM_MLPERF_INFERENCE_SUBMISSION_DIR', '') != '':
-                    mlc_input['submission_dir'] = env['CM_MLPERF_INFERENCE_SUBMISSION_DIR']
+                if env.get('MLC_MLPERF_INFERENCE_SUBMISSION_DIR', '') != '':
+                    mlc_input['submission_dir'] = env['MLC_MLPERF_INFERENCE_SUBMISSION_DIR']
 
-                if env.get('CM_MLPERF_FIND_PERFORMANCE_MODE', '') == "yes" and env.get(
-                        'CM_MLPERF_NO_RERUN', '') != 'yes':
+                if env.get('MLC_MLPERF_FIND_PERFORMANCE_MODE', '') == "yes" and env.get(
+                        'MLC_MLPERF_NO_RERUN', '') != 'yes':
                     mlc_input['rerun'] = True
 
-                if env.get('CM_MLPERF_POWER', '') == "yes":
+                if env.get('MLC_MLPERF_POWER', '') == "yes":
                     mlc_input['power'] = 'yes'
 
-                if env.get('CM_MLPERF_ACCURACY_MODE', '') == "yes":
+                if env.get('MLC_MLPERF_ACCURACY_MODE', '') == "yes":
                     mlc_input['mode'] = 'accuracy'
                     print(mlc_input)
                     r = cmind.access(mlc_input)
                     if r['return'] > 0:
                         return r
 
-                if env.get('CM_MLPERF_PERFORMANCE_MODE', '') == "yes":
+                if env.get('MLC_MLPERF_PERFORMANCE_MODE', '') == "yes":
                     mlc_input['mode'] = 'performance'
 
                     print(mlc_input)
@@ -191,7 +191,7 @@ def preprocess(i):
                     if r['return'] > 0:
                         return r
 
-                if env.get('CM_TEST_ONE_RUN', '') == "yes":
+                if env.get('MLC_TEST_ONE_RUN', '') == "yes":
                     return {'return': 0}
 
         clean_input = {

@@ -9,7 +9,7 @@ deps:
 - tags: detect,os
 env: {}
 new_env_keys:
-- CM_ROCM_*
+- MLC_ROMLC_*
 - +PATH
 tags:
 - install

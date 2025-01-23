@@ -11,10 +11,10 @@ deps:
   - python3
   tags: get,python3
 - env:
-    CM_GIT_CHECKOUT: master
+    MLC_GIT_CHECKOUT: master
   tags: get,git,repo,_repo.https://github.com/mlcommons/logging
 new_env_keys:
-- CM_MLPERF_LOGGING_*
+- MLC_MLPERF_LOGGING_*
 - +PYTHONPATH
 tags:
 - get

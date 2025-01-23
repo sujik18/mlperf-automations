@@ -8,15 +8,15 @@ deps:
 - tags: detect,os
 name: Install prebuilt LLVM compiler
 new_env_keys:
-- CM_LLVM_*
-- CM_COMPILER_NAME
+- MLC_LLVM_*
+- MLC_COMPILER_NAME
 - +PATH
 - +LD_LIBRARY_PATH
 - +C_INCLUDE_PATH
 - +CPLUS_INCLUDE_PATH
 post_deps:
 - skip_if_env:
-    CM_REQUIRE_INSTALL:
+    MLC_REQUIRE_INSTALL:
     - 'yes'
   tags: get,llvm
 tags:

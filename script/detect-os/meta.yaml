@@ -5,21 +5,21 @@ category: Platform information
 clean_files:
 - tmp-run.out
 new_env_keys:
-- CM_HOST_OS_*
-- +CM_HOST_OS_*
-- CM_HOST_PLATFORM_*
-- CM_HOST_PYTHON_*
-- CM_HOST_SYSTEM_NAME
-- CM_RUN_STATE_DOCKER
+- MLC_HOST_OS_*
+- +MLC_HOST_OS_*
+- MLC_HOST_PLATFORM_*
+- MLC_HOST_PYTHON_*
+- MLC_HOST_SYSTEM_NAME
+- MLC_RUN_STATE_DOCKER
 - +PATH
 new_state_keys:
 - os_uname_*
 post_deps:
 - enable_if_env:
-    CM_HOST_OS_TYPE:
+    MLC_HOST_OS_TYPE:
     - windows
   skip_if_env:
-    CM_WINDOWS_SYS_UTILS_MIN_INSTALL:
+    MLC_WINDOWS_SYS_UTILS_MIN_INSTALL:
     - 'yes'
   tags: get,sys-utils-min
 tags:

@@ -2,13 +2,13 @@
 This [CM script](https://github.com/mlcommons/ck/blob/master/cm/docs/specs/script.md) detects the installed llvm on the system and if not found calls the [install script for llvm](../script/install-llvm-prebuilt).
 
 ## Exported Variables
-* `CM_LLVM_CLANG_BIN`
-* `CM_LLVM_CLANG_BIN_WITH_PATH` 
-* `CM_C_COMPILER_BIN`
-* `CM_C_COMPILER_WITH_PATH`
-* `CM_CXX_COMPILER_BIN`
-* `CM_CXX_COMPILER_WITH_PATH`
-* `CM_COMPILER_*`
+* `MLC_LLVM_CLANG_BIN`
+* `MLC_LLVM_CLANG_BIN_WITH_PATH` 
+* `MLC_C_COMPILER_BIN`
+* `MLC_C_COMPILER_WITH_PATH`
+* `MLC_CXX_COMPILER_BIN`
+* `MLC_CXX_COMPILER_WITH_PATH`
+* `MLC_COMPILER_*`
 
 ## Supported and Tested OS
 1. Ubuntu 18.04, 20.04, 22.04
@@ -86,7 +86,7 @@ cm run script "app image corner-detection"
 
 ```bash
 cm rm cache -f
-cm run script "install llvm prebuilt" --version=13.0.0 --env.CM_LLVM_PACKAGE=clang+llvm-13.0.0-x86_64-linux-gnu-ubuntu-20.04.tar.xz
+cm run script "install llvm prebuilt" --version=13.0.0 --env.MLC_LLVM_PACKAGE=clang+llvm-13.0.0-x86_64-linux-gnu-ubuntu-20.04.tar.xz
 cm run script "app image corner-detection"
 ```
 
@@ -94,6 +94,6 @@ cm run script "app image corner-detection"
 
 ```bash
 cm rm cache -f
-cm run script "install llvm prebuilt" --version=12.0.0 --env.CM_LLVM_PACKAGE=clang+llvm-12.0.0-x86_64-linux-gnu-ubuntu-20.04.tar.xz
+cm run script "install llvm prebuilt" --version=12.0.0 --env.MLC_LLVM_PACKAGE=clang+llvm-12.0.0-x86_64-linux-gnu-ubuntu-20.04.tar.xz
 cm run script "app image corner-detection"
 ```

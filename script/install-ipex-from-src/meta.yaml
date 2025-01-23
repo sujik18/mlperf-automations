@@ -10,35 +10,35 @@ deps:
   - python
   - python3
   skip_if_env:
-    CM_CONDA_ENV:
+    MLC_CONDA_ENV:
     - 'yes'
   tags: get,python3
 - names:
   - pytorch
   skip_if_env:
-    CM_IPEX_SKIP_PYTORCH:
+    MLC_IPEX_SKIP_PYTORCH:
     - 'yes'
   tags: get,pytorch,from.src
 - tags: get,generic,conda-package,_package.ninja
 - env:
-    CM_GIT_CHECKOUT_PATH_ENV_NAME: CM_IPEX_SRC_REPO_PATH
+    MLC_GIT_CHECKOUT_PATH_ENV_NAME: MLC_IPEX_SRC_REPO_PATH
   extra_cache_tags: ipex,src,ipex-src,ipex-src-repo
   names:
   - ipex-src-repo
   tags: get,git,repo
   update_tags_from_env_with_prefix:
     _branch.:
-    - CM_GIT_CHECKOUT
+    - MLC_GIT_CHECKOUT
     _repo.:
-    - CM_GIT_URL
+    - MLC_GIT_URL
     _sha.:
-    - CM_GIT_CHECKOUT_SHA
+    - MLC_GIT_CHECKOUT_SHA
     _tag.:
-    - CM_GIT_CHECKOUT_TAG
+    - MLC_GIT_CHECKOUT_TAG
 env: {}
 name: Build IPEX from sources
 new_env_keys:
-- CM_IPEX_*
+- MLC_IPEX_*
 prehook_deps: []
 sort: 1000
 tags:
@@ -52,7 +52,7 @@ uid: 09364fff2bf04516
 variations:
   branch.#:
     env:
-      CM_GIT_CHECKOUT: '#'
+      MLC_GIT_CHECKOUT: '#'
   for-intel-mlperf-inference-3d-unet:
     adr:
       conda-package:
@@ -94,9 +94,9 @@ variations:
       version_max: '12.3'
       version_max_usable: '12.3'
     env:
-      CM_CONDA_ENV: 'yes'
-      CM_INTEL_IPEX_3D_UNET_PATCH: 'yes'
-      CM_IPEX_SKIP_PYTORCH: 'yes'
+      MLC_CONDA_ENV: 'yes'
+      MLC_INTEL_IPEX_3D_UNET_PATCH: 'yes'
+      MLC_IPEX_SKIP_PYTORCH: 'yes'
   for-intel-mlperf-inference-resnet50:
     adr:
       conda-package:
@@ -137,8 +137,8 @@ variations:
       version_max: '12.3'
       version_max_usable: '12.3'
     env:
-      CM_CONDA_ENV: 'yes'
-      CM_INTEL_IPEX_RESNET50_PATCH: 'yes'
+      MLC_CONDA_ENV: 'yes'
+      MLC_INTEL_IPEX_RESNET50_PATCH: 'yes'
   for-intel-mlperf-inference-retinanet:
     adr:
       conda-package:
@@ -179,8 +179,8 @@ variations:
       version_max: '12.3'
       version_max_usable: '12.3'
     env:
-      CM_CONDA_ENV: 'yes'
-      CM_INTEL_IPEX_RETINANET_PATCH: 'yes'
+      MLC_CONDA_ENV: 'yes'
+      MLC_INTEL_IPEX_RETINANET_PATCH: 'yes'
   for-intel-mlperf-inference-sdxl:
     alias: for-intel-mlperf-inference-v4.0-sdxl
   for-intel-mlperf-inference-v3.1-3d-unet:
@@ -229,9 +229,9 @@ variations:
       - torch
       tags: install,pytorch,from-src,_for-intel-mlperf-inference-v3.1-dlrm-v2
     env:
-      CM_CONDA_ENV: 'yes'
-      CM_INTEL_IPEX_DLRM_V2_PATCH: 'yes'
-      CM_IPEX_SKIP_PYTORCH: 'yes'
+      MLC_CONDA_ENV: 'yes'
+      MLC_INTEL_IPEX_DLRM_V2_PATCH: 'yes'
+      MLC_IPEX_SKIP_PYTORCH: 'yes'
   for-intel-mlperf-inference-v3.1-gptj:
     adr:
       conda-package:
@@ -268,9 +268,9 @@ variations:
       tags: get,generic,conda-package,_package.sympy,_source.conda-forge
     - tags: install,llvm,src,_for-intel-mlperf-inference-v3.1-gptj
     env:
-      CM_CONDA_ENV: 'yes'
-      CM_IPEX_SKIP_PYTORCH: 'yes'
-      CM_USE_LLVM_FOR_IPEX: 'yes'
+      MLC_CONDA_ENV: 'yes'
+      MLC_IPEX_SKIP_PYTORCH: 'yes'
+      MLC_USE_LLVM_FOR_IPEX: 'yes'
   for-intel-mlperf-inference-v3.1-resnet50:
     alias: for-intel-mlperf-inference-resnet50
   for-intel-mlperf-inference-v3.1-retinanet:
@@ -323,24 +323,24 @@ variations:
       version_max: '12.3'
       version_max_usable: '12.3'
     env:
-      CM_CONDA_ENV: 'yes'
-      CM_IPEX_SKIP_PYTORCH: 'yes'
+      MLC_CONDA_ENV: 'yes'
+      MLC_IPEX_SKIP_PYTORCH: 'yes'
   repo.#:
     env:
-      CM_GIT_URL: '#'
+      MLC_GIT_URL: '#'
     group: repo
   repo.https://github.com/intel/intel-extension-for-pytorch:
     default: true
     env:
-      CM_GIT_URL: https://github.com/intel/intel-extension-for-pytorch
+      MLC_GIT_URL: https://github.com/intel/intel-extension-for-pytorch
     group: repo
   sha.#:
     env:
-      CM_GIT_CHECKOUT_SHA: '#'
+      MLC_GIT_CHECKOUT_SHA: '#'
   tag.#:
     ad:
       ipex-src-repo:
         tags: _no-recurse-submodules,_full-history
     env:
-      CM_GIT_CHECKOUT_TAG: '#'
+      MLC_GIT_CHECKOUT_TAG: '#'
 versions: {}

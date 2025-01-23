@@ -95,7 +95,7 @@ def dockerfile(self_module, input_params):
         # Set Docker-specific configurations
         docker_settings = state_data.get('docker', {})
         docker_settings['dockerfile_env'] = dockerfile_environment_vars
-        dockerfile_environment_vars['CM_RUN_STATE_DOCKER'] = True
+        dockerfile_environment_vars['MLC_RUN_STATE_DOCKER'] = True
 
         if not docker_settings.get('run', True) and not input_params.get(
                 'docker_run_override', False):
@@ -115,7 +115,7 @@ def dockerfile(self_module, input_params):
         # Prune temporary environment variables
         run_command = copy.deepcopy(run_command_arc)
         for key in list(run_command.get('env', {}).keys()):
-            if key.startswith("CM_TMP_"):
+            if key.startswith("MLC_TMP_"):
                 del run_command['env'][key]
 
         # Regenerate script command
@@ -177,7 +177,7 @@ def dockerfile(self_module, input_params):
 
         # Push Docker image if specified
         if input_params.get('docker_push_image') in [True, 'True', 'yes']:
-            environment_vars['CM_DOCKER_PUSH_IMAGE'] = 'yes'
+            environment_vars['MLC_DOCKER_PUSH_IMAGE'] = 'yes'
 
         # Generate Dockerfile
         mlc_docker_input = {
@@ -227,7 +227,7 @@ def docker_run(self_module, i):
     if i.get('docker_skip_build', False):
         noregenerate_docker_file = True
         norecreate_docker_image = True
-        env['CM_DOCKER_SKIP_BUILD'] = 'yes'
+        env['MLC_DOCKER_SKIP_BUILD'] = 'yes'
 
     # Prune unnecessary Docker-related input keys
     r = prune_input({'input': i, 'extra_keys_starts_with': ['docker_']})
@@ -249,7 +249,7 @@ def docker_run(self_module, i):
     if not lst:
         return {'return': 1, 'error': 'No scripts were found'}
 
-    env['CM_RUN_STATE_DOCKER'] = False
+    env['MLC_RUN_STATE_DOCKER'] = False
     state, const, const_state = i.get(
         'state', {}), i.get(
         'const', {}), i.get(
@@ -259,7 +259,7 @@ def docker_run(self_module, i):
 
     docker_cache = i.get('docker_cache', "yes")
     if docker_cache.lower() in ["no", "false"]:
-        env.setdefault('CM_DOCKER_CACHE', docker_cache)
+        env.setdefault('MLC_DOCKER_CACHE', docker_cache)
 
     image_repo = i.get('docker_image_repo', '')
     add_deps_recursive = i.get('add_deps_recursive')

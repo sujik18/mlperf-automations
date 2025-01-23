@@ -15,13 +15,13 @@ category: CM automation
 cache: true
 
 input_mapping:
-  env_key: CM_CUSTOM_CACHE_ENTRY_ENV_KEY
-  env_key2: CM_CUSTOM_CACHE_ENTRY_ENV_KEY2
-  path: CM_CUSTOM_CACHE_ENTRY_PATH
-  to: CM_CUSTOM_CACHE_ENTRY_PATH
+  env_key: MLC_CUSTOM_CACHE_ENTRY_ENV_KEY
+  env_key2: MLC_CUSTOM_CACHE_ENTRY_ENV_KEY2
+  path: MLC_CUSTOM_CACHE_ENTRY_PATH
+  to: MLC_CUSTOM_CACHE_ENTRY_PATH
 
 new_env_keys:
-- CM_CUSTOM_CACHE_ENTRY*
+- MLC_CUSTOM_CACHE_ENTRY*
 
 print_env_at_the_end:
-  CM_CUSTOM_CACHE_ENTRY_PATH: "Path to custom cache entry"
+  MLC_CUSTOM_CACHE_ENTRY_PATH: "Path to custom cache entry"

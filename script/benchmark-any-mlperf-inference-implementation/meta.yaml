@@ -302,7 +302,7 @@ variations:
 
   rb6,qualcomm:
     default_env:
-      EXTRA_ARGS: " --adr.mlperf-inference-implementation.tags=_rb6 --env.CM_MLPERF_SHORT_RANGING_RUN=no"
+      EXTRA_ARGS: " --adr.mlperf-inference-implementation.tags=_rb6 --env.MLC_MLPERF_SHORT_RANGING_RUN=no"
     state:
       resnet50:
         qaic:

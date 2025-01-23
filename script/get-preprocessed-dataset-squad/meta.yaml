@@ -27,10 +27,10 @@ deps:
   - tags: get,generic-python-lib,_package.tensorflow
 
 env:
-  CM_DATASET_MAX_QUERY_LENGTH: 64
+  MLC_DATASET_MAX_QUERY_LENGTH: 64
 
 new_env_keys:
-  - CM_DATASET_SQUAD_TOKENIZED_*
+  - MLC_DATASET_SQUAD_TOKENIZED_*
 
 tags:
 - get
@@ -43,51 +43,51 @@ variations:
   calib1:
     group: calibration-set
     env:
-      CM_DATASET_SQUAD_CALIBRATION_SET: one
+      MLC_DATASET_SQUAD_CALIBRATION_SET: one
   calib2:
     group: calibration-set
     env:
-      CM_DATASET_SQUAD_CALIBRATION_SET: two
+      MLC_DATASET_SQUAD_CALIBRATION_SET: two
   no-calib:
     group: calibration-set
     default: true
     env:
-      CM_DATASET_SQUAD_CALIBRATION_SET: ''
+      MLC_DATASET_SQUAD_CALIBRATION_SET: ''
   raw:
     group: raw
     default: true
     env:
-      CM_DATASET_RAW: "yes"
+      MLC_DATASET_RAW: "yes"
   pickle:
     group: raw
     env:
-      CM_DATASET_RAW: "no"
+      MLC_DATASET_RAW: "no"
   seq-length.#:
     group: seq-length
     env:
-      CM_DATASET_MAX_SEQ_LENGTH: "#"
+      MLC_DATASET_MAX_SEQ_LENGTH: "#"
   seq-length.384:
     group: seq-length
     default: true
     env:
-      CM_DATASET_MAX_SEQ_LENGTH: 384
+      MLC_DATASET_MAX_SEQ_LENGTH: 384
   doc-stride.#:
     group: doc-stride
     env:
-      CM_DATASET_DOC_STRIDE: "#"
+      MLC_DATASET_DOC_STRIDE: "#"
   doc-stride.128:
     group: doc-stride
     default: true
     env:
-      CM_DATASET_DOC_STRIDE: 128
+      MLC_DATASET_DOC_STRIDE: 128
   packed:
     group: packing
     env:
-      CM_DATASET_SQUAD_PACKED: 'yes'
+      MLC_DATASET_SQUAD_PACKED: 'yes'
     deps:
       - tags: get,preprocessed,squad,_pickle
         env:
-          CM_DATASET_SQUAD_PACKED: ''
+          MLC_DATASET_SQUAD_PACKED: ''
         inherit_variation_tags: true
         skip_inherit_variation_groups:
         - packing

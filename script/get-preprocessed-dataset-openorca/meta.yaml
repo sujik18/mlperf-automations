@@ -5,7 +5,7 @@ cache: true
 category: AI/ML datasets
 category_sort: 8500
 default_env:
-  CM_DATASET_CALIBRATION: 'no'
+  MLC_DATASET_CALIBRATION: 'no'
 deps:
 - tags: get,sys-utils-cm
 - names:
@@ -16,16 +16,16 @@ deps:
   - openorca-original
   - dataset-original
   skip_if_env:
-    CM_DATASET_PREPROCESSED_BY_MLC:
+    MLC_DATASET_PREPROCESSED_BY_MLC:
     - 'on'
     - 'yes'
   tags: get,dataset,original,openorca
 - force_env_keys:
-  - CM_GIT_*
+  - MLC_GIT_*
   names:
   - inference-src
   skip_if_env:
-    CM_DATASET_PREPROCESSED_BY_MLC:
+    MLC_DATASET_PREPROCESSED_BY_MLC:
     - 'on'
     - 'yes'
   tags: mlperf,inference,source
@@ -39,14 +39,14 @@ deps:
   - transformers
   tags: get,generic-python-lib,_package.transformers
 - skip_if_env:
-    CM_DATASET_PREPROCESSED_BY_MLC:
+    MLC_DATASET_PREPROCESSED_BY_MLC:
     - 'on'
     - 'yes'
   tags: get,ml-model,llama2
 docker:
   real_run: false
 env:
-  CM_DATASET: OPENORCA
+  MLC_DATASET: OPENORCA
 tags:
 - get
 - dataset
@@ -64,11 +64,11 @@ variations:
     base:
     - mlcommons
     env:
-      CM_DATASET_CALIBRATION: 'yes'
+      MLC_DATASET_CALIBRATION: 'yes'
     group: dataset-type
     new_env_keys:
-    - CM_DATASET_CALIBRATION_PATH
-    - CM_DATASET_OPENORCA_CALIBRATION_PATH
+    - MLC_DATASET_CALIBRATION_PATH
+    - MLC_DATASET_OPENORCA_CALIBRATION_PATH
   full:
     ad:
       dataset-original:
@@ -80,10 +80,10 @@ variations:
   mlcommons:
     deps:
     - env:
-        CM_DOWNLOAD_FINAL_ENV_NAME: CM_OPENORCA_PREPROCESSED_ROOT
-        CM_EXTRACT_FINAL_ENV_NAME: CM_OPENORCA_PREPROCESSED_ROOT
-        CM_EXTRACT_TO_FOLDER: openorca-preprocessed
-        CM_RCLONE_CONFIG_NAME: mlc-inference
+        MLC_DOWNLOAD_FINAL_ENV_NAME: MLC_OPENORCA_PREPROCESSED_ROOT
+        MLC_EXTRACT_FINAL_ENV_NAME: MLC_OPENORCA_PREPROCESSED_ROOT
+        MLC_EXTRACT_TO_FOLDER: openorca-preprocessed
+        MLC_RCLONE_CONFIG_NAME: mlc-inference
       extra_cache_tags: openorca,preprocessed,dataset
       force_cache: true
       names:
@@ -91,10 +91,10 @@ variations:
       tags: download-and-extract,_rclone
       update_tags_from_env_with_prefix:
         _url.:
-        - CM_RCLONE_URL
+        - MLC_RCLONE_URL
     env:
-      CM_DATASET_PREPROCESSED_BY_MLC: 'yes'
-      CM_RCLONE_URL: mlc-inference:mlcommons-inference-wg-public/open_orca
+      MLC_DATASET_PREPROCESSED_BY_MLC: 'yes'
+      MLC_RCLONE_URL: mlc-inference:mlcommons-inference-wg-public/open_orca
   size.#:
     ad:
       dataset-original:
@@ -103,8 +103,8 @@ variations:
   validation:
     default: true
     env:
-      CM_DATASET_CALIBRATION: 'no'
+      MLC_DATASET_CALIBRATION: 'no'
     group: dataset-type
     new_env_keys:
-    - CM_DATASET_PREPROCESSED_PATH
-    - CM_DATASET_OPENORCA_PREPROCESSED_PATH
+    - MLC_DATASET_PREPROCESSED_PATH
+    - MLC_DATASET_OPENORCA_PREPROCESSED_PATH

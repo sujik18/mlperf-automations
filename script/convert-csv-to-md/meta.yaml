@@ -17,8 +17,8 @@ deps:
 docker_input_mapping: {}
 input_description: {}
 input_mapping:
-  csv_file: CM_CSV_FILE
-  md_file: CM_MD_FILE
+  csv_file: MLC_CSV_FILE
+  md_file: MLC_MD_FILE
 new_env_keys: []
 new_state_keys: []
 post_deps: []

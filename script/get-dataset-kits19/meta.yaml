@@ -4,11 +4,11 @@ automation_uid: 5b4e0237da074764
 cache: true
 category: AI/ML datasets
 default_env:
-  CM_GIT_CHECKOUT: master
-  CM_GIT_DEPTH: --depth 2
-  CM_GIT_PATCH: 'no'
-  CM_GIT_RECURSE_SUBMODULES: ''
-  CM_GIT_URL: https://github.com/neheller/kits19
+  MLC_GIT_CHECKOUT: master
+  MLC_GIT_DEPTH: --depth 2
+  MLC_GIT_PATCH: 'no'
+  MLC_GIT_RECURSE_SUBMODULES: ''
+  MLC_GIT_URL: https://github.com/neheller/kits19
 default_version: master
 deps:
 - tags: detect,os
@@ -17,7 +17,7 @@ deps:
   - python
   tags: get,python3
 new_env_keys:
-- CM_DATASET_*
+- MLC_DATASET_*
 tags:
 - get
 - dataset
@@ -29,32 +29,32 @@ uid: 79992bb221024ac5
 variations:
   calibration:
     env:
-      CM_DATASET_CALIBRATION: 'yes'
+      MLC_DATASET_CALIBRATION: 'yes'
   default:
     base:
     - short-history
     env:
-      CM_GIT_PATCH: 'no'
+      MLC_GIT_PATCH: 'no'
   full-history:
     env:
-      CM_GIT_DEPTH: ''
+      MLC_GIT_DEPTH: ''
   no-recurse-submodules:
     env:
-      CM_GIT_RECURSE_SUBMODULES: ''
+      MLC_GIT_RECURSE_SUBMODULES: ''
   patch:
     env:
-      CM_GIT_PATCH: 'yes'
+      MLC_GIT_PATCH: 'yes'
   short-history:
     env:
-      CM_GIT_DEPTH: --depth 5
+      MLC_GIT_DEPTH: --depth 5
   validation:
     env:
-      CM_DATASET_VALIDATION: 'yes'
+      MLC_DATASET_VALIDATION: 'yes'
 versions:
   custom:
     env:
-      CM_GIT_CHECKOUT: ''
-      CM_GIT_SHA: 'yes'
+      MLC_GIT_CHECKOUT: ''
+      MLC_GIT_SHA: 'yes'
   master:
     env:
-      CM_GIT_CHECKOUT: master
+      MLC_GIT_CHECKOUT: master

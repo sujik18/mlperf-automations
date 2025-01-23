@@ -16,8 +16,8 @@ tags:
 tags_help: "modular python app image-classification onnx"
 
 default_env:
-  CM_BATCH_COUNT: '1'
-  CM_BATCH_SIZE: '1'
+  MLC_BATCH_COUNT: '1'
+  MLC_BATCH_SIZE: '1'
 
 
 deps:
@@ -81,12 +81,12 @@ variations:
       USE_CPU: yes
 
 input_mapping:
-  input: CM_IMAGE
-  output: CM_APP_IMAGE_CLASSIFICATION_ONNX_PY_OUTPUT
+  input: MLC_IMAGE
+  output: MLC_APP_IMAGE_CLASSIFICATION_ONNX_PY_OUTPUT
 
 
 new_env_keys:
-  - CM_APP_IMAGE_CLASSIFICATION_ONNX_PY*
+  - MLC_APP_IMAGE_CLASSIFICATION_ONNX_PY*
 
 
 new_state_keys:
@@ -107,13 +107,13 @@ docker:
   skip_cm_sys_upgrade: 'yes'
   cm_repo_flags: '--branch=dev'
   use_host_group_id: 'yes'
-  image_tag_extra: '-cm-dev'
+  image_tag_extra: '-mlc-dev'
   input_paths:
     - input
-    - env.CM_IMAGE
+    - env.MLC_IMAGE
     - output
   skip_input_for_fake_run:
     - input
-    - env.CM_IMAGE
+    - env.MLC_IMAGE
     - output
     - j

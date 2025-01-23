@@ -21,51 +21,51 @@ tags:
 
 # Default environment
 default_env:
-  CM_MLPERF_LOADGEN_SCENARIO: Offline
-  CM_MLPERF_LOADGEN_MODE: performance
-  CM_SKIP_PREPROCESS_DATASET: 'no'
-  CM_SKIP_MODEL_DOWNLOAD: 'no'
-  CM_MLPERF_SUT_NAME_IMPLEMENTATION_PREFIX: dummy_harness
-  CM_MLPERF_SKIP_RUN: 'no'
+  MLC_MLPERF_LOADGEN_SCENARIO: Offline
+  MLC_MLPERF_LOADGEN_MODE: performance
+  MLC_SKIP_PREPROCESS_DATASET: 'no'
+  MLC_SKIP_MODEL_DOWNLOAD: 'no'
+  MLC_MLPERF_SUT_NAME_IMPLEMENTATION_PREFIX: dummy_harness
+  MLC_MLPERF_SKIP_RUN: 'no'
 
 env:
-  CM_CALL_MLPERF_RUNNER: 'no'
+  MLC_CALL_MLPERF_RUNNER: 'no'
 
 # Map script inputs to environment variables
 input_mapping:
-  count: CM_MLPERF_LOADGEN_QUERY_COUNT
-  max_batchsize: CM_MLPERF_LOADGEN_MAX_BATCHSIZE
-  mlperf_conf: CM_MLPERF_CONF
-  mode: CM_MLPERF_LOADGEN_MODE
-  output_dir: CM_MLPERF_OUTPUT_DIR
-  performance_sample_count: CM_MLPERF_LOADGEN_PERFORMANCE_SAMPLE_COUNT
-  scenario: CM_MLPERF_LOADGEN_SCENARIO
-  user_conf: CM_MLPERF_USER_CONF
-  skip_preprocess: CM_SKIP_PREPROCESS_DATASET
-  skip_preprocessing: CM_SKIP_PREPROCESS_DATASET
-  target_qps: CM_MLPERF_LOADGEN_TARGET_QPS
-  offline_target_qps: CM_MLPERF_LOADGEN_OFFLINE_TARGET_QPS
-  server_target_qps: CM_MLPERF_LOADGEN_SERVER_TARGET_QPS
-  target_latency: CM_MLPERF_LOADGEN_TARGET_LATENCY
-  singlestream_target_latency: CM_MLPERF_LOADGEN_SINGLESTREAM_TARGET_LATENCY
-  multistream_target_latency: CM_MLPERF_LOADGEN_MULTISTREAM_TARGET_LATENCY
-  performance_sample_count: CM_MLPERF_LOADGEN_PERFORMANCE_SAMPLE_COUNT
-  rerun: CM_RERUN
-  results_repo: CM_MLPERF_INFERENCE_RESULTS_REPO
+  count: MLC_MLPERF_LOADGEN_QUERY_COUNT
+  max_batchsize: MLC_MLPERF_LOADGEN_MAX_BATCHSIZE
+  mlperf_conf: MLC_MLPERF_CONF
+  mode: MLC_MLPERF_LOADGEN_MODE
+  output_dir: MLC_MLPERF_OUTPUT_DIR
+  performance_sample_count: MLC_MLPERF_LOADGEN_PERFORMANCE_SAMPLE_COUNT
+  scenario: MLC_MLPERF_LOADGEN_SCENARIO
+  user_conf: MLC_MLPERF_USER_CONF
+  skip_preprocess: MLC_SKIP_PREPROCESS_DATASET
+  skip_preprocessing: MLC_SKIP_PREPROCESS_DATASET
+  target_qps: MLC_MLPERF_LOADGEN_TARGET_QPS
+  offline_target_qps: MLC_MLPERF_LOADGEN_OFFLINE_TARGET_QPS
+  server_target_qps: MLC_MLPERF_LOADGEN_SERVER_TARGET_QPS
+  target_latency: MLC_MLPERF_LOADGEN_TARGET_LATENCY
+  singlestream_target_latency: MLC_MLPERF_LOADGEN_SINGLESTREAM_TARGET_LATENCY
+  multistream_target_latency: MLC_MLPERF_LOADGEN_MULTISTREAM_TARGET_LATENCY
+  performance_sample_count: MLC_MLPERF_LOADGEN_PERFORMANCE_SAMPLE_COUNT
+  rerun: MLC_RERUN
+  results_repo: MLC_MLPERF_INFERENCE_RESULTS_REPO
 
 new_state_keys:
   - mlperf-inference-implementation
-  - CM_SUT_*
+  - MLC_SUT_*
 
 # Env keys which are exposed to higher level scripts
 new_env_keys:
-  - CM_MLPERF_*
-  - CM_DATASET_*
-  - CM_HW_NAME
-  - CM_ML_MODEL_*
-  - CM_MAX_EXAMPLES
-  - CM_IMAGENET_ACCURACY_DTYPE
-  - CM_SQUAD_ACCURACY_DTYPE
+  - MLC_MLPERF_*
+  - MLC_DATASET_*
+  - MLC_HW_NAME
+  - MLC_ML_MODEL_*
+  - MLC_MAX_EXAMPLES
+  - MLC_IMAGENET_ACCURACY_DTYPE
+  - MLC_SQUAD_ACCURACY_DTYPE
 
 
 # Dependencies on other CM scripts
@@ -110,9 +110,9 @@ deps:
       inference-results
       inference-code
     updats_tags_from_env_with_prefix:
-      _repo.: CM_MLPERF_INFERENCE_RESULTS_REPO
+      _repo.: MLC_MLPERF_INFERENCE_RESULTS_REPO
     env:
-      CM_GIT_CHECKOUT_PATH_ENV_NAME: CM_MLPERF_INFERENCE_IMPLEMENTATION_REPO
+      MLC_GIT_CHECKOUT_PATH_ENV_NAME: MLC_MLPERF_INFERENCE_IMPLEMENTATION_REPO
     extra_cache_tags: inference-implementation,mlperf
 
 # Post dependencies to run this app including for power measurement
@@ -122,7 +122,7 @@ post_deps:
     - runner
     - mlperf-runner
     skip_if_env:
-      CM_MLPERF_SKIP_RUN:
+      MLC_MLPERF_SKIP_RUN:
         - 'yes'
         - yes
     tags: benchmark-mlperf
@@ -138,18 +138,18 @@ variations:
     group: device
     default: true
     env:
-      CM_MLPERF_DEVICE: cpu
+      MLC_MLPERF_DEVICE: cpu
   cuda:
     group: device
     env:
-      CM_MLPERF_DEVICE: gpu
-      CM_MLPERF_DEVICE_LIB_NAMESPEC: cudart
+      MLC_MLPERF_DEVICE: gpu
+      MLC_MLPERF_DEVICE_LIB_NAMESPEC: cudart
 
   pytorch:
     group: backend
     default: true
     env:
-      CM_MLPERF_BACKEND: pytorch
+      MLC_MLPERF_BACKEND: pytorch
 
   pytorch,cuda:
     deps:
@@ -168,14 +168,14 @@ variations:
     group: model
     default: true
     env:
-      CM_MODEL: resnet50
+      MLC_MODEL: resnet50
 
   retinanet:
     group: model
     base:
       - bs.1
     env:
-      CM_MODEL: retinanet
+      MLC_MODEL: retinanet
 
   bert_:
     {}
@@ -185,15 +185,15 @@ variations:
     base:
     - bert_
     env:
-      CM_MODEL: bert-99
-      CM_SQUAD_ACCURACY_DTYPE: float32
+      MLC_MODEL: bert-99
+      MLC_SQUAD_ACCURACY_DTYPE: float32
 
   bert-99.9:
     group: model
     base:
     - bert_
     env:
-      CM_MODEL: bert-99.9
+      MLC_MODEL: bert-99.9
 
   bert_:
     {}
@@ -203,15 +203,15 @@ variations:
     base:
     - bert_
     env:
-      CM_MODEL: bert-99
-      CM_SQUAD_ACCURACY_DTYPE: float32
+      MLC_MODEL: bert-99
+      MLC_SQUAD_ACCURACY_DTYPE: float32
 
   bert-99.9:
     group: model
     base:
     - bert_
     env:
-      CM_MODEL: bert-99.9
+      MLC_MODEL: bert-99.9
 
   gptj_:
     deps:
@@ -225,15 +225,15 @@ variations:
     base:
     - gptj_
     env:
-      CM_MODEL: gptj-99
-      CM_SQUAD_ACCURACY_DTYPE: float32
+      MLC_MODEL: gptj-99
+      MLC_SQUAD_ACCURACY_DTYPE: float32
 
   gptj-99.9:
     group: model
     base:
     - gptj_
     env:
-      CM_MODEL: gptj-99.9
+      MLC_MODEL: gptj-99.9
 
   llama2-70b_:
     {}
@@ -243,19 +243,19 @@ variations:
     base:
     - llama2-70b_
     env:
-      CM_MODEL: llama2-70b-99
+      MLC_MODEL: llama2-70b-99
 
   llama2-70b-99.9:
     group: model
     base:
     - llama2-70b_
     env:
-      CM_MODEL: llama2-70b-99.9
+      MLC_MODEL: llama2-70b-99.9
 
   singlestream:
     group: loadgen-scenario
     env:
-      CM_MLPERF_LOADGEN_SCENARIO: SingleStream
+      MLC_MLPERF_LOADGEN_SCENARIO: SingleStream
 
   singlestream,resnet50:
     default_variations:
@@ -268,17 +268,17 @@ variations:
   multistream:
     group: loadgen-scenario
     env:
-      CM_MLPERF_LOADGEN_SCENARIO: MultiStream
+      MLC_MLPERF_LOADGEN_SCENARIO: MultiStream
 
   offline:
     group: loadgen-scenario
     env:
-      CM_MLPERF_LOADGEN_SCENARIO: Offline
+      MLC_MLPERF_LOADGEN_SCENARIO: Offline
 
   server:
     group: loadgen-scenario
     env:
-      CM_MLPERF_LOADGEN_SCENARIO: Server
+      MLC_MLPERF_LOADGEN_SCENARIO: Server
 
   uint8:
     group: precision

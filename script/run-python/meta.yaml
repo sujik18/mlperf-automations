@@ -9,7 +9,7 @@ deps:
   - python3
   tags: get,python3
 input_mapping:
-  command: CM_RUN_PYTHON_CMD
+  command: MLC_RUN_PYTHON_CMD
 tags:
 - run
 - python

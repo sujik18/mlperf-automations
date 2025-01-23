@@ -12,10 +12,10 @@ deps:
 new_env_keys:
 - +PATH
 - +LD_LIBRARY_PATH
-- CM_CONDA_PREFIX
+- MLC_CONDA_PREFIX
 - CONDA_PREFIX
-- CM_CONDA_BIN_PATH
-- CM_CONDA_LIB_PATH
+- MLC_CONDA_BIN_PATH
+- MLC_CONDA_LIB_PATH
 tags:
 - create
 - get
@@ -27,4 +27,4 @@ uid: e39e0b04c86a40f2
 variations:
   name.#:
     env:
-      CM_CONDA_ENV_NAME: '#'
+      MLC_CONDA_ENV_NAME: '#'

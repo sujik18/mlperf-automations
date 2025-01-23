@@ -19,29 +19,29 @@ tags:
 
 # Default environment
 default_env:
-  CM_MLPERF_SUT_NAME_IMPLEMENTATION_PREFIX: nvidia
+  MLC_MLPERF_SUT_NAME_IMPLEMENTATION_PREFIX: nvidia
 
 # Map script inputs to environment variables
 input_mapping:
-  docker: CM_RUN_DOCKER_CONTAINER
-  hw_name: CM_HW_NAME
-  num_threads: CM_NUM_THREADS
-  model: CM_MLPERF_CUSTOM_MODEL_PATH
+  docker: MLC_RUN_DOCKER_CONTAINER
+  hw_name: MLC_HW_NAME
+  num_threads: MLC_NUM_THREADS
+  model: MLC_MLPERF_CUSTOM_MODEL_PATH
   output_dir: OUTPUT_BASE_DIR
-  rerun: CM_RERUN
-  clean: CM_MLPERF_CLEAN_SUBMISSION_DIR
+  rerun: MLC_RERUN
+  clean: MLC_MLPERF_CLEAN_SUBMISSION_DIR
 
 
 # Env keys which are exposed to higher level scripts
 new_env_keys:
-  - CM_MLPERF_*
-  - CM_DATASET_*
-  - CM_HW_NAME
-  - CM_ML_MODEL_*
+  - MLC_MLPERF_*
+  - MLC_DATASET_*
+  - MLC_HW_NAME
+  - MLC_ML_MODEL_*
 
 new_state_keys:
   - mlperf-inference-implementation
-  - CM_SUT_*
+  - MLC_SUT_*
 
 # Dependencies on other CM scripts
 deps:
@@ -77,7 +77,7 @@ deps:
   # Detect CUDA if required
   - tags: get,cuda
     enable_if_env:
-      CM_MLPERF_DEVICE:
+      MLC_MLPERF_DEVICE:
       - cuda
 
 
@@ -86,9 +86,9 @@ deps:
     names:
     - ml-engine-torchvision
     enable_if_env:
-      CM_MLPERF_BACKEND:
+      MLC_MLPERF_BACKEND:
       - pytorch
-      CM_MLPERF_DEVICE:
+      MLC_MLPERF_DEVICE:
       - cuda
 
   - tags: get,generic-python-lib,_mlperf_logging
@@ -103,7 +103,7 @@ deps:
     - prepare-data
     - bert-model
     enable_if_env:
-      CM_MLPERF_MODEL:
+      MLC_MLPERF_MODEL:
       - bert
 
 
@@ -113,14 +113,14 @@ variations:
   pytorch:
     group: framework
     env:
-      CM_MLPERF_BACKEND: pytorch
-      CM_MLPERF_BACKEND_VERSION: <<<CM_TORCH_VERSION>>>
+      MLC_MLPERF_BACKEND: pytorch
+      MLC_MLPERF_BACKEND_VERSION: <<<MLC_TORCH_VERSION>>>
 
   tf:
     group: framework
     env:
-      CM_MLPERF_BACKEND: tf
-      CM_MLPERF_BACKEND_VERSION: <<<CM_TENSORFLOW_VERSION>>>
+      MLC_MLPERF_BACKEND: tf
+      MLC_MLPERF_BACKEND_VERSION: <<<MLC_TENSORFLOW_VERSION>>>
 
   tensorflow:
     alias: tf
@@ -128,14 +128,14 @@ variations:
   # Reference MLPerf models
   bert:
     env:
-      CM_MLPERF_MODEL: bert
+      MLC_MLPERF_MODEL: bert
     deps:
     - tags: get,generic-python-lib,_protobuf
       names:
       - protobuf
       version_max: "3.19"
       enable_if_env:
-        CM_MLPERF_BACKEND:
+        MLC_MLPERF_BACKEND:
         - tf
         - tflite
     - tags: get,generic-python-lib,_torch
@@ -144,7 +144,7 @@ variations:
   tpu:
     group: device
     env:
-      CM_MLPERF_DEVICE: tpu
+      MLC_MLPERF_DEVICE: tpu
       CUDA_VISIBLE_DEVICES: ''
       USE_CUDA: no
 
@@ -152,5 +152,5 @@ variations:
     group: device
     default: true
     env:
-      CM_MLPERF_DEVICE: cuda
+      MLC_MLPERF_DEVICE: cuda
       USE_CUDA: yes

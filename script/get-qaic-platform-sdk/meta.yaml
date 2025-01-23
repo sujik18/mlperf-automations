@@ -9,8 +9,8 @@ input_description: {}
 input_mapping: {}
 new_env_keys:
 - +PATH
-- CM_QAIC_RUNNER_PATH
-- CM_QAIC_TOOLS_PATH
+- MLC_QAIC_RUNNER_PATH
+- MLC_QAIC_TOOLS_PATH
 - +C_INCLUDE_PATH
 - +CPLUS_INCLUDE_PATH
 - +LD_LIBRARY_PATH

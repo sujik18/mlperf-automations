@@ -18,11 +18,11 @@ deps:
 
 posthook_deps:
 - skip_if_env:
-    CM_SKIP_COMPILE:
+    MLC_SKIP_COMPILE:
     - 'on'
   tags: compile,cpp-program
 - skip_if_env:
-    CM_SKIP_RUN:
+    MLC_SKIP_RUN:
     - 'on'
   tags: benchmark-program
 

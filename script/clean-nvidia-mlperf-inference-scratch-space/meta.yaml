@@ -11,7 +11,7 @@ tags:
 - inference
 uid: bb41f6e3608e4e8a
 input_mapping:
-  extra_cache_rm_tags: CM_CLEAN_EXTRA_CACHE_RM_TAGS
+  extra_cache_rm_tags: MLC_CLEAN_EXTRA_CACHE_RM_TAGS
 deps:
   # Get Nvidia scratch space where data and models get downloaded
   - tags: get,mlperf,inference,nvidia,scratch,space
@@ -22,24 +22,24 @@ variations:
   sdxl:
     group: model
     env:
-      CM_MODEL: sdxl
+      MLC_MODEL: sdxl
   downloaded-data:
     group: artifact
     env:
-      CM_CLEAN_ARTIFACT_NAME: downloaded_data
+      MLC_CLEAN_ARTIFACT_NAME: downloaded_data
   preprocessed-data:
     group: artifact
     env:
-      CM_CLEAN_ARTIFACT_NAME: preprocessed_data
+      MLC_CLEAN_ARTIFACT_NAME: preprocessed_data
   downloaded-model:
     group: artifact
     env:
-      CM_CLEAN_ARTIFACT_NAME: downloaded_model
+      MLC_CLEAN_ARTIFACT_NAME: downloaded_model
   v4.1:
     group: version
     env:
-      CM_NVIDIA_MLPERF_INFERENCE_CODE_VERSION: v4.1
+      MLC_NVIDIA_MLPERF_INFERENCE_CODE_VERSION: v4.1
   v4.0:
     group: version
     env:
-      CM_NVIDIA_MLPERF_INFERENCE_CODE_VERSION: v4.0
+      MLC_NVIDIA_MLPERF_INFERENCE_CODE_VERSION: v4.0

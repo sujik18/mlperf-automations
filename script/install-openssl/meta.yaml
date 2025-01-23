@@ -9,11 +9,11 @@ deps:
 - tags: detect,cpu
 env: {}
 new_env_keys:
-- CM_OPENSSL_*
+- MLC_OPENSSL_*
 - +LD_LIBRARY_PATH
 post_deps:
 - skip_if_env:
-    CM_REQUIRE_INSTALL:
+    MLC_REQUIRE_INSTALL:
     - 'yes'
   tags: get,openssl
 tags:
@@ -25,4 +25,4 @@ uid: be472d3b1d014169
 versions:
   1.1.1:
     env:
-      CM_VERSION: 1.1.1
+      MLC_VERSION: 1.1.1

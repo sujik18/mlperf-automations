@@ -11,4 +11,4 @@ uid: 49dd1856b37342ac
 variations:
   large-nofile:
     env:
-      CM_ULIMIT_NOFILE: 9999
+      MLC_ULIMIT_NOFILE: 9999

@@ -3,7 +3,7 @@ automation_alias: script
 automation_uid: 5b4e0237da074764
 category: MLPerf benchmark support
 default_env:
-  CM_MLPERF_RESULTS_GIT_REPO_URL: https://github.com/mlcommons/mlperf_inference_submissions_v4.0
+  MLC_MLPERF_RESULTS_GIT_REPO_URL: https://github.com/mlcommons/mlperf_inference_submissions_v4.0
 deps:
 - names:
   - python3
@@ -13,15 +13,15 @@ deps:
 - names:
   - get-mlperf-submission-dir
   skip_if_env:
-    CM_MLPERF_INFERENCE_SUBMISSION_DIR:
+    MLC_MLPERF_INFERENCE_SUBMISSION_DIR:
     - 'on'
   tags: get,mlperf,submission,dir
 input_mapping:
-  branch: CM_GIT_BRANCH
-  commit_message: CM_MLPERF_RESULTS_REPO_COMMIT_MESSAGE
-  repo_branch: CM_GIT_BRANCH
-  repo_url: CM_MLPERF_RESULTS_GIT_REPO_URL
-  submission_dir: CM_MLPERF_INFERENCE_SUBMISSION_DIR
+  branch: MLC_GIT_BRANCH
+  commit_message: MLC_MLPERF_RESULTS_REPO_COMMIT_MESSAGE
+  repo_branch: MLC_GIT_BRANCH
+  repo_url: MLC_MLPERF_RESULTS_GIT_REPO_URL
+  submission_dir: MLC_MLPERF_INFERENCE_SUBMISSION_DIR
 prehook_deps:
 - names:
   - get-git-repo

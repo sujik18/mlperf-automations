@@ -22,16 +22,16 @@ tags:
 
 
 new_env_keys:
-  - CM_MLPERF_INFERENCE_NVIDIA_CODE_PATH
+  - MLC_MLPERF_INFERENCE_NVIDIA_CODE_PATH
 
 default_env:
-  CM_MAKE_BUILD_COMMAND: build
-  CM_MAKE_CLEAN: "no"
-  CM_CUSTOM_SYSTEM_NVIDIA: "yes"
+  MLC_MAKE_BUILD_COMMAND: build
+  MLC_MAKE_CLEAN: "no"
+  MLC_CUSTOM_SYSTEM_NVIDIA: "yes"
 
 input_mapping:
-  custom_system: CM_CUSTOM_SYSTEM_NVIDIA
-  clean: CM_MAKE_CLEAN
+  custom_system: MLC_CUSTOM_SYSTEM_NVIDIA
+  clean: MLC_MAKE_CLEAN
 
 # Dependencies on other CM scripts
 
@@ -57,7 +57,7 @@ deps:
     names:
     - cuda
     enable_if_env:
-      CM_MLPERF_DEVICE:
+      MLC_MLPERF_DEVICE:
         - cuda
         - inferentia
 
@@ -66,11 +66,11 @@ deps:
     names:
       - tensorrt
     enable_if_env:
-      CM_MLPERF_DEVICE:
+      MLC_MLPERF_DEVICE:
         - cuda
         - inferentia
     skip_if_env:
-      CM_TENSORRT_SYSTEM_DETECT:
+      MLC_TENSORRT_SYSTEM_DETECT:
         - yes
 
   # Detect gcc
@@ -113,7 +113,7 @@ deps:
   - tags: get,generic-python-lib,_pycuda
     version: "2022.2.2"
     skip_if_env:
-      CM_RUN_STATE_DOCKER:
+      MLC_RUN_STATE_DOCKER:
         - 'yes'
         - True
         - 'True'
@@ -137,7 +137,7 @@ post_deps:
     - custom-system-nvidia
     - nvidia-inference-common-code
     skip_if_env:
-      CM_CUSTOM_SYSTEM_NVIDIA:
+      MLC_CUSTOM_SYSTEM_NVIDIA:
       - "no"
       - False
       - "False"
@@ -147,17 +147,17 @@ variations:
   cpu:
     group: device
     env:
-      CM_MLPERF_DEVICE: cpu
+      MLC_MLPERF_DEVICE: cpu
   inferentia:
     group: device
     env:
-      CM_MLPERF_DEVICE: inferentia
+      MLC_MLPERF_DEVICE: inferentia
   cuda:
     group: device
     default: true
     env:
-      CM_MLPERF_DEVICE: cuda
-      CM_MLPERF_DEVICE_LIB_NAMESPEC: cudart
+      MLC_MLPERF_DEVICE: cuda
+      MLC_MLPERF_DEVICE_LIB_NAMESPEC: cudart
 
   ctuning:
     group: code
@@ -200,15 +200,15 @@ variations:
         - pytorch
         - torch
         skip_if_env:
-          CM_HOST_PLATFORM_FLAVOR: 
+          MLC_HOST_PLATFORM_FLAVOR: 
             - x86_64
-          CM_PYTHON_MINOR_VERSION:
+          MLC_PYTHON_MINOR_VERSION:
             - 8
       - tags: get,generic-python-lib,_whl-url.https://github.com/mlcommons/cm4mlperf-inference/releases/download/mlperf-inference-v4.0/torch-2.1.0a0+git32f93b1-cp38-cp38-linux_x86_64.whl
         enable_if_env:
-          CM_HOST_PLATFORM_FLAVOR: 
+          MLC_HOST_PLATFORM_FLAVOR: 
             - x86_64
-          CM_PYTHON_MINOR_VERSION:
+          MLC_PYTHON_MINOR_VERSION:
             - 8
 
       - tags: install,torchvision,from.src,_for-nvidia-mlperf-inference-v4.0
@@ -216,15 +216,15 @@ variations:
         - pytorchvision
         - torchvision
         skip_if_env:
-          CM_HOST_PLATFORM_FLAVOR: 
+          MLC_HOST_PLATFORM_FLAVOR: 
             - x86_64
-          CM_PYTHON_MINOR_VERSION:
+          MLC_PYTHON_MINOR_VERSION:
             - 8
       - tags: get,generic-python-lib,_whl-url.https://github.com/mlcommons/cm4mlperf-inference/releases/download/mlperf-inference-v4.0/torchvision-0.16.0a0+657027f-cp38-cp38-linux_x86_64.whl
         enable_if_env:
-          CM_HOST_PLATFORM_FLAVOR: 
+          MLC_HOST_PLATFORM_FLAVOR: 
             - x86_64
-          CM_PYTHON_MINOR_VERSION:
+          MLC_PYTHON_MINOR_VERSION:
             - 8
 
 versions:
@@ -274,30 +274,30 @@ versions:
         - pytorch
         - torch
         skip_if_env:
-          CM_HOST_PLATFORM_FLAVOR: 
+          MLC_HOST_PLATFORM_FLAVOR: 
             - x86_64
-          CM_PYTHON_MINOR_VERSION:
+          MLC_PYTHON_MINOR_VERSION:
             - 8
       - tags: get,generic-python-lib,_package.torch,_whl-url.https://github.com/mlcommons/cm4mlperf-inference/releases/download/mlperf-inference-v4.0/torch-2.1.0a0+git32f93b1-cp38-cp38-linux_x86_64.whl
         enable_if_env:
-          CM_HOST_PLATFORM_FLAVOR: 
+          MLC_HOST_PLATFORM_FLAVOR: 
             - x86_64
-          CM_PYTHON_MINOR_VERSION:
+          MLC_PYTHON_MINOR_VERSION:
             - 8
       - tags: install,torchvision,from.src,_for-nvidia-mlperf-inference-v4.0
         names:
         - pytorchvision
         - torchvision
         skip_if_env:
-          CM_HOST_PLATFORM_FLAVOR: 
+          MLC_HOST_PLATFORM_FLAVOR: 
             - x86_64
-          CM_PYTHON_MINOR_VERSION:
+          MLC_PYTHON_MINOR_VERSION:
             - 8
       - tags: get,generic-python-lib,_package.torchvision,_whl-url.https://github.com/mlcommons/cm4mlperf-inference/releases/download/mlperf-inference-v4.0/torchvision-0.16.0a0+657027f-cp38-cp38-linux_x86_64.whl
         enable_if_env:
-          CM_HOST_PLATFORM_FLAVOR: 
+          MLC_HOST_PLATFORM_FLAVOR: 
             - x86_64
-          CM_PYTHON_MINOR_VERSION:
+          MLC_PYTHON_MINOR_VERSION:
             - 8
 
   r4.1-dev:
@@ -316,30 +316,30 @@ versions:
         - pytorch
         - torch
         skip_if_env:
-          CM_HOST_PLATFORM_FLAVOR: 
+          MLC_HOST_PLATFORM_FLAVOR: 
             - x86_64
-          CM_PYTHON_MINOR_VERSION:
+          MLC_PYTHON_MINOR_VERSION:
             - 8
       - tags: get,generic-python-lib,_package.torch,_whl-url.https://github.com/mlcommons/cm4mlperf-inference/releases/download/mlperf-inference-v4.0/torch-2.1.0a0+git32f93b1-cp38-cp38-linux_x86_64.whl
         enable_if_env:
-          CM_HOST_PLATFORM_FLAVOR: 
+          MLC_HOST_PLATFORM_FLAVOR: 
             - x86_64
-          CM_PYTHON_MINOR_VERSION:
+          MLC_PYTHON_MINOR_VERSION:
             - 8
       - tags: install,torchvision,from.src,_for-nvidia-mlperf-inference-v4.0
         names:
         - pytorchvision
         - torchvision
         skip_if_env:
-          CM_HOST_PLATFORM_FLAVOR: 
+          MLC_HOST_PLATFORM_FLAVOR: 
             - x86_64
-          CM_PYTHON_MINOR_VERSION:
+          MLC_PYTHON_MINOR_VERSION:
             - 8
       - tags: get,generic-python-lib,_package.torchvision,_whl-url.https://github.com/mlcommons/cm4mlperf-inference/releases/download/mlperf-inference-v4.0/torchvision-0.16.0a0+657027f-cp38-cp38-linux_x86_64.whl
         enable_if_env:
-          CM_HOST_PLATFORM_FLAVOR: 
+          MLC_HOST_PLATFORM_FLAVOR: 
             - x86_64
-          CM_PYTHON_MINOR_VERSION:
+          MLC_PYTHON_MINOR_VERSION:
             - 8
   
   r4.1:
@@ -368,8 +368,8 @@ docker:
     criteo_preprocessed_path: CRITEO_PREPROCESSED_PATH
     results_dir: RESULTS_DIR
     submission_dir: SUBMISSION_DIR
-    cudnn_tar_file_path: CM_CUDNN_TAR_FILE_PATH
-    tensorrt_tar_file_path: CM_TENSORRT_TAR_FILE_PATH
+    cudnn_tar_file_path: MLC_CUDNN_TAR_FILE_PATH
+    tensorrt_tar_file_path: MLC_TENSORRT_TAR_FILE_PATH
     cuda_run_file_path: CUDA_RUN_FILE_LOCAL_PATH
     dlrm_data_path: DLRM_DATA_PATH
     scratch_path: MLPERF_SCRATCH_PATH
@@ -379,7 +379,7 @@ docker:
     - tags: get,mlperf,inference,submission,dir,local
     - tags: get,nvidia-docker
       skip_if_env:
-        CM_SKIP_GET_NVIDIA_DOCKER:
+        MLC_SKIP_GET_NVIDIA_DOCKER:
           - yes
 
   pre_run_cmds:
@@ -387,12 +387,12 @@ docker:
   run_cmd_prefix: sudo apt remove -y cmake
   mounts:
    - "${{ IMAGENET_PATH }}:/data/imagenet-val"
-   - "${{ CM_MLPERF_INFERENCE_RESULTS_DIR }}:${{ CM_MLPERF_INFERENCE_RESULTS_DIR }}"
-   - "${{ CM_MLPERF_INFERENCE_SUBMISSION_DIR }}:${{ CM_MLPERF_INFERENCE_SUBMISSION_DIR }}"
+   - "${{ MLC_MLPERF_INFERENCE_RESULTS_DIR }}:${{ MLC_MLPERF_INFERENCE_RESULTS_DIR }}"
+   - "${{ MLC_MLPERF_INFERENCE_SUBMISSION_DIR }}:${{ MLC_MLPERF_INFERENCE_SUBMISSION_DIR }}"
    - "${{ RESULTS_DIR }}:/home/cmuser/results_dir"
    - "${{ SUBMISSION_DIR }}:/home/cmuser/submission_dir"
-   - "${{ CM_CUDNN_TAR_FILE_PATH }}:${{ CM_CUDNN_TAR_FILE_PATH }}"
-   - "${{ CM_TENSORRT_TAR_FILE_PATH }}:${{ CM_TENSORRT_TAR_FILE_PATH }}"
+   - "${{ MLC_CUDNN_TAR_FILE_PATH }}:${{ MLC_CUDNN_TAR_FILE_PATH }}"
+   - "${{ MLC_TENSORRT_TAR_FILE_PATH }}:${{ MLC_TENSORRT_TAR_FILE_PATH }}"
    - "${{ CUDA_RUN_FILE_LOCAL_PATH }}:${{ CUDA_RUN_FILE_LOCAL_PATH }}"
    - "${{ MLPERF_SCRATCH_PATH }}:${{ MLPERF_SCRATCH_PATH }}"
    - "${{ DLRM_DATA_PATH }}:/home/mlperf_inf_dlrmv2"

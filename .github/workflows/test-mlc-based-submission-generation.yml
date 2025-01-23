@@ -67,21 +67,21 @@ jobs:
           extra_run_args=" --category=datacenter"
           description="Submission generation (system_meta.json not found in results folder)"
         elif [ "${{ matrix.case }}" == "closed" ]; then
-          extra_run_args=" --env.CM_MLPERF_SUBMISSION_CHECKER_EXTRA_ARGS="--skip-extra-accuracy-files-check""
+          extra_run_args=" --env.MLC_MLPERF_SUBMISSION_CHECKER_EXTRA_ARGS="--skip-extra-accuracy-files-check""
           description="Test submission - contains closed edge and datacenter"
         elif [ "${{ matrix.case }}" == "closed-no-compliance" ]; then
-          extra_run_args=" --env.CM_MLPERF_SUBMISSION_CHECKER_EXTRA_ARGS="--skip-extra-accuracy-files-check""
+          extra_run_args=" --env.MLC_MLPERF_SUBMISSION_CHECKER_EXTRA_ARGS="--skip-extra-accuracy-files-check""
           description="Test submission - contains closed edge and datacenter with no compliance tests"
         elif [ "${{ matrix.case }}" == "closed-power" ]; then
-          extra_run_args=" --env.CM_MLPERF_SUBMISSION_CHECKER_EXTRA_ARGS="--skip-extra-accuracy-files-check""
+          extra_run_args=" --env.MLC_MLPERF_SUBMISSION_CHECKER_EXTRA_ARGS="--skip-extra-accuracy-files-check""
           description="Test submission - contains closed-power edge and datacenter results"
         elif [ "${{ matrix.case }}" == "closed-failed-power-logs" ]; then
-          extra_run_args=" --env.CM_MLPERF_SUBMISSION_CHECKER_EXTRA_ARGS="--skip-extra-accuracy-files-check""
+          extra_run_args=" --env.MLC_MLPERF_SUBMISSION_CHECKER_EXTRA_ARGS="--skip-extra-accuracy-files-check""
           description="Test submission - contains closed-power edge and datacenter results with failed power logs"
         fi
         # Dynamically set the log group to simulate a dynamic step name
         echo "::group::$description"
-        mlc ${{ matrix.action }} script --tags=generate,inference,submission  --version=v4.1 --clean --preprocess_submission=yes --results_dir=$PWD/submission_generation_tests/${{ matrix.case }}/ --run-checker --submitter=MLCommons --tar=yes --env.CM_TAR_OUTFILE=submission.tar.gz --division=${{ matrix.division }} --env.CM_DETERMINE_MEMORY_CONFIGURATION=yes --quiet $extra_run_args
+        mlc ${{ matrix.action }} script --tags=generate,inference,submission  --version=v4.1 --clean --preprocess_submission=yes --results_dir=$PWD/submission_generation_tests/${{ matrix.case }}/ --run-checker --submitter=MLCommons --tar=yes --env.MLC_TAR_OUTFILE=submission.tar.gz --division=${{ matrix.division }} --env.MLC_DETERMINE_MEMORY_CONFIGURATION=yes --quiet $extra_run_args
         exit_status=$?
         echo "Exit status for the job ${description} ${exit_status}"
         if [[ "${{ matrix.case }}" == "case-5" || "${{ matrix.case }}" == "case-6" ]]; then

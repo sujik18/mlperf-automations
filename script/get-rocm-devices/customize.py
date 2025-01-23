@@ -7,7 +7,7 @@ def preprocess(i):
 
     env = i['env']
 
-    if str(env.get('CM_DETECT_USING_HIP-PYTHON', '')
+    if str(env.get('MLC_DETECT_USING_HIP-PYTHON', '')
            ).lower() in ["1", "yes", "true"]:
         i['run_script_input']['script_name'] = 'detect'
 
@@ -54,11 +54,11 @@ def postprocess(i):
             gpu[gpu_id][key] = val
             p[key] = val
 
-            key_env = 'CM_ROCM_DEVICE_PROP_' + key.upper().replace(' ', '_')
+            key_env = 'MLC_ROMLC_DEVICE_PROP_' + key.upper().replace(' ', '_')
             env[key_env] = val
 
     state['cm_rocm_num_devices'] = gpu_id + 1
-    env['CM_ROCM_NUM_DEVICES'] = gpu_id + 1
+    env['MLC_ROMLC_NUM_DEVICES'] = gpu_id + 1
 
     state['cm_rocm_device_prop'] = p
     state['cm_rocm_devices_prop'] = gpu

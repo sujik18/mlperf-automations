@@ -14,12 +14,12 @@ deps:
   - conda
   tags: get,conda
 extra_cache_tags_from_env:
-- env: CM_PYTHON_CACHE_TAGS
+- env: MLC_PYTHON_CACHE_TAGS
   prefix: python-
 local_env_keys:
-- CM_GENERIC_PYTHON_PACKAGE_VARIANT
+- MLC_GENERIC_PYTHON_PACKAGE_VARIANT
 new_env_keys:
-- CM_PYTHONLIB_*
+- MLC_PYTHONLIB_*
 tags:
 - get
 - install
@@ -36,17 +36,17 @@ variations:
         tags: _name.#
   package.#:
     env:
-      CM_CONDA_PKG_NAME: '#'
+      MLC_CONDA_PKG_NAME: '#'
   package.python:
     env:
-      CM_CONDA_PKG_NAME: python
+      MLC_CONDA_PKG_NAME: python
     new_env_keys:
-    - CM_PYTHON_BIN_WITH_PATH
+    - MLC_PYTHON_BIN_WITH_PATH
   source.#:
     env:
-      CM_CONDA_PKG_SRC: '#'
+      MLC_CONDA_PKG_SRC: '#'
     group: package-source
   source.intel:
     env:
-      CM_CONDA_PKG_SRC: https://software.repos.intel.com/python/conda/
+      MLC_CONDA_PKG_SRC: https://software.repos.intel.com/python/conda/
     group: package-source

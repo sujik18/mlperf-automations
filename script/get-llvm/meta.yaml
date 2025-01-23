@@ -5,25 +5,25 @@ cache: true
 category: Compiler automation
 clean_files: []
 env:
-  CM_REQUIRE_INSTALL: 'no'
+  MLC_REQUIRE_INSTALL: 'no'
 name: Detect or install LLVM compiler
 new_env_keys:
-- CM_LLVM_*
-- CM_C_COMPILER_*
-- CM_CXX_COMPILER_*
-- CM_COMPILER_*
-- CM_LINKER_*
+- MLC_LLVM_*
+- MLC_C_COMPILER_*
+- MLC_CXX_COMPILER_*
+- MLC_COMPILER_*
+- MLC_LINKER_*
 - + CFLAGS
 - + CXXFLAGS
 - + FFLAGS
 - + LDFLAGS
-- +CM_HOST_OS_DEFAULT_INCLUDE_PATH
+- +MLC_HOST_OS_DEFAULT_INCLUDE_PATH
 - +PATH
 post_deps:
 - tags: get,compiler-flags
 prehook_deps:
 - enable_if_env:
-    CM_REQUIRE_INSTALL:
+    MLC_REQUIRE_INSTALL:
     - 'yes'
   names: llvm-install
   reuse_version: true

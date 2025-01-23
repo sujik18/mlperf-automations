@@ -77,18 +77,18 @@ variations:
     group: target
     env:
       USE_CUDA: yes
-      CM_DEVICE: cuda:0
+      MLC_DEVICE: cuda:0
 
   cpu:
     group: target
     default: yes
     env:
       USE_CPU: yes
-      CM_DEVICE: cpu
+      MLC_DEVICE: cpu
 
 input_mapping:
-  text: CM_APP_STABLE_DIFFUSION_ONNX_PY_TEXT
-  output: CM_APP_STABLE_DIFFUSION_ONNX_PY_OUTPUT
+  text: MLC_APP_STABLE_DIFFUSION_ONNX_PY_TEXT
+  output: MLC_APP_STABLE_DIFFUSION_ONNX_PY_OUTPUT
 
 
 input_description:
@@ -107,4 +107,4 @@ docker:
   skip_input_for_fake_run:
     - text
     - output
-    - env.CM_DOCKER_ADD_FLAG_TO_CM_MLOPS_REPO
+    - env.MLC_DOCKER_ADD_FLAG_TO_MLC_MLOPS_REPO

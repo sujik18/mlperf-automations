@@ -9,8 +9,8 @@ cache: true
 category: Detection or installation of tools and artifacts
 
 input_mapping:
-  install: CM_FORCE_INSTALL
-  src: CM_ARIA2_BUILD_FROM_SRC
+  install: MLC_FORCE_INSTALL
+  src: MLC_ARIA2_BUILD_FROM_SRC
 
 deps:
   - tags: detect,cpu
@@ -21,15 +21,15 @@ deps:
 #  - tags: print,native,hello-world
 
 env:
-  CM_REQUIRE_INSTALL: no
-  CM_ARIA2_DEFAULT_INSTALL_VERSION: "1.37.0"
+  MLC_REQUIRE_INSTALL: no
+  MLC_ARIA2_DEFAULT_INSTALL_VERSION: "1.37.0"
 
 new_env_keys:
-  - CM_ARIA2_*
+  - MLC_ARIA2_*
   - +PATH
 
 print_env_at_the_end:
-  CM_ARIA2_INSTALLED_PATH: Path to the tool
+  MLC_ARIA2_INSTALLED_PATH: Path to the tool
 
 tags:
 - get

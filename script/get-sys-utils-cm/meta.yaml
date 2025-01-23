@@ -12,12 +12,12 @@ deps:
 - tags: detect,os
 
 env:
-  CM_CLEAN_DIRS: bin
-  CM_PACKAGE_WIN_URL: https://zenodo.org/records/13868077/files/cm-artifact-os-windows-32.zip?download=1
-  CM_SUDO: sudo
+  MLC_CLEAN_DIRS: bin
+  MLC_PACKAGE_WIN_URL: https://zenodo.org/records/13868077/files/mlc-artifact-os-windows-32.zip?download=1
+  MLC_SUDO: sudo
 
 input_mapping:
-  skip: CM_SKIP_SYS_UTILS
+  skip: MLC_SKIP_SYS_UTILS
 
 new_env_keys:
 - +PATH
@@ -29,8 +29,8 @@ tags:
 variations:
   user:
     env:
-      CM_PYTHON_PIP_USER: --user
+      MLC_PYTHON_PIP_USER: --user
 
   skip_python_deps:
     env:
-      CM_SKIP_PYTHON_DEPS: "yes"
+      MLC_SKIP_PYTHON_DEPS: "yes"

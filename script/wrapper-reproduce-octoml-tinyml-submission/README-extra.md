@@ -1,4 +1,4 @@
-This is a wrapper script to [Reproduce MLPerf OctoML TinyML Results](https://github.com/octoml/ck/tree/master/cm-mlops/script/reproduce-mlperf-octoml-tinyml-results)
+This is a wrapper script to [Reproduce MLPerf OctoML TinyML Results](https://github.com/octoml/ck/tree/master/mlc-mlops/script/reproduce-mlperf-octoml-tinyml-results)
 which runs the script for the two microtvm variants and their supported models.
 
 ## Install

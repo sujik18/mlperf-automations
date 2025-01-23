@@ -27,8 +27,8 @@ def preprocess(i):
 
     os_info = i['os_info']
     env = i['env']
-    if env.get('CM_PIP_PACKAGE_NAME', '') != '':
-        r = install(env['CM_PIP_PACKAGE_NAME'])
+    if env.get('MLC_PIP_PACKAGE_NAME', '') != '':
+        r = install(env['MLC_PIP_PACKAGE_NAME'])
         if r['return'] > 0:
             return r
 

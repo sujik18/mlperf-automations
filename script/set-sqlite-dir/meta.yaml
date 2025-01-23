@@ -11,9 +11,9 @@ deps:
   tags: get,python3
 env: {}
 input_mapping:
-  path: CM_SQLITE_PATH
+  path: MLC_SQLITE_PATH
 new_env_keys:
-- CM_SQLITE_PATH
+- MLC_SQLITE_PATH
 tags:
 - set
 - sqlite

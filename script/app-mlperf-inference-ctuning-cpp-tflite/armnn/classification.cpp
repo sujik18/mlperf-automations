@@ -56,10 +56,10 @@ class Program {
 public:
   Program () : runtime( armnn::IRuntime::Create(options) ) {
 
-    bool use_neon                   = getenv_b("CM_MLPERF_TFLITE_USE_NEON");
-    bool use_opencl                 = getenv_b("CM_MLPERF_TFLITE_USE_OPENCL");
-    string input_layer_name         = getenv_s("CM_ML_MODEL_INPUT_LAYER_NAME");
-    string output_layer_name        = getenv_s("CM_ML_MODEL_OUTPUT_LAYER_NAME");
+    bool use_neon                   = getenv_b("MLC_MLPERF_TFLITE_USE_NEON");
+    bool use_opencl                 = getenv_b("MLC_MLPERF_TFLITE_USE_OPENCL");
+    string input_layer_name         = getenv_s("MLC_ML_MODEL_INPUT_LAYER_NAME");
+    string output_layer_name        = getenv_s("MLC_ML_MODEL_OUTPUT_LAYER_NAME");
 
     settings = new BenchmarkSettings(MODEL_TYPE::LITE);
 
@@ -333,14 +333,14 @@ void TestSingleStream(Program *prg) {
   SystemUnderTestSingleStream sut(prg);
   QuerySampleLibrarySingleStream qsl(prg);
 
-  const std::string mlperf_conf_path = getenv_s("CM_MLPERF_CONF");
-  const std::string user_conf_path = getenv_s("CM_MLPERF_USER_CONF");
+  const std::string mlperf_conf_path = getenv_s("MLC_MLPERF_CONF");
+  const std::string user_conf_path = getenv_s("MLC_MLPERF_USER_CONF");
 
-  std::string model_name = getenv_opt_s("CM_MODEL", "unknown_model");
-  std::string logs_dir = getenv_opt_s("CM_MLPERF_LOADGEN_LOGS_DIR", "");
+  std::string model_name = getenv_opt_s("MLC_MODEL", "unknown_model");
+  std::string logs_dir = getenv_opt_s("MLC_MLPERF_LOADGEN_LOGS_DIR", "");
 
-  const std::string scenario_string = getenv_s("CM_MLPERF_LOADGEN_SCENARIO");
-  const std::string mode_string = getenv_s("CM_MLPERF_LOADGEN_MODE");
+  const std::string scenario_string = getenv_s("MLC_MLPERF_LOADGEN_SCENARIO");
+  const std::string mode_string = getenv_s("MLC_MLPERF_LOADGEN_MODE");
 
   std::cout << "Path to mlperf.conf : " << mlperf_conf_path << std::endl;
   std::cout << "Path to user.conf : " << user_conf_path << std::endl;

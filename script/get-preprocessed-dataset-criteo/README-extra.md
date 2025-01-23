@@ -11,6 +11,6 @@ where,
 
 
 ## Exported Variables
-* `[CM_DATASET_PREPROCESSED_PATH]:` Directory where the preprocessed images are stored
+* `[MLC_DATASET_PREPROCESSED_PATH]:` Directory where the preprocessed images are stored
 
 

@@ -21,6 +21,6 @@ def preprocess(i):
 
     # Test to skip next dependency
     # env = i['env']
-    # env['CM_SKIP_SYS_UTILS'] = 'YES'
+    # env['MLC_SKIP_SYS_UTILS'] = 'YES'
 
     return {'return': 0}

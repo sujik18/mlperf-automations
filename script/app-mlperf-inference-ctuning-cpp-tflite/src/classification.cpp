@@ -295,15 +295,15 @@ void TestSingleStream(Program *prg) {
   SystemUnderTestSingleStream sut(prg);
   QuerySampleLibrarySingleStream qsl(prg);
 
-  const std::string mlperf_conf_path = getenv_s("CM_MLPERF_CONF");
-  const std::string user_conf_path = getenv_s("CM_MLPERF_USER_CONF");
-  const std::string audit_conf_path = getenv_opt_s("CM_MLPERF_INFERENCE_AUDIT_PATH","");
+  const std::string mlperf_conf_path = getenv_s("MLC_MLPERF_CONF");
+  const std::string user_conf_path = getenv_s("MLC_MLPERF_USER_CONF");
+  const std::string audit_conf_path = getenv_opt_s("MLC_MLPERF_INFERENCE_AUDIT_PATH","");
 
-  std::string model_name = getenv_opt_s("CM_MODEL", "unknown_model");
-  std::string logs_dir = getenv_opt_s("CM_MLPERF_LOADGEN_LOGS_DIR", "");
+  std::string model_name = getenv_opt_s("MLC_MODEL", "unknown_model");
+  std::string logs_dir = getenv_opt_s("MLC_MLPERF_LOADGEN_LOGS_DIR", "");
 
-  const std::string scenario_string = getenv_s("CM_MLPERF_LOADGEN_SCENARIO");
-  const std::string mode_string = getenv_s("CM_MLPERF_LOADGEN_MODE");
+  const std::string scenario_string = getenv_s("MLC_MLPERF_LOADGEN_SCENARIO");
+  const std::string mode_string = getenv_s("MLC_MLPERF_LOADGEN_MODE");
 
   std::cout << "Path to mlperf.conf : " << mlperf_conf_path << std::endl;
   std::cout << "Path to user.conf : " << user_conf_path << std::endl;

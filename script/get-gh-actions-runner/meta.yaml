@@ -14,11 +14,11 @@ tags:
 - gh-actions-runner
 uid: 5b005c5a76f242a7
 input_mapping:
-  token: CM_GH_ACTIONS_RUNNER_TOKEN
-  url: CM_GH_ACTIONS_RUNNER_URL
+  token: MLC_GH_ACTIONS_RUNNER_TOKEN
+  url: MLC_GH_ACTIONS_RUNNER_URL
 
 new_env_keys:
-  - CM_GH_ACTIONS_RUNNER_CODE_PATH
+  - MLC_GH_ACTIONS_RUNNER_CODE_PATH
 
 deps:
   - tags: detect-os
@@ -26,33 +26,33 @@ deps:
     force_cache: yes
     extra_cache_tags: gh-actions-runner-code,gh-actions,code
     env:
-      CM_DAE_FINAL_ENV_NAME: CM_GH_ACTIONS_RUNNER_CODE_PATH
+      MLC_DAE_FINAL_ENV_NAME: MLC_GH_ACTIONS_RUNNER_CODE_PATH
 
 variations:
   config:
     group: command
     default: true
     env:
-      CM_GH_ACTIONS_RUNNER_COMMAND: config
+      MLC_GH_ACTIONS_RUNNER_COMMAND: config
   remove:
     group: command
     env:
-      CM_GH_ACTIONS_RUNNER_COMMAND: remove
+      MLC_GH_ACTIONS_RUNNER_COMMAND: remove
   install:
     group: command
     deps:
       - tags: get,gh,actions-runner,_config
         force_cache: yes
     env:
-      CM_GH_ACTIONS_RUNNER_COMMAND: install
+      MLC_GH_ACTIONS_RUNNER_COMMAND: install
   uninstall:
     group: command
     env:
-      CM_GH_ACTIONS_RUNNER_COMMAND: uninstall
+      MLC_GH_ACTIONS_RUNNER_COMMAND: uninstall
   start:
     group: command
     deps:
       - tags: get,gh,actions-runner,_install
         force_cache: yes
     env:
-      CM_GH_ACTIONS_RUNNER_COMMAND: start
+      MLC_GH_ACTIONS_RUNNER_COMMAND: start

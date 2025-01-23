@@ -6,28 +6,28 @@ category: AI/ML models
 docker:
   real_run: false
 env:
-  CM_ML_MODEL_DATASET: openorca
-  CM_ML_MODEL_WEIGHT_TRANSFORMATIONS: 'no'
+  MLC_ML_MODEL_DATASET: openorca
+  MLC_ML_MODEL_WEIGHT_TRANSFORMATIONS: 'no'
 input_mapping:
   checkpoint: LLAMA2_CHECKPOINT_PATH
 new_env_keys:
-- CM_ML_MODEL_*
+- MLC_ML_MODEL_*
 - LLAMA2_CHECKPOINT_PATH
-- CM_NVIDIA_TP_SIZE
-- CM_LLAMA2_FINAL_SAFE_TENSORS_PATH
+- MLC_NVIDIA_TP_SIZE
+- MLC_LLAMA2_FINAL_SAFE_TENSORS_PATH
 prehook_deps:
 - enable_if_env:
-    CM_TMP_REQUIRE_DOWNLOAD:
+    MLC_TMP_REQUIRE_DOWNLOAD:
     - 'yes'
   env: {}
   extra_cache_tags: llama2,llama-2
   force_env_keys:
-  - CM_GIT_CHECKOUT_FOLDER
+  - MLC_GIT_CHECKOUT_FOLDER
   names:
   - hf-zoo
   tags: get,ml-model,huggingface,zoo,_clone-repo
   force_env_keys:
-    - CM_OUTDIRNAME  
+    - MLC_OUTDIRNAME  
 print_env_at_the_end:
   LLAMA2_CHECKPOINT_PATH: LLAMA2 checkpoint path
 tags:
@@ -42,45 +42,45 @@ uid: 5db97be9f61244c6
 variations:
   L40s:
     env:
-      CM_NVIDIA_TP_SIZE: 4
+      MLC_NVIDIA_TP_SIZE: 4
     group: gpu
   amd:
     default_env:
-      CM_LLAMA2_QUANTIZATION_DEVICE: ''
+      MLC_LLAMA2_QUANTIZATION_DEVICE: ''
     default_variations:
       framework: pytorch
       precision: fp8
     env:
-      CM_TMP_ML_MODEL_PROVIDER: amd
+      MLC_TMP_ML_MODEL_PROVIDER: amd
     group: model-provider
     new_env_keys:
-    - CM_LLAMA2_FINAL_SAFE_TENSORS_ROOT
-    - CM_LLAMA2_FINAL_SAFE_TENSORS_PATH
+    - MLC_LLAMA2_FINAL_SAFE_TENSORS_ROOT
+    - MLC_LLAMA2_FINAL_SAFE_TENSORS_PATH
   batch_size.#:
     env:
-      CM_ML_MODEL_BATCH_SIZE: '#'
+      MLC_ML_MODEL_BATCH_SIZE: '#'
   fp32:
     default: true
     env:
-      CM_ML_MODEL_INPUT_DATA_TYPES: fp32
-      CM_ML_MODEL_PRECISION: fp32
-      CM_ML_MODEL_WEIGHT_DATA_TYPES: fp32
+      MLC_ML_MODEL_INPUT_DATA_TYPES: fp32
+      MLC_ML_MODEL_PRECISION: fp32
+      MLC_ML_MODEL_WEIGHT_DATA_TYPES: fp32
     group: precision
   fp8:
     env:
-      CM_ML_MODEL_INPUT_DATA_TYPES: fp8
-      CM_ML_MODEL_PRECISION: fp8
-      CM_ML_MODEL_WEIGHT_DATA_TYPES: fp8
+      MLC_ML_MODEL_INPUT_DATA_TYPES: fp8
+      MLC_ML_MODEL_PRECISION: fp8
+      MLC_ML_MODEL_WEIGHT_DATA_TYPES: fp8
     group: precision
   generic:
     env:
-      CM_NVIDIA_TP_SIZE: 2
+      MLC_NVIDIA_TP_SIZE: 2
     group: gpu
   int8:
     env:
-      CM_ML_MODEL_INPUT_DATA_TYPES: int8
-      CM_ML_MODEL_PRECISION: int8
-      CM_ML_MODEL_WEIGHT_DATA_TYPES: int8
+      MLC_ML_MODEL_INPUT_DATA_TYPES: int8
+      MLC_ML_MODEL_PRECISION: int8
+      MLC_ML_MODEL_WEIGHT_DATA_TYPES: int8
     group: precision
   meta-llama/Llama-2-70b-chat-hf:
     adr:
@@ -88,27 +88,27 @@ variations:
         tags: _model-stub.meta-llama/Llama-2-70b-chat-hf
     default: true
     env:
-      CM_GIT_CHECKOUT_FOLDER: Llama-2-70b-chat-hf
-      CM_MODEL_ZOO_ENV_KEY: LLAMA2
+      MLC_GIT_CHECKOUT_FOLDER: Llama-2-70b-chat-hf
+      MLC_MODEL_ZOO_ENV_KEY: LLAMA2
     group: huggingface-stub
   meta-llama/Llama-2-7b-chat-hf:
     adr:
       hf-zoo:
         tags: _model-stub.meta-llama/Llama-2-7b-chat-hf
     env:
-      CM_GIT_CHECKOUT_FOLDER: Llama-2-7b-chat-hf
-      CM_MODEL_ZOO_ENV_KEY: LLAMA2
+      MLC_GIT_CHECKOUT_FOLDER: Llama-2-7b-chat-hf
+      MLC_MODEL_ZOO_ENV_KEY: LLAMA2
     group: huggingface-stub
   nvidia:
     default_variations:
       framework: pytorch
     env:
-      CM_TMP_ML_MODEL_PROVIDER: nvidia
+      MLC_TMP_ML_MODEL_PROVIDER: nvidia
     group: model-provider
   pytorch:
     default: true
     env:
-      CM_ML_MODEL_FRAMEWORK: pytorch
+      MLC_ML_MODEL_FRAMEWORK: pytorch
     group: framework
   pytorch,amd:
     default_variations:
@@ -125,9 +125,9 @@ variations:
       tags: get,ml-model,llama2-70b,_fp32,_pytorch
     - tags: get,preprocessed,dataset,openorca,_calibration,_mlc
     - env:
-        CM_GIT_CHECKOUT_PATH_ENV_NAME: CM_MLPERF_INFERENCE_RESULTS_PATH
+        MLC_GIT_CHECKOUT_PATH_ENV_NAME: MLC_MLPERF_INFERENCE_RESULTS_PATH
       extra_cache_tags: inference,results
-      tags: get,git,repo,_repo.https://github.com/mlcommons/inference_results_v4.1,_branch.cm-code-only
+      tags: get,git,repo,_repo.https://github.com/mlcommons/inference_results_v4.1,_branch.mlc-code-only
     - tags: get,generic-python-lib,_quark-amd
     - tags: get,generic-python-lib,_package.nltk
     - tags: get,generic-python-lib,_torch_cuda
@@ -140,7 +140,7 @@ variations:
       precision: fp8
     deps:
     - env:
-        CM_GIT_CHECKOUT_PATH_ENV_NAME: CM_TENSORRT_LLM_CHECKOUT_PATH
+        MLC_GIT_CHECKOUT_PATH_ENV_NAME: MLC_TENSORRT_LLM_CHECKOUT_PATH
       extra_cache_tags: tensorrt-llm
       tags: get,git,repo,_repo.https://github.com/NVIDIA/TensorRT-LLM.git,_sha.0ab9d17a59c284d2de36889832fe9fc7c8697604
     - names:
@@ -164,15 +164,15 @@ variations:
       hf-zoo:
         tags: _model-stub.#
     env:
-      CM_MODEL_ZOO_ENV_KEY: LLAMA2
+      MLC_MODEL_ZOO_ENV_KEY: LLAMA2
     group: huggingface-stub
   tp-size.#:
     env:
-      CM_NVIDIA_TP_SIZE: '#'
+      MLC_NVIDIA_TP_SIZE: '#'
     group: gpu
   uint8:
     env:
-      CM_ML_MODEL_INPUT_DATA_TYPES: uint8
-      CM_ML_MODEL_PRECISION: uint8
-      CM_ML_MODEL_WEIGHT_DATA_TYPES: uint8
+      MLC_ML_MODEL_INPUT_DATA_TYPES: uint8
+      MLC_ML_MODEL_PRECISION: uint8
+      MLC_ML_MODEL_WEIGHT_DATA_TYPES: uint8
     group: precision

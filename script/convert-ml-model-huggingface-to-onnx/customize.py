@@ -8,8 +8,8 @@ def preprocess(i):
 
     env = i['env']
 
-    if env.get("CM_MODEL_HUGG_PATH", "") == "":
-        return {'return': 1, 'error': 'CM_MODEL_HUGG_PATH is not set'}
+    if env.get("MLC_MODEL_HUGG_PATH", "") == "":
+        return {'return': 1, 'error': 'MLC_MODEL_HUGG_PATH is not set'}
 
     automation = i['automation']
 

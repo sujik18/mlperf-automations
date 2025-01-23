@@ -8,11 +8,11 @@ docker:
   run: false
 input_description: {}
 input_mapping:
-  scratch_path: CM_NVIDIA_MLPERF_SCRATCH_PATH
+  scratch_path: MLC_NVIDIA_MLPERF_SCRATCH_PATH
 new_env_keys:
-- CM_NVIDIA_MLPERF_SCRATCH_PATH
+- MLC_NVIDIA_MLPERF_SCRATCH_PATH
 - MLPERF_SCRATCH_PATH
-- CM_NVIDIA_SCRATCH_SPACE_VERSION
+- MLC_NVIDIA_SCRATCH_SPACE_VERSION
 new_state_keys: []
 post_deps: []
 posthook_deps: []
@@ -28,19 +28,19 @@ uid: 0b2bec8b29fb4ab7
 variations:
   version.#:
     env:
-      CM_NVIDIA_SCRATCH_SPACE_VERSION: '#'
+      MLC_NVIDIA_SCRATCH_SPACE_VERSION: '#'
     group: version
   version.4_0:
     env:
-      CM_NVIDIA_SCRATCH_SPACE_VERSION: '4_0'
+      MLC_NVIDIA_SCRATCH_SPACE_VERSION: '4_0'
     group: version
   version.4_1:
     env:
-      CM_NVIDIA_SCRATCH_SPACE_VERSION: '4_1'
+      MLC_NVIDIA_SCRATCH_SPACE_VERSION: '4_1'
     group: version
   version.4_1-dev:
     default: true
     env:
-      CM_NVIDIA_SCRATCH_SPACE_VERSION: 4_1-dev
+      MLC_NVIDIA_SCRATCH_SPACE_VERSION: 4_1-dev
     group: version
 versions: {}

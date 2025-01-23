@@ -6,10 +6,10 @@ category: Cloud automation
 deps:
 - tags: detect,os
 env:
-  CM_CURL_URL: https://awscli.amazonaws.com/awscli-exe-[OS]-[PLATFORM].zip
+  MLC_CURL_URL: https://awscli.amazonaws.com/awscli-exe-[OS]-[PLATFORM].zip
 post_deps:
 - skip_if_env:
-    CM_REQUIRE_INSTALL:
+    MLC_REQUIRE_INSTALL:
     - 'yes'
   tags: get,aws-cli
 tags:

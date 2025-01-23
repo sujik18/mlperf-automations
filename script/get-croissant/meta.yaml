@@ -18,7 +18,7 @@ deps:
     version_min: '3.10'
 
   - env:
-      CM_GIT_CHECKOUT_PATH_ENV_NAME: CM_MLCOMMONS_CROISSANT_PATH
+      MLC_GIT_CHECKOUT_PATH_ENV_NAME: MLC_MLCOMMONS_CROISSANT_PATH
     extra_cache_tags: mlcommons,croissant
     names:
     - git-mlcommons-croissant

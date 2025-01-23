@@ -9,7 +9,7 @@ where,
 * `[VARIATION]` is one of `onnx` (alias `onnxruntime`), `pytorch`, `tensorflow` (alias `tf`) , `fp32`, `onnx-1.5-opset-8`, `onnx-1.5-opset-11`.
 
 ## Exported Variables
-* `CM_ML_MODEL_FILE:` Model filename
-* `CM_ML_MODEL_FILE_WITH_PATH:` Full path to model file
-* `CM_ML_MODEL_PATH:` Path to folder containing the model file
+* `MLC_ML_MODEL_FILE:` Model filename
+* `MLC_ML_MODEL_FILE_WITH_PATH:` Full path to model file
+* `MLC_ML_MODEL_PATH:` Path to folder containing the model file
 * More env variables being exported are given in [cm.json file](_cm.json)

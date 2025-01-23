@@ -8,8 +8,8 @@ cm run script --tags=get,mlperf,power,src
 ```
 
 ## Exported Variables
-* `CM_SPEC_PTD_PATH'`: Path to the PTDaemon
-* `CM_MLPERF_PTD_PATH'`: Path to the PTDaemon (same as `CM_SPEC_PTD_DAEMON`)
+* `MLC_SPEC_PTD_PATH'`: Path to the PTDaemon
+* `MLC_MLPERF_PTD_PATH'`: Path to the PTDaemon (same as `MLC_SPEC_PTD_DAEMON`)
 
 ## Supported and Tested OS
 1. Ubuntu 18.04, 20.04, 22.04

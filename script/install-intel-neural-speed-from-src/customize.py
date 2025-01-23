@@ -11,8 +11,8 @@ def preprocess(i):
 
     env = i['env']
 
-    env['CM_PYTHON_BIN_WITH_PATH'] = os.path.join(
-        env['CM_CONDA_BIN_PATH'], "python")
+    env['MLC_PYTHON_BIN_WITH_PATH'] = os.path.join(
+        env['MLC_CONDA_BIN_PATH'], "python")
 
     automation = i['automation']
 

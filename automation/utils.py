@@ -44,7 +44,7 @@ def get_host_os_info(i={}):
         info['run_bat'] = 'call ${bat_file}'
         info['start_script'] = ['@echo off', '']
         info['env'] = {
-            "CM_WINDOWS": "yes"
+            "MLC_WINDOWS": "yes"
         }
     else:
         if platform.system().lower().startswith('darwin'):
@@ -121,7 +121,7 @@ def download_file(i):
        (chunk_size) (int): chunck size in bytes (65536 by default)
        (text) (str): print text before downloaded status ("Downloaded: " by default)
        (verify) (bool): verify SSL certificate if True (True by default)
-                        can be switched by global env CM_UTILS_DOWNLOAD_VERIFY_SSL = no
+                        can be switched by global env MLC_UTILS_DOWNLOAD_VERIFY_SSL = no
 
     Returns:
        (CM return dict):
@@ -170,8 +170,8 @@ def download_file(i):
 
     text = i.get('text', 'Downloaded: ')
 
-    if 'CM_UTILS_DOWNLOAD_VERIFY_SSL' in os.environ:
-        verify = os.environ['CM_UTILS_DOWNLOAD_VERIFY_SSL'] == 'yes'
+    if 'MLC_UTILS_DOWNLOAD_VERIFY_SSL' in os.environ:
+        verify = os.environ['MLC_UTILS_DOWNLOAD_VERIFY_SSL'] == 'yes'
     else:
         verify = i.get('verify', True)
 

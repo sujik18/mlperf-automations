@@ -16,14 +16,14 @@ deps:
 - names:
   - get-mlperf-submission-dir
   skip_if_env:
-    CM_MLPERF_INFERENCE_SUBMISSION_DIR:
+    MLC_MLPERF_INFERENCE_SUBMISSION_DIR:
     - 'on'
   tags: get,mlperf,submission,dir
 input_mapping:
-  input: CM_MLPERF_INFERENCE_SUBMISSION_DIR
-  submission_dir: CM_MLPERF_INFERENCE_SUBMISSION_DIR
-  version: CM_MLPERF_SUBMISSION_CHECKER_VERSION
-  submitter: CM_MLPERF_SUBMITTER
+  input: MLC_MLPERF_INFERENCE_SUBMISSION_DIR
+  submission_dir: MLC_MLPERF_INFERENCE_SUBMISSION_DIR
+  version: MLC_MLPERF_SUBMISSION_CHECKER_VERSION
+  submitter: MLC_MLPERF_SUBMITTER
 tags:
 - run
 - mlc

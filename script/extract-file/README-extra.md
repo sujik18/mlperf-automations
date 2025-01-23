@@ -37,20 +37,20 @@ cmr "extract file _keep" --input=coco-2017-val-annotations.zip -j
 
 ```json
   "new_env": {
-    "CM_EXTRACT_EXTRACTED_PATH": "D:\\Work99.3 readme\\xyz",
-    "CM_GET_DEPENDENT_CACHED_PATH": "D:\\Work99.3 readme\\xyz"
+    "MLC_EXTRACT_EXTRACTED_PATH": "D:\\Work99.3 readme\\xyz",
+    "MLC_GET_DEPENDENT_CACHED_PATH": "D:\\Work99.3 readme\\xyz"
   },
 ```
 
 #### Input flags and equivalent environment variables
 
-* `--input` or `--env.CM_EXTRACT_FILEPATH` - input file
-* `--extract_path` or `--to` or `--env.CM_EXTRACT_PATH` - where to extract files (--input should have full path then)
-* `--extra_folder` or `--env.CM_EXTRACT_TO_FOLDER` - extra directory when extracting file (to avoid messing up current directory)
+* `--input` or `--env.MLC_EXTRACT_FILEPATH` - input file
+* `--extract_path` or `--to` or `--env.MLC_EXTRACT_PATH` - where to extract files (--input should have full path then)
+* `--extra_folder` or `--env.MLC_EXTRACT_TO_FOLDER` - extra directory when extracting file (to avoid messing up current directory)
 
 #### Variations
 
-* `_keep` or `_no-remove-extracted` or `--env.CM_EXTRACT_REMOVE_EXTRACTED=no` - keep archive file (it will be deleted by default)
+* `_keep` or `_no-remove-extracted` or `--env.MLC_EXTRACT_REMOVE_EXTRACTED=no` - keep archive file (it will be deleted by default)
 
 
 
@@ -59,7 +59,7 @@ cmr "extract file _keep" --input=coco-2017-val-annotations.zip -j
 Note that you need to provide a full path to the archive file if you want to extract it to some directory:
 
 ```bash
-cmr "extract file _keep" --input="$PWD/coco-2017-val-annotations.zip" --extract_path="$HOME/cm-test"
+cmr "extract file _keep" --input="$PWD/coco-2017-val-annotations.zip" --extract_path="$HOME/mlc-test"
 ```
 
 ### Add extra folder to extracted files
@@ -85,7 +85,7 @@ cmr "download file _url.https://cKnowledge.org/test/captions_val2017.json.gz"
 Then extract it and test MD5SUM as follows:
 
 ```bash
-cmr "extract file _keep _path.captions_val2017.json.gz" --env.CM_EXTRACT_EXTRACTED_CHECKSUM=b7bec29ab7bd8971ae4cafc2390a658f -j
+cmr "extract file _keep _path.captions_val2017.json.gz" --env.MLC_EXTRACT_EXTRACTED_CHECKSUM=b7bec29ab7bd8971ae4cafc2390a658f -j
 ```
 
 
@@ -93,7 +93,7 @@ cmr "extract file _keep _path.captions_val2017.json.gz" --env.CM_EXTRACT_EXTRACT
 
 Some workflows may need to use a different filename than original. You can change it as follows:
 ```bash
-cmr "extract file _keep _path.captions_val2017.json.gz" --env.CM_EXTRACT_EXTRACTED_FILENAME=new-file.json --env.CM_EXTRACT_EXTRACTED_CHECKSUM=b7bec29ab7bd8971ae4cafc2390a658f
+cmr "extract file _keep _path.captions_val2017.json.gz" --env.MLC_EXTRACT_EXTRACTED_FILENAME=new-file.json --env.MLC_EXTRACT_EXTRACTED_CHECKSUM=b7bec29ab7bd8971ae4cafc2390a658f
 ```
 
 

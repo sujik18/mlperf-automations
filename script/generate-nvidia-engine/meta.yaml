@@ -18,19 +18,19 @@ tags:
 
 # Default environment
 default_env:
-  CM_BATCH_COUNT: '1'
-  CM_BATCH_SIZE: '1'
-  CM_LOADGEN_SCENARIO: 'Offline'
-  CM_GPU_COPY_STREAMS: '1'
-  CM_TENSORRT_WORKSPACE_SIZE: '4194304' 
+  MLC_BATCH_COUNT: '1'
+  MLC_BATCH_SIZE: '1'
+  MLC_LOADGEN_SCENARIO: 'Offline'
+  MLC_GPU_COPY_STREAMS: '1'
+  MLC_TENSORRT_WORKSPACE_SIZE: '4194304' 
 
 # Map script inputs to environment variables
 input_mapping:
-  output_dir: CM_MLPERF_OUTPUT_DIR
+  output_dir: MLC_MLPERF_OUTPUT_DIR
 
 new_env_keys:
-  - CM_MLPERF_*
-  - CM_DATASET_*
+  - MLC_MLPERF_*
+  - MLC_DATASET_*
 
 # Dependencies on other CM scripts
 
@@ -81,14 +81,14 @@ deps:
   # Install ResNet50 model (ONNX) and ImageNet
 
   - enable_if_env:
-      CM_MODEL:
+      MLC_MODEL:
       - resnet50
     names:
       - imagenet-preprocessed
     tags: get,dataset,preprocessed,imagenet,_NCHW
 
   - enable_if_env:
-      CM_MODEL:
+      MLC_MODEL:
       - resnet50
     names:
       - ml-model
@@ -100,14 +100,14 @@ deps:
   # Install RetinaNet model (ONNX) and OpenImages
 
   - enable_if_env:
-      CM_MODEL:
+      MLC_MODEL:
       - retinanet
     names:
       - openimages-preprocessed
     tags: get,dataset,preprocessed,openimages,_validation,_NCHW
 
   - enable_if_env:
-      CM_MODEL:
+      MLC_MODEL:
       - retinanet
     names:
       - ml-model
@@ -124,11 +124,11 @@ variations:
     group: device
     default: true
     env:
-      CM_MLPERF_DEVICE: cpu
+      MLC_MLPERF_DEVICE: cpu
   cuda:
     env:
-      CM_MLPERF_DEVICE: gpu
-      CM_MLPERF_DEVICE_LIB_NAMESPEC: cudart
+      MLC_MLPERF_DEVICE: gpu
+      MLC_MLPERF_DEVICE_LIB_NAMESPEC: cudart
 
 
   # Reference MLPerf models
@@ -136,17 +136,17 @@ variations:
     group: model
     default: true
     env:
-      CM_MODEL: resnet50
+      MLC_MODEL: resnet50
 
   retinanet:
     group: model
     env:
-      CM_MODEL: retinanet
+      MLC_MODEL: retinanet
 
   batch_size.#:
     env:
-      CM_MODEL_BATCH_SIZE: #
+      MLC_MODEL_BATCH_SIZE: #
 
   copy_streams.#:
     env:
-      CM_GPU_COPY_STREAMS: #
+      MLC_GPU_COPY_STREAMS: #

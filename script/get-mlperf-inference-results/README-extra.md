@@ -11,7 +11,7 @@ cm run script --tags=get,mlperf,inference,results --version=[VERSION]
 * `v2.1:` MLCommons inference 2.1 round results
 
 ## Exported Variables
-* `CM_MLPERF_INFERENCE_RESULTS_PATH`: Directory path to the inference results repository
+* `MLC_MLPERF_INFERENCE_RESULTS_PATH`: Directory path to the inference results repository
 
 ## Supported and Tested OS
 1. Ubuntu 18.04, 20.04, 22.04

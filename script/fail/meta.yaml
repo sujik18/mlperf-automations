@@ -15,4 +15,4 @@ tags:
 variations:
   windows:
     env:
-      CM_FAIL_WINDOWS: true
+      MLC_FAIL_WINDOWS: true

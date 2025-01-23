@@ -34,4 +34,4 @@ jobs:
         done
         pip install mlcflow
         mlc pull repo ${{ github.event.pull_request.head.repo.html_url }} --branch=${{ github.event.pull_request.head.ref }}
-        DOCKER_CM_REPO=${{ github.event.pull_request.head.repo.html_url }} DOCKER_CM_REPO_BRANCH=${{ github.event.pull_request.head.ref }} TEST_INPUT_INDEX=${{ matrix.test-input-index }} python3 .github/scripts/process_individual_tests.py ${{ steps.getfile.outputs.files }}
+        DOCKER_MLC_REPO=${{ github.event.pull_request.head.repo.html_url }} DOCKER_MLC_REPO_BRANCH=${{ github.event.pull_request.head.ref }} TEST_INPUT_INDEX=${{ matrix.test-input-index }} python3 .github/scripts/process_individual_tests.py ${{ steps.getfile.outputs.files }}

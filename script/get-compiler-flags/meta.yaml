@@ -7,7 +7,7 @@ deps:
 - names:
   - compiler
   skip_if_env:
-    CM_C_COMPILER_BIN:
+    MLC_C_COMPILER_BIN:
     - 'on'
   tags: get,compiler
 new_env_keys:
@@ -15,7 +15,7 @@ new_env_keys:
 - + CXXFLAGS
 - + FFLAGS
 - + LDFLAGS
-- +CM_HOST_OS_DEFAULT_INCLUDE_PATH
+- +MLC_HOST_OS_DEFAULT_INCLUDE_PATH
 tags:
 - get
 - compiler-flags

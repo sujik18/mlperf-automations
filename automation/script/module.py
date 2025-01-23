@@ -37,7 +37,7 @@ class ScriptAutomation(Automation):
         self.run_state['parent'] = None
         self.run_state['version_info'] = []
         self.run_state['cache'] = False
-        self.file_with_cached_state = 'cm-cached-state.json'
+        self.file_with_cached_state = 'mlc-cached-state.json'
 
         self.tmp_file_env = 'tmp-env'
         self.tmp_file_env_all = 'tmp-env-all'
@@ -50,20 +50,20 @@ class ScriptAutomation(Automation):
 
         self.__version__ = "1.3.2"
 
-        self.local_env_keys = ['CM_VERSION',
-                               'CM_VERSION_MIN',
-                               'CM_VERSION_MAX',
-                               'CM_VERSION_MAX_USABLE',
-                               'CM_DETECTED_VERSION',
-                               'CM_INPUT',
-                               'CM_OUTPUT',
-                               'CM_OUTBASENAME',
-                               'CM_OUTDIRNAME',
-                               'CM_NAME',
-                               'CM_EXTRA_CACHE_TAGS',
-                               'CM_TMP_*',
-                               'CM_GIT_*',
-                               'CM_RENEW_CACHE_ENTRY']
+        self.local_env_keys = ['MLC_VERSION',
+                               'MLC_VERSION_MIN',
+                               'MLC_VERSION_MAX',
+                               'MLC_VERSION_MAX_USABLE',
+                               'MLC_DETECTED_VERSION',
+                               'MLC_INPUT',
+                               'MLC_OUTPUT',
+                               'MLC_OUTBASENAME',
+                               'MLC_OUTDIRNAME',
+                               'MLC_NAME',
+                               'MLC_EXTRA_CACHE_TAGS',
+                               'MLC_TMP_*',
+                               'MLC_GIT_*',
+                               'MLC_RENEW_CACHE_ENTRY']
 
         self.input_flags_converted_to_tmp_env = ['path']
 
@@ -105,33 +105,33 @@ class ScriptAutomation(Automation):
           (add_deps) (dict): {"name": {"tag": "tag(s)"}, "name": {"version": "version_no"}, ...}
           (add_deps_recursive) (dict): same as add_deps but is passed recursively onto dependencies as well
 
-          (version) (str): version to be added to env.CM_VERSION to specialize this flow
-          (version_min) (str): min version to be added to env.CM_VERSION_MIN to specialize this flow
-          (version_max) (str): max version to be added to env.CM_VERSION_MAX to specialize this flow
-          (version_max_usable) (str): max USABLE version to be added to env.CM_VERSION_MAX_USABLE
+          (version) (str): version to be added to env.MLC_VERSION to specialize this flow
+          (version_min) (str): min version to be added to env.MLC_VERSION_MIN to specialize this flow
+          (version_max) (str): max version to be added to env.MLC_VERSION_MAX to specialize this flow
+          (version_max_usable) (str): max USABLE version to be added to env.MLC_VERSION_MAX_USABLE
 
-          (path) (str): list of paths to be added to env.CM_TMP_PATH to specialize this flow
+          (path) (str): list of paths to be added to env.MLC_TMP_PATH to specialize this flow
 
-          (input) (str): converted to env.CM_INPUT  (local env)
-          (output) (str): converted to env.CM_OUTPUT (local env)
+          (input) (str): converted to env.MLC_INPUT  (local env)
+          (output) (str): converted to env.MLC_OUTPUT (local env)
 
-          (outbasename) (str): converted to env.CM_OUTBASENAME (local env)
-          (outdirname) (str): converted to env.CM_OUTDIRNAME (local env)
+          (outbasename) (str): converted to env.MLC_OUTBASENAME (local env)
+          (outdirname) (str): converted to env.MLC_OUTDIRNAME (local env)
 
-          (extra_cache_tags) (str): converted to env.CM_EXTRA_CACHE_TAGS and used to add to caching (local env)
+          (extra_cache_tags) (str): converted to env.MLC_EXTRA_CACHE_TAGS and used to add to caching (local env)
 
-          (name) (str): taken from env.CM_NAME and/or converted to env.CM_NAME (local env)
+          (name) (str): taken from env.MLC_NAME and/or converted to env.MLC_NAME (local env)
                         Added to extra_cache_tags with "name-" prefix .
                         Useful for python virtual env (to create multiple entries)
 
-          (quiet) (bool): if True, set env.CM_QUIET to "yes" and attempt to skip questions
+          (quiet) (bool): if True, set env.MLC_QUIET to "yes" and attempt to skip questions
                           (the developers have to support it in pre/post processing and scripts)
 
           (skip_cache) (bool): if True, skip caching and run in current directory
           (force_cache) (bool): if True, force caching if can_force_cache=true in script meta
 
           (skip_remembered_selections) (bool): if True, skip remembered selections
-                                               (uses or sets env.CM_TMP_SKIP_REMEMBERED_SELECTIONS to "yes")
+                                               (uses or sets env.MLC_TMP_SKIP_REMEMBERED_SELECTIONS to "yes")
 
           (new) (bool): if True, skip search for cached and run again
           (renew) (bool): if True, rewrite cache entry if exists
@@ -160,7 +160,7 @@ class ScriptAutomation(Automation):
                                       inside a script specified by these tags
 
           (debug_script) (bool): if True, debug current script (set debug_script_tags to the tags of a current script)
-          (debug_uid) (str): if True, set CM_TMP_DEBUG_UID to this number to enable
+          (debug_uid) (str): if True, set MLC_TMP_DEBUG_UID to this number to enable
                              remote python debugging of scripts and wrapped apps/tools
           (detected_versions) (dict): All the used scripts and their detected_versions
 
@@ -178,12 +178,12 @@ class ScriptAutomation(Automation):
 
           (pause) (bool): if True, pause at the end of the main script (Press Enter to continue)
 
-          (repro) (bool): if True, dump cm-run-script-input.json, cm-run_script_output.json,
-                          cm-run-script-state.json, cm-run-script-info.json
+          (repro) (bool): if True, dump mlc-run-script-input.json, mlc-run_script_output.json,
+                          mlc-run-script-state.json, mlc-run-script-info.json
                           to improve the reproducibility of results
 
           (repro_prefix) (str): if !='', use it to record above files {repro-prefix)-input.json ...
-          (repro_dir) (str): if !='', use this directory to dump info (default = 'cm-repro')
+          (repro_dir) (str): if !='', use this directory to dump info (default = 'mlc-repro')
 
           (dump_version_info) (bool): dump info about resolved versions of tools in dependencies
 
@@ -193,13 +193,13 @@ class ScriptAutomation(Automation):
 
           (script_call_prefix) (str): how to call script in logs and READMEs (mlc run script)
 
-          (skip_sys_utils) (bool): if True, set env['CM_SKIP_SYS_UTILS']='yes'
+          (skip_sys_utils) (bool): if True, set env['MLC_SKIP_SYS_UTILS']='yes'
                                    to skip CM sys installation
-          (skip_sudo) (bool): if True, set env['CM_TMP_SKIP_SUDO']='yes'
+          (skip_sudo) (bool): if True, set env['MLC_TMP_SKIP_SUDO']='yes'
                               to let scripts deal with that
 
           (silent) (bool): if True, attempt to suppress all info if supported
-                           (sets CM_TMP_SILENT=yes)
+                           (sets MLC_TMP_SILENT=yes)
           (s) (bool): the same as 'silent'
           ...
 
@@ -239,11 +239,11 @@ class ScriptAutomation(Automation):
         if repro:
             repro_prefix = i.get('repro_prefix', '')
             if repro_prefix == '':
-                repro_prefix = 'cm-run-script'
+                repro_prefix = 'mlc-run-script'
 
             repro_dir = i.get('repro_dir', '')
             if repro_dir == '':
-                repro_dir = os.path.join(os.getcwd(), 'cm-repro')
+                repro_dir = os.path.join(os.getcwd(), 'mlc-repro')
                 if not os.path.isdir(repro_dir):
                     os.makedirs(repro_dir)
 
@@ -277,9 +277,9 @@ class ScriptAutomation(Automation):
 
         start_time = time.time()
 
-        # Check extra input from environment variable CM_SCRIPT_EXTRA_CMD
+        # Check extra input from environment variable MLC_SCRIPT_EXTRA_CMD
         # Useful to set up default flags such as the name of virtual enviroment
-        extra_cli = os.environ.get('CM_SCRIPT_EXTRA_CMD', '').strip()
+        extra_cli = os.environ.get('MLC_SCRIPT_EXTRA_CMD', '').strip()
         if extra_cli != '':
             from cmind import cli
             r = cli.parse(extra_cli)
@@ -369,22 +369,22 @@ class ScriptAutomation(Automation):
             'prepare',
             False)
         if fake_run:
-            env['CM_TMP_FAKE_RUN'] = 'yes'
+            env['MLC_TMP_FAKE_RUN'] = 'yes'
 
         debug_uid = i.get('debug_uid', '')
         if debug_uid != '':
-            r = _update_env(env, 'CM_TMP_DEBUG_UID', debug_uid)
+            r = _update_env(env, 'MLC_TMP_DEBUG_UID', debug_uid)
             if r['return'] > 0:
                 return r
 
         fake_deps = i.get('fake_deps', False)
         if fake_deps:
-            env['CM_TMP_FAKE_DEPS'] = 'yes'
+            env['MLC_TMP_FAKE_DEPS'] = 'yes'
 
         if str(i.get('skip_sys_utils', '')).lower() in ['true', 'yes']:
-            env['CM_SKIP_SYS_UTILS'] = 'yes'
+            env['MLC_SKIP_SYS_UTILS'] = 'yes'
         if str(i.get('skip_sudo', '')).lower() in ['true', 'yes']:
-            env['CM_TMP_SKIP_SUDO'] = 'yes'
+            env['MLC_TMP_SKIP_SUDO'] = 'yes'
 
         run_state = i.get('run_state', self.run_state)
         if not run_state.get('version_info', []):
@@ -409,7 +409,7 @@ class ScriptAutomation(Automation):
                 del (i['verbose'])
             if 'v' in i:
                 del (i['v'])
-            env['CM_TMP_SILENT'] = 'yes'
+            env['MLC_TMP_SILENT'] = 'yes'
             run_state['tmp_silent'] = True
 
         if 'verbose' in i:
@@ -418,7 +418,7 @@ class ScriptAutomation(Automation):
             verbose = i['v']
 
         if verbose:
-            env['CM_VERBOSE'] = 'yes'
+            env['MLC_VERBOSE'] = 'yes'
             run_state['tmp_verbose'] = True
             logging.getLogger().setLevel(logging.DEBUG)
 
@@ -445,7 +445,7 @@ class ScriptAutomation(Automation):
         # Detect current path and record in env for further use in native
         # scripts
         current_path = os.path.abspath(os.getcwd())
-        r = _update_env(env, 'CM_TMP_CURRENT_PATH', current_path)
+        r = _update_env(env, 'MLC_TMP_CURRENT_PATH', current_path)
         if r['return'] > 0:
             return r
 
@@ -454,15 +454,15 @@ class ScriptAutomation(Automation):
             'quiet',
             False) if 'quiet' in i else (
             env.get(
-                'CM_QUIET',
+                'MLC_QUIET',
                 '').lower() == 'yes')
         if quiet:
-            env['CM_QUIET'] = 'yes'
+            env['MLC_QUIET'] = 'yes'
 
         skip_remembered_selections = i.get('skip_remembered_selections', False) if 'skip_remembered_selections' in i \
-            else (env.get('CM_SKIP_REMEMBERED_SELECTIONS', '').lower() == 'yes')
+            else (env.get('MLC_SKIP_REMEMBERED_SELECTIONS', '').lower() == 'yes')
         if skip_remembered_selections:
-            env['CM_SKIP_REMEMBERED_SELECTIONS'] = 'yes'
+            env['MLC_SKIP_REMEMBERED_SELECTIONS'] = 'yes'
 
         # Prepare debug info
         parsed_script = i.get('parsed_artifact')
@@ -484,7 +484,7 @@ class ScriptAutomation(Automation):
         # Bat extension for this host OS
         bat_ext = os_info['bat_ext']
 
-        # Add permanent env from OS (such as CM_WINDOWS:"yes" on Windows)
+        # Add permanent env from OS (such as MLC_WINDOWS:"yes" on Windows)
         env_from_os_info = os_info.get('env', {})
         if len(env_from_os_info) > 0:
             env.update(env_from_os_info)
@@ -790,8 +790,8 @@ class ScriptAutomation(Automation):
             script_repo_path_with_prefix = os.path.join(
                 script_repo_path, script_artifact.repo.meta['prefix'])
 
-        env['CM_TMP_CURRENT_SCRIPT_REPO_PATH'] = script_repo_path
-        env['CM_TMP_CURRENT_SCRIPT_REPO_PATH_WITH_PREFIX'] = script_repo_path_with_prefix
+        env['MLC_TMP_CURRENT_SCRIPT_REPO_PATH'] = script_repo_path
+        env['MLC_TMP_CURRENT_SCRIPT_REPO_PATH_WITH_PREFIX'] = script_repo_path_with_prefix
 
         # Check if has --help
         if i.get('help', False):
@@ -936,7 +936,7 @@ class ScriptAutomation(Automation):
         explicit_variation_tags = r['explicit_variation_tags']
 
         # USE CASE:
-        #  HERE we may have versions in script input and env['CM_VERSION_*']
+        #  HERE we may have versions in script input and env['MLC_VERSION_*']
 
         # STEP 900: Get version, min, max, usable from env (priority if passed from another script to force version),
         #           then script input, then script meta
@@ -951,14 +951,14 @@ class ScriptAutomation(Automation):
 
         # Second, take from env
         if version == '':
-            version = env.get('CM_VERSION', '')
+            version = env.get('MLC_VERSION', '')
         if version_min == '':
-            version_min = env.get('CM_VERSION_MIN', '')
+            version_min = env.get('MLC_VERSION_MIN', '')
         if version_max == '':
-            version_max = env.get('CM_VERSION_MAX', '')
+            version_max = env.get('MLC_VERSION_MAX', '')
         if version_max_usable == '':
             version_max_usable = env.get(
-                'CM_VERSION_MAX_USABLE', '')
+                'MLC_VERSION_MAX_USABLE', '')
 
         # Third, take from meta
         if version == '':
@@ -973,10 +973,10 @@ class ScriptAutomation(Automation):
 
         # Update env with resolved versions
         notes = []
-        for version_index in [(version, 'CM_VERSION', ' == {}'),
-                              (version_min, 'CM_VERSION_MIN', ' >= {}'),
-                              (version_max, 'CM_VERSION_MAX', ' <= {}'),
-                              (version_max_usable, 'CM_VERSION_MAX_USABLE', '({})')]:
+        for version_index in [(version, 'MLC_VERSION', ' == {}'),
+                              (version_min, 'MLC_VERSION_MIN', ' >= {}'),
+                              (version_max, 'MLC_VERSION_MAX', ' <= {}'),
+                              (version_max_usable, 'MLC_VERSION_MAX_USABLE', '({})')]:
             version_value = version_index[0]
             key = version_index[1]
             note = version_index[2]
@@ -996,7 +996,7 @@ class ScriptAutomation(Automation):
                 '  '.join(notes))
 
         # STEP 900 output: version* set
-        #                  env['CM_VERSION*] set
+        #                  env['MLC_VERSION*] set
 
         # STEP 1000: Update version only if in "versions" (not obligatory)
         # can be useful when handling complex Git revisions
@@ -1043,7 +1043,7 @@ class ScriptAutomation(Automation):
         if r['return'] > 0:
             return r
 
-        if str(env.get('CM_RUN_STATE_DOCKER', False)
+        if str(env.get('MLC_RUN_STATE_DOCKER', False)
                ).lower() in ['true', '1', 'yes']:
             if state.get('docker'):
                 if str(state['docker'].get('run', True)
@@ -1075,11 +1075,11 @@ class ScriptAutomation(Automation):
                         recursion_spaces +
                         '  - Doing fake run for script::{} as we are inside docker'.format(found_script_artifact))
                     fake_run = True
-                    env['CM_TMP_FAKE_RUN'] = 'yes'
+                    env['MLC_TMP_FAKE_RUN'] = 'yes'
 
         #######################################################################
         # Check extra cache tags
-        x = env.get('CM_EXTRA_CACHE_TAGS', '').strip()
+        x = env.get('MLC_EXTRA_CACHE_TAGS', '').strip()
         extra_cache_tags = [] if x == '' else x.split(',')
 
         if i.get('extra_cache_tags', '') != '':
@@ -1094,8 +1094,8 @@ class ScriptAutomation(Automation):
                     if x not in extra_cache_tags:
                         extra_cache_tags.append(x)
 
-        if env.get('CM_NAME', '') != '':
-            extra_cache_tags.append('name-' + env['CM_NAME'].strip().lower())
+        if env.get('MLC_NAME', '') != '':
+            extra_cache_tags.append('name-' + env['MLC_NAME'].strip().lower())
 
         #######################################################################
         # Check if need to clean output files
@@ -1445,7 +1445,7 @@ class ScriptAutomation(Automation):
                 found_cached = False
                 remove_tmp_tag = True
 
-                env['CM_RENEW_CACHE_ENTRY'] = 'yes'
+                env['MLC_RENEW_CACHE_ENTRY'] = 'yes'
 
         # Prepare files to be cleaned
         clean_files = [self.tmp_file_run_state,
@@ -1501,7 +1501,7 @@ class ScriptAutomation(Automation):
                         recursion_spaces +
                         '  - Version is not specified - use either default_version from meta or min/max/usable: {}'.format(version))
 
-                    r = _update_env(env, 'CM_VERSION', version)
+                    r = _update_env(env, 'MLC_VERSION', version)
                     if r['return'] > 0:
                         return r
 
@@ -1531,7 +1531,7 @@ class ScriptAutomation(Automation):
                             self._merge_dicts_with_tags(
                                 add_deps_recursive, versions_meta['add_deps_recursive'])
 
-            r = _update_env(env, 'CM_TMP_CURRENT_SCRIPT_PATH', path)
+            r = _update_env(env, 'MLC_TMP_CURRENT_SCRIPT_PATH', path)
             if r['return'] > 0:
                 return r
 
@@ -1730,9 +1730,9 @@ class ScriptAutomation(Automation):
             # Assemble PIP versions
             pip_version_string = ''
 
-            pip_version = env.get('CM_VERSION', '')
-            pip_version_min = env.get('CM_VERSION_MIN', '')
-            pip_version_max = env.get('CM_VERSION_MAX', '')
+            pip_version = env.get('MLC_VERSION', '')
+            pip_version_min = env.get('MLC_VERSION_MIN', '')
+            pip_version_max = env.get('MLC_VERSION_MAX', '')
 
             if pip_version != '':
                 pip_version_string = '==' + pip_version
@@ -1751,7 +1751,7 @@ class ScriptAutomation(Automation):
 
             r = _update_env(
                 env,
-                'CM_TMP_PIP_VERSION_STRING',
+                'MLC_TMP_PIP_VERSION_STRING',
                 pip_version_string)
             if r['return'] > 0:
                 return r
@@ -1763,13 +1763,13 @@ class ScriptAutomation(Automation):
                     pip_version_string)
 
             tmp_curdir = os.getcwd()
-            if env.get('CM_OUTDIRNAME', '') != '':
-                if os.path.isabs(env['CM_OUTDIRNAME']) or recursion:
-                    c_outdirname = env['CM_OUTDIRNAME']
+            if env.get('MLC_OUTDIRNAME', '') != '':
+                if os.path.isabs(env['MLC_OUTDIRNAME']) or recursion:
+                    c_outdirname = env['MLC_OUTDIRNAME']
                 else:
                     c_outdirname = os.path.join(
-                        env['CM_TMP_CURRENT_PATH'], env['CM_OUTDIRNAME'])
-                    env['CM_OUTDIRNAME'] = c_outdirname
+                        env['MLC_TMP_CURRENT_PATH'], env['MLC_OUTDIRNAME'])
+                    env['MLC_OUTDIRNAME'] = c_outdirname
 
                 if not os.path.exists(c_outdirname):
                     os.makedirs(c_outdirname)
@@ -1916,13 +1916,13 @@ class ScriptAutomation(Automation):
                         if x not in cached_tags:
                             cached_tags.append(x)
 
-            if env.get('CM_OUTDIRNAME', '') != '':
+            if env.get('MLC_OUTDIRNAME', '') != '':
                 os.chdir(tmp_curdir)
 
         detected_version = env.get(
-            'CM_DETECTED_VERSION', env.get(
-                'CM_VERSION', ''))
-        dependent_cached_path = env.get('CM_GET_DEPENDENT_CACHED_PATH', '')
+            'MLC_DETECTED_VERSION', env.get(
+                'MLC_VERSION', ''))
+        dependent_cached_path = env.get('MLC_GET_DEPENDENT_CACHED_PATH', '')
 
         #######################################################################
         # Finalize script
@@ -2251,7 +2251,7 @@ class ScriptAutomation(Automation):
         for key in self.input_flags_converted_to_tmp_env:
             value = i.get(key, '').strip()
             if value != '':
-                env['CM_TMP_' + key.upper()] = value
+                env['MLC_TMP_' + key.upper()] = value
 
         for key in self.input_flags_converted_to_env:
             value = i.get(
@@ -2264,7 +2264,7 @@ class ScriptAutomation(Automation):
                 key,
                 '')
             if value:
-                env[f"CM_{key.upper()}"] = value
+                env[f"MLC_{key.upper()}"] = value
 
         r = update_env_with_values(env)
         if r['return'] > 0:
@@ -2276,7 +2276,7 @@ class ScriptAutomation(Automation):
     def _fix_cache_paths(self, env):
         '''
         cm_repos_path = os.environ.get(
-            'CM_REPOS', os.path.join(
+            'MLC_REPOS', os.path.join(
                 os.path.expanduser("~"), "CM", "repos"))
         current_cache_path = os.path.realpath(
             os.path.join(cm_repos_path, "local", "cache"))
@@ -2324,7 +2324,7 @@ class ScriptAutomation(Automation):
 
         if not quiet and not silent:
             pass
-        for f in ['cm-run-script-versions.json', 'version_info.json']:
+        for f in ['mlc-run-script-versions.json', 'version_info.json']:
             if not quiet and not silent:
                 logging.info('Dumping versions to {}'.format(f))
             r = utils.save_json(f, self.run_state.get('version_info', []))
@@ -3626,7 +3626,7 @@ class ScriptAutomation(Automation):
 
                 if d.get("reuse_version", False):
                     for k in tmp_env:
-                        if k.startswith('CM_VERSION'):
+                        if k.startswith('MLC_VERSION'):
                             env[k] = tmp_env[k]
 
                 update_tags_from_env = d.get("update_tags_from_env", [])
@@ -4097,9 +4097,9 @@ with more details about installing CM and dependencies across different platform
                 run_script_input = i['run_script_input']
                 env_path_key = i['env_path_key']
 
-                version = env.get('CM_VERSION', '')
-                version_min = env.get('CM_VERSION_MIN', '')
-                version_max = env.get('CM_VERSION_MAX', '')
+                version = env.get('MLC_VERSION', '')
+                version_min = env.get('MLC_VERSION_MIN', '')
+                version_max = env.get('MLC_VERSION_MAX', '')
 
                 x = ''
 
@@ -4230,9 +4230,9 @@ with more details about installing CM and dependencies across different platform
 
         run_script_input = i['run_script_input']
 
-        version = env.get('CM_VERSION', '')
-        version_min = env.get('CM_VERSION_MIN', '')
-        version_max = env.get('CM_VERSION_MAX', '')
+        version = env.get('MLC_VERSION', '')
+        version_min = env.get('MLC_VERSION_MIN', '')
+        version_max = env.get('MLC_VERSION_MAX', '')
 
         x = ''
 
@@ -4339,10 +4339,10 @@ with more details about installing CM and dependencies across different platform
 
         # Check if forced to search in a specific path or multiple paths
         # separated by OS var separator (usually : or ;)
-        path = env.get('CM_TMP_PATH', '')
+        path = env.get('MLC_TMP_PATH', '')
 
         if path != '' and env.get(
-                'CM_TMP_PATH_IGNORE_NON_EXISTANT', '') != 'yes':
+                'MLC_TMP_PATH_IGNORE_NON_EXISTANT', '') != 'yes':
             # Can be a list of paths
             path_list_tmp = path.split(os_info['env_separator'])
             for path_tmp in path_list_tmp:
@@ -4350,9 +4350,9 @@ with more details about installing CM and dependencies across different platform
                     return {'return': 1,
                             'error': 'path {} doesn\'t exist'.format(path_tmp)}
 
-        # Check if forced path and file name from --input (CM_INPUT - local env
+        # Check if forced path and file name from --input (MLC_INPUT - local env
         # - will not be visible for higher-level script)
-        forced_file = env.get('CM_INPUT', '').strip()
+        forced_file = env.get('MLC_INPUT', '').strip()
         if forced_file != '':
             if not os.path.isfile(forced_file):
                 return {'return': 1,
@@ -4391,7 +4391,7 @@ with more details about installing CM and dependencies across different platform
             path_list.append(os.path.dirname(path_tmp))
 
         # Check if quiet
-        select_default = True if env.get('CM_QUIET', '') == 'yes' else False
+        select_default = True if env.get('MLC_QUIET', '') == 'yes' else False
 
         # Prepare paths to search
         r = self.find_file_in_paths({'paths': path_list,
@@ -4602,7 +4602,7 @@ with more details about installing CM and dependencies across different platform
 
         which_env[env_key] = version
         # to be recorded in the cache meta
-        which_env['CM_DETECTED_VERSION'] = version
+        which_env['MLC_DETECTED_VERSION'] = version
 
         return {'return': 0, 'version': version, 'string': string}
 
@@ -4754,7 +4754,7 @@ with more details about installing CM and dependencies across different platform
 
         env = i.get('env', {})
 
-        cur_work_dir = env.get('CM_TMP_CURRENT_SCRIPT_WORK_PATH', '')
+        cur_work_dir = env.get('MLC_TMP_CURRENT_SCRIPT_WORK_PATH', '')
         if cur_work_dir != '' and os.path.isdir(cur_work_dir):
             for x in ['tmp-run.bat', 'tmp-state.json']:
                 xx = os.path.join(cur_work_dir, x)
@@ -5147,12 +5147,12 @@ def update_env_with_values(env, fail_on_not_found=False, extra_env=None):
 
         # No placeholders found
         if not placeholders:
-            # Special handling for CM_GIT_URL
-            if key == 'CM_GIT_URL' and env.get('CM_GIT_AUTH', "no") == "yes":
-                if env.get('CM_GH_TOKEN', '') and '@' not in env['CM_GIT_URL']:
-                    params = {"token": env['CM_GH_TOKEN']}
+            # Special handling for MLC_GIT_URL
+            if key == 'MLC_GIT_URL' and env.get('MLC_GIT_AUTH', "no") == "yes":
+                if env.get('MLC_GH_TOKEN', '') and '@' not in env['MLC_GIT_URL']:
+                    params = {"token": env['MLC_GH_TOKEN']}
                     value = get_git_url("token", value, params)
-                elif 'CM_GIT_SSH' in env:
+                elif 'MLC_GIT_SSH' in env:
                     value = get_git_url("ssh", value)
                 env[key] = value
             continue
@@ -5313,11 +5313,11 @@ def prepare_and_run_script_with_postprocessing(i, postprocess="postprocess"):
 
     cur_dir = os.getcwd()
 
-    r = _update_env(env, 'CM_TMP_CURRENT_SCRIPT_PATH', path)
+    r = _update_env(env, 'MLC_TMP_CURRENT_SCRIPT_PATH', path)
     if r['return'] > 0:
         return r
 
-    r = _update_env(env, 'CM_TMP_CURRENT_SCRIPT_WORK_PATH', cur_dir)
+    r = _update_env(env, 'MLC_TMP_CURRENT_SCRIPT_WORK_PATH', cur_dir)
     if r['return'] > 0:
         return r
 
@@ -5586,9 +5586,9 @@ def get_script_name(env, path, script_name='run'):
 
     from os.path import exists
 
-    tmp_suff1 = env.get('CM_HOST_OS_FLAVOR', '')
-    tmp_suff2 = env.get('CM_HOST_OS_VERSION', '')
-    tmp_suff3 = env.get('CM_HOST_PLATFORM_FLAVOR', '')
+    tmp_suff1 = env.get('MLC_HOST_OS_FLAVOR', '')
+    tmp_suff2 = env.get('MLC_HOST_OS_VERSION', '')
+    tmp_suff3 = env.get('MLC_HOST_PLATFORM_FLAVOR', '')
 
     if exists(os.path.join(path, script_name + '-' + tmp_suff1 +
               '-' + tmp_suff2 + '-' + tmp_suff3 + '.sh')):
@@ -5869,7 +5869,7 @@ def is_dep_tobe_skipped(d, env):
     Internal: check if this dependency is to be skipped
     """
     if d.get('skip_if_fake_run', False) and env.get(
-            'CM_TMP_FAKE_RUN', '') == 'yes':
+            'MLC_TMP_FAKE_RUN', '') == 'yes':
         return True
 
     if "enable_if_env" in d:
@@ -6311,7 +6311,7 @@ def dump_repro_start(repro_prefix, ii):
     import json
 
     # Clean reproducibility and experiment files
-    for f in ['cm-output.json', 'version_info.json', '-input.json',
+    for f in ['mlc-output.json', 'version_info.json', '-input.json',
               '-info.json', '-output.json', '-run-state.json']:
         ff = repro_prefix + f if f.startswith('-') else f
         if os.path.isfile(ff):
@@ -6363,7 +6363,7 @@ def dump_repro_start(repro_prefix, ii):
     cm_output['input'] = ii
 
     try:
-        with open('cm-output.json', 'w', encoding='utf-8') as f:
+        with open('mlc-output.json', 'w', encoding='utf-8') as f:
             json.dump(cm_output, f, ensure_ascii=False, indent=2)
     except BaseException:
         pass
@@ -6394,7 +6394,7 @@ def dump_repro(repro_prefix, rr, run_state):
 
     # Attempt to read
     try:
-        r = utils.load_json('cm-output.json')
+        r = utils.load_json('mlc-output.json')
         if r['return'] == 0:
             cm_output = r['meta']
     except BaseException:
@@ -6434,7 +6434,7 @@ def dump_repro(repro_prefix, rr, run_state):
         cm_output['acm_ctuning_repro_badge_functional'] = True
 
     try:
-        with open('cm-output.json', 'w', encoding='utf-8') as f:
+        with open('mlc-output.json', 'w', encoding='utf-8') as f:
             json.dump(
                 cm_output,
                 f,

@@ -11,7 +11,7 @@ deps:
   - python
   - python3
   skip_if_env:
-    CM_CONDA_ENV:
+    MLC_CONDA_ENV:
     - 'yes'
   tags: get,python3
 - tags: get,cmake
@@ -20,24 +20,24 @@ deps:
   version_max: 11.9.999
   version_max_usable: '11.0'
 - env:
-    CM_GIT_CHECKOUT_PATH_ENV_NAME: CM_ONNXRUNTIME_SRC_REPO_PATH
+    MLC_GIT_CHECKOUT_PATH_ENV_NAME: MLC_ONNXRUNTIME_SRC_REPO_PATH
   extra_cache_tags: onnxruntime,src,onnxruntime-src,onnxruntime-src-repo
   names:
   - onnxruntime-src-repo
   tags: get,git,repo
   update_tags_from_env_with_prefix:
     _branch.:
-    - CM_GIT_CHECKOUT
+    - MLC_GIT_CHECKOUT
     _repo.:
-    - CM_GIT_URL
+    - MLC_GIT_URL
     _sha.:
-    - CM_GIT_CHECKOUT_SHA
+    - MLC_GIT_CHECKOUT_SHA
     _tag.:
-    - CM_GIT_CHECKOUT_TAG
+    - MLC_GIT_CHECKOUT_TAG
 env: {}
 name: Build onnxruntime from sources
 new_env_keys:
-- CM_ONNXRUNTIME_*
+- MLC_ONNXRUNTIME_*
 prehook_deps: []
 sort: 1000
 tags:
@@ -51,26 +51,26 @@ uid: 9798c7e7a5944cee
 variations:
   branch.#:
     env:
-      CM_GIT_CHECKOUT: '#'
+      MLC_GIT_CHECKOUT: '#'
   cuda:
     deps:
     - names:
       - cuda
       tags: get,cuda,_cudnn
     env:
-      CM_ONNXRUNTIME_GPU: 'yes'
+      MLC_ONNXRUNTIME_GPU: 'yes'
   repo.https://github.com/Microsoft/onnxruntime:
     default: true
     env:
-      CM_GIT_URL: https://github.com/Microsoft/onnxruntime
+      MLC_GIT_URL: https://github.com/Microsoft/onnxruntime
     group: repo
   sha.#:
     env:
-      CM_GIT_CHECKOUT_SHA: '#'
+      MLC_GIT_CHECKOUT_SHA: '#'
   tag.#:
     ad:
       onnxruntime-src-repo:
         tags: _no-recurse-submodules,_full-history
     env:
-      CM_GIT_CHECKOUT_TAG: '#'
+      MLC_GIT_CHECKOUT_TAG: '#'
 versions: {}

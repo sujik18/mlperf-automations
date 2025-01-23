@@ -8,8 +8,8 @@ docker:
   run: false
 input_description: {}
 new_env_keys:
-- CM_CACHE_DIR
-- <<<CM_CACHE_DIR_ENV_NAME>>>
+- MLC_CACHE_DIR
+- <<<MLC_CACHE_DIR_ENV_NAME>>>
 new_state_keys: []
 post_deps: []
 posthook_deps: []
@@ -23,5 +23,5 @@ uid: 48f4622e059b45ce
 variations:
   name.#:
     env:
-      CM_CACHE_DIR_NAME: '#'
+      MLC_CACHE_DIR_NAME: '#'
 versions: {}

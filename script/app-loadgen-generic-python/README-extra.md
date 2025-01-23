@@ -49,7 +49,7 @@ including the above one, any time a script with python dependency is run. To avo
 can set up the following environment variable with the name of the current virtual environment:
 
 ```bash
-export CM_SCRIPT_EXTRA_CMD="--adr.python.name=loadgen"
+export MLC_SCRIPT_EXTRA_CMD="--adr.python.name=loadgen"
 ```
 
 The `--adr` flag stands for "Add to all Dependencies Recursively" and will find all sub-dependencies on other CM scripts 
@@ -250,16 +250,16 @@ Available variations:
 
 Available flags mapped to environment variables:
 
-  --concurrency  ->  --env.CM_MLPERF_CONCURRENCY
-  --ep  ->  --env.CM_MLPERF_EXECUTION_PROVIDER
-  --execmode  ->  --env.CM_MLPERF_EXEC_MODE
-  --interop  ->  --env.CM_MLPERF_INTEROP
-  --intraop  ->  --env.CM_MLPERF_INTRAOP
-  --modelpath  ->  --env.CM_ML_MODEL_FILE_WITH_PATH
-  --output_dir  ->  --env.CM_MLPERF_OUTPUT_DIR
-  --runner  ->  --env.CM_MLPERF_RUNNER
-  --samples  ->  --env.CM_MLPERF_LOADGEN_SAMPLES
-  --scenario  ->  --env.CM_MLPERF_LOADGEN_SCENARIO
+  --concurrency  ->  --env.MLC_MLPERF_CONCURRENCY
+  --ep  ->  --env.MLC_MLPERF_EXECUTION_PROVIDER
+  --execmode  ->  --env.MLC_MLPERF_EXEC_MODE
+  --interop  ->  --env.MLC_MLPERF_INTEROP
+  --intraop  ->  --env.MLC_MLPERF_INTRAOP
+  --modelpath  ->  --env.MLC_ML_MODEL_FILE_WITH_PATH
+  --output_dir  ->  --env.MLC_MLPERF_OUTPUT_DIR
+  --runner  ->  --env.MLC_MLPERF_RUNNER
+  --samples  ->  --env.MLC_MLPERF_LOADGEN_SAMPLES
+  --scenario  ->  --env.MLC_MLPERF_LOADGEN_SCENARIO
 
 ```
 
@@ -272,8 +272,8 @@ cm docker script "python app loadgen-generic _onnxruntime _custom _huggingface _
 ## Tuning CPU performance via CM experiment
 
 ```bash
-cm run experiment --tags=loadgen,python,llama2 -- cmr script "python app loadgen-generic _onnxruntime _cuda _custom _huggingface _model-stub.steerapi/Llama-2-7b-chat-hf-onnx-awq-w8" --adr.hf-downloader.model_filename=onnx/decoder_model_merged_quantized.onnx,onnx/decoder_model_merged_quantized.onnx_data --samples=2 --intraop={{CM_OPT_INTRAOP{[1,2,4]}}} --interop={{CM_OPT_INTEROP{[1,2,4]}}} --quiet
-cm run experiment --tags=loadgen,python,llama2 -- cmr "python app loadgen-generic _onnxruntime" --modelpath={PATH TO ONNX MODEL} --samples=2 --intraop={{CM_OPT_INTRAOP{[1,2,4]}}} --interop={{CM_OPT_INTEROP{[1,2,4]}}} --quiet
+cm run experiment --tags=loadgen,python,llama2 -- cmr script "python app loadgen-generic _onnxruntime _cuda _custom _huggingface _model-stub.steerapi/Llama-2-7b-chat-hf-onnx-awq-w8" --adr.hf-downloader.model_filename=onnx/decoder_model_merged_quantized.onnx,onnx/decoder_model_merged_quantized.onnx_data --samples=2 --intraop={{MLC_OPT_INTRAOP{[1,2,4]}}} --interop={{MLC_OPT_INTEROP{[1,2,4]}}} --quiet
+cm run experiment --tags=loadgen,python,llama2 -- cmr "python app loadgen-generic _onnxruntime" --modelpath={PATH TO ONNX MODEL} --samples=2 --intraop={{MLC_OPT_INTRAOP{[1,2,4]}}} --interop={{MLC_OPT_INTEROP{[1,2,4]}}} --quiet
 ```
 
 

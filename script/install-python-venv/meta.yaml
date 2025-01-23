@@ -9,8 +9,8 @@ deps:
   reuse_version: true
   tags: get,python,-virtual
 new_env_keys:
-- CM_VIRTUAL_ENV_*
-- CM_PYTHON_BIN_WITH_PATH
+- MLC_VIRTUAL_ENV_*
+- MLC_PYTHON_BIN_WITH_PATH
 new_state_keys:
 - script_prefix
 post_deps:

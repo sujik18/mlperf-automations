@@ -11,11 +11,11 @@ deps:
   - tags: get,git,repo,_repo.https://github.com/mlcommons/logging
     extra_cache_tags: mlperf_logging
     env:
-      CM_GIT_CHECKOUT_PATH_ENV_NAME: CM_MLPERF_LOGGING_REPO_PATH
+      MLC_GIT_CHECKOUT_PATH_ENV_NAME: MLC_MLPERF_LOGGING_REPO_PATH
 docker_input_mapping:
 input_description:
 new_env_keys:
-  - CM_MLPERF_LOGGING_REPO_PATH
+  - MLC_MLPERF_LOGGING_REPO_PATH
 new_state_keys: []
 post_deps: []
 posthook_deps: []
@@ -30,7 +30,7 @@ variations: {}
 versions:
   master:
     env:
-      CM_MLPERF_LOGGING_VERSION: master
+      MLC_MLPERF_LOGGING_VERSION: master
   v3.1:
     env:
-      CM_MLPERF_LOGGING_VERSION: v3.1
+      MLC_MLPERF_LOGGING_VERSION: v3.1

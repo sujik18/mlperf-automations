@@ -14,7 +14,7 @@ def preprocess(i):
 
     path = os.getcwd()
 
-    url = env['CM_PACKAGE_URL']
+    url = env['MLC_PACKAGE_URL']
 
     print('Downloading from {}'.format(url))
 
@@ -26,15 +26,15 @@ def preprocess(i):
 
     filename = r['filename']
 
-    if env.get('CM_UNZIP') == "yes":
+    if env.get('MLC_UNZIP') == "yes":
         os.system("unzip " + filename)
-        filename = env['CM_ML_MODEL_FILE']
-        env['CM_ML_MODEL_FILE_WITH_PATH'] = os.path.join(path, filename)
+        filename = env['MLC_ML_MODEL_FILE']
+        env['MLC_ML_MODEL_FILE_WITH_PATH'] = os.path.join(path, filename)
     else:
         # Add to path
-        env['CM_ML_MODEL_FILE'] = filename
-        env['CM_ML_MODEL_FILE_WITH_PATH'] = r['path']
+        env['MLC_ML_MODEL_FILE'] = filename
+        env['MLC_ML_MODEL_FILE_WITH_PATH'] = r['path']
 
-    env['CM_ML_MODEL_PATH'] = path
+    env['MLC_ML_MODEL_PATH'] = path
 
     return {'return': 0}

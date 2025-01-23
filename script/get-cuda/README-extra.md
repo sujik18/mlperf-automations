@@ -4,9 +4,9 @@ This [CM script](https://github.com/mlcommons/ck/blob/master/cm/docs/specs/scrip
 and if not found calls the [install script for CUDA](../script/install-cuda-prebuilt).
 
 ## Exported Variables
-* `CM_CUDA_INSTALLED_PATH`
-* `CM_CUDA_VERSION`
-* `CM_NVCC_BIN_WITH_PATH`
+* `MLC_CUDA_INSTALLED_PATH`
+* `MLC_CUDA_VERSION`
+* `MLC_NVCC_BIN_WITH_PATH`
 * `CUDA_HOME`
 * `CUDA_PATH`
 

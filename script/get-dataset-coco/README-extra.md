@@ -36,23 +36,23 @@ cmr "get coco dataset _val _2017" -j
 
 ```json
   "new_env": {
-    "CM_DATASET_COCO_URL_ANNOTATIONS": "http://images.cocodataset.org/annotations",
-    "CM_DATASET_COCO_URL_DATA": "http://images.cocodataset.org/zips",
-    "CM_DATASET_COCO_VERSION": "2017",
-    "CM_DATASET_COCO_TYPE": "val",
-    "CM_DATASET_COCO_SIZE": "complete",
-    "CM_DATASET_COCO_ANNOTATIONS_DOWNLOAD_PATH": "d:\\Work2\\COCO-2017-val\\annotations_trainval2017.zip",
-    "CM_DATASET_COCO_ANNOTATIONS_PATH": "D:\\Work1\\CM\\repos\\local\\cache\\62ad05746b5d4f07\\annotations",
-    "CM_DATASET_COCO_DATA_DOWNLOAD_PATH": "d:\\Work2\\COCO-2017-val\\val2017.zip",
-    "CM_DATASET_COCO_DATA_PATH": "D:\\Work1\\CM\\repos\\local\\cache\\62ad05746b5d4f07\\val2017",
-    "CM_DATASET_COCO_MD5SUM_ANN": "f4bbac642086de4f52a3fdda2de5fa2c",
-    "CM_DATASET_COCO_MD5SUM_DATA": "442b8da7639aecaf257c1dceb8ba8c80",
-    "CM_DATASET_COCO_PATH": "D:\\Work1\\CM\\repos\\local\\cache\\62ad05746b5d4f07",
-    "CM_DATASET_COCO_TYPE_AND_VERSION": "val2017",
-    "CM_DATASET_COCO_URL_ANNOTATIONS_FULL": "http://images.cocodataset.org/annotations/annotations_trainval2017.zip",
-    "CM_DATASET_COCO_URL_DATA_FULL": "http://images.cocodataset.org/zips/val2017.zip",
-    "CM_DATASET_PATH": "D:\\Work1\\CM\\repos\\local\\cache\\62ad05746b5d4f07",
-    "CM_DATASET_PATH_ROOT": "D:\\Work1\\CM\\repos\\local\\cache\\62ad05746b5d4f07"
+    "MLC_DATASET_COCO_URL_ANNOTATIONS": "http://images.cocodataset.org/annotations",
+    "MLC_DATASET_COCO_URL_DATA": "http://images.cocodataset.org/zips",
+    "MLC_DATASET_COCO_VERSION": "2017",
+    "MLC_DATASET_COCO_TYPE": "val",
+    "MLC_DATASET_COCO_SIZE": "complete",
+    "MLC_DATASET_COCO_ANNOTATIONS_DOWNLOAD_PATH": "d:\\Work2\\COCO-2017-val\\annotations_trainval2017.zip",
+    "MLC_DATASET_COCO_ANNOTATIONS_PATH": "D:\\Work1\\CM\\repos\\local\\cache\\62ad05746b5d4f07\\annotations",
+    "MLC_DATASET_COCO_DATA_DOWNLOAD_PATH": "d:\\Work2\\COCO-2017-val\\val2017.zip",
+    "MLC_DATASET_COCO_DATA_PATH": "D:\\Work1\\CM\\repos\\local\\cache\\62ad05746b5d4f07\\val2017",
+    "MLC_DATASET_COCO_MD5SUM_ANN": "f4bbac642086de4f52a3fdda2de5fa2c",
+    "MLC_DATASET_COCO_MD5SUM_DATA": "442b8da7639aecaf257c1dceb8ba8c80",
+    "MLC_DATASET_COCO_PATH": "D:\\Work1\\CM\\repos\\local\\cache\\62ad05746b5d4f07",
+    "MLC_DATASET_COCO_TYPE_AND_VERSION": "val2017",
+    "MLC_DATASET_COCO_URL_ANNOTATIONS_FULL": "http://images.cocodataset.org/annotations/annotations_trainval2017.zip",
+    "MLC_DATASET_COCO_URL_DATA_FULL": "http://images.cocodataset.org/zips/val2017.zip",
+    "MLC_DATASET_PATH": "D:\\Work1\\CM\\repos\\local\\cache\\62ad05746b5d4f07",
+    "MLC_DATASET_PATH_ROOT": "D:\\Work1\\CM\\repos\\local\\cache\\62ad05746b5d4f07"
   },
 ```
 

@@ -13,7 +13,7 @@ where [VARIATION] is one of
 * `no-recurse-submodules:` Only download the main repository
 
 ## Exported Variables
-* `CM_GIT_CHECKOUT_PATH`: Directory path of the cloned git repository
+* `MLC_GIT_CHECKOUT_PATH`: Directory path of the cloned git repository
 
 ## Supported and Tested OS
 1. Ubuntu 18.04, 20.04, 22.04

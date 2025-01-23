@@ -17,10 +17,10 @@ input_description:
   tar_file: Full path to the TensorRT Tar file downloaded from the Nvidia website
     (https://developer.nvidia.com/tensorrt)
 input_mapping:
-  input: CM_INPUT
-  tar_file: CM_TENSORRT_TAR_FILE_PATH
+  input: MLC_INPUT
+  tar_file: MLC_TENSORRT_TAR_FILE_PATH
 new_env_keys:
-- CM_TENSORRT_*
+- MLC_TENSORRT_*
 - +PATH
 - +C_INCLUDE_PATH
 - +CPLUS_INCLUDE_PATH
@@ -35,4 +35,4 @@ uid: 2a84ca505e4c408d
 variations:
   dev:
     env:
-      CM_TENSORRT_REQUIRE_DEV: 'yes'
+      MLC_TENSORRT_REQUIRE_DEV: 'yes'

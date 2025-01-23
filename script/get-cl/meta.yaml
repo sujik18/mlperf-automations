@@ -6,11 +6,11 @@ category: Compiler automation
 clean_files: []
 name: Detect or install Microsoft C compiler
 new_env_keys:
-- CM_CL_*
-- CM_C_COMPILER_*
-- CM_CXX_COMPILER_*
-- CM_COMPILER_*
-- CM_LINKER_*
+- MLC_CL_*
+- MLC_C_COMPILER_*
+- MLC_CXX_COMPILER_*
+- MLC_COMPILER_*
+- MLC_LINKER_*
 - +PATH
 new_state_keys:
 - script_prefix

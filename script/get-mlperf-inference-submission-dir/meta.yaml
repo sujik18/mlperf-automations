@@ -8,10 +8,10 @@ docker:
   run: false
 input_description: {}
 input_mapping:
-  submission_dir: CM_MLPERF_INFERENCE_SUBMISSION_DIR
+  submission_dir: MLC_MLPERF_INFERENCE_SUBMISSION_DIR
 new_env_keys:
-- CM_MLPERF_INFERENCE_SUBMISSION_DIR
-- CM_MLPERF_INFERENCE_SUBMISSION_VERSION
+- MLC_MLPERF_INFERENCE_SUBMISSION_DIR
+- MLC_MLPERF_INFERENCE_SUBMISSION_VERSION
 new_state_keys: []
 post_deps: []
 posthook_deps: []
@@ -28,11 +28,11 @@ uid: ddf36a41d6934a7e
 variations:
   version.#:
     env:
-      CM_MLPERF_INFERENCE_SUBMISSION_VERSION: '#'
+      MLC_MLPERF_INFERENCE_SUBMISSION_VERSION: '#'
     group: version
   version.4_1-dev:
     default: true
     env:
-      CM_MLPERF_INFERENCE_SUBMISSION_VERSION: 4_1-dev
+      MLC_MLPERF_INFERENCE_SUBMISSION_VERSION: 4_1-dev
     group: version
 versions: {}

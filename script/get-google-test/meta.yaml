@@ -14,8 +14,8 @@ deps:
 input_description: {}
 input_mapping: {}
 new_env_keys:
-- CM_GOOGLE_TEST_SRC_PATH
-- CM_GOOGLE_TEST_INSTALL_PATH
+- MLC_GOOGLE_TEST_SRC_PATH
+- MLC_GOOGLE_TEST_INSTALL_PATH
 - +C_INCLUDE_PATH
 - +LD_LIBRARY_PATH
 new_state_keys: []
@@ -24,7 +24,7 @@ posthook_deps: []
 prehook_deps:
 - extra_cache_tags: google-test,gtest
   force_env_keys:
-  - CM_GIT_*
+  - MLC_GIT_*
   tags: get,git,repo,_repo.https://github.com/google/googletest.git
 tags:
 - get

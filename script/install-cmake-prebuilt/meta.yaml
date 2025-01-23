@@ -7,14 +7,14 @@ default_version: 3.28.3
 deps:
 - tags: detect,os
 new_env_keys:
-- CM_CMAKE_*
-- CM_GET_DEPENDENT_CACHED_PATH
+- MLC_CMAKE_*
+- MLC_GET_DEPENDENT_CACHED_PATH
 - +PATH
 - +LD_LIBRARY_PATH
 - +C_INCLUDE_PATH
 post_deps:
 - skip_if_env:
-    CM_REQUIRE_INSTALL:
+    MLC_REQUIRE_INSTALL:
     - 'yes'
   tags: get,cmake
 tags:

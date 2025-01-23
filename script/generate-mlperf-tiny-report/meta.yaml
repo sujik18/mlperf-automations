@@ -10,7 +10,7 @@ category: "MLPerf benchmark support"
 developers: "[Grigori Fursin](https://cKnowledge.org/gfursin)"
 
 default_env:
-  CM_IMPORT_TINYMLPERF_REPO_TAGS: "1.1-private"
+  MLC_IMPORT_TINYMLPERF_REPO_TAGS: "1.1-private"
 
 # User-friendly tags to find this CM script
 tags:
@@ -21,7 +21,7 @@ tags:
   - report
 
 input_mapping:
-  repo_tags: CM_IMPORT_TINYMLPERF_REPO_TAGS
+  repo_tags: MLC_IMPORT_TINYMLPERF_REPO_TAGS
 
 # Dependencies on other CM scripts
 deps:

@@ -11,9 +11,9 @@ def preprocess(i):
     os_info = i['os_info']
     env = i['env']
 
-    if env["CM_DOCKER_OS"] not in ["ubuntu", "rhel", "arch"]:
+    if env["MLC_DOCKER_OS"] not in ["ubuntu", "rhel", "arch"]:
         return {
-            'return': 1, 'error': f"Specified docker OS: {env['CM_DOCKER_OS']}. Currently only ubuntu, rhel and arch are supported in CM docker"}
+            'return': 1, 'error': f"Specified docker OS: {env['MLC_DOCKER_OS']}. Currently only ubuntu, rhel and arch are supported in CM docker"}
 
     path = i['run_script_input']['path']
 
@@ -26,9 +26,9 @@ def preprocess(i):
     copy_files = []
     automation = i['automation']
 
-    # print(env['CM_DOCKER_RUN_SCRIPT_TAGS'])
-    if env.get('CM_DOCKER_RUN_SCRIPT_TAGS', '') != '':
-        script_tags = env['CM_DOCKER_RUN_SCRIPT_TAGS']
+    # print(env['MLC_DOCKER_RUN_SCRIPT_TAGS'])
+    if env.get('MLC_DOCKER_RUN_SCRIPT_TAGS', '') != '':
+        script_tags = env['MLC_DOCKER_RUN_SCRIPT_TAGS']
         found_scripts = automation.action_object.access(
             {'action': 'search', 'automation': 'script', 'tags': script_tags})
         scripts_list = found_scripts['list']
@@ -54,13 +54,13 @@ def preprocess(i):
                 # build_args.append(arg)
                 # input_args.append("--"+input_+"="+"$"+env_)
 
-    if "CM_DOCKER_OS_VERSION" not in env:
-        env["CM_DOCKER_OS_VERSION"] = "20.04"
+    if "MLC_DOCKER_OS_VERSION" not in env:
+        env["MLC_DOCKER_OS_VERSION"] = "20.04"
 
-    docker_image_base = get_value(env, config, 'FROM', 'CM_DOCKER_IMAGE_BASE')
+    docker_image_base = get_value(env, config, 'FROM', 'MLC_DOCKER_IMAGE_BASE')
     if not docker_image_base:
         return {
-            'return': 1, 'error': f"Version \"{env['CM_DOCKER_OS_VERSION']}\" is not supported yet for \"{env['CM_DOCKER_OS']}\" "}
+            'return': 1, 'error': f"Version \"{env['MLC_DOCKER_OS_VERSION']}\" is not supported yet for \"{env['MLC_DOCKER_OS']}\" "}
 
     # Handle cm_mlops Repository
     if env.get("MLC_REPO_PATH", "") != "":
@@ -79,7 +79,7 @@ def preprocess(i):
         # Define the build context directory (where the Dockerfile will be)
         build_context_dir = os.path.dirname(
             env.get(
-                'CM_DOCKERFILE_WITH_PATH',
+                'MLC_DOCKERFILE_WITH_PATH',
                 os.path.join(
                     os.getcwd(),
                     "Dockerfile")))
@@ -118,8 +118,8 @@ def preprocess(i):
         # MLC_REPO_PATH is not set; use mlc pull repo as before
         use_copy_repo = False
 
-        if env.get("CM_MLOPS_REPO", "") != "":
-            cm_mlops_repo = env["CM_MLOPS_REPO"]
+        if env.get("MLC_MLOPS_REPO", "") != "":
+            cm_mlops_repo = env["MLC_MLOPS_REPO"]
             # the below pattern matches both the HTTPS and SSH git link formats
             git_link_pattern = r'^(https?://github\.com/([^/]+)/([^/]+)(?:\.git)?|git@github\.com:([^/]+)/([^/]+)(?:\.git)?)$'
             if match := re.match(git_link_pattern, cm_mlops_repo):
@@ -131,17 +131,17 @@ def preprocess(i):
                     repo_name = match.group(5)
                 cm_mlops_repo = f"{repo_owner}@{repo_name}"
                 print(
-                    f"Converted repo format from {env['CM_MLOPS_REPO']} to {cm_mlops_repo}")
+                    f"Converted repo format from {env['MLC_MLOPS_REPO']} to {cm_mlops_repo}")
         else:
             cm_mlops_repo = "mlcommons@mlperf-automations"
 
-    cm_mlops_repo_branch_string = f" --branch={env['CM_MLOPS_REPO_BRANCH']}"
+    cm_mlops_repo_branch_string = f" --branch={env['MLC_MLOPS_REPO_BRANCH']}"
 
-    if env.get('CM_DOCKERFILE_WITH_PATH', '') == '':
-        env['CM_DOCKERFILE_WITH_PATH'] = os.path.join(
+    if env.get('MLC_DOCKERFILE_WITH_PATH', '') == '':
+        env['MLC_DOCKERFILE_WITH_PATH'] = os.path.join(
             os.getcwd(), "Dockerfile")
 
-    dockerfile_with_path = env['CM_DOCKERFILE_WITH_PATH']
+    dockerfile_with_path = env['MLC_DOCKERFILE_WITH_PATH']
     dockerfile_dir = os.path.dirname(dockerfile_with_path)
 
     extra_dir = os.path.dirname(dockerfile_with_path)
@@ -150,7 +150,7 @@ def preprocess(i):
         os.makedirs(extra_dir, exist_ok=True)
 
     f = open(dockerfile_with_path, "w")
-    EOL = env['CM_DOCKER_IMAGE_EOL']
+    EOL = env['MLC_DOCKER_IMAGE_EOL']
     f.write('FROM ' + docker_image_base + EOL)
 
     # Maintainers
@@ -166,12 +166,12 @@ def preprocess(i):
 
     f.write(EOL)
 
-    image_label = get_value(env, config, 'LABEL', 'CM_DOCKER_IMAGE_LABEL')
+    image_label = get_value(env, config, 'LABEL', 'MLC_DOCKER_IMAGE_LABEL')
     if image_label:
         f.write('LABEL ' + image_label + EOL)
         f.write(EOL)
 
-    shell = get_value(env, config, 'SHELL', 'CM_DOCKER_IMAGE_SHELL')
+    shell = get_value(env, config, 'SHELL', 'MLC_DOCKER_IMAGE_SHELL')
     if shell:
         # f.write('SHELL ' + shell + EOL)
         f.write(EOL)
@@ -192,8 +192,8 @@ def preprocess(i):
 
     f.write(EOL)
     copy_cmds = []
-    if 'CM_DOCKER_COPY_FILES' in env:
-        for copy_file in env['CM_DOCKER_COPY_FILES']:
+    if 'MLC_DOCKER_COPY_FILES' in env:
+        for copy_file in env['MLC_DOCKER_COPY_FILES']:
             copy_split = copy_file.split(":")
             if len(copy_split) != 2:
                 return {
@@ -217,20 +217,20 @@ def preprocess(i):
             env,
             config,
             'package-manager-update-cmd',
-            'CM_PACKAGE_MANAGER_UPDATE_CMD') +
+            'MLC_PACKAGE_MANAGER_UPDATE_CMD') +
         EOL)
     f.write('RUN ' + get_value(env, config, 'package-manager-get-cmd') + " " + " ".join(get_value(env, config,
                                                                                                   'packages')) + EOL)
 
-    if env.get('CM_DOCKER_EXTRA_SYS_DEPS', '') != '':
-        f.write('RUN ' + env['CM_DOCKER_EXTRA_SYS_DEPS'] + EOL)
+    if env.get('MLC_DOCKER_EXTRA_SYS_DEPS', '') != '':
+        f.write('RUN ' + env['MLC_DOCKER_EXTRA_SYS_DEPS'] + EOL)
 
-    if env['CM_DOCKER_OS'] == "ubuntu":
-        if int(env['CM_DOCKER_OS_VERSION'].split('.')[0]) >= 23:
+    if env['MLC_DOCKER_OS'] == "ubuntu":
+        if int(env['MLC_DOCKER_OS_VERSION'].split('.')[0]) >= 23:
             if "--break-system-packages" not in env.get(
-                    'CM_DOCKER_PIP_INSTALL_EXTRA_FLAGS', ''):
-                env['CM_DOCKER_PIP_INSTALL_EXTRA_FLAGS'] = " --break-system-packages"
-    pip_extra_flags = env.get('CM_DOCKER_PIP_INSTALL_EXTRA_FLAGS', '')
+                    'MLC_DOCKER_PIP_INSTALL_EXTRA_FLAGS', ''):
+                env['MLC_DOCKER_PIP_INSTALL_EXTRA_FLAGS'] = " --break-system-packages"
+    pip_extra_flags = env.get('MLC_DOCKER_PIP_INSTALL_EXTRA_FLAGS', '')
 
     f.write(EOL + '# Setup docker environment' + EOL)
 
@@ -238,7 +238,7 @@ def preprocess(i):
         env,
         config,
         'ENTRYPOINT',
-        'CM_DOCKER_IMAGE_ENTRYPOINT')
+        'MLC_DOCKER_IMAGE_ENTRYPOINT')
     if entry_point:
         f.write('ENTRYPOINT ' + entry_point + EOL)
 
@@ -251,11 +251,11 @@ def preprocess(i):
     docker_user = get_value(env, config, 'USER', 'MLC_DOCKER_USER')
     docker_group = get_value(env, config, 'GROUP', 'MLC_DOCKER_GROUP')
 
-    if env.get('CM_CONTAINER_TOOL', '') == 'podman' and env.get(
-            'CM_DOCKER_USE_DEFAULT_USER', '') == '':
-        env['CM_DOCKER_USE_DEFAULT_USER'] = 'yes'
+    if env.get('MLC_CONTAINER_TOOL', '') == 'podman' and env.get(
+            'MLC_DOCKER_USE_DEFAULT_USER', '') == '':
+        env['MLC_DOCKER_USE_DEFAULT_USER'] = 'yes'
 
-    if docker_user and str(env.get('CM_DOCKER_USE_DEFAULT_USER', '')).lower() not in [
+    if docker_user and str(env.get('MLC_DOCKER_USE_DEFAULT_USER', '')).lower() not in [
             "yes", "1", "true"]:
 
         f.write('RUN groupadd -g $GID -o ' + docker_group + EOL)
@@ -277,21 +277,21 @@ def preprocess(i):
     else:
         f.write('ENV HOME=/root' + EOL)
 
-    dockerfile_env = env.get('CM_DOCKERFILE_ENV', {})
+    dockerfile_env = env.get('MLC_DOCKERFILE_ENV', {})
     dockerfile_env_input_string = ""
     for docker_env_key in dockerfile_env:
         dockerfile_env_input_string = dockerfile_env_input_string + " --env." + \
             docker_env_key + "=" + str(dockerfile_env[docker_env_key])
 
-    workdir = get_value(env, config, 'WORKDIR', 'CM_DOCKER_WORKDIR')
-    if workdir and ("/home/mlcuser" not in workdir or str(env.get('CM_DOCKER_USE_DEFAULT_USER', '')).lower() not in [
+    workdir = get_value(env, config, 'WORKDIR', 'MLC_DOCKER_WORKDIR')
+    if workdir and ("/home/mlcuser" not in workdir or str(env.get('MLC_DOCKER_USE_DEFAULT_USER', '')).lower() not in [
             "yes", "1", "true"]):
         f.write('WORKDIR ' + workdir + EOL)
 
     f.write(EOL + '# Install python packages' + EOL)
-    python = get_value(env, config, 'PYTHON', 'CM_DOCKERFILE_PYTHON')
+    python = get_value(env, config, 'PYTHON', 'MLC_DOCKERFILE_PYTHON')
 
-    docker_use_virtual_python = env.get('CM_DOCKER_USE_VIRTUAL_PYTHON', "yes")
+    docker_use_virtual_python = env.get('MLC_DOCKER_USE_VIRTUAL_PYTHON', "yes")
     if str(docker_use_virtual_python).lower() not in ["no", "0", "false"]:
         f.write('RUN {} -m venv $HOME/venv/mlc'.format(python) + " " + EOL)
         f.write('ENV PATH="$HOME/venv/mlc/bin:$PATH"' + EOL)
@@ -323,7 +323,7 @@ def preprocess(i):
 
     else:
         # Use mlc pull repo as before
-        x = env.get('CM_DOCKER_ADD_FLAG_TO_CM_MLOPS_REPO', '')
+        x = env.get('MLC_DOCKER_ADD_FLAG_TO_MLC_MLOPS_REPO', '')
         if x != '':
             x = ' ' + x
 
@@ -335,55 +335,55 @@ def preprocess(i):
             EOL)
 
     # Check extra repositories
-    x = env.get('CM_DOCKER_EXTRA_CM_REPOS', '')
+    x = env.get('MLC_DOCKER_EXTRA_MLC_REPOS', '')
     if x != '':
         for y in x.split(','):
             f.write('RUN ' + y + EOL)
 
-    if str(env.get('CM_DOCKER_SKIP_CM_SYS_UPGRADE', False)
+    if str(env.get('MLC_DOCKER_SKIP_MLC_SYS_UPGRADE', False)
            ).lower() not in ["true", "1", "yes"]:
         f.write(EOL + '# Install all system dependencies' + EOL)
         f.write('RUN mlc run script --tags=get,sys-utils-cm --quiet' + EOL)
 
-    if 'CM_DOCKER_PRE_RUN_COMMANDS' in env:
-        for pre_run_cmd in env['CM_DOCKER_PRE_RUN_COMMANDS']:
+    if 'MLC_DOCKER_PRE_RUN_COMMANDS' in env:
+        for pre_run_cmd in env['MLC_DOCKER_PRE_RUN_COMMANDS']:
             f.write('RUN ' + pre_run_cmd + EOL)
 
     run_cmd_extra = " " + \
-        env.get('CM_DOCKER_RUN_CMD_EXTRA', '').replace(":", "=")
-    gh_token = get_value(env, config, "GH_TOKEN", "CM_GH_TOKEN")
+        env.get('MLC_DOCKER_RUN_CMD_EXTRA', '').replace(":", "=")
+    gh_token = get_value(env, config, "GH_TOKEN", "MLC_GH_TOKEN")
     if gh_token:
-        run_cmd_extra = " --env.CM_GH_TOKEN=$CM_GH_TOKEN"
+        run_cmd_extra = " --env.MLC_GH_TOKEN=$MLC_GH_TOKEN"
 
     f.write(EOL + '# Run commands' + EOL)
-    for comment in env.get('CM_DOCKER_RUN_COMMENTS', []):
+    for comment in env.get('MLC_DOCKER_RUN_COMMENTS', []):
         f.write(comment + EOL)
 
     skip_extra = False
-    if 'CM_DOCKER_RUN_CMD' not in env:
-        env['CM_DOCKER_RUN_CMD'] = ""
-        if 'CM_DOCKER_RUN_SCRIPT_TAGS' not in env:
-            env['CM_DOCKER_RUN_CMD'] += "mlc version"
+    if 'MLC_DOCKER_RUN_CMD' not in env:
+        env['MLC_DOCKER_RUN_CMD'] = ""
+        if 'MLC_DOCKER_RUN_SCRIPT_TAGS' not in env:
+            env['MLC_DOCKER_RUN_CMD'] += "mlc version"
             skip_extra = True
         else:
-            if str(env.get('CM_DOCKER_NOT_PULL_UPDATE', 'False')
+            if str(env.get('MLC_DOCKER_NOT_PULL_UPDATE', 'False')
                    ).lower() not in ["yes", "1", "true"]:
-                env['CM_DOCKER_RUN_CMD'] += "mlc pull repo && "
-            env['CM_DOCKER_RUN_CMD'] += "mlc run script --tags=" + \
-                env['CM_DOCKER_RUN_SCRIPT_TAGS'] + ' --quiet'
+                env['MLC_DOCKER_RUN_CMD'] += "mlc pull repo && "
+            env['MLC_DOCKER_RUN_CMD'] += "mlc run script --tags=" + \
+                env['MLC_DOCKER_RUN_SCRIPT_TAGS'] + ' --quiet'
     else:
-        if str(env.get('CM_DOCKER_NOT_PULL_UPDATE', 'False')
+        if str(env.get('MLC_DOCKER_NOT_PULL_UPDATE', 'False')
                ).lower() not in ["yes", "1", "true"]:
-            env['CM_DOCKER_RUN_CMD'] = "mlc pull repo && " + \
-                env['CM_DOCKER_RUN_CMD']
+            env['MLC_DOCKER_RUN_CMD'] = "mlc pull repo && " + \
+                env['MLC_DOCKER_RUN_CMD']
 
-    print(env['CM_DOCKER_RUN_CMD'])
-    fake_run = env.get("CM_DOCKER_FAKE_RUN_OPTION",
+    print(env['MLC_DOCKER_RUN_CMD'])
+    fake_run = env.get("MLC_DOCKER_FAKE_RUN_OPTION",
                        " --fake_run") + dockerfile_env_input_string
     fake_run = fake_run + \
-        " --fake_deps" if env.get('CM_DOCKER_FAKE_DEPS') else fake_run
+        " --fake_deps" if env.get('MLC_DOCKER_FAKE_DEPS') else fake_run
 
-    x = 'RUN ' + env['CM_DOCKER_RUN_CMD']
+    x = 'RUN ' + env['MLC_DOCKER_RUN_CMD']
 
     if not skip_extra:
         x += fake_run
@@ -392,11 +392,11 @@ def preprocess(i):
         if run_cmd_extra != '':
             x += ' ' + run_cmd_extra
 
-    if env.get('CM_DOCKER_RUN_SCRIPT_TAGS', '') != '' and str(env.get(
-            'CM_DOCKER_ADD_DEPENDENT_SCRIPTS_RUN_COMMANDS', '')).lower() in ["yes", "1", "true"]:
+    if env.get('MLC_DOCKER_RUN_SCRIPT_TAGS', '') != '' and str(env.get(
+            'MLC_DOCKER_ADD_DEPENDENT_SCRIPTS_RUN_COMMANDS', '')).lower() in ["yes", "1", "true"]:
         mlc_input = {'action': 'run',
                      'automation': 'script',
-                     'tags': f"""{env['CM_DOCKER_RUN_SCRIPT_TAGS']}""",
+                     'tags': f"""{env['MLC_DOCKER_RUN_SCRIPT_TAGS']}""",
                      'print_deps': True,
                      'quiet': True,
                      'silent': True,
@@ -407,7 +407,7 @@ def preprocess(i):
         if r['return'] > 0:
             return r
         print_deps = r['new_state']['print_deps']
-        fake_run_str = " --fake_run" if env.get('CM_DOCKER_FAKE_DEPS') else ""
+        fake_run_str = " --fake_run" if env.get('MLC_DOCKER_FAKE_DEPS') else ""
         cmds = ["RUN " + dep for dep in print_deps]
         for cmd in cmds:
             f.write(cmd + fake_run_str + EOL)
@@ -415,19 +415,19 @@ def preprocess(i):
     f.write(x + EOL)
 
     # fake_run to install the dependent scripts and caching them
-    if not "run" in env['CM_DOCKER_RUN_CMD'] and str(
-            env.get('CM_REAL_RUN', False)).lower() in ["false", "0", "no"]:
+    if not "run" in env['MLC_DOCKER_RUN_CMD'] and str(
+            env.get('MLC_REAL_RUN', False)).lower() in ["false", "0", "no"]:
         fake_run = dockerfile_env_input_string
 
-        x = 'RUN ' + env['CM_DOCKER_RUN_CMD'] + fake_run + run_cmd_extra
+        x = 'RUN ' + env['MLC_DOCKER_RUN_CMD'] + fake_run + run_cmd_extra
         if '--quiet' not in x:
             x += ' --quiet '
         x += EOL
 
         f.write(x)
 
-    if 'CM_DOCKER_POST_RUN_COMMANDS' in env:
-        for post_run_cmd in env['CM_DOCKER_POST_RUN_COMMANDS']:
+    if 'MLC_DOCKER_POST_RUN_COMMANDS' in env:
+        for post_run_cmd in env['MLC_DOCKER_POST_RUN_COMMANDS']:
             f.write('RUN ' + post_run_cmd + EOL)
 
     post_file = env.get('DOCKER_IMAGE_POST_FILE', '')
@@ -443,7 +443,7 @@ def preprocess(i):
 
     f.close()
 
-    # f = open(env['CM_DOCKERFILE_WITH_PATH'], "r")
+    # f = open(env['MLC_DOCKERFILE_WITH_PATH'], "r")
     # print(f.read())
 
     return {'return': 0}
@@ -456,8 +456,8 @@ def get_value(env, config, key, env_key=None):
     if env.get(env_key, None) is not None:
         return env[env_key]
 
-    docker_os = env['CM_DOCKER_OS']
-    docker_os_version = env['CM_DOCKER_OS_VERSION']
+    docker_os = env['MLC_DOCKER_OS']
+    docker_os_version = env['MLC_DOCKER_OS_VERSION']
 
     version_meta = config['distros'][docker_os]['versions'].get(
         docker_os_version, '')

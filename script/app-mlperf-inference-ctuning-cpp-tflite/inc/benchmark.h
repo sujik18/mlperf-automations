@@ -98,25 +98,25 @@ private:
 
 class BenchmarkSettings {
 public:
-  const std::string images_dir = getenv_s("CM_DATASET_PREPROCESSED_PATH");
-  const std::string available_images_file = getenv_s("CM_DATASET_PREPROCESSED_IMAGES_LIST");
-  const bool skip_internal_preprocessing =  (getenv_opt_s("CM_DATASET_COMPRESSED", "off") ==  "off");
-  const std::string result_dir = getenv_s("CM_MLPERF_OUTPUT_DIR");
-  const std::string input_layer_name = getenv_s("CM_ML_MODEL_INPUT_LAYER_NAME");
-  const std::string output_layer_name = getenv_s("CM_ML_MODEL_OUTPUT_LAYER_NAME");
-  const int images_in_memory_max = getenv_i("CM_LOADGEN_BUFFER_SIZE");
-  const int image_size = getenv_i("CM_DATASET_INPUT_SQUARE_SIDE");
+  const std::string images_dir = getenv_s("MLC_DATASET_PREPROCESSED_PATH");
+  const std::string available_images_file = getenv_s("MLC_DATASET_PREPROCESSED_IMAGES_LIST");
+  const bool skip_internal_preprocessing =  (getenv_opt_s("MLC_DATASET_COMPRESSED", "off") ==  "off");
+  const std::string result_dir = getenv_s("MLC_MLPERF_OUTPUT_DIR");
+  const std::string input_layer_name = getenv_s("MLC_ML_MODEL_INPUT_LAYER_NAME");
+  const std::string output_layer_name = getenv_s("MLC_ML_MODEL_OUTPUT_LAYER_NAME");
+  const int images_in_memory_max = getenv_i("MLC_LOADGEN_BUFFER_SIZE");
+  const int image_size = getenv_i("MLC_DATASET_INPUT_SQUARE_SIDE");
   const int batch_size = 1;
   const int num_channels = 3;
   const int num_classes = 1000;
-  const bool normalize_img = getenv_b("CM_ML_MODEL_NORMALIZE_DATA");
+  const bool normalize_img = getenv_b("MLC_ML_MODEL_NORMALIZE_DATA");
 
-  const bool subtract_mean = getenv_b("CM_ML_MODEL_SUBTRACT_MEANS");
-  const char *given_channel_means_str = getenv("CM_ML_MODEL_GIVEN_CHANNEL_MEANS");
+  const bool subtract_mean = getenv_b("MLC_ML_MODEL_SUBTRACT_MEANS");
+  const char *given_channel_means_str = getenv("MLC_ML_MODEL_GIVEN_CHANNEL_MEANS");
 
-  const bool trigger_cold_run = getenv_b("CM_MLPERF_LOADGEN_TRIGGER_COLD_RUN");
+  const bool trigger_cold_run = getenv_b("MLC_MLPERF_LOADGEN_TRIGGER_COLD_RUN");
 
-  const int verbosity_level = getenv_i("CM_VERBOSE");
+  const int verbosity_level = getenv_i("MLC_VERBOSE");
 
   BenchmarkSettings(enum MODEL_TYPE mode = MODEL_TYPE::LITE) {
 
@@ -130,11 +130,11 @@ public:
     switch (mode)
     {
     case MODEL_TYPE::LITE:
-      _graph_file = getenv_s("CM_ML_MODEL_FILE_WITH_PATH");
+      _graph_file = getenv_s("MLC_ML_MODEL_FILE_WITH_PATH");
       break;
 
     case MODEL_TYPE::TF_FROZEN:
-      _graph_file = getenv_s("CM_ML_MODEL_FILE_WITH_PATH");
+      _graph_file = getenv_s("MLC_ML_MODEL_FILE_WITH_PATH");
       break;
 
     default:
@@ -144,13 +144,13 @@ public:
     };
     _number_of_threads = std::thread::hardware_concurrency();
 
-    if (getenv_opt_s("CM_HOST_USE_ALL_CORES", "no") !=  "yes") {
+    if (getenv_opt_s("MLC_HOST_USE_ALL_CORES", "no") !=  "yes") {
         _number_of_threads = _number_of_threads < 1 ? 1 : _number_of_threads;
-        _number_of_threads = !getenv("CM_HOST_CPU_TOTAL_CORES")
+        _number_of_threads = !getenv("MLC_HOST_CPU_TOTAL_CORES")
                          ? _number_of_threads
-                         : getenv_i("CM_HOST_CPU_TOTAL_CORES");
-        if (getenv_i("CM_HOST_CPU_TOTAL_CORES") && getenv_i("CM_HOST_CPU_THREADS_PER_CORE")) {
-            _number_of_threads = getenv_i("CM_HOST_CPU_TOTAL_CORES") / getenv_i("CM_HOST_CPU_THREADS_PER_CORE");
+                         : getenv_i("MLC_HOST_CPU_TOTAL_CORES");
+        if (getenv_i("MLC_HOST_CPU_TOTAL_CORES") && getenv_i("MLC_HOST_CPU_THREADS_PER_CORE")) {
+            _number_of_threads = getenv_i("MLC_HOST_CPU_TOTAL_CORES") / getenv_i("MLC_HOST_CPU_THREADS_PER_CORE");
         }
     }
     // Print settings

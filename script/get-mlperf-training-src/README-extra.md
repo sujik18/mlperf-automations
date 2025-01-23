@@ -19,7 +19,7 @@ where [VARIATION] is one of
 * `r2.1:`  Uses the release branch used for MLCommons training 2.1 round
 
 ## Exported Variables
-* `CM_MLPERF_TRAINING_SOURCE`: Directory path of the cloned inference repository
+* `MLC_MLPERF_TRAINING_SOURCE`: Directory path of the cloned inference repository
 * `PYTHONPATH`: Is appended with the paths to vision module and the submission tools module
 
 ## Supported and Tested OS

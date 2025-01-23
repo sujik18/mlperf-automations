@@ -5,11 +5,11 @@ cache: true
 category: AI/ML frameworks
 clean_files: []
 new_env_keys:
-- CM_ROCM_*
+- MLC_ROMLC_*
 - +PATH
 prehook_deps:
 - enable_if_env:
-    CM_REQUIRE_INSTALL:
+    MLC_REQUIRE_INSTALL:
     - 'yes'
   reuse_version: true
   tags: install,rocm

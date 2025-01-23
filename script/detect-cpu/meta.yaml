@@ -9,9 +9,9 @@ clean_files:
 deps:
 - tags: detect,os
 new_env_keys:
-- CM_HOST_CPU_*
-- CM_HOST_MEMORY_CAPACITY
-- CM_HOST_DISK_CAPACITY
+- MLC_HOST_CPU_*
+- MLC_HOST_MEMORY_CAPACITY
+- MLC_HOST_DISK_CAPACITY
 new_state_keys:
 - host_device_raw_info
 tags:

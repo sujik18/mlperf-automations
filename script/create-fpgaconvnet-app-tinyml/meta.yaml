@@ -39,6 +39,6 @@ variations:
         tags: _zc706
     default: true
     env:
-      CM_TINY_BOARD: zc706
+      MLC_TINY_BOARD: zc706
     group: board
 versions: {}

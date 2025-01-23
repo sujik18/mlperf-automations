@@ -10,18 +10,18 @@ deps:
   - python
   - python3
   skip_if_env:
-    CM_CONDA_ENV:
+    MLC_CONDA_ENV:
     - 'yes'
   tags: get,python3
 - names:
   - compiler
   tags: get,compiler
 - enable_if_env:
-    CM_TORCHVISION_NEEDS_PNG:
+    MLC_TORCHVISION_NEEDS_PNG:
     - 'yes'
   tags: get,generic-sys-util,_libpng-dev
 - env:
-    CM_GIT_CHECKOUT_PATH_ENV_NAME: CM_PYTORCH_VISION_SRC_REPO_PATH
+    MLC_GIT_CHECKOUT_PATH_ENV_NAME: MLC_PYTORCH_VISION_SRC_REPO_PATH
   extra_cache_tags: pytorchvision,torchvision,torchvision-src,src,pytorchvision-src,pytorchvision-src-repo
   names:
   - pytorchision-src-repo
@@ -29,18 +29,18 @@ deps:
   tags: get,git,repo
   update_tags_from_env_with_prefix:
     _branch.:
-    - CM_GIT_CHECKOUT
+    - MLC_GIT_CHECKOUT
     _repo.:
-    - CM_GIT_URL
+    - MLC_GIT_URL
     _sha.:
-    - CM_GIT_CHECKOUT_SHA
+    - MLC_GIT_CHECKOUT_SHA
     _tag.:
-    - CM_GIT_CHECKOUT_TAG
+    - MLC_GIT_CHECKOUT_TAG
 env:
-  CM_GIT_URL: https://github.com/pytorch/vision
+  MLC_GIT_URL: https://github.com/pytorch/vision
 name: Build pytorchvision from sources
 new_env_keys:
-- CM_PYTORCHVISION_*
+- MLC_PYTORCHVISION_*
 prehook_deps: []
 sort: 1000
 tags:
@@ -55,17 +55,17 @@ uid: 68b855780d474546
 variations:
   branch.#:
     env:
-      CM_GIT_CHECKOUT: '#'
+      MLC_GIT_CHECKOUT: '#'
   cuda:
     deps:
     - names:
       - cuda
       tags: get,cuda,_cudnn
     env:
-      CUDA_HOME: <<<CM_CUDA_INSTALLED_PATH>>>
-      CUDA_NVCC_EXECUTABLE: <<<CM_NVCC_BIN_WITH_PATH>>>
-      CUDNN_INCLUDE_PATH: <<<CM_CUDA_PATH_INCLUDE_CUDNN>>>
-      CUDNN_LIBRARY_PATH: <<<CM_CUDA_PATH_LIB_CUDNN>>>
+      CUDA_HOME: <<<MLC_CUDA_INSTALLED_PATH>>>
+      CUDA_NVCC_EXECUTABLE: <<<MLC_NVCC_BIN_WITH_PATH>>>
+      CUDNN_INCLUDE_PATH: <<<MLC_CUDA_PATH_INCLUDE_CUDNN>>>
+      CUDNN_LIBRARY_PATH: <<<MLC_CUDA_PATH_LIB_CUDNN>>>
       TORCH_CUDA_ARCH_LIST: Ampere Ada Hopper
       TORCH_CXX_FLAGS: -D_GLIBCXX_USE_CXX11_ABI=1
       USE_CUDA: '1'
@@ -86,23 +86,23 @@ variations:
     env: {}
   python.#:
     env:
-      CM_PYTHON_BIN_WITH_PATH: '#'
+      MLC_PYTHON_BIN_WITH_PATH: '#'
   repo.#:
     env:
-      CM_GIT_URL: '#'
+      MLC_GIT_URL: '#'
     group: repo
   repo.https://github.com/pytorch/vision:
     default: true
     env:
-      CM_GIT_URL: https://github.com/pytorch/vision
+      MLC_GIT_URL: https://github.com/pytorch/vision
     group: repo
   sha.#:
     env:
-      CM_GIT_CHECKOUT_SHA: '#'
+      MLC_GIT_CHECKOUT_SHA: '#'
   tag.#:
     ad:
       pytorch-src-repo:
         tags: _no-recurse-submodules,_full-history
     env:
-      CM_GIT_CHECKOUT_TAG: '#'
+      MLC_GIT_CHECKOUT_TAG: '#'
 versions: {}

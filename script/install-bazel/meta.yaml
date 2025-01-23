@@ -7,12 +7,12 @@ default_version: 7.0.2
 deps:
 - tags: detect,os
 env:
-  CM_WGET_URL: https://github.com/bazelbuild/bazel/releases/download/[VERSION]/bazel-[VERSION]-installer-[OS]-[PLATFORM].sh
+  MLC_WGET_URL: https://github.com/bazelbuild/bazel/releases/download/[VERSION]/bazel-[VERSION]-installer-[OS]-[PLATFORM].sh
 new_env_keys:
-- CM_BAZEL_*
+- MLC_BAZEL_*
 post_deps:
 - skip_if_env:
-    CM_REQUIRE_INSTALL:
+    MLC_REQUIRE_INSTALL:
     - 'yes'
   tags: get,bazel
 tags:

@@ -7,7 +7,7 @@ deps:
 - tags: detect,os
 post_deps:
 - skip_if_env:
-    CM_REQUIRE_INSTALL:
+    MLC_REQUIRE_INSTALL:
     - 'yes'
   tags: get,cuda
 tags:

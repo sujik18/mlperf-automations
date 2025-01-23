@@ -17,14 +17,14 @@ variations:
       tags: benchmark-program,program
   power:
     env:
-      CM_MLPERF_POWER: 'yes'
-      CM_SAVE_CONSOLE_LOG: 'no'
+      MLC_MLPERF_POWER: 'yes'
+      MLC_SAVE_CONSOLE_LOG: 'no'
     group: power-mode
     new_env_keys:
-    - CM_MLPERF_*
+    - MLC_MLPERF_*
     post_deps:
     - enable_if_env:
-        CM_MLPERF_LOADGEN_MODE:
+        MLC_MLPERF_LOADGEN_MODE:
         - performance
       names:
       - mlperf-power-client

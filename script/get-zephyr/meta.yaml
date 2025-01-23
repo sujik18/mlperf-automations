@@ -15,7 +15,7 @@ deps:
   version_min: 3.20.0
 - tags: get,generic-python-lib,_west
 new_env_keys:
-- CM_ZEPHYR_*
+- MLC_ZEPHYR_*
 tags:
 - get
 - zephyr
@@ -23,4 +23,4 @@ uid: d4105c2cdb044276
 versions:
   v2.7:
     env:
-      CM_ZEPHYR_VERSION: v2.7
+      MLC_ZEPHYR_VERSION: v2.7

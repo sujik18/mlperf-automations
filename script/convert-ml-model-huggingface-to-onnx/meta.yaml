@@ -12,8 +12,8 @@ deps:
 - tags: get,generic-python-lib,_onnxruntime
 env: {}
 new_env_keys:
-- CM_ML_MODEL*
-- CM_MODEL_HUGG_PATH
+- MLC_ML_MODEL*
+- MLC_MODEL_HUGG_PATH
 - HUGGINGFACE_ONNX_FILE_PATH
 tags:
 - ml-model
@@ -26,4 +26,4 @@ uid: eacb01655d7e49ac
 variations:
   model-path.#:
     env:
-      CM_MODEL_HUGG_PATH: '#'
+      MLC_MODEL_HUGG_PATH: '#'

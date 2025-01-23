@@ -30,15 +30,15 @@ deps:
   version_min: 3.20.0
 - tags: get,gcc
 input_mapping:
-  flash: CM_FLASH_BOARD
-  recreate_binary: CM_RECREATE_BINARY
+  flash: MLC_FLASH_BOARD
+  recreate_binary: MLC_RECREATE_BINARY
 local_env_keys:
-- CM_*
+- MLC_*
 new_env_keys:
-- CM_TINY_*
+- MLC_TINY_*
 post_deps:
 - enable_if_env:
-    CM_FLASH_BOARD:
+    MLC_FLASH_BOARD:
     - 'True'
   tags: flash,tiny,mlperf
 tags:
@@ -52,28 +52,28 @@ uid: a63803a707d04332
 variations:
   NRF:
     env:
-      CM_TINY_BOARD: NRF5340DK
+      MLC_TINY_BOARD: NRF5340DK
   NUCLEO:
     env:
-      CM_TINY_BOARD: NUCLEO_L4R5ZI
+      MLC_TINY_BOARD: NUCLEO_L4R5ZI
   ad:
     env:
-      CM_TINY_MODEL: ad
+      MLC_TINY_MODEL: ad
   cmsis_nn:
     env:
-      CM_MICROTVM_VARIANT: microtvm_cmsis_nn
+      MLC_MICROTVM_VARIANT: microtvm_cmsis_nn
   ic:
     env:
-      CM_TINY_MODEL: ic
+      MLC_TINY_MODEL: ic
   kws:
     env:
-      CM_TINY_MODEL: kws
+      MLC_TINY_MODEL: kws
   native:
     env:
-      CM_MICROTVM_VARIANT: microtvm_native
+      MLC_MICROTVM_VARIANT: microtvm_native
   vww:
     env:
-      CM_TINY_MODEL: vww
+      MLC_TINY_MODEL: vww
 versions:
   r1.0:
     add_deps_recursive:

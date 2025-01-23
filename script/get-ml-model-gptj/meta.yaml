@@ -6,36 +6,36 @@ category: AI/ML models
 docker:
   run: false
 env:
-  CM_ML_MODEL: GPTJ
-  CM_ML_MODEL_DATASET: cnndm
-  CM_ML_MODEL_WEIGHT_TRANSFORMATIONS: 'no'
+  MLC_ML_MODEL: GPTJ
+  MLC_ML_MODEL_DATASET: cnndm
+  MLC_ML_MODEL_WEIGHT_TRANSFORMATIONS: 'no'
 input_mapping:
   checkpoint: GPTJ_CHECKPOINT_PATH
-  download_path: CM_DOWNLOAD_PATH
-  to: CM_DOWNLOAD_PATH
+  download_path: MLC_DOWNLOAD_PATH
+  to: MLC_DOWNLOAD_PATH
 new_env_keys:
-- CM_ML_MODEL_*
+- MLC_ML_MODEL_*
 - GPTJ_CHECKPOINT_PATH
 prehook_deps:
 - enable_if_env:
-    CM_TMP_REQUIRE_DOWNLOAD:
+    MLC_TMP_REQUIRE_DOWNLOAD:
     - 'yes'
   env:
-    CM_DOWNLOAD_FINAL_ENV_NAME: GPTJ_CHECKPOINT_PATH
-    CM_EXTRACT_FINAL_ENV_NAME: GPTJ_CHECKPOINT_PATH
-    CM_EXTRACT_TO_FOLDER: gpt-j
+    MLC_DOWNLOAD_FINAL_ENV_NAME: GPTJ_CHECKPOINT_PATH
+    MLC_EXTRACT_FINAL_ENV_NAME: GPTJ_CHECKPOINT_PATH
+    MLC_EXTRACT_TO_FOLDER: gpt-j
   extra_cache_tags: gptj,model
   force_cache: true
   names:
   - dae
   tags: download-and-extract
   force_env_keys:
-    - CM_OUTDIRNAME  
+    - MLC_OUTDIRNAME  
   update_tags_from_env_with_prefix:
     _url.:
-    - CM_DOWNLOAD_URL
+    - MLC_DOWNLOAD_URL
 print_env_at_the_end:
-  CM_ML_MODEL_FILE_WITH_PATH: Path to the ML model
+  MLC_ML_MODEL_FILE_WITH_PATH: Path to the ML model
 tags:
 - get
 - raw
@@ -47,28 +47,28 @@ uid: a41166210f294fbf
 variations:
   batch_size.#:
     env:
-      CM_ML_MODEL_BATCH_SIZE: '#'
+      MLC_ML_MODEL_BATCH_SIZE: '#'
   fp32:
     env:
-      CM_ML_MODEL_INPUT_DATA_TYPES: fp32
-      CM_ML_MODEL_PRECISION: fp32
-      CM_ML_MODEL_WEIGHT_DATA_TYPES: fp32
+      MLC_ML_MODEL_INPUT_DATA_TYPES: fp32
+      MLC_ML_MODEL_PRECISION: fp32
+      MLC_ML_MODEL_WEIGHT_DATA_TYPES: fp32
     group: precision
   fp8:
     env:
-      CM_ML_MODEL_INPUT_DATA_TYPES: fp8
-      CM_ML_MODEL_WEIGHT_DATA_TYPES: fp8
+      MLC_ML_MODEL_INPUT_DATA_TYPES: fp8
+      MLC_ML_MODEL_WEIGHT_DATA_TYPES: fp8
     group: precision
   int4:
     env:
-      CM_ML_MODEL_INPUT_DATA_TYPES: int4
-      CM_ML_MODEL_WEIGHT_DATA_TYPES: int4
+      MLC_ML_MODEL_INPUT_DATA_TYPES: int4
+      MLC_ML_MODEL_WEIGHT_DATA_TYPES: int4
     group: precision
   int8:
     env:
-      CM_ML_MODEL_INPUT_DATA_TYPES: int8
-      CM_ML_MODEL_PRECISION: int8
-      CM_ML_MODEL_WEIGHT_DATA_TYPES: int8
+      MLC_ML_MODEL_INPUT_DATA_TYPES: int8
+      MLC_ML_MODEL_PRECISION: int8
+      MLC_ML_MODEL_WEIGHT_DATA_TYPES: int8
     group: precision
   intel:
     default_variations:
@@ -83,23 +83,23 @@ variations:
     default_variations:
       framework: pytorch
     env:
-      CM_TMP_ML_MODEL_PROVIDER: nvidia
+      MLC_TMP_ML_MODEL_PROVIDER: nvidia
     group: model-provider
   pytorch:
     default: true
     env:
-      CM_ML_MODEL_DATA_LAYOUT: NCHW
-      CM_ML_MODEL_FRAMEWORK: pytorch
-      CM_ML_STARTING_WEIGHTS_FILENAME: <<<CM_PACKAGE_URL>>>
+      MLC_ML_MODEL_DATA_LAYOUT: NCHW
+      MLC_ML_MODEL_FRAMEWORK: pytorch
+      MLC_ML_STARTING_WEIGHTS_FILENAME: <<<MLC_PACKAGE_URL>>>
     group: framework
   pytorch,fp32:
     env:
-      CM_DOWNLOAD_CHECKSUM_NOT_USED: e677e28aaf03da84584bb3073b7ee315
-      CM_DOWNLOAD_EXTRA_OPTIONS: ' --output-document checkpoint.zip'
-      CM_PACKAGE_URL: https://cloud.mlcommons.org/index.php/s/QAZ2oM94MkFtbQx/download
-      CM_RCLONE_CONFIG_NAME: mlc-inference
-      CM_RCLONE_URL: mlc-inference:mlcommons-inference-wg-public/gpt-j
-      CM_UNZIP: 'yes'
+      MLC_DOWNLOAD_CHECKSUM_NOT_USED: e677e28aaf03da84584bb3073b7ee315
+      MLC_DOWNLOAD_EXTRA_OPTIONS: ' --output-document checkpoint.zip'
+      MLC_PACKAGE_URL: https://cloud.mlcommons.org/index.php/s/QAZ2oM94MkFtbQx/download
+      MLC_RCLONE_CONFIG_NAME: mlc-inference
+      MLC_RCLONE_URL: mlc-inference:mlcommons-inference-wg-public/gpt-j
+      MLC_UNZIP: 'yes'
     required_disk_space: 22700
   pytorch,fp32,wget:
     add_deps_recursive:
@@ -117,7 +117,7 @@ variations:
     - tags: get,mlperf,inference,results
       version: v3.1
     - env:
-        CM_GPTJ_INTEL_MODEL: ''
+        MLC_GPTJ_INTEL_MODEL: ''
       force_new_env_keys:
       - GPTJ_CHECKPOINT_PATH
       tags: get,ml-model,gpt-j,_fp32,_pytorch
@@ -135,13 +135,13 @@ variations:
     - tags: install,ipex,from.src,_for-intel-mlperf-inference-v3.1-gptj
     - tags: get,dataset,cnndm,_calibration
     env:
-      CM_GPTJ_INTEL_MODEL: 'yes'
+      MLC_GPTJ_INTEL_MODEL: 'yes'
   pytorch,nvidia:
     default_variations:
       precision: fp8
     deps:
     - env:
-        CM_GIT_CHECKOUT_PATH_ENV_NAME: CM_TENSORRT_LLM_CHECKOUT_PATH
+        MLC_GIT_CHECKOUT_PATH_ENV_NAME: MLC_TENSORRT_LLM_CHECKOUT_PATH
       extra_cache_tags: tensorrt-llm
       tags: get,git,repo,_lfs,_repo.https://github.com/NVIDIA/TensorRT-LLM.git,_sha.0ab9d17a59c284d2de36889832fe9fc7c8697604
     - names:
@@ -171,8 +171,8 @@ variations:
         tags: _rclone
     default: true
     env:
-      CM_DOWNLOAD_FILENAME: checkpoint
-      CM_DOWNLOAD_URL: <<<CM_RCLONE_URL>>>
+      MLC_DOWNLOAD_FILENAME: checkpoint
+      MLC_DOWNLOAD_URL: <<<MLC_RCLONE_URL>>>
     group: download-tool
   saxml:
     group: framework
@@ -189,7 +189,7 @@ variations:
     - tags: get,generic-python-lib,_package.transformers
     - tags: get,generic-python-lib,_package.accelerate
     env:
-      CM_TMP_MODEL_SAXML: fp32
+      MLC_TMP_MODEL_SAXML: fp32
     new_env_keys:
     - GPTJ_SAXML_CHECKPOINT_PATH
   saxml,int8:
@@ -203,24 +203,24 @@ variations:
     - tags: get,generic-python-lib,_package.praxis
     - tags: get,generic-python-lib,_package.apache-beam
     - env:
-        CM_GIT_CHECKOUT_PATH_ENV_NAME: CM_SAXML_REPO_PATH
+        MLC_GIT_CHECKOUT_PATH_ENV_NAME: MLC_SAXML_REPO_PATH
       extra_cache_tags: saxml
       names:
       - saxml
       tags: get,git,repo,_repo.https://github.com/google/saxml
     env:
-      CM_TMP_MODEL_SAXML: int8
+      MLC_TMP_MODEL_SAXML: int8
   uint8:
     env:
-      CM_ML_MODEL_INPUT_DATA_TYPES: uint8
-      CM_ML_MODEL_PRECISION: uint8
-      CM_ML_MODEL_WEIGHT_DATA_TYPES: uint8
+      MLC_ML_MODEL_INPUT_DATA_TYPES: uint8
+      MLC_ML_MODEL_PRECISION: uint8
+      MLC_ML_MODEL_WEIGHT_DATA_TYPES: uint8
     group: precision
   wget:
     add_deps_recursive:
       dae:
         tags: _wget
     env:
-      CM_DOWNLOAD_FILENAME: checkpoint.zip
-      CM_DOWNLOAD_URL: <<<CM_PACKAGE_URL>>>
+      MLC_DOWNLOAD_FILENAME: checkpoint.zip
+      MLC_DOWNLOAD_URL: <<<MLC_PACKAGE_URL>>>
     group: download-tool

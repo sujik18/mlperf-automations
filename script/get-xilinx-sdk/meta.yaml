@@ -7,9 +7,9 @@ default_version: '2019.1'
 deps: []
 input_description: {}
 input_mapping:
-  input: CM_XILINX_SDK_FILE_PATH
+  input: MLC_XILINX_SDK_FILE_PATH
 new_env_keys:
-- CM_XILINX_*
+- MLC_XILINX_*
 - +PATH
 new_state_keys: []
 post_deps: []
@@ -23,5 +23,5 @@ variations: {}
 versions:
   '2019.1':
     env:
-      CM_DOWNLOAD_CHECKSUM: 7ccb3840d36c305a7cb34b314db7d7f2
-      CM_DOWNLOAD_URL: https://www.xilinx.com/member/forms/download/xef.html?filename=Xilinx_SDK_2019.1_0524_1430_Lin64.bin
+      MLC_DOWNLOAD_CHECKSUM: 7ccb3840d36c305a7cb34b314db7d7f2
+      MLC_DOWNLOAD_URL: https://www.xilinx.com/member/forms/download/xef.html?filename=Xilinx_SDK_2019.1_0524_1430_Lin64.bin

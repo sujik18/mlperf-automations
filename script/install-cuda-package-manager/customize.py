@@ -11,6 +11,6 @@ def preprocess(i):
     automation = i['automation']
 
     recursion_spaces = i['recursion_spaces']
-    env['CM_GET_DEPENDENT_CACHED_PATH'] = os.getcwd()
+    env['MLC_GET_DEPENDENT_CACHED_PATH'] = os.getcwd()
 
     return {'return': 0}

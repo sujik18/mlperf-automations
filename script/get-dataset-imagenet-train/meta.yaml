@@ -7,36 +7,36 @@ deps: []
 input_description: {}
 input_mapping:
   input: IMAGENET_TRAIN_PATH
-  torrent: CM_DATASET_IMAGENET_TRAIN_TORRENT_PATH
+  torrent: MLC_DATASET_IMAGENET_TRAIN_TORRENT_PATH
 new_env_keys:
-- CM_DATASET_PATH
-- CM_DATASET_IMAGENET_*
+- MLC_DATASET_PATH
+- MLC_DATASET_IMAGENET_*
 new_state_keys: []
 post_deps: []
 posthook_deps: []
 prehook_deps:
 - enable_if_env:
-    CM_DATASET_IMAGENET_VAL_REQUIRE_DAE:
+    MLC_DATASET_IMAGENET_VAL_REQUIRE_DAE:
     - 'yes'
     - 'True'
   env:
-    CM_EXTRACT_TO_FOLDER: imagenet-2012-train
+    MLC_EXTRACT_TO_FOLDER: imagenet-2012-train
   tags: download-and-extract,file,_extract
   update_tags_from_env:
-  - CM_DAE_EXTRA_TAGS
+  - MLC_DAE_EXTRA_TAGS
   update_tags_from_env_with_prefix:
     _url.:
-    - CM_DAE_URL
+    - MLC_DAE_URL
 - enable_if_env:
-    CM_DAE_ONLY_EXTRACT:
+    MLC_DAE_ONLY_EXTRACT:
     - 'yes'
     - 'True'
   env:
-    CM_EXTRACT_TO_FOLDER: imagenet-2012-train
+    MLC_EXTRACT_TO_FOLDER: imagenet-2012-train
   tags: file,extract
   update_tags_from_env_with_prefix:
     _path.:
-    - CM_EXTRACT_PATH
+    - MLC_EXTRACT_PATH
 tags:
 - get
 - imagenet

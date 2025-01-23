@@ -8,10 +8,10 @@ docker:
   run: false
 input_description: {}
 input_mapping:
-  results_dir: CM_MLPERF_INFERENCE_RESULTS_DIR
+  results_dir: MLC_MLPERF_INFERENCE_RESULTS_DIR
 new_env_keys:
-- CM_MLPERF_INFERENCE_RESULTS_DIR
-- CM_MLPERF_INFERENCE_RESULTS_VERSION
+- MLC_MLPERF_INFERENCE_RESULTS_DIR
+- MLC_MLPERF_INFERENCE_RESULTS_VERSION
 new_state_keys: []
 post_deps: []
 posthook_deps: []
@@ -27,18 +27,18 @@ tags:
 uid: 84f3c5aad5e1444b
 variations:
   path.#:
-    CM_MLPERF_INFERENCE_RESULTS_DIR: '#'
+    MLC_MLPERF_INFERENCE_RESULTS_DIR: '#'
   version.#:
     env:
-      CM_MLPERF_INFERENCE_RESULTS_VERSION: '#'
+      MLC_MLPERF_INFERENCE_RESULTS_VERSION: '#'
     group: version
   version.4_1:
     env:
-      CM_MLPERF_INFERENCE_RESULTS_VERSION: '4_1'
+      MLC_MLPERF_INFERENCE_RESULTS_VERSION: '4_1'
     group: version
   version.4_1-dev:
     default: true
     env:
-      CM_MLPERF_INFERENCE_RESULTS_VERSION: 4_1-dev
+      MLC_MLPERF_INFERENCE_RESULTS_VERSION: 4_1-dev
     group: version
 versions: {}

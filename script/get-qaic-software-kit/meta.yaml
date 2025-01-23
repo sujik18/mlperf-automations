@@ -10,9 +10,9 @@ deps:
   tags: get,git,repo
   update_tags_from_env_with_prefix:
     _branch.:
-    - CM_GIT_CHECKOUT
+    - MLC_GIT_CHECKOUT
     _repo.:
-    - CM_GIT_URL
+    - MLC_GIT_URL
 - tags: get,generic,sys-util,_libudev-dev
 - tags: get,generic,sys-util,_libpci-dev
 - tags: get,google,test
@@ -27,8 +27,8 @@ input_description: {}
 input_mapping: {}
 new_env_keys:
 - +PATH
-- CM_QAIC_SOFTWARE_KIT_PATH
-- CM_QAIC_RUNNER_PATH
+- MLC_QAIC_SOFTWARE_KIT_PATH
+- MLC_QAIC_RUNNER_PATH
 new_state_keys: []
 post_deps: []
 posthook_deps: []
@@ -43,14 +43,14 @@ uid: 3344655922694bbb
 variations:
   branch.#:
     env:
-      CM_GIT_CHECKOUT: '#'
+      MLC_GIT_CHECKOUT: '#'
   repo.#:
     env:
-      CM_GIT_URL: '#'
+      MLC_GIT_URL: '#'
     group: repo-source
   repo.quic:
     default: true
     env:
-      CM_GIT_URL: https://github.com/quic/software-kit-for-qualcomm-cloud-ai-100
+      MLC_GIT_URL: https://github.com/quic/software-kit-for-qualcomm-cloud-ai-100
     group: repo-source
 versions: {}

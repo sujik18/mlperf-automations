@@ -9,9 +9,9 @@ deps:
 - tags: detect,cpu
 - tags: get,tool,go
 env:
-  CM_GIT_URL: https://github.com/hashicorp/terraform.git
+  MLC_GIT_URL: https://github.com/hashicorp/terraform.git
 new_env_keys:
-- CM_TERRAFORM_*
+- MLC_TERRAFORM_*
 - +PATH
 tags:
 - install
@@ -21,4 +21,4 @@ uid: d79d47a074f34428
 versions:
   main:
     env:
-      CM_GIT_CHECKOUT: main
+      MLC_GIT_CHECKOUT: main

@@ -35,7 +35,7 @@ zoo_stub_list=( \
 )
 
 rerun=""
-power=" --power=yes --adr.mlperf-power-client.power_server=192.168.0.15 --env.CM_MLPERF_SKIP_POWER_CHECKS=yes"
+power=" --power=yes --adr.mlperf-power-client.power_server=192.168.0.15 --env.MLC_MLPERF_SKIP_POWER_CHECKS=yes"
 power=" --power=yes --adr.mlperf-power-client.power_server=192.168.0.15"
 power=""
 max_batchsize=1
@@ -55,7 +55,7 @@ cmd="cm run script --tags=run,mlperf,inference,generate-run-cmds,_find-performan
    --scenario=Offline \
    --test_query_count=15000 \
    --adr.mlperf-inference-implementation.max_batchsize=$max_batchsize \
-   --env.CM_MLPERF_NEURALMAGIC_MODEL_ZOO_STUB=$stub \
+   --env.MLC_MLPERF_NEURALMAGIC_MODEL_ZOO_STUB=$stub \
    ${rerun} \
    --quiet"
   echo ${cmd}
@@ -76,7 +76,7 @@ for stub in ${zoo_stub_list[@]}; do
    --execution_mode=valid \
    --adr.mlperf-inference-implementation.max_batchsize=$max_batchsize \
    ${power} \
-   --env.CM_MLPERF_NEURALMAGIC_MODEL_ZOO_STUB=$stub \
+   --env.MLC_MLPERF_NEURALMAGIC_MODEL_ZOO_STUB=$stub \
    --quiet"
   echo ${cmd}
   eval ${cmd}

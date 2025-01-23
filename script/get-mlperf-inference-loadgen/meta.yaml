@@ -9,7 +9,7 @@ cache: true
 category: MLPerf benchmark support
 
 default_env:
-  CM_SHARED_BUILD: 'no'
+  MLC_SHARED_BUILD: 'no'
 
 default_version: master
 
@@ -20,16 +20,16 @@ deps:
   - python
   tags: get,python3
 - force_env_keys:
-  - CM_GIT_URL
-  - CM_GIT_CHECKOUT
+  - MLC_GIT_URL
+  - MLC_GIT_CHECKOUT
   names:
   - inference-src-loadgen
   skip_if_env:
-    CM_MLPERF_INFERENCE_LOADGEN_DOWNLOAD:
+    MLC_MLPERF_INFERENCE_LOADGEN_DOWNLOAD:
     - 'YES'
   tags: get,mlcommons,inference,src
 - enable_if_env:
-    CM_MLPERF_INFERENCE_LOADGEN_DOWNLOAD:
+    MLC_MLPERF_INFERENCE_LOADGEN_DOWNLOAD:
     - 'YES'
   force_cache: true
   names:
@@ -37,20 +37,20 @@ deps:
   tags: download-and-extract,file,_wget,_extract
   update_tags_from_env_with_prefix:
     _url.:
-    - CM_MLPERF_INFERENCE_LOADGEN_DOWNLOAD_URL
+    - MLC_MLPERF_INFERENCE_LOADGEN_DOWNLOAD_URL
 - names:
   - compiler
   skip_if_any_env:
-    CM_HOST_OS_TYPE:
+    MLC_HOST_OS_TYPE:
     - windows
-    CM_TMP_MLPERF_INFERENCE_LOADGEN_INSTALL_FROM_PIP:
+    MLC_TMP_MLPERF_INFERENCE_LOADGEN_INSTALL_FROM_PIP:
     - 'yes'
   tags: get,compiler
 - enable_if_env:
-    CM_HOST_OS_TYPE:
+    MLC_HOST_OS_TYPE:
     - windows
   skip_if_env:
-    CM_TMP_MLPERF_INFERENCE_LOADGEN_INSTALL_FROM_PIP:
+    MLC_TMP_MLPERF_INFERENCE_LOADGEN_INSTALL_FROM_PIP:
     - 'yes'
   names:
   - compiler
@@ -77,9 +77,9 @@ deps:
   tags: get,generic-python-lib,_package.setuptools
 
 extra_cache_tags_from_env:
-- env: CM_PYTHON_CACHE_TAGS
+- env: MLC_PYTHON_CACHE_TAGS
   prefix: python-
-- env: CM_COMPILER_CACHE_TAGS
+- env: MLC_COMPILER_CACHE_TAGS
   prefix: compiler-
 
 new_env_keys:
@@ -88,7 +88,7 @@ new_env_keys:
 - +CPLUS_INCLUDE_PATH
 - +LD_LIBRARY_PATH
 - +DYLD_FALLBACK_LIBRARY_PATH
-- CM_MLPERF_INFERENCE_LOADGEN_*
+- MLC_MLPERF_INFERENCE_LOADGEN_*
 
 tags:
 - get
@@ -101,14 +101,14 @@ tags:
 variations:
   from-pip:
     env:
-      CM_TMP_MLPERF_INFERENCE_LOADGEN_INSTALL_FROM_PIP: 'yes'
+      MLC_TMP_MLPERF_INFERENCE_LOADGEN_INSTALL_FROM_PIP: 'yes'
     deps:
     - tags: get,generic-python-lib,_package.mlcommons-loadgen
   copy:
     add_deps:
       inference-src-loadgen:
         env:
-           CM_GIT_URL: https://github.com/cknowledge/mlperf-inference-loadgen-copy
+           MLC_GIT_URL: https://github.com/cknowledge/mlperf-inference-loadgen-copy
     # You still need to add --version=main since it's forced here to 
   custom-python:
     ad:
@@ -116,40 +116,40 @@ variations:
         tags: _custom-python
       python3:
         skip_if_env:
-          CM_TMP_USE_CUSTOM_PYTHON:
+          MLC_TMP_USE_CUSTOM_PYTHON:
           - 'on'
     env:
-      CM_TMP_USE_CUSTOM_PYTHON: 'on'
+      MLC_TMP_USE_CUSTOM_PYTHON: 'on'
   keep-build:
     group: clean-build
     env:
-      CM_MLPERF_INFERENCE_LOADGEN_BUILD_CLEAN: 'no'
+      MLC_MLPERF_INFERENCE_LOADGEN_BUILD_CLEAN: 'no'
   clean-build:
     group: clean-build
     default: true
     env:
-      CM_MLPERF_INFERENCE_LOADGEN_BUILD_CLEAN: 'yes'
+      MLC_MLPERF_INFERENCE_LOADGEN_BUILD_CLEAN: 'yes'
   download:
     env:
-      CM_DOWNLOAD_CHECKSUM: af3f9525965b2c1acc348fb882a5bfd1
-      CM_MLPERF_INFERENCE_LOADGEN_DOWNLOAD: 'YES'
-      CM_MLPERF_INFERENCE_LOADGEN_DOWNLOAD_URL: https://www.dropbox.com/scl/fi/36dgoiur26i2tvwgsaatf/loadgen.zip?rlkey=ab68i7uza9anvaw0hk1xvf0qk&dl=0
-      CM_MLPERF_INFERENCE_LOADGEN_VERSION: v3.1
-      CM_VERIFY_SSL: false
+      MLC_DOWNLOAD_CHECKSUM: af3f9525965b2c1acc348fb882a5bfd1
+      MLC_MLPERF_INFERENCE_LOADGEN_DOWNLOAD: 'YES'
+      MLC_MLPERF_INFERENCE_LOADGEN_DOWNLOAD_URL: https://www.dropbox.com/scl/fi/36dgoiur26i2tvwgsaatf/loadgen.zip?rlkey=ab68i7uza9anvaw0hk1xvf0qk&dl=0
+      MLC_MLPERF_INFERENCE_LOADGEN_VERSION: v3.1
+      MLC_VERIFY_SSL: false
   download_v3.1:
     env:
-      CM_DOWNLOAD_CHECKSUM: af3f9525965b2c1acc348fb882a5bfd1
-      CM_MLPERF_INFERENCE_LOADGEN_DOWNLOAD: 'YES'
-      CM_MLPERF_INFERENCE_LOADGEN_DOWNLOAD_URL: https://www.dropbox.com/scl/fi/36dgoiur26i2tvwgsaatf/loadgen.zip?rlkey=ab68i7uza9anvaw0hk1xvf0qk&dl=0
-      CM_MLPERF_INFERENCE_LOADGEN_VERSION: v3.1
-      CM_VERIFY_SSL: false
+      MLC_DOWNLOAD_CHECKSUM: af3f9525965b2c1acc348fb882a5bfd1
+      MLC_MLPERF_INFERENCE_LOADGEN_DOWNLOAD: 'YES'
+      MLC_MLPERF_INFERENCE_LOADGEN_DOWNLOAD_URL: https://www.dropbox.com/scl/fi/36dgoiur26i2tvwgsaatf/loadgen.zip?rlkey=ab68i7uza9anvaw0hk1xvf0qk&dl=0
+      MLC_MLPERF_INFERENCE_LOADGEN_VERSION: v3.1
+      MLC_VERIFY_SSL: false
   download_v4.0:
     env:
-      CM_DOWNLOAD_CHECKSUM: b4d97525d9ad0539a64667f2a3ca20c5
-      CM_MLPERF_INFERENCE_LOADGEN_DOWNLOAD: 'YES'
-      CM_MLPERF_INFERENCE_LOADGEN_DOWNLOAD_URL: https://www.dropbox.com/scl/fi/gk5e9kziju5t56umxyzyx/loadgen.zip?rlkey=vsie4xnzml1inpjplm5cg7t54&dl=0
-      CM_MLPERF_INFERENCE_LOADGEN_VERSION: v4.0
-      CM_VERIFY_SSL: false
+      MLC_DOWNLOAD_CHECKSUM: b4d97525d9ad0539a64667f2a3ca20c5
+      MLC_MLPERF_INFERENCE_LOADGEN_DOWNLOAD: 'YES'
+      MLC_MLPERF_INFERENCE_LOADGEN_DOWNLOAD_URL: https://www.dropbox.com/scl/fi/gk5e9kziju5t56umxyzyx/loadgen.zip?rlkey=vsie4xnzml1inpjplm5cg7t54&dl=0
+      MLC_MLPERF_INFERENCE_LOADGEN_VERSION: v4.0
+      MLC_VERIFY_SSL: false
   no-compilation-warnings:
     env:
       '+ CXXFLAGS':
@@ -190,4 +190,4 @@ versions:
         version: r3.1
 
 print_env_at_the_end:
-  CM_MLPERF_INFERENCE_LOADGEN_INSTALL_PATH: "Path to the tool"
+  MLC_MLPERF_INFERENCE_LOADGEN_INSTALL_PATH: "Path to the tool"

@@ -13,7 +13,7 @@ jobs:
   mlperf-inference-r50:
     runs-on: ${{ matrix.os }}
     env:
-      CM_INDEX: "on"
+      MLC_INDEX: "on"
     strategy:
       fail-fast: false
       matrix:
@@ -74,4 +74,4 @@ jobs:
         git commit -a -m "Test commit"
         git push https://x-access-token:${{ env.PAT }}@github.com/mlcommons/mlperf_inference_test_submissions_v5.0
 
-        # mlcr --tags=push,github,mlperf,inference,submission --env.CM_GITHUB_PAT=pat --repo_url=https://github.com/mlcommons/mlperf_inference_test_submissions_v5.0 --repo_branch=auto-update --commit_message="Results from R50 GH action on ${{ matrix.os }}" --quiet
+        # mlcr --tags=push,github,mlperf,inference,submission --env.MLC_GITHUB_PAT=pat --repo_url=https://github.com/mlcommons/mlperf_inference_test_submissions_v5.0 --repo_branch=auto-update --commit_message="Results from R50 GH action on ${{ matrix.os }}" --quiet

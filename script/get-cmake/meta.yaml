@@ -6,19 +6,19 @@ category: Detection or installation of tools and artifacts
 deps:
 - tags: detect,cpu
 env:
-  CM_REQUIRE_INSTALL: 'no'
+  MLC_REQUIRE_INSTALL: 'no'
 new_env_keys:
-- CM_CMAKE_*
-- CM_MAKE_CORES
+- MLC_CMAKE_*
+- MLC_MAKE_CORES
 - +PATH
 prehook_deps:
 - enable_if_env:
-    CM_REQUIRE_INSTALL:
+    MLC_REQUIRE_INSTALL:
     - 'yes'
   reuse_version: true
   tags: install,cmake,prebuilt
 print_env_at_the_end:
-  CM_CMAKE_BIN_WITH_PATH: Path to the tool
+  MLC_CMAKE_BIN_WITH_PATH: Path to the tool
 tags:
 - get
 - cmake

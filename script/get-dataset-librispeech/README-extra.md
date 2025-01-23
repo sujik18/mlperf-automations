@@ -16,10 +16,10 @@ where [VERSION] is one of
 * `train-other-500`
 
 ## Exported Variables
-* `CM_DATASET_ARCHIVE:`
-* `CM_DATASET_LIBRISPEECH_PATH:`
-* `CM_DATASET_MD5:`
-* `CM_DATASET_NAME:`
+* `MLC_DATASET_ARCHIVE:`
+* `MLC_DATASET_LIBRISPEECH_PATH:`
+* `MLC_DATASET_MD5:`
+* `MLC_DATASET_NAME:`
 
 ## Supported and Tested OS
 1. Ubuntu 18.04, 20.04, 22.04

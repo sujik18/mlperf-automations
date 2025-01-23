@@ -7,16 +7,16 @@ default_version: '23.11'
 deps:
 - tags: detect,os
 env:
-  CM_GIT_URL: https://github.com/ARM-software/armnn
+  MLC_GIT_URL: https://github.com/ARM-software/armnn
 new_env_keys:
-- CM_LIB_ARMNN_VERSION
-- CM_LIB_DNNL_*
+- MLC_LIB_ARMNN_VERSION
+- MLC_LIB_DNNL_*
 - +C_INCLUDE_PATH
 - +CPLUS_INCLUDE_PATH
 - +LD_LIBRARY_PATH
 prehook_deps:
 - force_env_keys:
-  - CM_GIT_*
+  - MLC_GIT_*
   tags: get,git,repo,_repo.https://github.com/ARM-software/armnn
 tags:
 - get
@@ -27,13 +27,13 @@ uid: 9603a2e90fd44587
 versions:
   '22.11':
     env:
-      CM_LIB_ARMNN_VERSION: v22.11
-      CM_TMP_GIT_BRANCH_NAME: branches/armnn_22_11
+      MLC_LIB_ARMNN_VERSION: v22.11
+      MLC_TMP_GIT_BRANCH_NAME: branches/armnn_22_11
   '23.05':
     env:
-      CM_LIB_ARMNN_VERSION: v23.05
-      CM_TMP_GIT_BRANCH_NAME: branches/armnn_23_05
+      MLC_LIB_ARMNN_VERSION: v23.05
+      MLC_TMP_GIT_BRANCH_NAME: branches/armnn_23_05
   '23.11':
     env:
-      CM_LIB_ARMNN_VERSION: v23.11
-      CM_TMP_GIT_BRANCH_NAME: branches/armnn_23_11
+      MLC_LIB_ARMNN_VERSION: v23.11
+      MLC_TMP_GIT_BRANCH_NAME: branches/armnn_23_11

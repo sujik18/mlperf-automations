@@ -26,17 +26,17 @@ variations:
   cpu:
     default: 'true'
     env:
-      CM_SET_PERFORMANCE_MODE_OF: cpu
+      MLC_SET_PERFORMANCE_MODE_OF: cpu
     group: device
   performance:
     default: true
     env:
-      CM_SET_PERFORMANCE_MODE: performance
+      MLC_SET_PERFORMANCE_MODE: performance
     group: performance-mode
   power:
     env:
-      CM_SET_PERFORMANCE_MODE: power
+      MLC_SET_PERFORMANCE_MODE: power
     group: power
   reproducibility:
     env:
-      CM_SET_OS_PERFORMANCE_REPRODUCIBILITY_MODE: 'yes'
+      MLC_SET_OS_PERFORMANCE_REPRODUCIBILITY_MODE: 'yes'

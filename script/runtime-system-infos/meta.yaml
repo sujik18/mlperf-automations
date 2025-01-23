@@ -17,8 +17,8 @@ tags:
   - infos
 
 input_mapping:
-  log_dir: CM_LOGS_DIR
-  interval: CM_SYSTEM_INFO_MEASUREMENT_INTERVAL
+  log_dir: MLC_LOGS_DIR
+  interval: MLC_SYSTEM_INFO_MEASUREMENT_INTERVAL
 
 
 # Dependencies on other CM scripts

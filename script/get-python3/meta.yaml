@@ -5,10 +5,10 @@ cache: true
 category: Python automation
 clean_files: []
 extra_cache_tags_from_env:
-- env: CM_PYTHON_INSTALL_CACHE_TAGS
+- env: MLC_PYTHON_INSTALL_CACHE_TAGS
   prefix: python-
 new_env_keys:
-- CM_PYTHON_*
+- MLC_PYTHON_*
 - +LD_LIBRARY_PATH
 - +C_INCLUDE_PATH
 - +PATH
@@ -16,14 +16,14 @@ new_state_keys:
 - script_prefix
 prehook_deps:
 - enable_if_env:
-    CM_REQUIRE_INSTALL:
+    MLC_REQUIRE_INSTALL:
     - 'yes'
   inherit_variation_tags: true
   reuse_version: true
   tags: install,python,src
 print_env_at_the_end:
-  CM_PYTHON_BIN_WITH_PATH: Path to Python
-  CM_PYTHON_VERSION: Python version
+  MLC_PYTHON_BIN_WITH_PATH: Path to Python
+  MLC_PYTHON_VERSION: Python version
 tags:
 - get
 - python
@@ -42,11 +42,11 @@ variations:
       - conda-python
       tags: get,generic,conda-package,_name.#,_package.python
     env:
-      CM_PYTHON_CONDA: 'yes'
-      CM_PYTHON_INSTALL_CACHE_TAGS: _conda.#
+      MLC_PYTHON_CONDA: 'yes'
+      MLC_PYTHON_INSTALL_CACHE_TAGS: _conda.#
   custom-path.#:
     env:
-      CM_PYTHON_BIN_WITH_PATH: '#'
+      MLC_PYTHON_BIN_WITH_PATH: '#'
   lto: {}
   optimized: {}
   shared: {}

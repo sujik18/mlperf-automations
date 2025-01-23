@@ -56,7 +56,7 @@ The first run of this CM script takes around 25 minutes on a GCP instance with 1
 CM will automatically detect, install and cache all the necessary ML components 
 while adapting them to your system using [portable CM scripts](https://github.com/mlcommons/cm4mlops/tree/main/script).
 
-These dependencies are described using [this simple YAML file](https://github.com/octoml/ck/blob/master/cm-mlops/script/app-mlperf-inference-reference/_cm.yaml#L57)
+These dependencies are described using [this simple YAML file](https://github.com/octoml/ck/blob/master/mlc-mlops/script/app-mlperf-inference-reference/_cm.yaml#L57)
 and can be turned on or off using different environment variables passed to this CM script using `--env.KEY=VALUE`.
 
 You should see the following output in the end:

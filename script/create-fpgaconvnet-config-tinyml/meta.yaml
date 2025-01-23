@@ -12,7 +12,7 @@ deps:
 input_description: {}
 input_mapping: {}
 new_env_keys:
-- CM_TINY_FPGACONVNET*
+- MLC_TINY_FPGACONVNET*
 new_state_keys: []
 post_deps: []
 posthook_deps: []
@@ -32,9 +32,9 @@ variations:
   zc706:
     default: true
     env:
-      CM_TINY_BOARD: zc706
+      MLC_TINY_BOARD: zc706
     group: board
   zc706,ic:
     env:
-      CM_TINY_NETWORK_NAME: zc706-resnet
+      MLC_TINY_NETWORK_NAME: zc706-resnet
 versions: {}

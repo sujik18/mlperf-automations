@@ -5,7 +5,7 @@ cache: true
 category: AI/ML frameworks
 clean_files: []
 default_env:
-  CM_GIT_DEPTH: '1'
+  MLC_GIT_DEPTH: '1'
 default_version: master
 deps:
 - tags: detect,cpu
@@ -14,9 +14,9 @@ deps:
   tags: get,compiler
 - tags: get,cmake
 env:
-  CM_GIT_URL: https://github.com/tensorflow/tensorflow
+  MLC_GIT_URL: https://github.com/tensorflow/tensorflow
 extra_cache_tags_from_env:
-- env: CM_PYTHON_CACHE_TAGS
+- env: MLC_PYTHON_CACHE_TAGS
   prefix: python-
 new_env_keys:
 - +C_INCLUDE_PATH
@@ -37,4 +37,4 @@ versions:
         tags: gcc
         version_min: 10.0.0
     env:
-      CM_GIT_CHECKOUT: master
+      MLC_GIT_CHECKOUT: master

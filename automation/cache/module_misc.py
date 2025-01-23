@@ -86,7 +86,7 @@ def copy_to_remote(i):
         new_env = cm_cached_state['new_env']
         new_state = cm_cached_state['new_state']  # Todo fix new state
         cm_repos_path = os.environ.get(
-    'CM_REPOS', os.path.join(
+    'MLC_REPOS', os.path.join(
         os.path.expanduser("~"), "CM", "repos"))
         cm_cache_path = os.path.realpath(
             os.path.join(cm_repos_path, "local", "cache"))

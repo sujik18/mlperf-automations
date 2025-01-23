@@ -5,7 +5,7 @@ cache: false
 category: MLPerf benchmark support
 clean_files: []
 default_env:
-  CM_MLPERF_SHORT_RUN: 'no'
+  MLC_MLPERF_SHORT_RUN: 'no'
 default_version: master
 deps:
 - names:
@@ -27,53 +27,53 @@ deps:
 - names:
   - get-mlperf-submission-dir
   skip_if_env:
-    CM_MLPERF_INFERENCE_SUBMISSION_DIR:
+    MLC_MLPERF_INFERENCE_SUBMISSION_DIR:
     - 'on'
   tags: get,mlperf,submission,dir
 - enable_if_env:
-    CM_TMP_MLPERF_INFERENCE_PREPROCESS_SUBMISSION:
+    MLC_TMP_MLPERF_INFERENCE_PREPROCESS_SUBMISSION:
     - 'on'
   tags: preprocess,mlperf,inference,submission
 input_mapping:
-  extra_args: CM_MLPERF_SUBMISSION_CHECKER_EXTRA_ARGS
-  extra_checker_args: CM_MLPERF_SUBMISSION_CHECKER_EXTRA_ARGS
-  extra_model_benchmark_map: CM_MLPERF_EXTRA_MODEL_MAPPING
-  input: CM_MLPERF_INFERENCE_SUBMISSION_DIR
-  power: CM_MLPERF_POWER
-  preprocess: CM_TMP_MLPERF_INFERENCE_PREPROCESS_SUBMISSION
-  preprocess_submission: CM_TMP_MLPERF_INFERENCE_PREPROCESS_SUBMISSION
-  push_to_github: CM_MLPERF_RESULT_PUSH_TO_GITHUB
-  repo_branch: CM_MLPERF_RESULTS_GIT_REPO_BRANCH
-  repo_name: CM_MLPERF_RESULTS_GIT_REPO_NAME
-  repo_owner: CM_MLPERF_RESULTS_GIT_REPO_OWNER
-  skip_compliance: CM_MLPERF_SKIP_COMPLIANCE
-  skip_power_check: CM_MLPERF_SKIP_POWER_CHECK
-  src_version: CM_MLPERF_SUBMISSION_CHECKER_VERSION
-  submission_dir: CM_MLPERF_INFERENCE_SUBMISSION_DIR
-  submitter: CM_MLPERF_SUBMITTER
-  submitter_id: CM_MLPERF_SUBMITTER_ID
-  tar: CM_TAR_SUBMISSION_DIR
+  extra_args: MLC_MLPERF_SUBMISSION_CHECKER_EXTRA_ARGS
+  extra_checker_args: MLC_MLPERF_SUBMISSION_CHECKER_EXTRA_ARGS
+  extra_model_benchmark_map: MLC_MLPERF_EXTRA_MODEL_MAPPING
+  input: MLC_MLPERF_INFERENCE_SUBMISSION_DIR
+  power: MLC_MLPERF_POWER
+  preprocess: MLC_TMP_MLPERF_INFERENCE_PREPROCESS_SUBMISSION
+  preprocess_submission: MLC_TMP_MLPERF_INFERENCE_PREPROCESS_SUBMISSION
+  push_to_github: MLC_MLPERF_RESULT_PUSH_TO_GITHUB
+  repo_branch: MLC_MLPERF_RESULTS_GIT_REPO_BRANCH
+  repo_name: MLC_MLPERF_RESULTS_GIT_REPO_NAME
+  repo_owner: MLC_MLPERF_RESULTS_GIT_REPO_OWNER
+  skip_compliance: MLC_MLPERF_SKIP_COMPLIANCE
+  skip_power_check: MLC_MLPERF_SKIP_POWER_CHECK
+  src_version: MLC_MLPERF_SUBMISSION_CHECKER_VERSION
+  submission_dir: MLC_MLPERF_INFERENCE_SUBMISSION_DIR
+  submitter: MLC_MLPERF_SUBMITTER
+  submitter_id: MLC_MLPERF_SUBMITTER_ID
+  tar: MLC_TAR_SUBMISSION_DIR
 post_deps:
 - enable_if_env:
-    CM_MLPERF_DASHBOARD:
+    MLC_MLPERF_DASHBOARD:
     - 'on'
   tags: publish-results,dashboard
 - enable_if_env:
-    CM_MLPERF_RESULT_PUSH_TO_GITHUB:
+    MLC_MLPERF_RESULT_PUSH_TO_GITHUB:
     - 'on'
   names:
   - push-to-github
   tags: publish-results,github
 - enable_if_env:
-    CM_TAR_SUBMISSION_DIR:
+    MLC_TAR_SUBMISSION_DIR:
     - 'yes'
   tags: run,tar
 - enable_if_env:
-    CM_SUBMITTER_ID:
+    MLC_SUBMITTER_ID:
     - 'yes'
   tags: submit,mlperf,results,_inference
   env:
-    CM_MLPERF_SUBMISSION_FILE: <<<MLPERF_INFERENCE_SUBMISSION_TAR_FILE>>>
+    MLC_MLPERF_SUBMISSION_FILE: <<<MLPERF_INFERENCE_SUBMISSION_TAR_FILE>>>
 tags:
 - run
 - mlc
@@ -89,7 +89,7 @@ uid: 15d03ec2c1af4297
 variations:
   short-run:
     env:
-      CM_MLPERF_SHORT_RUN: 'yes'
+      MLC_MLPERF_SHORT_RUN: 'yes'
 versions:
   master:
     adr:

@@ -20,4 +20,4 @@ uid: 10bb562c29ea459e
 versions:
   2.2.2:
     env:
-      CM_VERSION: 2.2.2
+      MLC_VERSION: 2.2.2

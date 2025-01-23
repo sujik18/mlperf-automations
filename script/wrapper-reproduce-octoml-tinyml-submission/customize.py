@@ -9,7 +9,7 @@ def preprocess(i):
     env = i['env']
     state = i['state']
     inp = i['input']
-    if 'CM_FLASH_BOARD' in env:
+    if 'MLC_FLASH_BOARD' in env:
         script_tags = "flash,tiny"
     else:
         script_tags = "reproduce,tiny,mlperf,octoml"
@@ -25,7 +25,7 @@ def preprocess(i):
             for model in microtvm_variants[microtvm_variant]:
                 variation_tags_string = "_" + board + ",_" + microtvm_variant + ",_" + model
                 tags = script_tags + "," + variation_tags_string
-                if 'CM_RECREATE_BINARY' in env:
+                if 'MLC_RECREATE_BINARY' in env:
                     r = mlc.access(
                         {'action': 'rm', 'automation': 'cache', 'tags': tags, 'force': 'true'})
                     if r['return'] > 0:

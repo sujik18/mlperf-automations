@@ -24,59 +24,59 @@ tags:
 
 # Default environment
 default_env:
-  CM_BATCH_COUNT: '1'
-  CM_BATCH_SIZE: '1'
-  CM_FAST_COMPILATION: 'yes'
-  CM_MLPERF_LOADGEN_SCENARIO: Offline
-  CM_MLPERF_LOADGEN_MODE: performance
-  CM_SKIP_PREPROCESS_DATASET: 'no'
-  CM_SKIP_MODEL_DOWNLOAD: 'no'
-  CM_MLPERF_SUT_NAME_IMPLEMENTATION_PREFIX: kilt
-  CM_MLPERF_SKIP_RUN: 'no'
-  CM_KILT_REPO_URL: https://github.com/GATEOverflow/kilt-mlperf
-  CM_QAIC_DEVICES: "0"
+  MLC_BATCH_COUNT: '1'
+  MLC_BATCH_SIZE: '1'
+  MLC_FAST_COMPILATION: 'yes'
+  MLC_MLPERF_LOADGEN_SCENARIO: Offline
+  MLC_MLPERF_LOADGEN_MODE: performance
+  MLC_SKIP_PREPROCESS_DATASET: 'no'
+  MLC_SKIP_MODEL_DOWNLOAD: 'no'
+  MLC_MLPERF_SUT_NAME_IMPLEMENTATION_PREFIX: kilt
+  MLC_MLPERF_SKIP_RUN: 'no'
+  MLC_KILT_REPO_URL: https://github.com/GATEOverflow/kilt-mlperf
+  MLC_QAIC_DEVICES: "0"
   kilt_max_wait_abs: 10000
   verbosity: 0
   loadgen_trigger_cold_run: 0
 
 env:
-  CM_CALL_MLPERF_RUNNER: 'no'
+  MLC_CALL_MLPERF_RUNNER: 'no'
 
 # Map script inputs to environment variables
 input_mapping:
-  count: CM_MLPERF_LOADGEN_QUERY_COUNT
-  max_batchsize: CM_MLPERF_LOADGEN_MAX_BATCHSIZE
-  mlperf_conf: CM_MLPERF_CONF
-  mode: CM_MLPERF_LOADGEN_MODE
-  output_dir: CM_MLPERF_OUTPUT_DIR
-  performance_sample_count: CM_MLPERF_LOADGEN_PERFORMANCE_SAMPLE_COUNT
-  scenario: CM_MLPERF_LOADGEN_SCENARIO
-  user_conf: CM_MLPERF_USER_CONF
-  devices: CM_QAIC_DEVICES
-  skip_preprocess: CM_SKIP_PREPROCESS_DATASET
-  skip_preprocessing: CM_SKIP_PREPROCESS_DATASET
-  target_qps: CM_MLPERF_LOADGEN_TARGET_QPS
-  offline_target_qps: CM_MLPERF_LOADGEN_OFFLINE_TARGET_QPS
-  server_target_qps: CM_MLPERF_LOADGEN_SERVER_TARGET_QPS
-  target_latency: CM_MLPERF_LOADGEN_TARGET_LATENCY
-  singlestream_target_latency: CM_MLPERF_LOADGEN_SINGLESTREAM_TARGET_LATENCY
-  multistream_target_latency: CM_MLPERF_LOADGEN_MULTISTREAM_TARGET_LATENCY
-  performance_sample_count: CM_MLPERF_LOADGEN_PERFORMANCE_SAMPLE_COUNT
-  rerun: CM_RERUN
+  count: MLC_MLPERF_LOADGEN_QUERY_COUNT
+  max_batchsize: MLC_MLPERF_LOADGEN_MAX_BATCHSIZE
+  mlperf_conf: MLC_MLPERF_CONF
+  mode: MLC_MLPERF_LOADGEN_MODE
+  output_dir: MLC_MLPERF_OUTPUT_DIR
+  performance_sample_count: MLC_MLPERF_LOADGEN_PERFORMANCE_SAMPLE_COUNT
+  scenario: MLC_MLPERF_LOADGEN_SCENARIO
+  user_conf: MLC_MLPERF_USER_CONF
+  devices: MLC_QAIC_DEVICES
+  skip_preprocess: MLC_SKIP_PREPROCESS_DATASET
+  skip_preprocessing: MLC_SKIP_PREPROCESS_DATASET
+  target_qps: MLC_MLPERF_LOADGEN_TARGET_QPS
+  offline_target_qps: MLC_MLPERF_LOADGEN_OFFLINE_TARGET_QPS
+  server_target_qps: MLC_MLPERF_LOADGEN_SERVER_TARGET_QPS
+  target_latency: MLC_MLPERF_LOADGEN_TARGET_LATENCY
+  singlestream_target_latency: MLC_MLPERF_LOADGEN_SINGLESTREAM_TARGET_LATENCY
+  multistream_target_latency: MLC_MLPERF_LOADGEN_MULTISTREAM_TARGET_LATENCY
+  performance_sample_count: MLC_MLPERF_LOADGEN_PERFORMANCE_SAMPLE_COUNT
+  rerun: MLC_RERUN
 
 new_state_keys:
   - mlperf-inference-implementation
-  - CM_SUT_*
+  - MLC_SUT_*
 
 # Env keys which are exposed to higher level scripts
 new_env_keys:
-  - CM_MLPERF_*
-  - CM_DATASET_*
-  - CM_HW_NAME
-  - CM_ML_MODEL_*
-  - CM_MAX_EXAMPLES
-  - CM_IMAGENET_ACCURACY_DTYPE
-  - CM_SQUAD_ACCURACY_DTYPE
+  - MLC_MLPERF_*
+  - MLC_DATASET_*
+  - MLC_HW_NAME
+  - MLC_ML_MODEL_*
+  - MLC_MAX_EXAMPLES
+  - MLC_IMAGENET_ACCURACY_DTYPE
+  - MLC_SQUAD_ACCURACY_DTYPE
 
 
 # Dependencies on other CM scripts
@@ -97,10 +97,10 @@ deps:
     - kilt-repo
     update_tags_from_env_with_prefix:
       _repo.:
-        - CM_KILT_REPO_URL
+        - MLC_KILT_REPO_URL
     extra_cache_tags: kilt,kilt-repo
     env:
-      CM_GIT_CHECKOUT_PATH_ENV_NAME: CM_KILT_CHECKOUT_PATH
+      MLC_GIT_CHECKOUT_PATH_ENV_NAME: MLC_KILT_CHECKOUT_PATH
 
   ########################################################################
   # Install MLPerf inference dependencies
@@ -129,10 +129,10 @@ deps:
   # Install ResNet50 model (ONNX) and ImageNet
  
   - enable_if_env:
-      CM_MODEL:
+      MLC_MODEL:
       - resnet50
     skip_if_env:
-      CM_MLPERF_DEVICE:
+      MLC_MLPERF_DEVICE:
       - qaic
     names:
       - resnet50-model
@@ -140,27 +140,27 @@ deps:
     tags: get,ml-model,resnet50,_fp32,_onnx,_from-tf
 
   - enable_if_env:
-      CM_MODEL:
+      MLC_MODEL:
       - resnet50
-      CM_MLPERF_DEVICE:
+      MLC_MLPERF_DEVICE:
       - qaic
     tags: compile,qaic,model,_resnet50
     names:
       - qaic-model-compiler
       - resnet50-compiler
     skip_if_env:
-      CM_MLPERF_SKIP_RUN:
+      MLC_MLPERF_SKIP_RUN:
         - yes
 
   - enable_if_env:
-      CM_MODEL:
+      MLC_MODEL:
       - resnet50
     names:
       - imagenet-preprocessed
       - dataset-preprocessed
     tags: get,dataset,imagenet,preprocessed,_for.resnet50,_NHWC,_full
     skip_if_env:
-      CM_MLPERF_SKIP_RUN:
+      MLC_MLPERF_SKIP_RUN:
         - yes
 
 
@@ -169,45 +169,45 @@ deps:
   # Install bert dependencies
 
   - enable_if_env:
-      CM_MODEL:
+      MLC_MODEL:
       - bert-99
       - bert-99.9
     names:
       - bert-vocab
     tags: get,squad-vocab
     skip_if_env:
-      CM_MLPERF_SKIP_RUN:
+      MLC_MLPERF_SKIP_RUN:
         - yes
 
   - enable_if_env:
-      CM_MODEL:
+      MLC_MODEL:
       - bert-99
       - bert-99.9
     names:
       - squad-tokenized
     tags: get,dataset,tokenized,squad,_raw
     skip_if_env:
-      CM_MLPERF_SKIP_RUN:
+      MLC_MLPERF_SKIP_RUN:
         - yes
 
   ########################################################################
   # Install OpenImages
 
   - enable_if_env:
-      CM_MODEL:
+      MLC_MODEL:
       - retinanet
-      CM_MLPERF_DEVICE:
+      MLC_MLPERF_DEVICE:
       - qaic
     tags: compile,qaic,model,_retinanet
     names:
       - qaic-model-compiler
       - retinanet-compiler
     skip_if_env:
-      CM_MLPERF_SKIP_RUN:
+      MLC_MLPERF_SKIP_RUN:
         - yes
 
   - enable_if_env:
-      CM_MODEL:
+      MLC_MODEL:
       - retinanet
     names:
       - openimages-preprocessed
@@ -215,11 +215,11 @@ deps:
     tags: get,dataset,preprocessed,openimages,_for.retinanet.onnx,_NCHW,_validation,_custom-annotations
     update_tags_from_env_with_prefix1: #disabling now to prevent unnecessary preprocessing
       _quant-scale.:
-        - CM_QAIC_MODEL_RETINANET_IMAGE_OFFSET
+        - MLC_QAIC_MODEL_RETINANET_IMAGE_OFFSET
       _quant-offset.:
-        - CM_QAIC_MODEL_RETINANET_IMAGE_SCALE
+        - MLC_QAIC_MODEL_RETINANET_IMAGE_SCALE
     skip_if_env:
-      CM_MLPERF_SKIP_RUN:
+      MLC_MLPERF_SKIP_RUN:
         - yes
 
 
@@ -228,16 +228,16 @@ deps:
 ########################################################################
   # Install ML engines via CM
   - enable_if_env:
-      CM_MLPERF_BACKEND:
+      MLC_MLPERF_BACKEND:
       - onnxruntime
-      CM_MLPERF_DEVICE:
+      MLC_MLPERF_DEVICE:
       - cpu
     tags: get,lib,onnxruntime,lang-cpp,_cpu
 
   - enable_if_env:
-      CM_MLPERF_BACKEND:
+      MLC_MLPERF_BACKEND:
       - onnxruntime
-      CM_MLPERF_DEVICE:
+      MLC_MLPERF_DEVICE:
       - gpu
     tags: get,lib,onnxruntime,lang-cpp,_cuda
 
@@ -249,14 +249,14 @@ post_deps:
     - compile-program
     tags: compile,cpp-program
     skip_if_env:
-      CM_MLPERF_SKIP_RUN:
+      MLC_MLPERF_SKIP_RUN:
         - yes
 
   - names:
     - runner
     - mlperf-runner
     skip_if_env:
-      CM_MLPERF_SKIP_RUN:
+      MLC_MLPERF_SKIP_RUN:
         - 'yes'
         - yes
     tags: benchmark-mlperf
@@ -272,47 +272,47 @@ variations:
     group: device
     default: true
     env:
-      CM_MLPERF_DEVICE: cpu
+      MLC_MLPERF_DEVICE: cpu
       kilt_backend_type: cpu
   cuda:
     group: device
     env:
-      CM_MLPERF_DEVICE: gpu
-      CM_MLPERF_DEVICE_LIB_NAMESPEC: cudart
+      MLC_MLPERF_DEVICE: gpu
+      MLC_MLPERF_DEVICE_LIB_NAMESPEC: cudart
       kilt_backend_type:  gpu
   qaic:
     group: device
     env:
-      CM_MLPERF_DEVICE: qaic
-      CM_MLPERF_DEVICE_LIB_NAMESPEC: QAic
+      MLC_MLPERF_DEVICE: qaic
+      MLC_MLPERF_DEVICE_LIB_NAMESPEC: QAic
       kilt_backend_type:  qaic
     deps:
       - tags: get,qaic,platform,sdk
         skip_if_env:
-          CM_MLPERF_SKIP_RUN:
+          MLC_MLPERF_SKIP_RUN:
             - yes
       - tags: get,lib,protobuf,_tag.v3.11.4
         skip_if_env:
-          CM_MLPERF_SKIP_RUN:
+          MLC_MLPERF_SKIP_RUN:
             - yes
       - tags: set,device,mode,qaic
         enable_if_env:
-          CM_QAIC_VC:
+          MLC_QAIC_VC:
             "on"
         update_tags_from_env_with_prefix":
           _vc.:
-            - CM_QAIC_VC
+            - MLC_QAIC_VC
       - tags: set,device,mode,qaic,_ecc
         enable_if_env:
-          CM_QAIC_ECC:
+          MLC_QAIC_ECC:
             "yes"
 
   tensorrt:
     group: framework
     env:
-      CM_MLPERF_BACKEND: tensorrt
+      MLC_MLPERF_BACKEND: tensorrt
       device: tensorrt
-      CM_MLPERF_BACKEND_NAME: TensorRT
+      MLC_MLPERF_BACKEND_NAME: TensorRT
 
   # ML engine
   onnxruntime:
@@ -320,15 +320,15 @@ variations:
     default: true
     env:
       device: onnxrt
-      CM_MLPERF_BACKEND: onnxruntime
-      CM_MLPERF_BACKEND_LIB_NAMESPEC: onnxruntime
+      MLC_MLPERF_BACKEND: onnxruntime
+      MLC_MLPERF_BACKEND_LIB_NAMESPEC: onnxruntime
 
   glow:
     group: framework
     env:
       device: qaic
-      CM_MLPERF_BACKEND: glow
-      CM_MLPERF_BACKEND_LIB_NAMESPEC: QAic
+      MLC_MLPERF_BACKEND: glow
+      MLC_MLPERF_BACKEND_LIB_NAMESPEC: QAic
 
   bs.#:
     group: batch-size
@@ -348,7 +348,7 @@ variations:
     group: model
     default: true
     env:
-      CM_MODEL: resnet50
+      MLC_MODEL: resnet50
       kilt_model_name: resnet50
       kilt_input_count: 1
       kilt_output_count: 1
@@ -359,16 +359,16 @@ variations:
       ml_model_image_height: 224
       loadgen_buffer_size: 1024
       loadgen_dataset_size: 50000
-      CM_BENCHMARK: STANDALONE_CLASSIFICATION
+      MLC_BENCHMARK: STANDALONE_CLASSIFICATION
 
   resnet50,uint8:
     env:
       kilt_input_format: "UINT8,-1,224,224,3"
       kilt_device_qaic_skip_stage: convert
-      CM_IMAGENET_ACCURACY_DTYPE: int8
-      CM_ML_MODEL_WEIGHT_TRANSFORMATIONS: "https://github.com/mlcommons/inference_results_v3.1/blob/main/closed/Qualcomm/calibration.md"
-      CM_ML_MODEL_WEIGHTS_DATA_TYPE: int8
-      CM_ML_MODEL_INPUTS_DATA_TYPE: int8
+      MLC_IMAGENET_ACCURACY_DTYPE: int8
+      MLC_ML_MODEL_WEIGHT_TRANSFORMATIONS: "https://github.com/mlcommons/inference_results_v3.1/blob/main/closed/Qualcomm/calibration.md"
+      MLC_ML_MODEL_WEIGHTS_DATA_TYPE: int8
+      MLC_ML_MODEL_INPUTS_DATA_TYPE: int8
 
   bert-99,qaic:
     deps:
@@ -377,12 +377,12 @@ variations:
           - qaic-model-compiler
           - bert-99-compiler
         skip_if_env:
-          CM_MLPERF_SKIP_RUN:
+          MLC_MLPERF_SKIP_RUN:
             - yes
     env:
-      CM_ML_MODEL_WEIGHT_TRANSFORMATIONS: "https://github.com/mlcommons/inference_results_v3.1/blob/main/closed/Qualcomm/calibration.md"
-      CM_ML_MODEL_WEIGHTS_DATA_TYPE: int32
-      CM_ML_MODEL_INPUTS_DATA_TYPE: int8,fp16
+      MLC_ML_MODEL_WEIGHT_TRANSFORMATIONS: "https://github.com/mlcommons/inference_results_v3.1/blob/main/closed/Qualcomm/calibration.md"
+      MLC_ML_MODEL_WEIGHTS_DATA_TYPE: int32
+      MLC_ML_MODEL_INPUTS_DATA_TYPE: int8,fp16
 
   bert-99.9,qaic:
     deps:
@@ -391,20 +391,20 @@ variations:
           - qaic-model-compiler
           - bert-99.9-compiler
         skip_if_env:
-          CM_MLPERF_SKIP_RUN:
+          MLC_MLPERF_SKIP_RUN:
             - yes
     env:
-      CM_ML_MODEL_WEIGHT_TRANSFORMATIONS: "https://github.com/mlcommons/inference_results_v3.1/blob/main/closed/Qualcomm/calibration.md"
-      CM_ML_MODEL_WEIGHTS_DATA_TYPE: int32
-      CM_ML_MODEL_INPUTS_DATA_TYPE: fp16
+      MLC_ML_MODEL_WEIGHT_TRANSFORMATIONS: "https://github.com/mlcommons/inference_results_v3.1/blob/main/closed/Qualcomm/calibration.md"
+      MLC_ML_MODEL_WEIGHTS_DATA_TYPE: int32
+      MLC_ML_MODEL_INPUTS_DATA_TYPE: fp16
 
   retinanet:
     group: model
     base:
       - bs.1
     env:
-      CM_MODEL: retinanet
-      CM_ML_MODEL_STARTING_WEIGHTS_FILENAME: "https://zenodo.org/record/6617981/files/resnext50_32x4d_fpn.pth"
+      MLC_MODEL: retinanet
+      MLC_ML_MODEL_STARTING_WEIGHTS_FILENAME: "https://zenodo.org/record/6617981/files/resnext50_32x4d_fpn.pth"
       kilt_model_name: retinanet
       kilt_input_count: 1
       #kilt_model_disable_nms: ''
@@ -417,7 +417,7 @@ variations:
       ml_model_image_width: 800
       loadgen_buffer_size: 64
       loadgen_dataset_size: 24576
-      CM_BENCHMARK: STANDALONE_OBJECT_DETECTION
+      MLC_BENCHMARK: STANDALONE_OBJECT_DETECTION
 
     deps:
     - tags: get,generic-python-lib,_Pillow
@@ -432,9 +432,9 @@ variations:
       kilt_device_qaic_skip_stage: 'convert'
       kilt_input_format: "UINT8,1,3,800,800"
       kilt_output_format: "INT8,1,1000:INT8,1,1000:INT8,1,1000:INT8,1,1000:INT8,1,1000:INT8,1,1000:INT8,1,1000:INT8,1,1000:INT8,1,1000:INT8,1,1000:INT8,1,4,1000:INT8,14,1000:INT8,1,4,1000:INT8,1,4,1000:INT8,1,4,1000"
-      CM_ML_MODEL_WEIGHT_TRANSFORMATIONS: "https://github.com/mlcommons/inference_results_v3.1/blob/main/closed/Qualcomm/calibration.md"
-      CM_ML_MODEL_WEIGHTS_DATA_TYPE: int8
-      CM_ML_MODEL_INPUTS_DATA_TYPE: int8
+      MLC_ML_MODEL_WEIGHT_TRANSFORMATIONS: "https://github.com/mlcommons/inference_results_v3.1/blob/main/closed/Qualcomm/calibration.md"
+      MLC_ML_MODEL_WEIGHTS_DATA_TYPE: int8
+      MLC_ML_MODEL_INPUTS_DATA_TYPE: int8
 
 
   bert_:
@@ -443,7 +443,7 @@ variations:
     - tags: get,generic-python-lib,_safetensors
     - tags: get,generic-python-lib,_onnx
     env:
-      CM_BENCHMARK: STANDALONE_BERT
+      MLC_BENCHMARK: STANDALONE_BERT
       kilt_model_name: bert
       kilt_model_seq_length: 384
       kilt_model_bert_variant: BERT_PACKED
@@ -467,25 +467,25 @@ variations:
     group: run-mode
     default: true
     env:
-      CM_RUN_MODE: standalone
+      MLC_RUN_MODE: standalone
 
   network-server:
     group: run-mode
     env:
-      CM_RUN_MODE: network-server
+      MLC_RUN_MODE: network-server
 
   network-client:
     group: run-mode
     env:
-      CM_RUN_MODE: network-client
+      MLC_RUN_MODE: network-client
 
   bert_,network-server:
     env:
-      CM_BENCHMARK: NETWORK_BERT_SERVER
+      MLC_BENCHMARK: NETWORK_BERT_SERVER
 
   bert_,network-client:
     env:
-      CM_BENCHMARK: NETWORK_BERT_CLIENT
+      MLC_BENCHMARK: NETWORK_BERT_CLIENT
 
   bert_,singlestream:
     env:
@@ -496,22 +496,22 @@ variations:
     base:
     - bert_
     env:
-      CM_MODEL: bert-99
-      CM_SQUAD_ACCURACY_DTYPE: float32
-      CM_ML_MODEL_STARTING_WEIGHTS_FILENAME: "https://zenodo.org/record/3750364/files/bert_large_v1_1_fake_quant.onnx"
+      MLC_MODEL: bert-99
+      MLC_SQUAD_ACCURACY_DTYPE: float32
+      MLC_ML_MODEL_STARTING_WEIGHTS_FILENAME: "https://zenodo.org/record/3750364/files/bert_large_v1_1_fake_quant.onnx"
 
   bert-99.9:
     group: model
     base:
     - bert_
     env:
-      CM_MODEL: bert-99.9
-      CM_ML_MODEL_STARTING_WEIGHTS_FILENAME: "https://zenodo.org/record/3733910/files/model.onnx"
+      MLC_MODEL: bert-99.9
+      MLC_ML_MODEL_STARTING_WEIGHTS_FILENAME: "https://zenodo.org/record/3733910/files/model.onnx"
 
   loadgen-batch-size.#:
     group: loadgen-batch-size
     env:
-      CM_MLPERF_LOADGEN_BATCH_SIZE: "#"
+      MLC_MLPERF_LOADGEN_BATCH_SIZE: "#"
 
   bert-99,offline:
     default_variations:
@@ -523,23 +523,23 @@ variations:
  
   activation-count.#:
     env:
-      CM_MLPERF_QAIC_ACTIVATION_COUNT: "#"
-      #CM_MLPERF_SUT_NAME_RUN_CONFIG_SUFFIX1: "activation_count.#"
+      MLC_MLPERF_QAIC_ACTIVATION_COUNT: "#"
+      #MLC_MLPERF_SUT_NAME_RUN_CONFIG_SUFFIX1: "activation_count.#"
 
   maxq:
     group: power-mode
     env:
-      CM_MLPERF_NVIDIA_HARNESS_MAXQ: yes
+      MLC_MLPERF_NVIDIA_HARNESS_MAXQ: yes
 
   maxn:
     group: power-mode
     env:
-      CM_MLPERF_NVIDIA_HARNESS_MAXN: yes
+      MLC_MLPERF_NVIDIA_HARNESS_MAXN: yes
 
   singlestream:
     group: loadgen-scenario
     env:
-      CM_MLPERF_LOADGEN_SCENARIO: SingleStream
+      MLC_MLPERF_LOADGEN_SCENARIO: SingleStream
     adr:
       qaic-model-compiler:
         tags: _singlestream
@@ -554,21 +554,21 @@ variations:
   multistream:
     group: loadgen-scenario
     env:
-      CM_MLPERF_LOADGEN_SCENARIO: MultiStream
+      MLC_MLPERF_LOADGEN_SCENARIO: MultiStream
     adr:
       qaic-model-compiler:
         tags: _multistream
   offline:
     group: loadgen-scenario
     env:
-      CM_MLPERF_LOADGEN_SCENARIO: Offline
+      MLC_MLPERF_LOADGEN_SCENARIO: Offline
     adr:
       qaic-model-compiler:
         tags: _offline
   server:
     group: loadgen-scenario
     env:
-      CM_MLPERF_LOADGEN_SCENARIO: Server
+      MLC_MLPERF_LOADGEN_SCENARIO: Server
     adr:
       qaic-model-compiler:
         tags: _server
@@ -586,7 +586,7 @@ variations:
       dataset-preprocessed:
         tags: _float32,_rgb32
     env:
-      CM_IMAGENET_ACCURACY_DTYPE: float32
+      MLC_IMAGENET_ACCURACY_DTYPE: float32
 
   nsp.14:
     group: nsp
@@ -614,12 +614,12 @@ variations:
     base:
       - nsp.14
     env:
-      CM_QAIC_DEVICES: "0,1,2,3,4,5,6,7"
+      MLC_QAIC_DEVICES: "0,1,2,3,4,5,6,7"
       qaic_queue_length: 4
 
   dl2q.24xlarge,singlestream:
     env:
-      CM_QAIC_DEVICES: 0
+      MLC_QAIC_DEVICES: 0
       qaic_activation_count: "1"
 
   dl2q.24xlarge,resnet50,offline:
@@ -668,11 +668,11 @@ variations:
 
   num-devices.4:
     env:
-      CM_QAIC_DEVICES: "0,1,2,3"
+      MLC_QAIC_DEVICES: "0,1,2,3"
 
   pro,num-devices.4,singlestream:
     env:
-      CM_QAIC_DEVICES: "0"
+      MLC_QAIC_DEVICES: "0"
       qaic_activation_count: "1"
 
   pro,num-devices.4,resnet50,offline:
@@ -740,7 +740,7 @@ variations:
     base:
       - nsp.9
     env:
-      CM_QAIC_DEVICES: "0"
+      MLC_QAIC_DEVICES: "0"
       qaic_queue_length: 6
 
   rb6,singlestream:

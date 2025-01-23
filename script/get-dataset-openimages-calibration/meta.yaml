@@ -11,16 +11,16 @@ category: "AI/ML datasets"
 deps:
   - tags: download,file
     force_env_keys:
-      - CM_OUTDIRNAME
+      - MLC_OUTDIRNAME
     force_cache: true
     extra_cache_tags: openimages-calibration,openimages,calibration
     names:
       - calibration-file-downloader
     env:
-        CM_DOWNLOAD_FINAL_ENV_NAME: CM_MLPERF_OPENIMAGES_CALIBRATION_LIST_FILE_WITH_PATH
+        MLC_DOWNLOAD_FINAL_ENV_NAME: MLC_MLPERF_OPENIMAGES_CALIBRATION_LIST_FILE_WITH_PATH
 
 new_env_keys:
-- CM_MLPERF_OPENIMAGES_CALIBRATION_LIST_FILE_WITH_PATH
+- MLC_MLPERF_OPENIMAGES_CALIBRATION_LIST_FILE_WITH_PATH
 
 tags:
 - get
@@ -33,13 +33,13 @@ variations:
     group: calibration-option
     default: true
     env:
-      CM_MLPERF_OPENIMAGES_CALIBRATION_OPTION: one
-      CM_DOWNLOAD_CHECKSUM: 5c3196ddcec4605c6a9fcf004d9615e6
+      MLC_MLPERF_OPENIMAGES_CALIBRATION_OPTION: one
+      MLC_DOWNLOAD_CHECKSUM: 5c3196ddcec4605c6a9fcf004d9615e6
     adr:
       calibration-file-downloader:
         tags: _url.https://github.com/mlcommons/inference/raw/master/calibration/openimages/openimages_cal_images_list.txt
         env:
-            CM_DOWNLOAD_CHECKSUM: 5c3196ddcec4605c6a9fcf004d9615e6
+            MLC_DOWNLOAD_CHECKSUM: 5c3196ddcec4605c6a9fcf004d9615e6
   filter:
     default_variations:
       filter-size: filter_size.400
@@ -50,15 +50,15 @@ variations:
         tags: get,python3
       - tags: get,openimages,dataset,original,_calibration
         env:
-          CM_CALIBRATE_FILTER: ''
+          MLC_CALIBRATE_FILTER: ''
     env:
-      CM_CALIBRATE_FILTER: 'yes'
+      MLC_CALIBRATE_FILTER: 'yes'
 
   filter-size.#:
     group: filter-size
     env:
-      CM_CALIBRATION_FILTER_SIZE: "#"
+      MLC_CALIBRATION_FILTER_SIZE: "#"
   filter-size.400:
     group: filter-size
     env:
-      CM_CALIBRATION_FILTER_SIZE: 400
+      MLC_CALIBRATION_FILTER_SIZE: 400

@@ -10,8 +10,8 @@ deps:
   tags: get,python3
 env: {}
 input_mapping:
-  flash: CM_FLASH_BOARD
-  recreate_binary: CM_RECREATE_BINARY
+  flash: MLC_FLASH_BOARD
+  recreate_binary: MLC_RECREATE_BINARY
 tags:
 - run
 - generate-tiny
