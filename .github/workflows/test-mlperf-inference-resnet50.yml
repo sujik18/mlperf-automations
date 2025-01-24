@@ -76,9 +76,4 @@ jobs:
         git config --global credential.https://github.com.helper "!gh auth git-credential"
         git config --global credential.https://gist.github.com.helper ""
         git config --global credential.https://gist.github.com.helper "!gh auth git-credential"
-        git clone -b auto-update https://github.com/mlcommons/mlperf_inference_test_submissions_v5.0 tmp
-        cd tmp
-        echo "hello" >> README.md
-        git commit -a -m "Test commit"
-        git push
-        mlcr --tags=push,github,mlperf,inference,submission --env.MLC_GITHUB_TOKEN=$PAT --env.MLC_GIT_AUTH=yes --repo_url=https://github.com/mlcommons/mlperf_inference_test_submissions_v5.0 --repo_branch=auto-update --commit_message="Results from R50 GH action on ${{ matrix.os }}" --quiet
+        mlcr --tags=push,github,mlperf,inference,submission --repo_url=https://github.com/mlcommons/mlperf_inference_test_submissions_v5.0 --repo_branch=auto-update --commit_message="Results from R50 GH action on ${{ matrix.os }}" --quiet
