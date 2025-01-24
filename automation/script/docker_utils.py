@@ -37,7 +37,8 @@ def process_mounts(mounts, env, i, docker_settings):
         return None
 
 
-def prepare_docker_inputs(i, docker_settings, script_path):
+def prepare_docker_inputs(input_params, docker_settings,
+                          script_path, run_stage=False):
     """
     Prepares Docker-specific inputs such as Dockerfile path and runtime options.
 
@@ -49,23 +50,49 @@ def prepare_docker_inputs(i, docker_settings, script_path):
     Returns:
         Tuple with Docker inputs dictionary and Dockerfile path or None in case of an error.
     """
-    try:
-        dockerfile_path = os.path.join(
-            script_path, docker_settings.get(
-                'dockerfile', 'Dockerfile'))
-        docker_args = docker_settings.get('args', {})
-        docker_image = i.get('docker_image', docker_settings.get('image', ''))
 
-        docker_inputs = {
-            'dockerfile': dockerfile_path,
-            'docker_image': docker_image,
-            'docker_args': docker_args
-        }
+    keys = [
+        "mlc_repo", "mlc_repo_branch", "base_image", "os", "os_version",
+        "mlc_repos", "skip_mlc_sys_upgrade", "extra_sys_deps",
+        "gh_token", "fake_run_deps", "run_final_cmds", "real_run", "copy_files", "path"
+    ]
 
-        return docker_inputs, dockerfile_path
-    except Exception as e:
-        logging.error(f"Error preparing Docker inputs: {e}")
-        return None, None
+    if run_stage:
+        keys += [
+            "skip_run_cmd", "pre_run_cmds", "run_cmd_prefix", "all_gpus", "num_gpus", "device", "gh_token",
+            "port_maps", "shm_size", "pass_user_id", "pass_user_group", "extra_run_args", "detached", "interactive",
+            "dt", "it"
+        ]
+    # Collect Dockerfile inputs
+    docker_inputs = {
+        key: input_params.get(
+            f"docker_{key}", docker_settings.get(
+                key, get_docker_default(key)))
+        for key in keys
+        if (value := input_params.get(f"docker_{key}", docker_settings.get(key, get_docker_default(key)))) is not None
+    }
+
+    if docker_inputs.get('detached', docker_inputs.get('dt')):
+        docker_inputs['interactive'] = False
+        docker_inputs['detached'] = True
+
+    # Determine Dockerfile suffix and path
+    docker_base_image = docker_inputs.get('base_image')
+    docker_path = docker_inputs.get('path')
+    if not docker_path:
+        docker_path = script_path
+    docker_filename_suffix = (
+        docker_base_image.replace('/', '-').replace(':', '-')
+        if docker_base_image else f"{docker_inputs['os']}_{docker_inputs['os_version']}"
+    )
+    dockerfile_path = os.path.join(
+        docker_path,
+        'dockerfiles',
+        f"{docker_filename_suffix}.Dockerfile")
+
+    docker_inputs['file_path'] = dockerfile_path
+
+    return docker_inputs, dockerfile_path
 
 
 def update_docker_paths(path, mounts=None, force_target_path=''):
@@ -101,9 +128,9 @@ def update_docker_paths(path, mounts=None, force_target_path=''):
     # Determine the mount string based on whether the path is a file or
     # directory.
     if os.path.isfile(host_path) or not os.path.isdir(host_path):
-        mount_entry = f"{os.path.dirname(host_path)}:{os.path.dirname(container_path)}"
+        mount_entry = f"""{os.path.dirname(host_path)}: {os.path.dirname(container_path)}"""
     else:
-        mount_entry = f"{host_path}:{container_path}"
+        mount_entry = f"""{host_path}:{container_path}"""
 
     # Add the mount entry to the mounts list if it's not already present.
     if mounts is not None:
@@ -157,7 +184,7 @@ def regenerate_script_cmd(i):
     docker_run_cmd_prefix = i.get('docker_run_cmd_prefix', '')
 
     # Regenerate command from dictionary input
-    run_cmd = 'mlc run script'
+    run_cmd = 'mlcr'
 
     skip_input_for_fake_run = docker_settings.get(
         'skip_input_for_fake_run', [])
@@ -231,13 +258,19 @@ def regenerate_script_cmd(i):
 def get_docker_default(key):
     defaults = {
         "mlc_repo": "mlcommons@mlperf-automations",
-        "mlc_repo_branch": "mlc",
+        "mlc_repo_branch": "dev",
         "os": "ubuntu",
         "os_version": "24.04",
         "fake_run_deps": False,
         "run_final_cmds": [],
         "skip_run_cmd": False,
-        "image_tag_extra": "-latest"
+        "image_tag_extra": "-latest",
+        "skip_run_cmd": False,
+        "pre_run_cmds": [],
+        "run_cmd_prefix": '',
+        "port_maps": [],
+        "detached": False,
+        "interactive": True
     }
     if key in defaults:
         return defaults[key]

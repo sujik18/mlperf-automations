@@ -46,6 +46,7 @@ def preprocess(i):
 
     # Clean MLPerf inference submission summary files
     x = env.get('MLPERF_INFERENCE_SUBMISSION_SUMMARY', '')
+
     if x != '':
         for y in summary_ext:
             z = x + y
@@ -276,6 +277,10 @@ def preprocess(i):
                 for k in docker_extra_input:
                     ii[k] = docker_extra_input[k]
 
+            # mlc = i['automation'].action_object
+
+            # print(ii)
+            # return {'return': 1}
             r = mlc.access(ii)
             if r['return'] > 0:
                 return r
