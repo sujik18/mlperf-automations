@@ -72,9 +72,16 @@ def prepare_docker_inputs(input_params, docker_settings,
         if (value := input_params.get(f"docker_{key}", docker_settings.get(key, get_docker_default(key)))) is not None
     }
 
-    if docker_inputs.get('detached', docker_inputs.get('dt')):
+    if is_true(docker_inputs.get('detached', docker_inputs.get('dt', ''))):
         docker_inputs['interactive'] = False
         docker_inputs['detached'] = True
+    elif is_true(docker_inputs.get('interactive', docker_inputs.get('it', ''))):
+        docker_inputs['interactive'] = True
+        docker_inputs['detached'] = False
+
+    for key in ["dt", "it"]:
+        if docker_inputs.get(key):
+            del (docker_inputs[key])
 
     # Determine Dockerfile suffix and path
     docker_base_image = docker_inputs.get('base_image')
@@ -268,9 +275,7 @@ def get_docker_default(key):
         "skip_run_cmd": False,
         "pre_run_cmds": [],
         "run_cmd_prefix": '',
-        "port_maps": [],
-        "detached": False,
-        "interactive": True
+        "port_maps": []
     }
     if key in defaults:
         return defaults[key]
