@@ -297,6 +297,8 @@ def preprocess(i):
         f.write('ENV PATH="$HOME/venv/mlc/bin:$PATH"' + EOL)
     # f.write('RUN . /opt/venv/mlc/bin/activate' + EOL)
 
+    f.write('ENV PATH="$PATH:$HOME/.local/bin"' + EOL)
+
     f.write(
         'RUN {} -m pip install '.format(python) +
         " ".join(
