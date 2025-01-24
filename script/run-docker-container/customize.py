@@ -1,9 +1,9 @@
 from mlc import utils
-import mlc
 import os
 import subprocess
 from os.path import exists
 import json
+from utils import *
 
 
 def preprocess(i):
@@ -11,6 +11,8 @@ def preprocess(i):
     os_info = i['os_info']
 
     env = i['env']
+
+    mlc = i['automation'].action_object
 
     interactive = env.get('MLC_DOCKER_INTERACTIVE_MODE', '')
 
@@ -21,7 +23,7 @@ def preprocess(i):
         env['MLC_DOCKER_RUN_SCRIPT_TAGS'] = "run,docker,container"
         MLC_RUN_CMD = "mlc version"
     else:
-        MLC_RUN_CMD = "mlc run script --tags=" + \
+        MLC_RUN_CMD = "mlcr --tags=" + \
             env['MLC_DOCKER_RUN_SCRIPT_TAGS'] + ' --quiet'
 
     r = mlc.access({'action': 'search',
@@ -115,7 +117,7 @@ def preprocess(i):
 
         recreate_image = env.get('MLC_DOCKER_IMAGE_RECREATE', '')
 
-        if recreate_image != 'yes':
+        if is_false(recreate_image):
             if docker_image:
                 print("Docker image exists with ID: " + docker_image)
                 env['MLC_DOCKER_IMAGE_EXISTS'] = "yes"
