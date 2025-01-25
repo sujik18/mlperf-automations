@@ -63,8 +63,7 @@ jobs:
       with:
         keeper-secret-config: ${{ secrets.KSM_CONFIG }}
         secrets: |-
-          ubwkjh-Ii8UJDpG2EoU6GQ/field/Access Token > env:PAT  # Fetch PAT and store in environment variable
-    
+          ubwkjh-Ii8UJDpG2EoU6GQ/field/Access Token > env:PAT
     - name: Push Results
       env:
         GITHUB_TOKEN: ${{ env.PAT }}
