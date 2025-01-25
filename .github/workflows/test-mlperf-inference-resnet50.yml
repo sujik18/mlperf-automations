@@ -68,8 +68,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ env.PAT }}
       run: |
-        echo "Password is ${{ env.PAT }}"
-        export GITHUB_TOKEN=${{ env.PAT }}
         git config --global user.name "mlcommons-bot"
         git config --global user.email "mlcommons-bot@users.noreply.github.com"
         git config --global credential.https://github.com.helper ""
