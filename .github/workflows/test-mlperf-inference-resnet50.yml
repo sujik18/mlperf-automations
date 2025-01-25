@@ -27,6 +27,7 @@ jobs:
             backend: tf
           - os: windows-latest
             implementation: cpp
+  
     steps:
     - uses: actions/checkout@v4
       with:
@@ -56,8 +57,9 @@ jobs:
     - name: Test MLPerf Inference ResNet50 (Linux/macOS)
       if: matrix.os != 'windows-latest'
       run: |
-        mlcr --tags=run-mlperf,inference,_submission,_short --submitter="MLCommons" --pull_changes=yes --pull_inference_changes=yes --hw_name=gh_${{ matrix.os }}_x86 --model=resnet50 --implementation=${{ matrix.implementation }} --backend=${{ matrix.backend }} --device=cpu --scenario=Offline --test_query_count=500 --target_qps=1 -v --quiet 
+        mlcr --tags=run-mlperf,inference,_submission,_short --submitter="MLCommons" --pull_changes=yes --pull_inference_changes=yes --hw_name=gh_${{ matrix.os }}_x86 --model=resnet50 --implementation=${{ matrix.implementation }} --backend=${{ matrix.backend }} --device=cpu --scenario=Offline --test_query_count=500 --target_qps=1 -v --quiet     
     - name: Retrieve secrets from Keeper
+      if: github.repository_owner == 'mlcommons'
       id: ksecrets
       uses: Keeper-Security/ksm-action@master
       with:
@@ -67,6 +69,7 @@ jobs:
     - name: Push Results
       env:
         GITHUB_TOKEN: ${{ env.PAT }}
+      if: github.repository_owner == 'mlcommons'
       run: |
         git config --global user.name "mlcommons-bot"
         git config --global user.email "mlcommons-bot@users.noreply.github.com"
@@ -75,3 +78,15 @@ jobs:
         git config --global credential.https://gist.github.com.helper ""
         git config --global credential.https://gist.github.com.helper "!gh auth git-credential"
         mlcr --tags=push,github,mlperf,inference,submission --repo_url=https://github.com/mlcommons/mlperf_inference_test_submissions_v5.0 --repo_branch=auto-update --commit_message="Results from R50 GH action on ${{ matrix.os }}" --quiet
+    - name: Push Results
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAT1 }}
+      if: github.repository_owner == 'gateoverflow'
+      run: |
+        git config --global user.name "mlcommons-bot"
+        git config --global user.email "mlcommons-bot@users.noreply.github.com"
+        git config --global credential.https://github.com.helper ""
+        git config --global credential.https://github.com.helper "!gh auth git-credential"
+        git config --global credential.https://gist.github.com.helper ""
+        git config --global credential.https://gist.github.com.helper "!gh auth git-credential"
+        mlcr --tags=push,github,mlperf,inference,submission --repo_url=https://github.com/gateoverflow/mlperf_inference_test_submissions_v5.0 --repo_branch=auto-update --commit_message="Results from R50 GH action on ${{ matrix.os }}" --quiet
