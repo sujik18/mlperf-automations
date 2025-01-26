@@ -35,12 +35,12 @@ jobs:
   
     - name: Test Python venv
       run: |
-        mlc run script --tags=install,python-venv --name=test --quiet
+        mlcr --tags=install,python-venv --name=test --quiet
         mlc search cache --tags=get,python,virtual,name-test --quiet
 
     - name: Test variations
       run: |
-        mlc run script --tags=get,dataset,preprocessed,imagenet,_NHWC --quiet
+        mlcr --tags=get,dataset,preprocessed,imagenet,_NHWC --quiet
         mlc search cache --tags=get,dataset,preprocessed,imagenet,-_NCHW
         mlc search cache --tags=get,dataset,preprocessed,imagenet,-_NHWC
 
@@ -48,27 +48,28 @@ jobs:
       continue-on-error: true
       if: runner.os == 'linux'
       run: |
-        mlc run script --tags=get,generic-python-lib,_package.scipy --version=1.9.3 --quiet
+        mlcr --tags=get,generic-python-lib,_package.scipy --version=1.9.3 --quiet
         test $? -eq 0 || exit $?
-        mlc run script --tags=get,generic-python-lib,_package.scipy --version=1.9.2 --quiet
+        mlcr --tags=get,generic-python-lib,_package.scipy --version=1.9.2 --quiet
         test $? -eq 0 || exit $?
-        mlc run script --tags=get,generic-python-lib,_package.scipy --version=1.9.3 --quiet --only_execute_from_cache=True
-        test $? -eq 0 || exit 0
+        # Need to add find cache here
+        # mlcr --tags=get,generic-python-lib,_package.scipy --version=1.9.3 --quiet --only_execute_from_cache=True
+        # test $? -eq 0 || exit 0
 
     - name: Test python install from src
       run: |
-        mlc run script --tags=python,src,install,_shared --version=3.9.10 --quiet
+        mlcr --tags=python,src,install,_shared --version=3.9.10 --quiet
         mlc search cache --tags=python,src,install,_shared,version-3.9.10
 
     - name: Run docker container from dockerhub on linux
       if: runner.os == 'linux'
       run: |
-        mlc run script --tags=run,docker,container --adr.compiler.tags=gcc --docker_mlc_repo=mlcommons@mlperf-automations --docker_mlc_repo_branch=dev --image_name=cm-script-app-image-classification-onnx-py --env.MLC_DOCKER_RUN_SCRIPT_TAGS=app,image-classification,onnx,python --env.MLC_DOCKER_IMAGE_BASE=ubuntu:22.04 --env.MLC_DOCKER_IMAGE_REPO=cknowledge --quiet
+        mlcr --tags=run,docker,container --adr.compiler.tags=gcc --docker_mlc_repo=mlcommons@mlperf-automations --docker_mlc_repo_branch=dev --image_name=cm-script-app-image-classification-onnx-py --env.MLC_DOCKER_RUN_SCRIPT_TAGS=app,image-classification,onnx,python --env.MLC_DOCKER_IMAGE_BASE=ubuntu:22.04 --env.MLC_DOCKER_IMAGE_REPO=cknowledge --quiet
      
     - name: Run docker container locally on linux
       if: runner.os == 'linux'
       run: |
-        mlc run script --tags=run,docker,container --adr.compiler.tags=gcc --docker_mlc_repo=mlcommons@mlperf-automations --docker_mlc_repo_branch=dev --image_name=mlc-script-app-image-classification-onnx-py --env.MLC_DOCKER_RUN_SCRIPT_TAGS=app,image-classification,onnx,python --env.MLC_DOCKER_IMAGE_BASE=ubuntu:22.04 --env.MLC_DOCKER_IMAGE_REPO=local --quiet
+        mlcr --tags=run,docker,container --adr.compiler.tags=gcc --docker_mlc_repo=mlcommons@mlperf-automations --docker_mlc_repo_branch=dev --image_name=mlc-script-app-image-classification-onnx-py --env.MLC_DOCKER_RUN_SCRIPT_TAGS=app,image-classification,onnx,python --env.MLC_DOCKER_IMAGE_BASE=ubuntu:22.04 --env.MLC_DOCKER_IMAGE_REPO=local --quiet
 
     - name: Run MLPerf Inference Retinanet with native and virtual Python
       if: runner.os == 'linux'
