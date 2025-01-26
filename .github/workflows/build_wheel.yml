@@ -9,7 +9,6 @@ on:
       - dev
     paths:
       - VERSION
-      - setup.py
 
 jobs:
   build_wheels:
