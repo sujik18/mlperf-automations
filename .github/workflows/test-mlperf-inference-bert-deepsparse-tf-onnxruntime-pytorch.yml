@@ -47,7 +47,18 @@ jobs:
       if: matrix.os != 'windows-latest'
       run: |
         mlcr --tags=run,mlperf,inference,generate-run-cmds,_submission,_short --submitter="MLCommons" --hw_name=gh_${{ matrix.os }}_x86 --model=bert-99 --backend=${{ matrix.backend }} --device=cpu --scenario=Offline --test_query_count=5 --precision=${{ matrix.precision }} --target_qps=1 -v --quiet
+    - name: Randomly Execute Step
+      id: random-check
+      run: |
+          RANDOM_NUMBER=$((RANDOM % 10))
+          echo "Random number is $RANDOM_NUMBER"
+          if [ "$RANDOM_NUMBER" -eq 0 ]; then
+            echo "run_step=true" >> $GITHUB_ENV
+          else
+            echo "run_step=false" >> $GITHUB_ENV
+          fi
     - name: Retrieve secrets from Keeper
+      if: github.repository_owner == 'mlcommons' && env.run_step == 'true'
       id: ksecrets
       uses: Keeper-Security/ksm-action@master
       with:
@@ -57,6 +68,7 @@ jobs:
     - name: Push Results
       env:
         GITHUB_TOKEN: ${{ env.PAT }}
+      if: github.repository_owner == 'mlcommons' && env.run_step == 'true'
       run: |
         git config --global user.name "mlcommons-bot"
         git config --global user.email "mlcommons-bot@users.noreply.github.com"

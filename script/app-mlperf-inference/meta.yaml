@@ -519,7 +519,7 @@ variations:
       os: ubuntu
       real_run: false
       run: true
-      docker_input_mapping:
+      input_mapping:
         criteo_preprocessed_path: CRITEO_PREPROCESSED_PATH
         dlrm_data_path: DLRM_DATA_PATH
         intel_gptj_int8_model_path: MLC_MLPERF_INFERENCE_INTEL_GPTJ_INT8_MODEL_PATH
@@ -1671,6 +1671,8 @@ variations:
         tags: _ctuning
       intel-harness:
         tags: _v3.1
+      nvidia-scratch-space:
+        tags: _version.4_0-dev
     default_env:
       MLC_SKIP_SYS_UTILS: 'yes'
       MLC_REGENERATE_MEASURE_FILES: 'yes'
@@ -1709,6 +1711,8 @@ variations:
         tags: _mlcommons
       intel-harness:
         tags: _v4.0
+      nvidia-scratch-space:
+        tags: _version.4_1-dev
     default_env:
       MLC_SKIP_SYS_UTILS: 'yes'
       MLC_REGENERATE_MEASURE_FILES: 'yes'
@@ -1725,6 +1729,8 @@ variations:
         tags: _go
       intel-harness:
         tags: _v4.1
+      nvidia-scratch-space:
+        tags: _version.4_1
     default_env:
       MLC_SKIP_SYS_UTILS: 'yes'
       MLC_REGENERATE_MEASURE_FILES: 'yes'
@@ -1746,6 +1752,8 @@ variations:
         tags: _v4.1
       inference-src:
          version: r5.0
+      nvidia-scratch-space:
+        tags: _version.5.0-dev
     default_env:
       MLC_SKIP_SYS_UTILS: 'yes'
       MLC_REGENERATE_MEASURE_FILES: 'yes'
@@ -1901,11 +1909,12 @@ docker:
   interactive: True
   extra_run_args: ' --dns 8.8.8.8 --dns 8.8.4.4 --cap-add SYS_ADMIN  --cap-add SYS_TIME --security-opt apparmor=unconfined --security-opt seccomp=unconfined'
   os: ubuntu
+  user: mlcuser
   mlc_repo: mlcommons@mlperf-automations
   mlc_repo_branch: dev
   real_run: False
   os_version: '22.04'
-  docker_input_mapping:
+  input_mapping:
     imagenet_path: IMAGENET_PATH
     gptj_checkpoint_path: GPTJ_CHECKPOINT_PATH
     criteo_preprocessed_path: CRITEO_PREPROCESSED_PATH
