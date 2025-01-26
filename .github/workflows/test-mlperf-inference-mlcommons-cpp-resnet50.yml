@@ -48,12 +48,30 @@ jobs:
       if: matrix.os != 'windows-latest'
       run: |
         mlcr --tags=app,mlperf,inference,mlcommons,cpp --submitter="MLCommons" --hw_name=gh_${{ matrix.os }} -v --quiet
+    - name: Randomly Execute Step
+      id: random-check
+      run: |
+          RANDOM_NUMBER=$((RANDOM % 10))
+          echo "Random number is $RANDOM_NUMBER"
+          if [ "$RANDOM_NUMBER" -eq 0 ]; then
+            echo "run_step=true" >> $GITHUB_ENV
+          else
+            echo "run_step=false" >> $GITHUB_ENV
+          fi
+    - name: Retrieve secrets from Keeper
+      if: github.repository_owner == 'mlcommons' && env.run_step == 'true'
+      id: ksecrets
+      uses: Keeper-Security/ksm-action@master
+      with:
+        keeper-secret-config: ${{ secrets.KSM_CONFIG }}
+        secrets: |-
+          ubwkjh-Ii8UJDpG2EoU6GQ/field/Access Token > env:PAT
     - name: Push Results
-      if: github.repository_owner == 'gateoverflow'
       env:
-          USER: "GitHub Action"
-          EMAIL: "admin@gateoverflow.com"
-          GITHUB_TOKEN: ${{ secrets.TEST_RESULTS_GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ env.PAT }}
+        USER: mlcommons-bot
+        EMAIL: mlcommons-bot@users.noreply.github.com
+      if: github.repository_owner == 'mlcommons' && env.run_step == 'true'
       run: |
         git config --global user.name "${{ env.USER }}"
         git config --global user.email "${{ env.EMAIL }}"
