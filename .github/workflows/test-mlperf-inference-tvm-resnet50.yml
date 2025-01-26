@@ -34,8 +34,19 @@ jobs:
         mlcr --quiet --tags=get,sys-utils-cm
     - name: Test MLC Tutorial TVM
       run: |
-        mlcr --tags=run-mlperf,inference,_submission,_short --adr.python.name=mlperf --adr.python.version_min=3.8 --submitter=Community --implementation=python --hw_name=default --model=resnet50 --backend=tvm-onnx --device=cpu --scenario=Offline --mode=accuracy --test_query_count=5 --clean --quiet ${{ matrix.extra-options }}
+        mlcr --tags=run-mlperf,inference,_submission,_short --adr.python.name=mlperf --adr.python.version_min=3.8 --submitter=MLCommons --implementation=python --hw_name=gh_ubuntu-latest --model=resnet50 --backend=tvm-onnx --device=cpu --scenario=Offline --mode=accuracy --test_query_count=5 --clean --quiet ${{ matrix.extra-options }}
+    - name: Randomly Execute Step
+      id: random-check
+      run: |
+          RANDOM_NUMBER=$((RANDOM % 10))
+          echo "Random number is $RANDOM_NUMBER"
+          if [ "$RANDOM_NUMBER" -eq 0 ]; then
+            echo "run_step=true" >> $GITHUB_ENV
+          else
+            echo "run_step=false" >> $GITHUB_ENV
+          fi
     - name: Retrieve secrets from Keeper
+      if: github.repository_owner == 'mlcommons' && env.run_step == 'true'
       id: ksecrets
       uses: Keeper-Security/ksm-action@master
       with:
@@ -45,9 +56,12 @@ jobs:
     - name: Push Results
       env:
         GITHUB_TOKEN: ${{ env.PAT }}
+        USER: mlcommons-bot
+        EMAIL: mlcommons-bot@users.noreply.github.com
+      if: github.repository_owner == 'mlcommons' && env.run_step == 'true'
       run: |
-        git config --global user.name "mlcommons-bot"
-        git config --global user.email "mlcommons-bot@users.noreply.github.com"
+        git config --global user.name "${{ env.USER }}"
+        git config --global user.email "${{ env.EMAIL }}"
         git config --global credential.https://github.com.helper ""
         git config --global credential.https://github.com.helper "!gh auth git-credential"
         git config --global credential.https://gist.github.com.helper ""
