@@ -257,19 +257,6 @@ class ScriptAutomation(Automation):
                 return {
                     'return': 1, 'error': 'Current directory "{}" is not writable - please change it'.format(os.getcwd())}
 
-            '''
-            # Check if has default config
-            r = self.action_object.access({'action': 'load',
-                                           'automation': 'cfg,88dce9c160324c5d',
-                                           'artifact': 'default'})
-            if r['return'] == 0:
-                config = r['config']
-
-                script_input = config.get('script', {})
-
-                if len(script_input) > 0:
-                    utils.merge_dicts({'dict1': i, 'dict2': script_input})
-            '''
         recursion_int = int(i.get('recursion_int', 0)) + 1
 
         start_time = time.time()
@@ -469,8 +456,6 @@ class ScriptAutomation(Automation):
         # manage OS environment
         if len(self.os_info) == 0:
             r = get_host_os_info()
-            # r = self.access({'action': 'get_host_os_info',
-            #                       'automation': 'utils,dc2743f8450541e3'})
             if r['return'] > 0:
                 return r
 
@@ -677,8 +662,8 @@ class ScriptAutomation(Automation):
                 recursion_spaces +
                 '  - Searching for cached script outputs with the following tags: {}'.format(cache_tags_without_tmp_string))
 
-            search_cache = {'action': 'find',
-                            'automation': self.meta['deps']['cache'],
+            search_cache = {'action': 'search',
+                            'target_name': 'cache',
                             'tags': cache_tags_without_tmp_string}
             rc = self.action_object.access(search_cache)
             if rc['return'] > 0:
@@ -4905,8 +4890,8 @@ def find_cached_script(i):
             recursion_spaces +
             '    - Searching for cached script outputs with the following tags: {}'.format(search_tags))
 
-        r = self_obj.action_object.access({'action': 'find',
-                                           'automation': self_obj.meta['deps']['cache'],
+        r = self_obj.action_object.access({'action': 'search',
+                                           'target_name': 'cache',
                                            'tags': search_tags})
         if r['return'] > 0:
             return r
