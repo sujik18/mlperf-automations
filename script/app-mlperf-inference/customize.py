@@ -129,6 +129,13 @@ def postprocess(i):
             accuracy_log_file_option_name = " --mlperf-accuracy-file "
             datatype_option = " --dtype " + env['MLC_IMAGENET_ACCURACY_DTYPE']
 
+        elif model == "pointpainting":
+            accuracy_filename = "accuracy-waymo.py"
+            accuracy_filepath = os.path.join(
+                env['MLC_MLPERF_INFERENCE_POINTPAINTING_PATH'], accuracy_filename)
+            accuracy_log_file_option_name = " --mlperf-accuracy-file "
+            datatype_option = ""
+
         elif model == "retinanet":
             accuracy_filename = "accuracy-openimages.py"
             accuracy_filepath = os.path.join(env['MLC_MLPERF_INFERENCE_CLASSIFICATION_AND_DETECTION_PATH'], "tools",
