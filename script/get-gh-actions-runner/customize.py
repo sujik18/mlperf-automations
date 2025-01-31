@@ -1,6 +1,5 @@
 from mlc import utils
 import os
-import cmind as cm
 
 
 def preprocess(i):
@@ -12,6 +11,7 @@ def preprocess(i):
     meta = i['meta']
 
     automation = i['automation']
+    mlc = automation.action_object
 
     quiet = (env.get('MLC_QUIET', False) == 'yes')
 
@@ -25,8 +25,8 @@ def preprocess(i):
     elif cmd == "uninstall":
         run_cmd = f"cd {env['MLC_GH_ACTIONS_RUNNER_CODE_PATH']} && sudo ./svc.sh uninstall"
         cache_rm_tags = "gh,runner,_install"
-        r = cm.access({'action': 'rm', 'automation': 'cache',
-                      'tags': cache_rm_tags, 'f': True})
+        r = mlc.access({'action': 'rm', 'automation': 'cache',
+                        'tags': cache_rm_tags, 'f': True})
         print(r)
         if r['return'] != 0 and r['return'] != 16:  # ignore missing ones
             return r

@@ -5,7 +5,6 @@ on:
     types: [published]
   push:
     branches:
-      - main
       - dev
     paths:
       - VERSION

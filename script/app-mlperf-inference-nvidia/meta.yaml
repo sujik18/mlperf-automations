@@ -481,6 +481,8 @@ variations:
         names:
           - nvtx
       - tags: get,generic-python-lib,_package.cuda-python
+        version_max: 12.6.2
+        version_max_usable: 12.6.2  
         names:
           - cuda-python
       - tags: get,generic-python-lib,_package.ninja

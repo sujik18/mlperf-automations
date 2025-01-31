@@ -68,7 +68,7 @@ def preprocess(i):
             str(env['MLC_MLPERF_LOADGEN_BATCH_SIZE'])
 
     if env.get('MLC_MLPERF_LOADGEN_QUERY_COUNT', '') != '' and not env.get('MLC_TMP_IGNORE_MLPERF_QUERY_COUNT', False) and (
-            env['MLC_MLPERF_LOADGEN_MODE'] == 'accuracy' or 'gptj' in env['MLC_MODEL'] or 'llama2' in env['MLC_MODEL'] or 'mixtral' in env['MLC_MODEL'] or 'llama3' in env['MLC_MODEL']) and env.get('MLC_MLPERF_RUN_STYLE', '') != "valid":
+            env['MLC_MLPERF_LOADGEN_MODE'] == 'accuracy' or 'gptj' in env['MLC_MODEL'] or 'llama2' in env['MLC_MODEL'] or 'mixtral' in env['MLC_MODEL'] or 'llama3' in env['MLC_MODEL'] or 'pointpainting' in env['MLC_MODEL']) and (env.get('MLC_MLPERF_RUN_STYLE', '') != "valid" or 'pointpainting' in env['MLC_MODEL']):
         env['MLC_MLPERF_LOADGEN_EXTRA_OPTIONS'] += " --count " + \
             env['MLC_MLPERF_LOADGEN_QUERY_COUNT']
 
@@ -523,6 +523,28 @@ def get_run_cmd_reference(
 
         cmd = cmd.replace("--count", "--total-sample-count")
         cmd = cmd.replace("--max-batchsize", "--batch-size")
+
+    elif "pointpainting" in env['MLC_MODEL']:
+        env['RUN_DIR'] = os.path.join(
+            env['MLC_MLPERF_INFERENCE_SOURCE'],
+            "automotive",
+            "3d-object-detection")
+
+        cmd = env['MLC_PYTHON_BIN_WITH_PATH'] + " main.py " \
+            " --dataset waymo" + \
+            " --dataset-path " + env['MLC_DATASET_WAYMO_PATH'] + \
+            " --lidar-path " + env['MLC_ML_MODEL_POINT_PILLARS_PATH'] + \
+            " --segmentor-path " + env['MLC_ML_MODEL_DPLAB_RESNET50_PATH'] + \
+            " --scenario " + env['MLC_MLPERF_LOADGEN_SCENARIO'] + \
+            " --output " + env['MLC_MLPERF_OUTPUT_DIR'] + \
+            " --dtype " + env['MLC_MLPERF_MODEL_PRECISION'].replace("float", "fp") + \
+            scenario_extra_options + \
+            env['MLC_MLPERF_LOADGEN_EXTRA_OPTIONS'] + mode_extra_options
+
+        if env.get('MLC_MLPERF_POINTPAINTING_TIME', '') != '':
+            cmd += f" --time {env['MLC_MLPERF_POINTPAINTING_TIME']}"
+
+        print(cmd)
 
     if env.get('MLC_NETWORK_LOADGEN', '') in ["lon", "sut"]:
         cmd = cmd + " " + "--network " + env['MLC_NETWORK_LOADGEN']
