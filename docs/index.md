@@ -17,12 +17,10 @@ graph TD
     C --> D[Preprocess]
     D -->|env - local_env_keys| E[Prehook dependencies]
     E -->F[Run script]
-    F -->|env - clean_env_keys_post_deps| G
-    G[Posthook dependencies] -->|Postprocess| H
-    H -->|env - clean_env_keys_post_deps| I
-    I[Post dependencies] -->|new_env_keys or incoming_env - env| J
-    J -->|Script return| K
-
+    F -->|env - clean_env_keys_post_deps| G[Posthook dependencies]
+    G --> H[Postprocess]
+    H -->|env - clean_env_keys_post_deps| I[Post dependencies]
+    I -->|new_env_keys or incoming_env - env| J[Script return]
 ```
 
 * When an MLC script is invoked (either by tags or by unique ID), its `meta.yaml` is processed first which will check for any `deps` script and if there are, then they are executed in order.
