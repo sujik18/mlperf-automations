@@ -20,7 +20,7 @@ graph TD
     F -->|env - clean_env_keys_post_deps| G[Posthook dependencies]
     G --> H[Postprocess]
     H -->|env - clean_env_keys_post_deps| I[Post dependencies]
-    I -->|env(new_env_keys)| J[Script return]
+    I -->|"env(new_env_keys)"| J[Script return]
 ```
 
 * When an MLC script is invoked (either by tags or by unique ID), its `meta.yaml` is processed first which will check for any `deps` script and if there are, then they are executed in order.
