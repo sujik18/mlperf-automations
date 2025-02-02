@@ -13,19 +13,20 @@ See the [automatically generated catalog](scripts/index.md) of all the MLC scrip
 ```mermaid
 graph TD
     A[env = incoming env + env_from_meta] --> B[Script]
-    B --> C[env - env(local_env_keys)]
+    B --> C[env - local_env_keys]
     C --> D[Dependencies]
     D --> E[Preprocess]
-    E --> F[env - env(local_env_keys)]
+    E --> F[env - local_env_keys]
     F --> G[Prehook dependencies]
     G --> H[Run script]
-    H --> I[env - env(clean_env_keys_post_deps)]
+    H --> I[env - clean_env_keys_post_deps]
     I --> J[Posthook dependencies]
     J --> K[Postprocess]
-    K --> L[env - env(clean_env_keys_post_deps)]
+    K --> L[env - clean_env_keys_post_deps]
     L --> M[Post dependencies]
-    M --> N[env(new_env_keys) if new_env_keys<br>else incoming_env - env]
+    M --> N[new_env_keys or incoming_env - env]
     N --> O[Script return]
+
 ```
 
 * When an MLC script is invoked (either by tags or by unique ID), its `meta.yaml` is processed first which will check for any `deps` script and if there are, then they are executed in order.
