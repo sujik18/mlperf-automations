@@ -13,7 +13,7 @@ See the [automatically generated catalog](scripts/index.md) of all the MLC scrip
 ```mermaid
 graph TD
     A[env = incoming env + env_from_meta] -->B[Script]
-    B -->|env - local_env_keys| C [List of Dependencies]
+    B -->|env - local_env_keys| C[List of Dependencies]
     C --> D[Preprocess]
     D -->|env - local_env_keys| E[Prehook dependencies]
     E -->F[Run script]
