@@ -86,5 +86,5 @@ Please see [here](getting-started.md) for trying MLC scripts.
 
 
 
-&copy; 2022-24 [MLCommons](https://mlcommons.org)<br>
+&copy; 2022-25 [MLCommons](https://mlcommons.org)<br>
 
