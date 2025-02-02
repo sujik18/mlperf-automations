@@ -12,20 +12,16 @@ See the [automatically generated catalog](scripts/index.md) of all the MLC scrip
 ### MLC script execution flow
 ```mermaid
 graph TD
-    A[env = incoming env + env_from_meta] --> B[Script]
-    B --> C[env - local_env_keys]
-    C --> D[Dependencies]
-    D --> E[Preprocess]
-    E --> F[env - local_env_keys]
-    F --> G[Prehook dependencies]
-    G --> H[Run script]
-    H --> I[env - clean_env_keys_post_deps]
-    I --> J[Posthook dependencies]
-    J --> K[Postprocess]
-    K --> L[env - clean_env_keys_post_deps]
-    L --> M[Post dependencies]
-    M --> N[new_env_keys or incoming_env - env]
-    N --> O[Script return]
+    A[env = incoming env + env_from_meta] -->|Script| B
+    B -->|env - local_env_keys| C
+    C[Dependencies] -->|Preprocess| D
+    D -->|env - local_env_keys| E
+    E[Prehook dependencies] -->|Run script| F
+    F -->|env - clean_env_keys_post_deps| G
+    G[Posthook dependencies] -->|Postprocess| H
+    H -->|env - clean_env_keys_post_deps| I
+    I[Post dependencies] -->|new_env_keys or incoming_env - env| J
+    J -->|Script return| K
 
 ```
 
