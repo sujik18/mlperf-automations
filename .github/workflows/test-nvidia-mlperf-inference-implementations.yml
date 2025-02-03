@@ -43,12 +43,7 @@ jobs:
             gpu_name=rtx_4090
             docker_string=" --docker"
           fi
-          if [ "${{ matrix.model }}" = "bert-99" ] || [ "${{ matrix.model }}" = "bert-99.9" ]; then
-            category="edge"
-          else
-            category="datacenter,edge"
-          fi
-
+          category="datacenter,edge"
           if [ -f "gh_action/bin/deactivate" ]; then source gh_action/bin/deactivate; fi
           python3 -m venv gh_action
           source gh_action/bin/activate
