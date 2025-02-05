@@ -37,7 +37,8 @@ def preprocess(i):
 
 def postprocess(i):
 
+    logger = i['automation'].logger
     env = i['env']
-    print(env['MLC_OUTPUT'] + " generated in " + env['MLC_RUN_DIR'])
+    logger.info(env['MLC_OUTPUT'] + " generated in " + env['MLC_RUN_DIR'])
 
     return {'return': 0}

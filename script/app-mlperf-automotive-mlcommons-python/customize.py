@@ -7,6 +7,7 @@ import subprocess
 
 def preprocess(i):
 
+    logger = i['automation'].logger
     os_info = i['os_info']
     env = i['env']
     state = i['state']
@@ -72,7 +73,7 @@ def preprocess(i):
         env['MLC_MLPERF_LOADGEN_EXTRA_OPTIONS'] += " --count " + \
             env['MLC_MLPERF_LOADGEN_QUERY_COUNT']
 
-    print("Using MLCommons Inference source from '" +
+    logger.info("Using MLCommons Inference source from '" +
           env['MLC_MLPERF_INFERENCE_SOURCE'] + "'")
 
     if 'MLC_MLPERF_CONF' not in env:
