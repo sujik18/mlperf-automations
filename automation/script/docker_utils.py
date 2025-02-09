@@ -109,7 +109,7 @@ def prepare_docker_inputs(input_params, docker_settings,
         keys += [
             "skip_run_cmd", "pre_run_cmds", "run_cmd_prefix", "all_gpus", "num_gpus", "device", "gh_token",
             "port_maps", "shm_size", "pass_user_id", "pass_user_group", "extra_run_args", "detached", "interactive",
-            "dt", "it", "use_host_group_id", "use_host_user_id", "keep_detached", "reuse_existing"
+            "dt", "it", "use_host_group_id", "use_host_user_id", "keep_detached", "reuse_existing", "use_google_dns"
         ]
     # Collect Dockerfile inputs
     docker_inputs = {
@@ -413,7 +413,7 @@ def get_container_path_script(i):
 def get_container_path(value, username="mlcuser"):
     path_split = value.split(os.sep)
     if len(path_split) == 1:
-        return value
+        return value, value
 
     new_value = ''
     if "cache" in path_split and "local" in path_split:

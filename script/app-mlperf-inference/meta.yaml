@@ -113,7 +113,7 @@ deps:
       - 'yes'
   - tags: get,mlperf,inference,utils
 
-  - tags: install,pip-package,for-cmind-python,_package.pandas
+  - tags: install,pip-package,for-mlc-python,_package.pandas
     enable_if_env:
       MLC_PROFILE_NVIDIA_POWER:
         - on
@@ -676,6 +676,8 @@ variations:
       model
     default:
       true
+    default_env:
+      MLC_USE_DATASET_FROM_HOST: yes
     env:
       MLC_MODEL:
         resnet50
@@ -1959,7 +1961,8 @@ docker:
   skip_run_cmd: 'no'
   shm_size: '32gb'
   interactive: True
-  extra_run_args: ' --dns 8.8.8.8 --dns 8.8.4.4 --cap-add SYS_ADMIN  --cap-add SYS_TIME --security-opt apparmor=unconfined --security-opt seccomp=unconfined'
+  extra_run_args: ' --cap-add SYS_ADMIN  --cap-add SYS_TIME --security-opt apparmor=unconfined --security-opt seccomp=unconfined'
+  use_google_dns: yes
   os: ubuntu
   user: mlcuser
   mlc_repo: mlcommons@mlperf-automations

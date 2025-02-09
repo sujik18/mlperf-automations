@@ -56,7 +56,7 @@ def preprocess(i):
     print('')
     # CMD = f"""{env['MLC_CONTAINER_TOOL']} ps --format=json  --filter "ancestor={DOCKER_CONTAINER}" """
     CMD = f"""{env['MLC_CONTAINER_TOOL']} ps --format """ + \
-        "'{{ .ID }},'" + f"""  --filter "ancestor={DOCKER_CONTAINER}" """
+        '"{{ .ID }},"' + f"""  --filter "ancestor={DOCKER_CONTAINER}" """
     if os_info['platform'] == 'windows':
         CMD += " 2> nul"
     else:
@@ -160,7 +160,8 @@ def postprocess(i):
         for mounts in env['MLC_DOCKER_VOLUME_MOUNTS']:
             mount_cmds.append(mounts)
 
-    if env.get('MLC_DOCKER_PASS_USER_GROUP', '') != '':
+    if env.get('MLC_DOCKER_PASS_USER_GROUP',
+               '') != '' and os_info['platform'] != 'windows':
         run_opts += " --group-add $(id -g $USER) "
 
     if env.get('MLC_DOCKER_ADD_DEVICE', '') != '':
@@ -179,6 +180,9 @@ def postprocess(i):
 
     if env.get('MLC_DOCKER_EXTRA_RUN_ARGS', '') != '':
         run_opts += env['MLC_DOCKER_EXTRA_RUN_ARGS']
+
+    if is_true(env.get('MLC_DOCKER_USE_GOOGLE_DNS', '')):
+        run_opts += ' --dns 8.8.8.8 --dns 8.8.4.4 '
 
     if env.get('MLC_CONTAINER_TOOL', '') == 'podman' and env.get(
             'MLC_PODMAN_MAP_USER_ID', '').lower() not in ["no", "0", "false"]:
