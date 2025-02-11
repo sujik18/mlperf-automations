@@ -5,6 +5,7 @@ import shutil
 import sys
 from tabulate import tabulate
 import mlperf_utils
+from pathlib import Path
 
 
 def preprocess(i):
@@ -71,7 +72,6 @@ def generate_submission(env, state, inp, submission_division):
     sys.path.append(submission_checker_dir)
 
     if env.get('MLC_MLPERF_INFERENCE_SUBMISSION_DIR', '') == '':
-        from pathlib import Path
         user_home = str(Path.home())
         env['MLC_MLPERF_INFERENCE_SUBMISSION_DIR'] = os.path.join(
             user_home, "mlperf_submission")
@@ -275,7 +275,11 @@ def generate_submission(env, state, inp, submission_division):
                             {model: returned_model_name})
 
         if check_dict_filled(sut_info.keys(), sut_info):
-            system = env.get('MLC_HW_NAME', sut_info["system_name"])
+            system = env.get(
+                'MLC_HW_NAME',
+                sut_info["system_name"]).replace(
+                " ",
+                "_")
             implementation = sut_info["implementation"]
             device = sut_info["device"]
             framework = sut_info["framework"].replace(" ", "_")
@@ -283,7 +287,7 @@ def generate_submission(env, state, inp, submission_division):
             run_config = sut_info["run_config"]
             new_res = f"{system}-{implementation}-{device}-{framework}-{run_config}"
         else:
-            new_res = res
+            new_res = res.replace(" ", "_")
 
         print(f"The SUT folder name for submission generation is: {new_res}")
 
@@ -535,17 +539,19 @@ def generate_submission(env, state, inp, submission_division):
                             measurements_json = json.load(f)
                             model_precision = measurements_json.get(
                                 "weight_data_types", "fp32")
-                        shutil.copy(
-                            measurements_json_path,
-                            os.path.join(
-                                target_measurement_json_path,
-                                sub_res + '.json'))
 
-                        shutil.copy(
-                            measurements_json_path,
-                            os.path.join(
-                                target_measurement_json_path,
-                                'model-info.json'))
+                        # Convert paths to Path objects
+                        measurements_json_path = Path(measurements_json_path)
+                        target_measurement_json_path = Path(
+                            target_measurement_json_path)
+
+                        destination = Path(
+                            target_measurement_json_path) / f"{sub_res}.json"
+                        shutil.copy(measurements_json_path, destination)
+                        destination = Path(
+                            target_measurement_json_path) / "model-info.json"
+                        shutil.copy(measurements_json_path, destination)
+
                     else:
                         if mode.lower() == "performance":
                             return {
