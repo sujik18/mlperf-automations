@@ -563,7 +563,8 @@ def generate_submission(env, state, inp, submission_division):
                             "weight_transformations": env['MLC_ML_MODEL_WEIGHT_TRANSFORMATIONS'] if env.get('MLC_ML_MODEL_WEIGHT_TRANSFORMATIONS') else "TBD"
                         }
                         with open(measurements_json_path, 'w') as json_file:
-                            json.dump(dummy_measurements_data, json_file, indent=4)
+                            json.dump(
+                                dummy_measurements_data, json_file, indent=4)
 
                     files = []
                     readme = False
