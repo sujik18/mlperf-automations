@@ -3,6 +3,7 @@ import os
 import json
 import shutil
 import subprocess
+from utils import *
 
 
 def preprocess(i):
@@ -51,12 +52,14 @@ def preprocess(i):
 
     env['MLC_MLPERF_LOADGEN_EXTRA_OPTIONS'] += env['MLC_MLPERF_LOADGEN_QPS_OPT']
 
-    if 'MLC_NUM_THREADS' not in env:
-        if 'MLC_MINIMIZE_THREADS' in env:
+    if env.get('MLC_NUM_THREADS', '') == '':
+        if is_true(env.get('MLC_MINIMIZE_THREADS', '')) and env.get(
+                'MLC_HOST_CPU_TOTAL_CORES', '') != '':
             env['MLC_NUM_THREADS'] = str(int(env['MLC_HOST_CPU_TOTAL_CORES']) //
-                                         (int(env.get('MLC_HOST_CPU_SOCKETS', '1')) * int(env.get('MLC_HOST_CPU_TOTAL_CORES', '1'))))
+                                         (int(env.get('MLC_HOST_CPU_SOCKETS', '1'))))
         else:
             env['MLC_NUM_THREADS'] = env.get('MLC_HOST_CPU_TOTAL_CORES', '1')
+    env['CM_NUM_THREADS'] = env['MLC_NUM_THREADS']  # For inference code
 
     if env.get('MLC_MLPERF_LOADGEN_MAX_BATCHSIZE', '') != '' and str(env.get(
             'MLC_MLPERF_MODEL_SKIP_BATCHING', False)).lower() not in ["true", "1", "yes"]:
@@ -250,9 +253,9 @@ def get_run_cmd_reference(
                 'MLC_MLPERF_DEVICE') != "tpu":
             if os_info['platform'] == 'windows':
                 cmd = "python python/main.py --profile " + env['MLC_MODEL'] + "-" + env['MLC_MLPERF_BACKEND'] + \
-                    " --model=" + env['MLC_ML_MODEL_FILE_WITH_PATH'] + ' --dataset-path=' + env['MLC_DATASET_PREPROCESSED_PATH'] + \
-                    " --scenario " + env['MLC_MLPERF_LOADGEN_SCENARIO'] + " " + \
-                    " --output " + env['OUTPUT_DIR'] + " " + \
+                    " --model=\"" + env['MLC_ML_MODEL_FILE_WITH_PATH'] + '" --dataset-path="' + env['MLC_DATASET_PREPROCESSED_PATH'] + \
+                    "\" --scenario " + env['MLC_MLPERF_LOADGEN_SCENARIO'] + " " + \
+                    " --output \"" + env['OUTPUT_DIR'] + "\" " + \
                     env['MLC_MLPERF_LOADGEN_EXTRA_OPTIONS'] + \
                     scenario_extra_options + mode_extra_options + dataset_options
             else:
@@ -270,12 +273,13 @@ def get_run_cmd_reference(
             env['MODEL_FILE'] = env.get(
                 'MLC_MLPERF_CUSTOM_MODEL_PATH',
                 env.get('MLC_ML_MODEL_FILE_WITH_PATH'))
+
         if not env['MODEL_FILE']:
             return {'return': 1, 'error': 'No valid model file found!'}
 
         env['LOG_PATH'] = env['MLC_MLPERF_OUTPUT_DIR']
 
-        extra_options = " --output " + env['MLC_MLPERF_OUTPUT_DIR'] + " --model-name resnet50  --dataset " + env['MLC_MLPERF_VISION_DATASET_OPTION'] + ' --max-batchsize ' + env.get('MLC_MLPERF_LOADGEN_MAX_BATCHSIZE', '1') + \
+        extra_options = " --output " + env['MLC_MLPERF_OUTPUT_DIR'] + " --model-name resnet50  --dataset " + env['MLC_MLPERF_VISION_DATASET_OPTION'] + f""" --max-batchsize {env.get('MLC_MLPERF_LOADGEN_MAX_BATCHSIZE', '1')}""" + \
             " --dataset-path " + env['MLC_DATASET_PREPROCESSED_PATH'] + " --model " + env['MODEL_FILE'] + \
             " --preprocessed_dir " + env['MLC_DATASET_PREPROCESSED_PATH']
 

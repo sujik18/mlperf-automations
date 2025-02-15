@@ -50,8 +50,7 @@ docker:
     submission_base_dir: MLC_MLPERF_INFERENCE_SUBMISSION_BASE_DIR
   extra_run_args: ' --cap-add SYS_ADMIN'
   mounts:
-  - ${{ MLC_MLPERF_INFERENCE_SUBMISSION_BASE_DIR }}:${{ MLC_MLPERF_INFERENCE_SUBMISSION_BASE_DIR
-    }}
+  - ${{ MLC_MLPERF_INFERENCE_SUBMISSION_BASE_DIR }}:${{ MLC_MLPERF_INFERENCE_SUBMISSION_BASE_DIR }}
   - ${{ MLC_MLPERF_INFERENCE_RESULTS_DIR_ }}:${{ MLC_MLPERF_INFERENCE_RESULTS_DIR_ }}
   os: ubuntu
   os_version: '22.04'
@@ -86,6 +85,7 @@ input_mapping:
   sw_notes_extra: MLC_MLPERF_SUT_SW_NOTES_EXTRA
   tar: MLC_TAR_SUBMISSION_DIR
   get_platform_details: MLC_GET_PLATFORM_DETAILS
+  submission_preprocessor_args: MLC_MLPERF_PREPROCESS_SUBMISSION_EXTRA_ARGS
   version: MLC_MLPERF_SUBMISSION_CHECKER_VERSION
 post_deps:
 - enable_if_env:
@@ -97,10 +97,7 @@ post_deps:
   tags: accuracy,truncate,mlc
 - enable_if_env:
     MLC_RUN_MLPERF_SUBMISSION_PREPROCESSOR:
-    - 'on'
-    - 'True'
     - 'yes'
-    - true
   tags: preprocess,mlperf,submission
 - skip_if_env:
     MLC_RUN_SUBMISSION_CHECKER:
