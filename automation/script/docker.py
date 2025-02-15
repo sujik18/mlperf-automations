@@ -371,7 +371,7 @@ def docker_run(self_module, i):
 
         # Execute the Docker container
         mlc_docker_input = {
-            'action': 'run', 'automation': 'script', 'tags': 'run,docker,container',
+            'action': 'run', 'target': 'script', 'tags': 'run,docker,container',
             'rebuild': rebuild_docker_image,
             'env': env, 'mounts': mounts,
             'script_tags': i.get('tags'), 'run_cmd': final_run_cmd, 'v': verbose,
