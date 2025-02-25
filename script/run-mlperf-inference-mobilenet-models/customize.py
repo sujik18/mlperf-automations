@@ -2,6 +2,8 @@ from mlc import utils
 import os
 import sys
 from utils import *
+import mlc
+import importlib
 
 
 def preprocess(i):
@@ -17,7 +19,9 @@ def preprocess(i):
     adr = i['input'].get('adr')
 
     automation = i['automation']
-    mlc = i['automation'].action_object
+    # mlc = i['automation'].action_object
+    # cache_action = i['automation'].cache_action
+    cache_action = mlc
 
     quiet = (env.get('MLC_QUIET', False) == 'yes')
     verbose = (env.get('MLC_VERBOSE', False) == 'yes')
@@ -61,7 +65,7 @@ def preprocess(i):
         models['mobilenet']['v3'] = models_all['mobilenet']['v3']
     elif is_true(env.get('MLC_MLPERF_RUN_MOBILENETS', '')):
         models['mobilenet'] = models_all['mobilenet']
-    elif is_true(env.get('MLC_MLPERF_RUN_EFFICIENTNETS', '')):
+    if is_true(env.get('MLC_MLPERF_RUN_EFFICIENTNETS', '')):
         models['efficientnet'] = models_all['efficientnet']
 
     variation_strings = {}
@@ -107,17 +111,17 @@ def preprocess(i):
         execution_mode = "test"
 
     precisions = []
-    if env.get('MLC_MLPERF_RUN_FP32', '') == "yes":
+    if is_true(env.get('MLC_MLPERF_RUN_FP32', '')):
         precisions.append("fp32")
-    if env.get('MLC_MLPERF_RUN_INT8', '') == "yes":
+    if is_true(env.get('MLC_MLPERF_RUN_INT8', '')):
         precisions.append("uint8")
 
     implementation_tags = []
-    if env.get('MLC_MLPERF_USE_ARMNN_LIBRARY', '') == "yes":
+    if is_true(env.get('MLC_MLPERF_USE_ARMNN_LIBRARY', '')):
         implementation_tags.append("_armnn")
-    if env.get('MLC_MLPERF_TFLITE_ARMNN_NEON', '') == "yes":
+    if is_true(env.get('MLC_MLPERF_TFLITE_ARMNN_NEON', '')):
         implementation_tags.append("_use-neon")
-    if env.get('MLC_MLPERF_TFLITE_ARMNN_OPENCL', '') == "yes":
+    if is_true(env.get('MLC_MLPERF_TFLITE_ARMNN_OPENCL', '')):
         implementation_tags.append("_use-opencl")
     implementation_tags_string = ",".join(implementation_tags)
 
@@ -185,34 +189,27 @@ def preprocess(i):
                 if is_true(env.get('MLC_MLPERF_POWER', '')):
                     mlc_input['power'] = 'yes'
 
-                if is_true(env.get('MLC_MLPERF_ACCURACY_MODE', '')):
-                    mlc_input['mode'] = 'accuracy'
-                    print(mlc_input)
-                    r = mlc.access(mlc_input)
-                    if r['return'] > 0:
-                        return r
-
-                if is_true(env.get('MLC_MLPERF_PERFORMANCE_MODE', '')):
-                    mlc_input['mode'] = 'performance'
-
-                    print(mlc_input)
-                    r = mlc.access(mlc_input)
-                    if r['return'] > 0:
-                        return r
-
-                if env.get('MLC_TEST_ONE_RUN', '') == "yes":
-                    return {'return': 0}
+                print(mlc_input)
+                r = mlc.access(mlc_input)
+                if r['return'] > 0:
+                    return r
+                importlib.reload(mlc.action)
 
                 if is_true(env.get('MLC_MINIMIZE_DISK_SPACE', '')):
-                    r = mlc.access(clean_input)
+                    r = cache_action.access(clean_input)
                     if r['return'] > 0:
                         print(r)
                     #    return r
 
-            r = mlc.access(clean_input)
+                if is_true(env.get('MLC_TEST_ONE_RUN', '')):
+                    return {'return': 0}
+
+            r = cache_action.access(clean_input)
             if r['return'] > 0:
                 print(r)
                 #    return r
+            else:
+                importlib.reload(mlc.action)
     return {'return': 0}
 
 
