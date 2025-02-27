@@ -9,7 +9,7 @@ default_env:
   MLC_MLPERF_RUN_INT8: 'yes'
   MLC_MLPERF_RUN_MOBILENETS: 'no'
   MLC_USE_DATASET_FROM_HOST: 'yes'
-  MLC_MINIMIZE_DISK_SPACE: 'yes'
+  MLC_MINIMIZE_DISK_USAGE: 'no'
 deps:
 - tags: get,sys-utils-mlc
 docker:
@@ -35,6 +35,7 @@ docker:
     imagenet_path: MLC_DATASET_IMAGENET_PATH
     results_dir: MLC_MLPERF_INFERENCE_RESULTS_DIR
     submission_dir: MLC_MLPERF_INFERENCE_SUBMISSION_DIR
+    minimize_disk_usage: MLC_MINIMIZE_DISK_USAGE
   fake_run_deps: false
   pre_run_cmds:
     - mlc pull repo
