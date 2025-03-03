@@ -4,6 +4,7 @@ import json
 import shutil
 import subprocess
 import sys
+from utils import *
 
 
 def preprocess(i):
@@ -112,8 +113,8 @@ def preprocess(i):
                 env['MLC_MLPERF_USE_MAX_DURATION'] = 'no'
             elif scenario == "MultiStream" and (1000 / float(value) * 660 < 662):
                 env['MLC_MLPERF_USE_MAX_DURATION'] = 'no'
-        if env.get('MLC_MLPERF_MODEL_EQUAL_ISSUE_MODE', 'no').lower() not in ["yes", "1", "true"] and env.get(
-                'MLC_MLPERF_USE_MAX_DURATION', "yes").lower() not in ["no", "false", "0"]:
+        if not is_true(env.get('MLC_MLPERF_MODEL_EQUAL_ISSUE_MODE', 'no')) and not is_false(env.get(
+                'MLC_MLPERF_USE_MAX_DURATION', "yes")):
             tolerance = 0.4  # much lower because we have max_duration
         else:
             tolerance = 0.9
@@ -355,13 +356,13 @@ def preprocess(i):
             max_duration_ranging_s *
             1000)  # in milliseconds
         if scenario == "MultiStream" or scenario == "SingleStream":
-            if env.get('MLC_MLPERF_USE_MAX_DURATION', 'yes').lower() not in ["no", "false", "0"] and env.get(
-                    'MLC_MLPERF_MODEL_EQUAL_ISSUE_MODE', 'no').lower() not in ["yes", "1", "true"]:
-                user_conf += ml_model_name + "." + scenario + \
-                    f".max_duration = {max_duration_valid}" + "\n"
-            elif env.get('MLC_MLPERF_INFERENCE_MIN_DURATION', '') != '':
+            if env.get('MLC_MLPERF_INFERENCE_MIN_DURATION', '') != '':
                 user_conf += ml_model_name + "." + scenario + ".min_duration = " + \
                     env['MLC_MLPERF_INFERENCE_MIN_DURATION'] + " \n"
+            elif not is_false(env.get('MLC_MLPERF_USE_MAX_DURATION', 'yes')) and not is_true(env.get(
+                    'MLC_MLPERF_MODEL_EQUAL_ISSUE_MODE', 'no')):
+                user_conf += ml_model_name + "." + scenario + \
+                    f".max_duration = {max_duration_valid}" + "\n"
             if scenario == "MultiStream":
                 user_conf += ml_model_name + "." + scenario + ".min_query_count = " + \
                     env.get(

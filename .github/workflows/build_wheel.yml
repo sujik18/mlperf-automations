@@ -6,9 +6,10 @@ on:
     
   push:
     branches:
-      - dev
+      - dev_off
     paths:
       - VERSION
+
 
 jobs:
 

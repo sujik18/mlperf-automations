@@ -281,8 +281,6 @@ def preprocess(i):
 
             mlc = i['automation'].action_object
 
-            # print(ii)
-            # return {'return': 1}
             r = mlc.access(ii)
             if r['return'] > 0:
                 return r
@@ -307,7 +305,7 @@ def preprocess(i):
             if state.get('docker', {}):
                 del (state['docker'])
 
-        if env.get("MLC_MLPERF_LOADGEN_COMPLIANCE", "") == "yes":
+        if is_true(env.get("MLC_MLPERF_LOADGEN_COMPLIANCE", "")):
             for test in test_list:
                 env['MLC_MLPERF_LOADGEN_COMPLIANCE_TEST'] = test
                 env['MLC_MLPERF_LOADGEN_MODE'] = "compliance"
