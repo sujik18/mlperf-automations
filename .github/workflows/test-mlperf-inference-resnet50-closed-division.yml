@@ -1,6 +1,8 @@
 name: MLPerf inference ResNet50 Closed Division for testing Compliance
 
 on:
+  schedule:
+    - cron: '0 0 * * 0' # Runs once a week
   pull_request_target:
     branches: [ "main", "dev" ]
     paths:
