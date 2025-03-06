@@ -37,7 +37,7 @@ jobs:
         
     - name: Check if the submission is for closed division
       run: |
-          if ((git diff --name-only origin/..HEAD | xargs grep -l "division=closed") -ne $null)  "division=closed"; then
+          if ((git diff --name-only origin/..HEAD | xargs grep -l "division=closed") then
             echo "DIVISION_CLOSED=true" >> $GITHUB_ENV
           else
             echo "DIVISION_CLOSED=false" >> $GITHUB_ENV
