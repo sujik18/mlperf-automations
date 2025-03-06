@@ -1,6 +1,9 @@
 name: MLPerf inference ResNet50 Closed Division for testing Compliance
 
 on:
+  push:
+    branches:
+      - dev
   schedule:
     - cron: '0 0 * * 0' # Runs once a week
   pull_request_target:
@@ -90,6 +93,9 @@ jobs:
       run: |
         mlcr run-mlperf, inference, _submission, _short, _all-scenarios --division=closed, --submitter="MLCommons" --pull_changes=yes --pull_inference_changes=yes --hw_name="gh_${{ matrix.os }} x86" --model=resnet50 --implementation=${{ matrix.implementation }} --backend=${{ matrix.backend }} --device=cpu --test_query_count=500 -v --quiet --compliance=yes
         
+    - name: Run Submission checker 
+      run: |
+        mlcr run,submission,checker
         
     # Step for Linux/MacOS
     - name: Randomly Execute Step (Linux/MacOS)
