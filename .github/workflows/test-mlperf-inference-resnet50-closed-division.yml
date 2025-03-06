@@ -77,7 +77,7 @@ jobs:
         
     - name: Remove Cached inference src
       run: |
-        rm cache --tags=inference,src
+        mlc rm cache --tags=inference -f
 
     - name: Test MLPerf Inference ResNet50 (Windows)
       if: matrix.os == 'windows-latest'
