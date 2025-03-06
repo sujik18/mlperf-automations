@@ -68,7 +68,7 @@ jobs:
         
     - name: Pull MLOps repo
       run: |
-        mlc pull repo ${{ github.repository_url }} --branch=${{ github.ref_name }}
+        mlc pull repo mlcommons@mlperf-automations --branch=dev
     
     - name: Test MLPerf Inference ResNet50 (Windows)
       if: matrix.os == 'windows-latest'
