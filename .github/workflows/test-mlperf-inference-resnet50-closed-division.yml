@@ -87,7 +87,7 @@ jobs:
       
     - name: Run Submission checker (Windows)
       run: |
-        mlcr run,submission,checker, --submission_dir=" /home/runner/MLC/repos/mlcommons@mlperf-automations/script/run-mlperf-inference-submission-checker"  
+        mlcr run /home/runner/MLC/repos/mlcommons@mlperf-automations/script/run-mlperf-inference-submission-checker 
     
     - name: Remove Cached inference src
       run: |
@@ -104,8 +104,7 @@ jobs:
         
     - name: Run Submission checker 
       run: |
-        mlcr run,submission,checker, --submission_dir=" /home/runner/MLC/repos/mlcommons@mlperf-automations/script/run-mlperf-inference-submission-checker"
-        
+        mlcr run /home/runner/MLC/repos/mlcommons@mlperf-automations/script/run-mlperf-inference-submission-checker
     # Step for Linux/MacOS
     - name: Randomly Execute Step (Linux/MacOS)
       if: runner.os != 'Windows'
