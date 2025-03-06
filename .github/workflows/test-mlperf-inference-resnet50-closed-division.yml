@@ -74,7 +74,11 @@ jobs:
     - name: Pull MLOps repo
       run: |
         mlc pull repo mlcommons@mlperf-automations --branch=dev
-    
+        
+    - name: Remove Cached inference src
+      run: |
+        rm cache --tags=inference,src
+
     - name: Test MLPerf Inference ResNet50 (Windows)
       if: matrix.os == 'windows-latest'
       run: |
