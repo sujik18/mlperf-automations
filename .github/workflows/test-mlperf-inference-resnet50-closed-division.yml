@@ -19,6 +19,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       MLC_INDEX: "on"
+      CI: true
     strategy:
       fail-fast: false
       matrix:
@@ -105,7 +106,7 @@ jobs:
         
     - name: Run Submission checker 
       run: |
-         run: echo 0 | mlcr run,submission,checker
+        echo 0 | mlcr run,submission,checker
         
     # Step for Linux/MacOS
     - name: Randomly Execute Step (Linux/MacOS)
