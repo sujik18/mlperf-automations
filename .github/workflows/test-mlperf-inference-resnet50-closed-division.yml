@@ -38,24 +38,24 @@ jobs:
       with:
         fetch-depth: 0
         
-    - name: Check if the submission is for closed division
-      shell: bash  # Use Bash for Linux/macOS and force it on Windows
-      run: |
-        if git diff --name-only origin/..HEAD | xargs grep -l "division=closed" >/dev/null 2>&1; then
-            echo "DIVISION_CLOSED=closed" >> $GITHUB_ENV
-        else
-            echo "DIVISION_CLOSED=open" >> $GITHUB_ENV
-        fi
+    # - name: Check if the submission is for closed division
+    #   shell: bash  # Use Bash for Linux/macOS and force it on Windows
+    #   run: |
+    #     if git diff --name-only origin/..HEAD | xargs grep -l "division=closed" >/dev/null 2>&1; then
+    #         echo "DIVISION_CLOSED=closed" >> $GITHUB_ENV
+    #     else
+    #         echo "DIVISION_CLOSED=open" >> $GITHUB_ENV
+    #     fi
       
           
-    - name: Check value for the divison
-      run: echo "Division is ${{ env.DIVISION_CLOSED }}"      
+    # - name: Check value for the divison
+    #   run: echo "Division is ${{ env.DIVISION_CLOSED }}"      
       
-    - name: Skip workflow if its an open division submission as no compliance test is required
-      if: ${{ env.DIVISION_CLOSED == 'open' }}
-      run: |
-        echo "Skipping workflow because division=closed is not found."
-        exit 0
+    # - name: Skip workflow if its an open division submission as no compliance test is required
+    #   if: ${{ env.DIVISION_CLOSED == 'open' }}
+    #   run: |
+    #     echo "Skipping workflow because division=closed is not found."
+    #     exit 0
     
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
@@ -84,9 +84,10 @@ jobs:
     - name: Compliance Test MLPerf Inference ResNet50 (Windows)
       if: matrix.os == 'windows-latest'
       run: mlcr run-mlperf, inference, _submission, _short,_all-scenarios, --division=closed, --submitter="MLCommons" --pull_changes=yes --pull_inference_changes=yes --hw_name="gh_${{ matrix.os }} x86" --model=resnet50 --adr.loadgen.tags=_from-pip --pip_loadgen=yes --implementation=${{ matrix.implementation }} --backend=${{ matrix.backend }} --device=cpu --test_query_count=500 --quiet --compliance=yes # mentioning only --compliance currently doesnt work needs to be --compliance=yes
+      
     - name: Run Submission checker (Windows)
       run: |
-        mlcr run,submission,checker  
+        mlcr run,submission,checker, --submission_dir=" /home/runner/MLC/repos/mlcommons@mlperf-automations/script/run-mlperf-inference-submission-checker"  
     
     - name: Remove Cached inference src
       run: |
@@ -103,7 +104,7 @@ jobs:
         
     - name: Run Submission checker 
       run: |
-        mlcr run,submission,checker
+        mlcr run,submission,checker, --submission_dir=" /home/runner/MLC/repos/mlcommons@mlperf-automations/script/run-mlperf-inference-submission-checker"
         
     # Step for Linux/MacOS
     - name: Randomly Execute Step (Linux/MacOS)
