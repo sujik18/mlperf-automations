@@ -105,8 +105,7 @@ jobs:
         
     - name: Run Submission checker 
       run: |
-         export MLC_SELECT_DEFAULT=0
-         mlcr run,submission,checker
+         run: echo 0 | mlcr run,submission,checker
         
     # Step for Linux/MacOS
     - name: Randomly Execute Step (Linux/MacOS)
