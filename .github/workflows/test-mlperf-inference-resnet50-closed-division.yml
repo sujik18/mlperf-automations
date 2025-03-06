@@ -3,7 +3,7 @@ name: MLPerf inference ResNet50 Closed Division for testing Compliance
 on:
   push:
     branches:
-      - dev
+      - test
   schedule:
     - cron: '0 0 * * 0' # Runs once a week
   pull_request_target:
@@ -38,24 +38,24 @@ jobs:
       with:
         fetch-depth: 0
         
-    # - name: Check if the submission is for closed division
-    #   shell: bash  # Use Bash for Linux/macOS and force it on Windows
-    #   run: |
-    #     if git diff --name-only origin/..HEAD | xargs grep -l "division=closed" >/dev/null 2>&1; then
-    #         echo "DIVISION_CLOSED=true" >> $GITHUB_ENV
-    #     else
-    #         echo "DIVISION_CLOSED=false" >> $GITHUB_ENV
-    #     fi
+    - name: Check if the submission is for closed division
+      shell: bash  # Use Bash for Linux/macOS and force it on Windows
+      run: |
+        if git diff --name-only origin/..HEAD | xargs grep -l "division=closed" >/dev/null 2>&1; then
+            echo "DIVISION_CLOSED=closed" >> $GITHUB_ENV
+        else
+            echo "DIVISION_CLOSED=open" >> $GITHUB_ENV
+        fi
       
           
-    # - name: Check value for the divison
-    #   run: echo "DIVISION_CLOSED=${{ env.DIVISION_CLOSED }}"      
+    - name: Check value for the divison
+      run: echo "Division is ${{ env.DIVISION_CLOSED }}"      
       
-    # - name: Skip workflow if its an open division submission as no compliance test is required
-    #   if: ${{ env.DIVISION_CLOSED == 'false' }}
-    #   run: |
-    #     echo "Skipping workflow because division=closed is not found in the changes."
-    #     exit 0
+    - name: Skip workflow if its an open division submission as no compliance test is required
+      if: ${{ env.DIVISION_CLOSED == 'open' }}
+      run: |
+        echo "Skipping workflow because division=closed is not found."
+        exit 0
     
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
