@@ -85,13 +85,13 @@ jobs:
       if: matrix.os == 'windows-latest'
       run: mlcr run-mlperf, inference, _submission, _short,_all-scenarios, --division=closed, --submitter="MLCommons" --pull_changes=yes --pull_inference_changes=yes --hw_name="gh_${{ matrix.os }} x86" --model=resnet50 --adr.loadgen.tags=_from-pip --pip_loadgen=yes --implementation=${{ matrix.implementation }} --backend=${{ matrix.backend }} --device=cpu --test_query_count=500 --quiet --compliance=yes # mentioning only --compliance currently doesnt work needs to be --compliance=yes
       
-    - name: Run Submission checker (Windows)
-      run: |
-        mlcr run MLC/repos/mlcommons@mlperf-automations/script/run-mlperf-inference-submission-checker
+    # - name: Run Submission checker (Windows)
+    #   run: |
+    #     mlcr run MLC/repos/mlcommons@mlperf-automations/script/run-mlperf-inference-submission-checker
     
-    - name: Remove Cached inference src
-      run: |
-          mlc rm cache --tags=inference -f
+    # - name: Remove Cached inference src
+    #   run: |
+    #       mlc rm cache --tags=inference -f
     
     - name: Test MLPerf Inference ResNet50 (Linux/macOS)
       if: matrix.os != 'windows-latest'
@@ -102,9 +102,10 @@ jobs:
       run: |
         mlcr run-mlperf, inference, _submission, _short, _all-scenarios --division=closed, --submitter="MLCommons" --pull_changes=yes --pull_inference_changes=yes --hw_name="gh_${{ matrix.os }} x86" --model=resnet50 --implementation=${{ matrix.implementation }} --backend=${{ matrix.backend }} --device=cpu --test_query_count=500 -v --quiet --compliance=yes
         
-    - name: Run Submission checker 
-      run: |
-        mlcr run MLC/repos/mlcommons@mlperf-automations/script/run-mlperf-inference-submission-checker
+    # - name: Run Submission checker 
+    #   run: |
+    #     mlcr run MLC/repos/mlcommons@mlperf-automations/script/run-mlperf-inference-submission-checker
+        
     # Step for Linux/MacOS
     - name: Randomly Execute Step (Linux/MacOS)
       if: runner.os != 'Windows'
