@@ -12,7 +12,11 @@ new_env_keys:
 - MLC_ONEAPI_COMPILER_*
 - MLC_COMPILER_*
 - MLC_LINKER_*
-post_deps:
+
+input_mapping:
+  oneapi_dir: MLC_ONEAPI_DIR_PATH
+ 
+post_deps_off:
 - tags: get,compiler-flags
 sort: 500
 tags:
@@ -24,4 +28,4 @@ uid: 1af872e81ef54742
 variations:
   _path.#:
     env:
-      MLC_ONEAPI_DIR_PATH: null
+      MLC_ONEAPI_DIR_PATH: "#"

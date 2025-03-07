@@ -1,5 +1,6 @@
 from mlc import utils
 import os
+from utils import *
 
 
 def preprocess(i):
@@ -9,12 +10,12 @@ def preprocess(i):
     env = i['env']
 
     recursion_spaces = i['recursion_spaces']
-    file_name_c = 'oneapi.exe' if os_info['platform'] == 'windows' else 'oneapi-cli'
+    file_name_c = 'icx.exe' if os_info['platform'] == 'windows' else 'icx'
 
-    if 'MLC_ONEAPI_BIN_WITH_PATH' not in env:
+    if 'MLC_ICX_BIN_WITH_PATH' not in env:
         if env.get('MLC_ONEAPI_DIR_PATH', '') != '':
             oneapi_path = env['MLC_ONEAPI_DIR_PATH']
-            if os.path.exists(os.path.join(oneapi_path, 'bin', 'oneapi-cli')):
+            if os.path.exists(os.path.join(oneapi_path, 'bin', 'icx')):
                 env['MLC_TMP_PATH'] = os.path.join(oneapi_path, 'bin')
 
     if 'MLC_ONEAPI_BIN_WITH_PATH' not in env:
@@ -23,7 +24,7 @@ def preprocess(i):
                                            'os_info': os_info,
                                            'default_path_env_key': 'PATH',
                                            'detect_version': True,
-                                           'env_path_key': 'MLC_ONEAPI_BIN_WITH_PATH',
+                                           'env_path_key': 'MLC_ICX_BIN_WITH_PATH',
                                            'run_script_input': i['run_script_input'],
                                            'recursion_spaces': recursion_spaces})
         if r['return'] > 0:
@@ -46,8 +47,8 @@ def preprocess(i):
 
 
 def detect_version(i):
-    r = i['automation'].parse_version({'match_text': r'^.*$',
-                                       'group_number': 0,
+    r = i['automation'].parse_version({'match_text': r'oneAPI\s+.*\(([\d.]+)\)',
+                                       'group_number': 1,
                                        'env_key': 'MLC_ONEAPI_VERSION',
                                        'which_env': i['env']})
     if r['return'] > 0:
@@ -70,14 +71,14 @@ def postprocess(i):
     env['MLC_COMPILER_FAMILY'] = 'ONEAPI'
     version = r['version']
     env['MLC_COMPILER_VERSION'] = env['MLC_ONEAPI_VERSION']
-    env['MLC_GCC_CACHE_TAGS'] = 'version-' + version
+    env['MLC_ONEAPI_CACHE_TAGS'] = 'version-' + version
     env['MLC_COMPILER_CACHE_TAGS'] = 'version-' + version + ',family-oneapi'
 
-    found_file_path = env['MLC_ONEAPI_BIN_WITH_PATH']
+    found_file_path = env['MLC_ICX_BIN_WITH_PATH']
 
     found_path = os.path.dirname(found_file_path)
 
-    env['MLC_ONEAPI_INSTALLED_PATH'] = found_path
+    env['MLC_ONEAPI_INSTALLED_PATH'] = os.path.dirname(found_path)
 
     file_name_c = os.path.basename(found_file_path)
 
