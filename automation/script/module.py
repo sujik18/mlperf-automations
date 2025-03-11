@@ -1830,6 +1830,10 @@ class ScriptAutomation(Automation):
                 import json
                 logger.debug(json.dumps(env, indent=2, sort_keys=True))
 
+            r = update_env_with_values(env)
+            if r['return'] > 0:
+                return r
+
             # Check chain of pre hook dependencies on other MLC scripts
             if len(prehook_deps) > 0:
                 logger.debug(
