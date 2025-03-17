@@ -20,6 +20,7 @@ deps:
 
 input_mapping:
   tar_file_path: MLC_AOCC_TAR_FILE_PATH
+  aocc_dir: MLC_AOCC_DIR_PATH
 
 name: Detect or install AOCC compiler
 new_env_keys:
@@ -34,7 +35,7 @@ new_env_keys:
 - + LDFLAGS
 - +MLC_HOST_OS_DEFAULT_INCLUDE_PATH
 - +PATH
-post_depsq:
+post_deps_off:
 - tags: get,compiler-flags
 sort: 500
 tags:
@@ -42,3 +43,7 @@ tags:
 - get
 - aocc
 uid: 1ceb0656e99a44ec
+variations:
+  _path.#:
+    env:
+      MLC_AOCC_DIR_PATH: #
