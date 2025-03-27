@@ -3,6 +3,7 @@ import os
 import hashlib
 from utils import *
 
+
 def preprocess(i):
 
     variation_tags = i.get('variation_tags', [])
