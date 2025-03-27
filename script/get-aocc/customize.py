@@ -19,7 +19,6 @@ def ask_url_acceptance(url):
             print("Invalid input. Please enter 'yes' or 'no'.")
 
 
-
 def predeps(i):
     os_info = i['os_info']
 
