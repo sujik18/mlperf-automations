@@ -25,6 +25,13 @@ def preprocess(i):
             aocc_path = env['MLC_AOCC_DIR_PATH']
             if os.path.exists(os.path.join(aocc_path, 'bin', 'clang')):
                 env['MLC_TMP_PATH'] = os.path.join(aocc_path, 'bin')
+            else:
+                for l in os.listdir(aocc_path):
+                    if os.path.exists(os.path.join(
+                            aocc_path, l, 'bin', 'clang')):
+                        aocc_path = os.path.join(aocc_path, l)
+                        env['MLC_AOCC_DIR_PATH'] = aocc_path
+                        env['MLC_TMP_PATH'] = os.path.join(aocc_path, 'bin')
 
         r = i['automation'].find_artifact({'file_name': exe_c,
                                            'env': env,
@@ -42,7 +49,7 @@ def preprocess(i):
 
 
 def detect_version(i):
-    r = i['automation'].parse_version({'match_text': r'AMD\s+clang\sversion\s([\d.]+)',
+    r = i['automation'].parse_version({'match_text': r'CLANG:\sAOCC_([\d.]+-Build#[\d]+)',
                                        'group_number': 1,
                                        'env_key': 'MLC_AOCC_VERSION',
                                        'which_env': i['env']})
