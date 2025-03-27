@@ -4727,6 +4727,9 @@ def find_cached_script(i):
                     r = docker_utils.get_container_path_script(i)
                     if not os.path.exists(r['value_env']):
                         # Need to rm this cache entry
+                        logger.debug(
+                            recursion_spaces +
+                            '  - Skipping cached entry as the dependent path {} is missing!'.format(r['value_env']))
                         skip_cached_script = True
                         continue
 
