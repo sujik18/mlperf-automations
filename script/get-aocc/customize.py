@@ -25,6 +25,13 @@ def preprocess(i):
             aocc_path = env['MLC_AOCC_DIR_PATH']
             if os.path.exists(os.path.join(aocc_path, 'bin', 'clang')):
                 env['MLC_TMP_PATH'] = os.path.join(aocc_path, 'bin')
+            else:
+                for l in os.listdir(aocc_path):
+                    if os.path.exists(os.path.join(
+                            aocc_path, l, 'bin', 'clang')):
+                        aocc_path = os.path.join(aocc_path, l)
+                        env['MLC_AOCC_DIR_PATH'] = aocc_path
+                        env['MLC_TMP_PATH'] = os.path.join(aocc_path, 'bin')
 
         r = i['automation'].find_artifact({'file_name': exe_c,
                                            'env': env,
