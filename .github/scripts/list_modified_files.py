@@ -1,12 +1,13 @@
 import yaml
 import sys
 import json
+import os
 
 
-def get_num_runs(filepath):
+def get_file_info(filepath):
     with open(filepath, 'r') as file:
         content = yaml.safe_load(file)
-        tests = content.get('tests', {})
+        tests = content.get('tests', [])
         if tests:
             num_tests = len(tests.get('run_inputs', []))
         else:
@@ -21,11 +22,11 @@ def process_files(files):
         {
             "file": file,
             "uid": uid,
-            "num_tests": num_tests
+            "num_run": i
         }
-        for file in filenames
-        if file.endswith('meta.yaml') and (uid := get_num_runs(file))
-        for _, num_tests in [uid]
+        for file in filenames if os.path.basename(file) == 'meta.yaml'
+        for uid, num_tests in [get_file_info(file)]
+        for i in range(1, num_tests + 1)
     ]
 
 
@@ -33,4 +34,4 @@ if __name__ == "__main__":
     changed_files = sys.stdin.read().strip()
     processed_files = process_files(changed_files)
     json_processed_files = json.dumps(processed_files)
-    print(f"::set-output name=modified_files::{json_processed_files}")
+    print(f"::set-output name=processed_files::{json_processed_files}")
