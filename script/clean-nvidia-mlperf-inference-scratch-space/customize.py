@@ -38,7 +38,8 @@ def preprocess(i):
                               'tags': cache_rm_tags, 'f': True})
         print(r)
         # Check if return code is 0 (success)
-        # currently, the warning code is not being checked as the possibility arises only for missing cache entry
+        # currently, the warning code is not being checked as the possibility
+        # arises only for missing cache entry
         if r['return'] != 0:
             return r
         if r['return'] == 0:  # cache entry found
