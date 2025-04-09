@@ -47,6 +47,7 @@ jobs:
             echo "run_step=false" >> $GITHUB_ENV
           fi
     - name: Load secret
+      if: github.repository_owner == 'mlcommons' && env.run_step == 'true'
       id: op-load-secret
       uses: 1password/load-secrets-action@v2
       with:
