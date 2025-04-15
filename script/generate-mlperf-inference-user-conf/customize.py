@@ -139,18 +139,18 @@ def preprocess(i):
         else:
             # if env.get("MLC_MLPERF_FIND_PERFORMANCE_MODE", '') == "yes":
             if metric == "target_qps":
-                if env.get("MLC_MLPERF_FIND_PERFORMANCE_MODE", '') == "yes":
+                if is_true(env.get("MLC_MLPERF_FIND_PERFORMANCE_MODE", '')):
                     print("In find performance mode: using 1 as target_qps")
                 else:
                     print("No target_qps specified. Using 1 as target_qps")
                 conf[metric] = 1
             if metric == "target_latency":
-                if env.get("MLC_MLPERF_FIND_PERFORMANCE_MODE", '') == "yes":
+                if is_true(env.get("MLC_MLPERF_FIND_PERFORMANCE_MODE", '')):
                     print("In find performance mode: using 0.5ms as target_latency")
                 else:
                     print("No target_latency specified. Using default")
-                if env.get('MLC_MLPERF_USE_MAX_DURATION', 'yes').lower() in ["no", "false", "0"] or env.get(
-                        'MLC_MLPERF_MODEL_EQUAL_ISSUE_MODE', 'no').lower() in ["yes", "1", "true"]:
+                if is_false(env.get('MLC_MLPERF_USE_MAX_DURATION', 'yes')) or is_true(env.get(
+                        'MLC_MLPERF_MODEL_EQUAL_ISSUE_MODE', 'no')):
                     # Total number of queries needed is a multiple of dataset
                     # size. So we dont use max_duration and so we need to be
                     # careful with the input latency
@@ -169,7 +169,7 @@ def preprocess(i):
             # {scenario}. Please input {metric} value"}
 
     # Pass the modified performance metrics to the implementation
-    if env.get("MLC_MLPERF_FIND_PERFORMANCE_MODE", '') == "yes":
+    if is_true(env.get("MLC_MLPERF_FIND_PERFORMANCE_MODE", '')):
         if metric == "target_latency" and env.get(
                 'MLC_MLPERF_LOADGEN_TARGET_LATENCY', '') == '':
             env['MLC_MLPERF_LOADGEN_TARGET_LATENCY'] = conf[metric]
@@ -324,8 +324,7 @@ def preprocess(i):
         env['MLC_MLPERF_MAX_QUERY_COUNT'] = max_query_count
 
         # max_duration is effective for all scenarios except the Offline
-        if env.get('MLC_MLPERF_USE_MAX_DURATION', 'yes').lower() not in [
-                "no", "false", "0"]:
+        if not is_false(env.get('MLC_MLPERF_USE_MAX_DURATION', 'yes')):
             if scenario != "Offline":
                 user_conf += ml_model_name + "." + scenario + \
                     f".max_duration = {max_duration_test}" + "\n"
@@ -437,8 +436,7 @@ def preprocess(i):
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-    if str(env.get('MLC_MLPERF_RESULTS_DIR_SHARED', '')
-           ).lower() in ["yes", "true", "1"]:
+    if is_true(env.get('MLC_MLPERF_RESULTS_DIR_SHARED', '')):
         os.chmod(OUTPUT_DIR, 0o2775)
 
     return {'return': 0}
@@ -531,8 +529,8 @@ def run_files_exist(mode, OUTPUT_DIR, run_files, env):
 
         return is_valid
 
-    if "power" in mode and env.get(
-            'MLC_MLPERF_SKIP_POWER_CHECKS', 'no').lower() not in ["yes", "true", "on"]:
+    if "power" in mode and not is_true(
+            env.get('MLC_MLPERF_SKIP_POWER_CHECKS', 'no')):
         from power.power_checker import check as check_power_more
         try:
             is_valid = check_power_more(os.path.dirname(OUTPUT_DIR)) == 0

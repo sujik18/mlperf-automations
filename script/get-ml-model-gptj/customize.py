@@ -33,8 +33,7 @@ def preprocess(i):
 
     elif env.get('MLC_TMP_ML_MODEL_PROVIDER', '') == 'nvidia':
         i['run_script_input']['script_name'] = 'run-nvidia'
-        if str(env.get('MLC_DOCKER_DETACHED_MODE', '')
-               ).lower() in ['yes', 'true', "1"]:
+        if is_true(str(env.get('MLC_DOCKER_DETACHED_MODE', ''))):
             env['DOCKER_RUN_OPTS'] = "--rm --ipc=host --ulimit memlock=-1 --ulimit stack=67108864"
         gpu_arch = int(
             float(
