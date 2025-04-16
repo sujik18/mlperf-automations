@@ -1,4 +1,5 @@
 from mlc import utils
+from utils import *
 import os
 
 
@@ -13,7 +14,7 @@ def preprocess(i):
 
     automation = i['automation']
 
-    quiet = (env.get('MLC_QUIET', False) == 'yes')
+    quiet = is_true(env.get('MLC_QUIET', False))
 
     models = env['MODELS'].split(",")
 
@@ -29,7 +30,7 @@ def preprocess(i):
 
     power = env.get('POWER', '')
 
-    if str(power).lower() in ["yes", "true"]:
+    if is_true(str(power)):
         POWER_STRING = " --power=yes --adr.mlperf-power-client.power_server=" + env.get(
             'POWER_SERVER',
             '192.168.0.15') + " --adr.mlperf-power-client.port=" + str(

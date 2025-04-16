@@ -6,6 +6,7 @@ import sys
 from tabulate import tabulate
 import mlperf_utils
 from pathlib import Path
+from utils import is_true
 
 
 def preprocess(i):
@@ -72,20 +73,15 @@ def generate_submission(env, state, inp, submission_division):
     sys.path.append(submission_checker_dir)
 
     if env.get('MLC_MLPERF_INFERENCE_SUBMISSION_DIR', '') == '':
-        user_home = str(Path.home())
-        env['MLC_MLPERF_INFERENCE_SUBMISSION_DIR'] = os.path.join(
-            user_home, "mlperf_submission")
+        if env.get('MLC_MLPERF_INFERENCE_SUBMISSION_BASE_DIR', '') == '':
+            user_home = str(Path.home())
+            env['MLC_MLPERF_INFERENCE_SUBMISSION_DIR'] = os.path.join(
+                user_home, "mlperf_submission")
+        else:
+            env['MLC_MLPERF_INFERENCE_SUBMISSION_DIR'] = os.path.join(
+                env['MLC_MLPERF_INFERENCE_SUBMISSION_BASE_DIR'], "mlperf_submission")
 
     submission_dir = env.get('MLC_MLPERF_INFERENCE_SUBMISSION_DIR', '')
-    if submission_dir == '':
-        submission_base_dir = env.get(
-            'MLC_MLPERF_INFERENCE_SUBMISSION_BASE_DIR', '')
-        if submission_base_dir == '':
-            return {'return': 1, 'error': f"Both MLC_MLPERF_INFERENCE_SUBMISSION_DIR and MLC_MLPERF_INFERENCE_SUBMISSION_BASE_DIR can not be empty!"}
-        else:
-            submission_dir = os.path.join(
-                submission_base_dir, "mlperf_inference_submission")
-            env['MLC_MLPERF_INFERENCE_SUBMISSION_DIR'] = submission_dir
 
     if env.get('MLC_MLPERF_CLEAN_SUBMISSION_DIR', '') != '':
         print('=================================================')
@@ -99,8 +95,7 @@ def generate_submission(env, state, inp, submission_division):
     if not os.path.isdir(submission_dir):
         os.makedirs(submission_dir)
 
-    if str(env.get('MLC_MLPERF_SUBMISSION_DIR_SHARED', '')
-           ).lower() in ["yes", "true", "1"]:
+    if is_true(str(env.get('MLC_MLPERF_SUBMISSION_DIR_SHARED', ''))):
         os.chmod(submission_dir, 0o2775)
 
     print('* MLPerf inference submission dir: {}'.format(submission_dir))
