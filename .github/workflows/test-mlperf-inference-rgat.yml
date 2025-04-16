@@ -11,6 +11,7 @@ on:
 jobs:
   rgat-inference-run:
     name:  ${{ matrix.os }} - ${{ matrix.backend }} - ${{ matrix.implementation }}
+    needs: [fetch-secret]
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
