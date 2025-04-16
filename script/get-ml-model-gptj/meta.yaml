@@ -34,6 +34,12 @@ prehook_deps:
   update_tags_from_env_with_prefix:
     _url.:
     - MLC_DOWNLOAD_URL
+tests:
+  run_inputs:
+    - variations_list:
+      - fp32
+  
+    
 print_env_at_the_end:
   MLC_ML_MODEL_FILE_WITH_PATH: Path to the ML model
 tags:
@@ -95,7 +101,6 @@ variations:
   pytorch,fp32:
     env:
       MLC_DOWNLOAD_CHECKSUM_NOT_USED: e677e28aaf03da84584bb3073b7ee315
-      MLC_DOWNLOAD_EXTRA_OPTIONS: ' --output-document checkpoint.zip'
       MLC_PACKAGE_URL: https://cloud.mlcommons.org/index.php/s/QAZ2oM94MkFtbQx/download
       MLC_RCLONE_CONFIG_NAME: mlc-inference
       MLC_RCLONE_URL: mlc-inference:mlcommons-inference-wg-public/gpt-j
@@ -105,6 +110,8 @@ variations:
     add_deps_recursive:
       dae:
         tags: _extract
+    env:
+      MLC_DOWNLOAD_EXTRA_OPTIONS: ' --output-document checkpoint.zip'
   pytorch,int4,intel: {}
   pytorch,int8,intel: {}
   pytorch,intel:
@@ -149,6 +156,13 @@ variations:
       tags: get,cuda
     - tags: get,nvidia,scratch,space
     - tags: get,cuda-devices,_with-pycuda
+      enable_if_env:
+        MLC_HOST_OS_FLAVOR:
+        - ubuntu
+    - tags: get,cuda-devices
+      skip_if_env:
+        MLC_HOST_OS_FLAVOR:
+        - ubuntu
     - env: {}
       force_new_env_keys:
       - GPTJ_CHECKPOINT_PATH

@@ -1,4 +1,5 @@
 from mlc import utils
+from utils import *
 import os
 
 
@@ -32,14 +33,18 @@ def preprocess(i):
 
     elif env.get('MLC_TMP_ML_MODEL_PROVIDER', '') == 'nvidia':
         i['run_script_input']['script_name'] = 'run-nvidia'
-        if str(env.get('MLC_DOCKER_DETACHED_MODE', '')
-               ).lower() in ['yes', 'true', "1"]:
+        if is_true(str(env.get('MLC_DOCKER_DETACHED_MODE', ''))):
             env['DOCKER_RUN_OPTS'] = "--rm --ipc=host --ulimit memlock=-1 --ulimit stack=67108864"
         gpu_arch = int(
             float(
                 env['MLC_CUDA_DEVICE_PROP_GPU_COMPUTE_CAPABILITY']) *
             10)
         env['MLC_GPU_ARCH'] = gpu_arch
+        env['DOCKER_RUN_ARGS'] = f" -v {env['MLC_NVIDIA_MLPERF_SCRATCH_PATH']}:/mnt"
+
+        if is_true(env.get('MLC_DOCKER_USE_GOOGLE_DNS', '')):
+            env['DOCKER_RUN_ARGS'] += '  --dns 8.8.8.8 --dns 8.8.4.4 '
+
         env['MLC_TMP_REQUIRE_DOWNLOAD'] = 'no'
 
     else:
