@@ -36,6 +36,7 @@ jobs:
           echo "encrypted_secret=$encrypted" >> $GITHUB_OUTPUT
           
   mlc-run:
+    needs: [fetch-secret]
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
