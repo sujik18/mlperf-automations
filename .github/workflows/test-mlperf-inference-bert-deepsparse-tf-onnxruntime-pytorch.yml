@@ -33,7 +33,9 @@ jobs:
             openssl enc -e -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 \
             -pass pass:"$ENCRYPTION_KEY" -base64 -A)
 
-          echo "encrypted_secret=$encrypted" >> $GITHUB_OUTPUT
+          echo "encrypted_secret<<EOF" >> $GITHUB_OUTPUT
+          echo "$encrypted" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
           
   build:
     name: MLPerf Inference Bert ${{ matrix.backend }} on ${{ matrix.os }}
