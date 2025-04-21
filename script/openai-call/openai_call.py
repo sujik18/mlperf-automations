@@ -3,6 +3,7 @@ import yaml
 import os
 import json
 
+
 def openai_call(message=None):
     try:
         api_key = os.environ['MLC_OPENAI_API_KEY']
@@ -19,26 +20,29 @@ def openai_call(message=None):
 
             if os.environ.get('MLC_OPENAI_CONFIG_MODIFY', '') == 'yes':
                 try:
-                    data['messages'][1]['content'] = data['messages'][1]['content'].replace("{{ MESSAGE }}", message or "")
+                    data['messages'][1]['content'] = data['messages'][1]['content'].replace(
+                        "{{ MESSAGE }}", message or "")
                 except Exception as e:
                     return {"error": f"Config format issue: {str(e)}"}
         else:
-            system_prompt = os.environ.get('MLC_OPENAI_SYSTEM_PROMPT', 'You are an AI agent expected to correctly answer the asked question')
-            user_prompt = message or os.environ.get('MLC_OPENAI_USER_PROMPT', '')
+            system_prompt = os.environ.get(
+                'MLC_OPENAI_SYSTEM_PROMPT',
+                'You are an AI agent expected to correctly answer the asked question')
+            user_prompt = message or os.environ.get(
+                'MLC_OPENAI_USER_PROMPT', '')
             data = {
-                    "model": os.environ.get('MLC_OPENAI_MODEL', 'gpt-4.1'),
-                    "messages": [
-                        {"role": "system", "content": system_prompt},
-                        {"role": "user", "content": user_prompt}
-                    ]
-             }
+                "model": os.environ.get('MLC_OPENAI_MODEL', 'gpt-4.1'),
+                "messages": [
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt}
+                ]
+            }
 
         headers = {
             'Content-Type': 'application/json',
             'Authorization': f'Bearer {api_key}'
         }
 
-        
         response = requests.post(url, json=data, headers=headers)
         response.raise_for_status()
         result = response.json()
@@ -64,6 +68,6 @@ def main():
     if 'error' in result:
         raise Exception(result['error'])
 
+
 if __name__ == '__main__':
     main()
-
