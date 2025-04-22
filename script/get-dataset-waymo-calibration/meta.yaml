@@ -60,6 +60,7 @@ variations:
     group: run-mode
     env:
       MLC_DOWNLOAD_MODE: dry
+      MLC_BYPASS_RCLONE_AUTH: True
   dry-run,rclone:
     env:
       MLC_DOWNLOAD_EXTRA_OPTIONS: --dry-run
