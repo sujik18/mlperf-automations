@@ -55,6 +55,7 @@ def postprocess(i):
     os_info = i['os_info']
 
     xsep = '^' if os_info['platform'] == 'windows' else '\\'
+    q = '"' if os_info['platform'] == 'windows' else "'"
 
     env = i['env']
     inp = i['input']
@@ -119,14 +120,13 @@ def postprocess(i):
 
     if mode == "accuracy" or mode == "compliance" and env[
             'MLC_MLPERF_LOADGEN_COMPLIANCE_TEST'] == "TEST01":
-        out_baseline_accuracy_string = f"""> '{os.path.join(output_dir, "accuracy", "baseline_accuracy.txt")}' """
-        out_compliance_accuracy_string = f"""> '{os.path.join(output_dir, "accuracy", "compliance_accuracy.txt")}' """
+        out_baseline_accuracy_string = f"""> {q}{os.path.join(output_dir, "accuracy", "baseline_accuracy.txt")}{q} """
+        out_compliance_accuracy_string = f"""> {q}{os.path.join(output_dir, "accuracy", "compliance_accuracy.txt")}{q} """
         if model == "resnet50":
             accuracy_filename = "accuracy-imagenet.py"
             accuracy_filepath = os.path.join(env['MLC_MLPERF_INFERENCE_CLASSIFICATION_AND_DETECTION_PATH'], "tools",
                                              accuracy_filename)
-            dataset_args = " --imagenet-val-file '" + \
-                os.path.join(env['MLC_DATASET_AUX_PATH'], "val.txt") + "' "
+            dataset_args = f" --imagenet-val-file {q}{os.path.join(env['MLC_DATASET_AUX_PATH'], "val.txt")}{q} "
             accuracy_log_file_option_name = " --mlperf-accuracy-file "
             datatype_option = " --dtype " + env['MLC_IMAGENET_ACCURACY_DTYPE']
 
@@ -141,8 +141,7 @@ def postprocess(i):
             accuracy_filename = "accuracy-openimages.py"
             accuracy_filepath = os.path.join(env['MLC_MLPERF_INFERENCE_CLASSIFICATION_AND_DETECTION_PATH'], "tools",
                                              accuracy_filename)
-            dataset_args = " --openimages-dir '" + \
-                os.getcwd() + "' " # just to make the script happy
+            dataset_args = f" --openimages-dir {q}{os.getcwd()}{q} " # just to make the script happy
             accuracy_log_file_option_name = " --mlperf-accuracy-file "
             datatype_option = ""
 
@@ -165,8 +164,8 @@ def postprocess(i):
                 env['MLC_DATASET_IGBH_SIZE'] + "'"
             accuracy_log_file_option_name = " --mlperf-accuracy-file "
             datatype_option = ""
-            out_baseline_accuracy_string = f""" --output-file '{os.path.join(output_dir, "accuracy", "baseline_accuracy.txt")}' """
-            out_compliance_accuracy_string = f""" --output-file '{os.path.join(output_dir, "accuracy", "compliance_accuracy.txt")}' """
+            out_baseline_accuracy_string = f""" --output-file {q}{os.path.join(output_dir, "accuracy", "baseline_accuracy.txt")}{q} """
+            out_compliance_accuracy_string = f""" --output-file {q}{os.path.join(output_dir, "accuracy", "compliance_accuracy.txt")}{q} """
 
         elif 'stable-diffusion-xl' in model:
             pass  # No compliance check for now
@@ -499,9 +498,9 @@ def postprocess(i):
             test,
             "run_verification.py")
         if test == "TEST06":
-            cmd = f"{env['MLC_PYTHON_BIN_WITH_PATH']}  '{SCRIPT_PATH}'  -c  '{COMPLIANCE_DIR}'  -o  '{OUTPUT_DIR}' --scenario {scenario} --dtype int32"
+            cmd = f"{env['MLC_PYTHON_BIN_WITH_PATH']}  {q}{SCRIPT_PATH}{q}  -c  {q}{COMPLIANCE_DIR}{q}  -o  {q}{OUTPUT_DIR}{q} --scenario {scenario} --dtype int32"
         else:
-            cmd = f"{env['MLC_PYTHON_BIN_WITH_PATH']}  '{SCRIPT_PATH}'  -r '{RESULT_DIR}' -c  '{COMPLIANCE_DIR}'  -o  '{OUTPUT_DIR}'"
+            cmd = f"{env['MLC_PYTHON_BIN_WITH_PATH']}  {q}{SCRIPT_PATH}{q}  -r {q}{RESULT_DIR}{q} -c  {q}{COMPLIANCE_DIR}{q}  -o  {q}{OUTPUT_DIR}{q}"
 
         print(cmd)
         os.system(cmd)
@@ -524,8 +523,7 @@ def postprocess(i):
                 return {
                     'return': 1, 'error': 'TEST01 needs accuracy run to be completed first'}
 
-            cmd = "cd '" + TEST01_DIR + "' &&  bash '" + SCRIPT_PATH + "' '" + os.path.join(ACCURACY_DIR, "mlperf_log_accuracy.json") + "' '" + \
-                os.path.join(COMPLIANCE_DIR, "mlperf_log_accuracy.json") + "' "
+            cmd = f"cd {q}{TEST01_DIR}{q} &&  bash {q}{SCRIPT_PATH}{q} {q}{os.path.join(ACCURACY_DIR, "mlperf_log_accuracy.json")}{q} {q}{os.path.join(COMPLIANCE_DIR, "mlperf_log_accuracy.json")}{q} "
             env['CMD'] = cmd
             print(cmd)
             r = automation.run_native_script(
@@ -544,9 +542,8 @@ def postprocess(i):
 
                 baseline_accuracy_file = os.path.join(
                     TEST01_DIR, "mlperf_log_accuracy_baseline.json")
-                CMD = "cd '" + ACCURACY_DIR + "' && '" + env['MLC_PYTHON_BIN_WITH_PATH'] + "' '" + accuracy_filepath + "' " + accuracy_log_file_option_name + " '" + \
-                    baseline_accuracy_file + "' " + dataset_args + \
-                    datatype_option + out_baseline_accuracy_string
+                CMD = f"""cd {q}{ACCURACY_DIR}{q} && {q}{env['MLC_PYTHON_BIN_WITH_PATH']}{q} {q}{accuracy_filepath}{q} \
+{accuracy_log_file_option_name} {q}{baseline_accuracy_file}{q} {dataset_args} {datatype_option} {out_baseline_accuracy_string} """
 
                 env['CMD'] = CMD
                 r = automation.run_native_script(
@@ -558,9 +555,9 @@ def postprocess(i):
                     return {'return': 1,
                             'error': f"{baseline_accuracy_file} is empty"}
 
-                CMD = "cd '" + ACCURACY_DIR + "' &&  '" + env['MLC_PYTHON_BIN_WITH_PATH'] + "' '" + accuracy_filepath + "' " + accuracy_log_file_option_name + " '" +\
-                    os.path.join(TEST01_DIR, "mlperf_log_accuracy.json") + "' " + \
-                    dataset_args + datatype_option + out_compliance_accuracy_string
+                CMD = f"""cd {q}{ACCURACY_DIR}{q} && {q}{env['MLC_PYTHON_BIN_WITH_PATH']}{q} {q}{accuracy_filepath}{q} \
+{accuracy_log_file_option_name} {q}{os.path.join(TEST01_DIR, "mlperf_log_accuracy.json")}{q} {dataset_args} {datatype_option} \
+{out_compliance_accuracy_string} """
 
                 env['CMD'] = CMD
                 r = automation.run_native_script(
