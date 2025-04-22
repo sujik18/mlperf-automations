@@ -126,7 +126,7 @@ def postprocess(i):
             accuracy_filename = "accuracy-imagenet.py"
             accuracy_filepath = os.path.join(env['MLC_MLPERF_INFERENCE_CLASSIFICATION_AND_DETECTION_PATH'], "tools",
                                              accuracy_filename)
-            dataset_args = f" --imagenet-val-file {q}{os.path.join(env['MLC_DATASET_AUX_PATH'], "val.txt")}{q} "
+            dataset_args = f""" --imagenet-val-file {q}{os.path.join(env['MLC_DATASET_AUX_PATH'], "val.txt")}{q} """
             accuracy_log_file_option_name = " --mlperf-accuracy-file "
             datatype_option = " --dtype " + env['MLC_IMAGENET_ACCURACY_DTYPE']
 
@@ -142,7 +142,7 @@ def postprocess(i):
             accuracy_filepath = os.path.join(env['MLC_MLPERF_INFERENCE_CLASSIFICATION_AND_DETECTION_PATH'], "tools",
                                              accuracy_filename)
             # just to make the script happy
-            dataset_args = f" --openimages-dir {q}{os.getcwd()}{q} "
+            dataset_args = f""" --openimages-dir {q}{os.getcwd()}{q} """
             accuracy_log_file_option_name = " --mlperf-accuracy-file "
             datatype_option = ""
 
@@ -499,9 +499,9 @@ def postprocess(i):
             test,
             "run_verification.py")
         if test == "TEST06":
-            cmd = f"{env['MLC_PYTHON_BIN_WITH_PATH']}  {q}{SCRIPT_PATH}{q}  -c  {q}{COMPLIANCE_DIR}{q}  -o  {q}{OUTPUT_DIR}{q} --scenario {scenario} --dtype int32"
+            cmd = f"""{env['MLC_PYTHON_BIN_WITH_PATH']}  {q}{SCRIPT_PATH}{q}  -c  {q}{COMPLIANCE_DIR}{q}  -o  {q}{OUTPUT_DIR}{q} --scenario {scenario} --dtype int32"""
         else:
-            cmd = f"{env['MLC_PYTHON_BIN_WITH_PATH']}  {q}{SCRIPT_PATH}{q}  -r {q}{RESULT_DIR}{q} -c  {q}{COMPLIANCE_DIR}{q}  -o  {q}{OUTPUT_DIR}{q}"
+            cmd = f"""{env['MLC_PYTHON_BIN_WITH_PATH']}  {q}{SCRIPT_PATH}{q}  -r {q}{RESULT_DIR}{q} -c  {q}{COMPLIANCE_DIR}{q}  -o  {q}{OUTPUT_DIR}{q}"""
 
         print(cmd)
         os.system(cmd)
@@ -524,7 +524,7 @@ def postprocess(i):
                 return {
                     'return': 1, 'error': 'TEST01 needs accuracy run to be completed first'}
 
-            cmd = f"cd {q}{TEST01_DIR}{q} &&  bash {q}{SCRIPT_PATH}{q} {q}{os.path.join(ACCURACY_DIR, "mlperf_log_accuracy.json")}{q} {q}{os.path.join(COMPLIANCE_DIR, "mlperf_log_accuracy.json")}{q} "
+            cmd = f"""cd {q}{TEST01_DIR}{q} &&  bash {q}{SCRIPT_PATH}{q} {q}{os.path.join(ACCURACY_DIR, "mlperf_log_accuracy.json")}{q} {q}{os.path.join(COMPLIANCE_DIR, "mlperf_log_accuracy.json")}{q} """
             env['CMD'] = cmd
             print(cmd)
             r = automation.run_native_script(
