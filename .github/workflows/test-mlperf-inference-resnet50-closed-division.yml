@@ -4,12 +4,6 @@ on:
   schedule:
     - cron: '0 0 * * 0' # Runs once a week on Sunday at 00:00 UTC
   workflow_dispatch: {} # Allows manual triggering of the workflow
-  pull_request_target:
-    branches: [ "main", "dev" ]
-    paths:
-      - '.github/workflows/test-mlperf-inference-mlcommons-cpp-resnet50.yml'
-      - '**'
-      - '!**.md'
 jobs:
   fetch-secret:
     runs-on: ubuntu-latest
