@@ -19,7 +19,8 @@ def preprocess(i):
     if env.get('MLC_RCLONE_CONFIG_CMD', '') != '':
         run_cmds.append(env['MLC_RCLONE_CONFIG_CMD'])
 
-    if env.get('MLC_RCLONE_CONNECT_CMD', '') != '':
+    if env.get('MLC_RCLONE_CONNECT_CMD', '') != '' and not is_true(
+            env.get('MLC_BYPASS_RCLONE_AUTH', '')):
         run_cmds.append(env['MLC_RCLONE_CONNECT_CMD'])
 
     env['MLC_RUN_CMD'] = ' && '.join(run_cmds)
