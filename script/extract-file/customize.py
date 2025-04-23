@@ -117,10 +117,10 @@ def preprocess(i):
             y = '"' if ' ' in extract_to_folder else ''
 
             # env['MLC_EXTRACT_TOOL_OPTIONS'] = ' --one-top-level='+ env['MLC_EXTRACT_TO_FOLDER'] + env.get('MLC_EXTRACT_TOOL_OPTIONS', '')
-            env['MLC_EXTRACT_TOOL_OPTIONS'] = ' -C ' + y + q + extract_to_folder + q + \
+            env['MLC_EXTRACT_TOOL_OPTIONS'] = ' -C ' + y + extract_to_folder + \
                 y + ' ' + env.get('MLC_EXTRACT_TOOL_OPTIONS', '')
             env['MLC_EXTRACT_PRE_CMD'] = 'mkdir ' + x + ' ' + \
-                y + q + extract_to_folder + q + y + ' ' + xsep + ' '
+                y + extract_to_folder + y + ' ' + xsep + ' '
             env['MLC_EXTRACT_EXTRACTED_FILENAME'] = extract_to_folder
 
         elif 'unzip' in env['MLC_EXTRACT_TOOL']:
