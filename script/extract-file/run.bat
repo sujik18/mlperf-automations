@@ -20,7 +20,7 @@ if exist "%MLC_EXTRACT_EXTRACTED_FILENAME%" (
 )
 
 if "!require_extract!" == "1" (
-    if not %MLC_EXTRACT_CMD0% == "" (
+    if not "!MLC_EXTRACT_CMD0!" == "" (
      echo.
      echo %MLC_EXTRACT_CMD0%
      cmd /c %MLC_EXTRACT_CMD0%
