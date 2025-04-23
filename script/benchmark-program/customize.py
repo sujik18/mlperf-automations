@@ -43,8 +43,7 @@ def preprocess(i):
             if env.get('MLC_RUN_DIR', '') == '':
                 env['MLC_RUN_DIR'] = os.getcwd()
 
-            env['MLC_RUN_CMD'] = MLC_RUN_PREFIX + ' ' + os.path.join(
-                env['MLC_RUN_DIR'], env['MLC_BIN_NAME']) + ' ' + env['MLC_RUN_SUFFIX']
+            env['MLC_RUN_CMD'] = f"""{MLC_RUN_PREFIX} {q}{os.path.join(env['MLC_RUN_DIR'], env['MLC_BIN_NAME'])}{q} {env['MLC_RUN_SUFFIX']}"""
 
     x = env.get('MLC_RUN_PREFIX0', '')
     if x != '':
