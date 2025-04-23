@@ -8,6 +8,7 @@ def preprocess(i):
     q = '"' if os_info['platform'] == 'windows' else "'"
 
     env = i['env']
+    
     CPPFLAGS = env.get('+ CPPFLAGS', [])
     env['MLC_C_COMPILER_FLAGS'] = " ".join(env.get('+ CFLAGS', []) + CPPFLAGS)
     env['MLC_CXX_COMPILER_FLAGS'] = " ".join(
