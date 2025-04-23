@@ -14,4 +14,4 @@ eval ${MLC_GIT_PULL_CMD}
 #don't fail if there are local changes
 #test $? -eq 0 || exit $?
 
-cd $CUR_DIR
+cd "$CUR_DIR"
