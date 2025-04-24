@@ -9,6 +9,32 @@ on:
       - '!**.md'
 
 jobs:
+  fetch-secret:
+    runs-on: ubuntu-latest
+    outputs:
+      encrypted_secret: ${{ steps.encrypt-secret.outputs.encrypted_secret }}
+    steps:
+      - name: Load secret
+        id: op-load-secret
+        uses: 1password/load-secrets-action@v2
+        with:
+          export-env: false
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          PAT: op://7basd2jirojjckncf6qnq3azai/bzbaco3uxoqs2rcyu42rvuccga/credential
+
+      - name: Encrypt secret
+        id: encrypt-secret
+        env:
+          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
+        run: |
+          # AES-256 encrypt
+          encrypted=$(echo "${{ steps.op-load-secret.outputs.pat }}" | \
+            openssl enc -e -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 \
+            -pass pass:"$ENCRYPTION_KEY" -base64 -A)
+
+          echo "encrypted_secret=$encrypted" >> $GITHUB_OUTPUT
+
   rgat-inference-run:
     name:  ${{ matrix.os }} - ${{ matrix.backend }} - ${{ matrix.implementation }}
     needs: [fetch-secret]
