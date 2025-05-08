@@ -3188,7 +3188,7 @@ class ScriptAutomation(Automation):
                                     item_value[i] = l_item.replace(
                                         "#", variation_tag_dynamic_suffix)
                         else:
-                            value[item] = value[item].replace(
+                            value[item] = str(value[item]).replace(
                                 "#", variation_tag_dynamic_suffix)
 
             else:  # scalar value, never used?
@@ -4468,6 +4468,13 @@ pip install mlcflow
     def docker(self, i):
         from script.docker import docker_run
         return docker_run(self, i)
+
+    ############################################################
+    # portion for experiment action.
+    # as of now, the experiment action directly calls the run action.
+    # in the future, we will add more functionality to the experiment action.
+    def experiment(self, i):
+        return self.run(i)
 
     ##########################################################################
 
