@@ -13,7 +13,7 @@ def write_gemini_yaml(model, system_prompt, user_prompt,
                 'role': 'user',
                 'parts': [
                     {'text': f"{system_prompt}\n\n{user_prompt}"}
-                ]   
+                ]
             }
         ],
         'generationConfig': {
@@ -44,7 +44,7 @@ def preprocess(i):
                 user_prompt,
                 'tmp-gemini-prompt.yaml')
             env['MLC_GEMINI_CONFIG_PATH'] = 'tmp-gemini-prompt.yaml'
-    
+
     env['MLC_RUN_CMD'] = f'{env["MLC_PYTHON_BIN_WITH_PATH"]} "{os.path.join(env["MLC_TMP_CURRENT_SCRIPT_PATH"], "gemini_call.py")}"'
 
     return {'return': 0}
@@ -57,7 +57,7 @@ def postprocess(i):
     filename = 'tmp-gemini-results.json'
     with open(filename, 'r', encoding='utf-8') as f:
         data = json.load(f)
-    
+
     state['MLC_GEMINI_RESPONSE'] = data['content']
     os_info = i['os_info']
     return {'return': 0}
