@@ -8,6 +8,7 @@ import logging
 from pathlib import PureWindowsPath, PurePosixPath
 import time
 import copy
+from datetime import datetime
 
 
 def experiment_run(self_module, i):
@@ -31,6 +32,7 @@ def experiment_run(self_module, i):
     env = i.get('env', {})
     experiment_action = ExperimentAction(self_module.action_object.parent)
     skip_state_save = i.get('exp_skip_state_save', False)
+    extra_exp_tags = i.get('exp_tags', '').split(",")
 
     prune_result = prune_input(
         {'input': i, 'extra_keys_starts_with': ['exp.']})
@@ -79,6 +81,7 @@ def experiment_run(self_module, i):
                             self_module.action_object,
                             experiment_action,
                             tags,
+                            extra_exp_tags,
                             meta,
                             skip_state_save,
                             logger)
@@ -94,6 +97,7 @@ def experiment_run(self_module, i):
                         self_module.action_object,
                         experiment_action,
                         tags,
+                        extra_exp_tags,
                         meta,
                         skip_state_save,
                         logger)
@@ -104,17 +108,18 @@ def experiment_run(self_module, i):
 
 
 def run_script_and_tag_experiment(
-        ii, script_action, experiment_action, tags, meta, skip_state_save, logger):
+        ii, script_action, experiment_action, tags, extra_exp_tags, script_meta, skip_state_save, logger):
 
     current_path = os.path.abspath(os.getcwd())
     experiment_meta = {}
     recursion_spaces = ''
-    tmp_tags = tags
-    tmp_tags.append("tmp")
+    exp_tags = tags + extra_exp_tags
     ii = {'action': 'update',
           'target': 'experiment',
-          'script_alias': meta['alias'],
-          'tags': ','.join(tmp_tags),
+          'script_alias': script_meta['alias'],
+          'script_uid': script_meta['uid'],
+          'tags': ','.join(exp_tags),
+          'extra_tags': ",".join(extra_exp_tags),
           'meta': experiment_meta,
           'force': True}
 
@@ -129,6 +134,15 @@ def run_script_and_tag_experiment(
         '  - Changing to {}'.format(experiment.path))
 
     os.chdir(experiment.path)
+    # Get current datetime in YYYY-MM-DD_HH-MM-SS format
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+
+    # Create a folder name using the timestamp
+    folder_name = f"run_{timestamp}"
+
+    # Create the directory
+    os.makedirs(folder_name, exist_ok=True)
+    os.chdir(folder_name)
 
     if not skip_state_save:
         ssi = {'action': 'run',
@@ -157,6 +171,7 @@ def run_script_and_tag_experiment(
         if r['return'] > 0:
             return r
 
+    '''
     exp_tags = tags
     ii = {'action': 'update',
           'target': 'experiment',
@@ -169,11 +184,12 @@ def run_script_and_tag_experiment(
     r = experiment_action.access(ii)
     if r['return'] > 0:
         return r
-
+   '''
     os.chdir(current_path)
-    logger.info(f"Experiment entry saved at: {experiment.path}")
+    logger.info(
+        f"Experiment entry saved at: {os.path.join(experiment.path, folder_name)}")
 
-    return {'return': 0, 'experiment': experiment}
+    return {'return': 0, 'experiment': experiment, 'folder_name': folder_name}
 
 
 def format_elapsed(seconds):
