@@ -111,6 +111,8 @@ deps:
 
   # Detect pycuda
   - tags: get,generic-python-lib,_pycuda
+    names:
+    - pycuda
     version: "2022.2.2"
     skip_if_env:
       MLC_RUN_STATE_DOCKER:
@@ -335,7 +337,11 @@ versions:
   r4.1:
     default_env:
       BUILD_TRTLLM: 1
-
+  
+  r5.0:
+    add_deps_recursive:
+      pycuda:
+        version: "2024.1"
 docker:
   skip_run_cmd: 'no'
   all_gpus: 'yes'
