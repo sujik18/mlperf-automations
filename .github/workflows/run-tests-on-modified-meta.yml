@@ -35,6 +35,11 @@ jobs:
         git fetch upstream
         changed_files=$(git diff upstream/${{ github.event.pull_request.base.ref }} --name-only)
         echo "$changed_files" | python3 .github/scripts/list_modified_files.py
+    
+    - name: Debug Show processed_files
+      run: |
+        echo "Processed files: '${{ steps.filter-modified-files.outputs.processed_files }}'"
+
 
   process_modified_files:
     runs-on: ubuntu-latest
