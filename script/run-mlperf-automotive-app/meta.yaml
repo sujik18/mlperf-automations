@@ -43,6 +43,7 @@ input_mapping:
   save_console_log: MLC_SAVE_CONSOLE_LOG
   execution_mode: MLC_MLPERF_RUN_STYLE
   find_performance: MLC_MLPERF_FIND_PERFORMANCE_MODE
+  framework: MLC_MLPERF_BACKEND
   gh_token: MLC_GH_TOKEN
   gpu_name: MLC_NVIDIA_GPU_NAME
   hw_name: MLC_HW_NAME
@@ -72,6 +73,7 @@ input_mapping:
   run_style: MLC_MLPERF_RUN_STYLE
   scenario: MLC_MLPERF_LOADGEN_SCENARIO
   server_target_qps: MLC_MLPERF_LOADGEN_SERVER_TARGET_QPS
+  constantstream_target_qps: MLC_MLPERF_LOADGEN_CONSTANTSTREAM_TARGET_QPS
   singlestream_target_latency: MLC_MLPERF_LOADGEN_SINGLESTREAM_TARGET_LATENCY
   skip_submission_generation: MLC_MLPERF_SKIP_SUBMISSION_GENERATION
   skip_truncation: MLC_SKIP_TRUNCATE_ACCURACY
@@ -105,8 +107,8 @@ deps:
   skip_if_env:
     MLC_MLPERF_USE_DOCKER: [ on ]
 - names:
-  - inference-src
-  tags: get,mlcommons,inference,src
+  - automotive-src
+  tags: get,mlcommons,automotive,src
   skip_if_env:
     MLC_MLPERF_USE_DOCKER: [ on ]
 - tags: get,sut,description
@@ -121,7 +123,7 @@ deps:
   skip_if_env:
     OUTPUT_BASE_DIR: [ on ]
 - tags: install,pip-package,for-mlc-python,_package.tabulate
-- tags: get,mlperf,inference,utils
+- tags: get,mlperf,automotive,utils
   skip_if_env:
     MLC_MLPERF_USE_DOCKER: [ on ]
 
@@ -214,6 +216,11 @@ variations:
       compiler:
         tags: gcc
     group: benchmark-version
+  
+  v0.5:
+    group: benchmark-version
+    env:
+      MLC_MLPERF_INFERENCE_VERSION: v0.5
 
   performance-and-accuracy:
     default: true
@@ -245,4 +252,4 @@ variations:
         - 'false'
         - 'False'
         - '0'
-      tags: generate,mlperf,inference,submission
+      tags: generate,mlperf,inference,submission,_automotive

@@ -52,6 +52,20 @@ tests:
     docker_prune: 'yes'
 uid: bb0393afa8404a11
 variations:
+  autoconf:
+    env:
+      MLC_SYS_UTIL_NAME: autoconf
+      MLC_SYS_UTIL_VERSION_CMD: autoconf --version
+      MLC_SYS_UTIL_VERSION_RE: autoconf \(.*\) ([\d.]+)
+      MLC_TMP_VERSION_DETECT_GROUP_NUMBER: 1
+    new_env_keys:
+    - MLC_AUTOCONF_VERSION
+    state:
+      autoconf:
+        apt: autoconf
+        brew: autoconf
+        dnf: autoconf
+        yum: autoconf
   cmake:
     env:
       MLC_SYS_UTIL_NAME: cmake
@@ -97,6 +111,20 @@ variations:
         brew: ''
         dnf: dmidecode
         yum: dmidecode
+  flex:
+    env:
+      MLC_SYS_UTIL_NAME: flex
+      MLC_SYS_UTIL_VERSION_CMD: flex --version # tbd: regular expression for version
+      MLC_TMP_VERSION_DETECT_GROUP_NUMBER: 0
+    new_env_keys:
+    - MLC_FLEX_VERSION
+    state:
+      flex: # tbd: complete for other flavours of linux
+        apt: flex
+        brew: flex
+        dnf: flex
+        yum: flex
+  
   ffmpeg:
     env:
       MLC_SYS_UTIL_NAME: ffmpeg
@@ -107,6 +135,21 @@ variations:
     state:
       ffmpeg: # tbd: complete for other flavours of linux
         apt: ffmpeg
+        brew: ''
+        dnf: ''   
+        yum: ''
+  
+  ipmitool:
+    env:
+      MLC_SYS_UTIL_NAME: ipmitool
+      MLC_SYS_UTIL_VERSION_CMD: ipmitool -V
+      MLC_SYS_UTIL_VERSION_RE: 'ipmitool version ([\d.]+)'
+      MLC_TMP_VERSION_DETECT_GROUP_NUMBER: 0
+    new_env_keys:
+    - MLC_IPMITOOL_VERSION
+    state:
+      ipmitool: # tbd: complete for other flavours of linux
+        apt: ipmitool
         brew: ''
         dnf: ''   
         yum: ''
@@ -125,6 +168,20 @@ variations:
         brew: ''
         dnf: mesa-libGL   
         yum: mesa-libGL
+  libgl1-mesa-glx:
+    env:
+      MLC_SYS_UTIL_NAME: libgl1-mesa-glx # tbd: regular expression for version as well as whether its installed?
+      MLC_SYS_UTIL_CHECK_CMD: 'ldconfig -p | grep -i libGLX_mesa.so.*' 
+    default_env:
+      MLC_GENERIC_SYS_UTIL_IGNORE_MISSING_PACKAGE: yes
+    new_env_keys:
+    - MLC_LIBGLX_VERSION
+    state:
+      libgl1-mesa-glx: # tbd: complete for other flavours of linux
+        apt: libgl1-mesa-glx
+        brew: ''
+        dnf: ''
+        yum: ''
   libsm6:
     env:
       MLC_SYS_UTIL_NAME: libsm6 # tbd: regular expression for version as well as whether its installed?
@@ -605,6 +662,9 @@ variations:
   postfix:
     env:
       MLC_SYS_UTIL_NAME: postfix
+      MLC_SYS_UTIL_VERSION_CMD: postconf mail_version
+      MLC_SYS_UTIL_VERSION_RE: mail_version = \b(\d+\.\d+(?:\.\d+)?)\b
+      MLC_TMP_VERSION_DETECT_GROUP_NUMBER: 1
     new_env_keys:
     - MLC_POSTFIX_VERSION
     state:

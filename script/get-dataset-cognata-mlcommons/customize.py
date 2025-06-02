@@ -8,6 +8,10 @@ def preprocess(i):
 
     env = i['env']
 
+    if env.get('MLC_COGNATA_DATASET_TYPE', '') == "release":
+        env['MLC_TMP_REQUIRE_DOWNLOAD'] = "yes"
+        return {'return': 0}
+
     mlc_cache_dataset_path = env.get(
         'MLC_CUSTOM_CACHE_ENTRY_DATASET_MLCOMMONS_COGNATA_PATH', '').strip()
 
@@ -28,11 +32,6 @@ def preprocess(i):
     env['MLC_DATASET_COGNATA_POC_TEXT_MD5_FILE_PATH'] = os.path.join(
         i['run_script_input']['path'], 'checksums', 'cognata_poc.txt')
 
-    # Check if user requests path not in CM cache
-    #
-    # --path (env MLC_TMP_PATH) shows where to store Cognata data set instead of CM cahe
-    # --import tells CM to import existing Cognata from a given path and skip further download/processing
-    #
     import_path = env.get(
         'MLC_DATASET_MLCOMMONS_COGNATA_IMPORT_PATH',
         '').strip()
@@ -66,6 +65,9 @@ def postprocess(i):
 
     logger = automation.logger
 
+    if env.get('MLC_COGNATA_DATASET_TYPE', '') == "release":
+        return {'return': 0}
+
     cur_dir = os.getcwd()
 
     quiet = is_true(env.get('MLC_QUIET', False))
@@ -75,7 +77,7 @@ def postprocess(i):
 
     if not os.path.isdir(mlc_cache_dataset_path):
         return {
-            'return': 1, 'error': 'Dataset corrupted - CM cache path not found: {}'.format(mlc_cache_dataset_path)}
+            'return': 1, 'error': 'Dataset corrupted - MLC cache path not found: {}'.format(mlc_cache_dataset_path)}
 
     if env.get('MLC_DATASET_MLCOMMONS_COGNATA_FILE_NAMES', '') == '':
         env['MLC_DATASET_MLCOMMONS_COGNATA_PATH'] = os.path.dirname(
