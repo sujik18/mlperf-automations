@@ -56,4 +56,3 @@ results.append({"key": "total_services_detected", "value": len(services)})
 # Output as JSON array
 json_output = json.dumps(results, indent=2)
 print(json_output)
-
