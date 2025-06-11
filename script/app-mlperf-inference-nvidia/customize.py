@@ -11,6 +11,7 @@ def preprocess(i):
     if os_info['platform'] == 'windows':
         return {'return': 1, 'error': 'Windows is not supported in this script yet'}
     env = i['env']
+    state = i['state']
 
     if is_true(env.get('MLC_RUN_STATE_DOCKER', '')):
         return {'return': 0}
@@ -110,7 +111,8 @@ def preprocess(i):
                     shutil.rmtree(target_data_path)
         if not os.path.exists(tsv_file):
             os.makedirs(target_data_path, exist_ok=True)
-            # cmds.append("make download_data BENCHMARKS='stable-diffusion-xl'")
+            # cmds.append("make download_data
+            # BENCHMARKS='stable-diffusion-xl'")
             env['MLC_REQUIRE_COCO2014_DOWNLOAD'] = 'yes'
             cmds.append(
                 f"""cp -r \\$MLC_DATASET_PATH_ROOT/captions/captions.tsv {target_data_path}/captions_5k_final.tsv""")
@@ -154,7 +156,8 @@ def preprocess(i):
 
         if not os.path.exists(target_data_path) or not os.path.exists(
                 inference_cases_json_path) or not os.path.exists(calibration_cases_json_path):
-            # cmds.append(f"ln -sf {env['MLC_DATASET_PATH']} {target_data_path}")
+            # cmds.append(f"ln -sf {env['MLC_DATASET_PATH']}
+            # {target_data_path}")
             cmds.append("make download_data BENCHMARKS='3d-unet'")
 
         model_path = os.path.join(
@@ -174,7 +177,8 @@ def preprocess(i):
         if not os.path.exists(target_data_path_base_dir):
             cmds.append(f"mkdir -p {target_data_path_base_dir}")
         if not os.path.exists(target_data_path):
-            # cmds.append(f"ln -sf {env['MLC_DATASET_LIBRISPEECH_PATH']} {target_data_path}")
+            # cmds.append(f"ln -sf {env['MLC_DATASET_LIBRISPEECH_PATH']}
+            # {target_data_path}")
             cmds.append("make download_data BENCHMARKS='rnnt'")
 
         model_path = os.path.join(
