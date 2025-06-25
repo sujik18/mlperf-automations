@@ -73,6 +73,17 @@ jobs:
           fetch-depth: 0
           path: automation-scripts
 
+      - name: Set up Git for commit
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Switch to the PR source branch
+        run: |
+          cd automation-scripts
+          git checkout "${{ github.head_ref }}"
+          cd -
+ 
       - name: Document meta.yaml file
         run: |
           echo "Documenting ${{ matrix.modified_metas.file }}"
