@@ -26,8 +26,6 @@ def generate_doc(self_module, input_params):
     env = input_params.get('env', {})
     generic_inputs = self_module.input_flags_converted_to_env
 
-    print(input_params)
-
     # Step 2: Search for scripts
     search_result = self_module.search(input_params.copy())
     if search_result['return'] > 0:
