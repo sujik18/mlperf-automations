@@ -71,18 +71,13 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.head_ref }}
           path: automation-scripts
 
       - name: Set up Git for commit
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Switch to the PR source branch
-        run: |
-          cd automation-scripts
-          git checkout "${{ github.head_ref }}"
-          cd -
  
       - name: Document meta.yaml file
         run: |
@@ -98,7 +93,7 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           # Commit changes
           git commit -m '[Automated Commit] Document ${{ matrix.modified_metas.file}}  [skip ci]'
-          git push 
+          git push origin HEAD:${{ github.head_ref }}
           
 
   
