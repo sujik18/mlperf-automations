@@ -28,7 +28,7 @@ def generate_doc(self_module, input_params):
 
     print(input_params)
 
-     # Step 2: Search for scripts
+    # Step 2: Search for scripts
     search_result = self_module.search(input_params.copy())
     if search_result['return'] > 0:
         return search_result
@@ -60,6 +60,7 @@ def generate_doc(self_module, input_params):
 
     return {'return': 0}
 
+
 def generate_docs(metadata, script_path, generic_inputs):
     script_name = metadata.get('alias', metadata['uid'])
     readme_prefix = f"""This README is automatically generated. Please follow the [script execution document](https://docs.mlcommons.org/mlcflow/targets/script/execution-flow/) to understand more about the MLC script execution.
@@ -69,7 +70,6 @@ def generate_docs(metadata, script_path, generic_inputs):
 """
 
     readme_dir = os.path.join(script_path, "docs")
-
 
     if not os.path.exists(readme_dir):
         os.makedirs(readme_dir)
@@ -84,10 +84,14 @@ def generate_docs(metadata, script_path, generic_inputs):
     script_input_mapping = metadata.get('input_mapping', {})
     script_input_description = metadata.get('input_description', {})
 
-    r = get_run_readme(tags_string, script_input_mapping, script_input_description, generic_inputs)
+    r = get_run_readme(
+        tags_string,
+        script_input_mapping,
+        script_input_description,
+        generic_inputs)
     if r['return'] > 0:
         return r
-    
+
     run_readme = r['run_readme']
 
     doc_content += run_readme
@@ -99,6 +103,7 @@ def generate_docs(metadata, script_path, generic_inputs):
 
     return {'return': 0}
 
+
 def get_run_readme(tags, input_mapping, input_description, generic_inputs):
     run_readme = f"""## Run Commands
 
@@ -107,17 +112,20 @@ def get_run_readme(tags, input_mapping, input_description, generic_inputs):
 """
 
     if input_description:
-        input_description_string = generate_markdown("Script Inputs", input_description)
+        input_description_string = generate_markdown(
+            "Script Inputs", input_description)
     else:
         input_description_string = "No script specific inputs"
-        
+
     run_readme += input_description_string
 
-    generic_input_string = generate_markdown("Generic Script Inputs", generic_inputs)
+    generic_input_string = generate_markdown(
+        "Generic Script Inputs", generic_inputs)
 
     run_readme += generic_input_string
 
     return {'return': 0, 'run_readme': run_readme}
+
 
 def infer_type(field):
     if "dtype" in field:
@@ -127,14 +135,17 @@ def infer_type(field):
     else:
         return "str"
 
+
 def generate_markdown(heading, input_dict):
-    lines = [f"### {heading}\n", "| Name | Description | Default | Type |", "|------|-------------|---------|------|"]
-    for key in sorted(input_dict, key=lambda k: input_dict[k].get("sort", 9999)):
+    lines = [
+        f"### {heading}\n",
+        "| Name | Description | Default | Type |",
+        "|------|-------------|---------|------|"]
+    for key in sorted(
+            input_dict, key=lambda k: input_dict[k].get("sort", 9999)):
         field = input_dict[key]
         desc = field.get("desc", "")
         default = field.get("default", "")
         dtype = infer_type(field)
         lines.append(f"| `{key}` | {desc} | `{default}` | {dtype} |")
     return "\n".join(lines)
-
-

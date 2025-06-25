@@ -68,7 +68,8 @@ class ScriptAutomation(Automation):
                                'MLC_GIT_*',
                                'MLC_RENEW_CACHE_ENTRY']
 
-        self.input_flags_converted_to_tmp_env = {'path': {'desc': 'Filesystem path to search for executable', 'default': ''}}
+        self.input_flags_converted_to_tmp_env = {
+            'path': {'desc': 'Filesystem path to search for executable', 'default': ''}}
 
         self.input_flags_converted_to_env = {'input': {'desc': 'Input to the script passed using the env key `MLC_INPUT`', 'default': ''},
                                              'output': {'desc': 'Output from the script passed using the env key `MLC_OUTPUT`', 'default': ''},
