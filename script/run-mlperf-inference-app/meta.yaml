@@ -28,6 +28,7 @@ tags:
 tags_help: "run-mlperf,inference"
 predeps: False
 
+
 default_env:
   MLC_MLPERF_IMPLEMENTATION: reference
   MLC_MLPERF_MODEL: resnet50
