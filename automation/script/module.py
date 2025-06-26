@@ -2496,7 +2496,10 @@ class ScriptAutomation(Automation):
 
                 adr = get_adr(variation_meta)
                 if adr:
-                    self._merge_dicts_with_tags(add_deps_recursive, adr)
+                    if add_deps_recursive:
+                        self._merge_dicts_with_tags(add_deps_recursive, adr)
+                    else:
+                        add_deps_recursive = adr
 
                 combined_variations = [t for t in variations if ',' in t]
 
