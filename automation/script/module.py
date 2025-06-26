@@ -2346,7 +2346,7 @@ class ScriptAutomation(Automation):
 
         if not add_deps_recursive:
             add_deps_recursive = {}
-    
+
         # Calculate space
         required_disk_space = {}
 
@@ -2499,7 +2499,7 @@ class ScriptAutomation(Automation):
                 adr = get_adr(variation_meta)
                 if adr:
                     self._merge_dicts_with_tags(add_deps_recursive, adr)
-                
+
                 combined_variations = [t for t in variations if ',' in t]
 
                 combined_variations.sort(key=lambda x: x.count(','))
