@@ -1962,7 +1962,7 @@ variations:
       intel-harness:
         tags: _v4.1
       inference-src:
-         version: master
+         tags: _branch.master
       nvidia-scratch-space:
         tags: _version.5.1
       pycuda:
