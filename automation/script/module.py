@@ -2344,8 +2344,8 @@ class ScriptAutomation(Automation):
         import copy
         explicit_variation_tags = copy.deepcopy(variation_tags)
 
-        # if not add_deps_recursive:
-        #    add_deps_recursive = {}
+        if add_deps_recursive is None:
+            add_deps_recursive = {}
 
         # Calculate space
         required_disk_space = {}
