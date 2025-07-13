@@ -35,11 +35,12 @@ def preprocess(i):
             env['MLC_NVIDIA_GPU_MEMORY'] = ''
         else:
             gpu_memory = i['state'].get(
-                'mlc_cuda_device_prop', '').get('Global memory')
-            gpu_memory_size = str(
-                int((float(gpu_memory) / (1024 * 1024 * 1024) + 7) / 8) * 8)
-            env['MLC_NVIDIA_GPU_MEMORY'] = gpu_memory_size
-            env['MLC_NVIDIA_HARNESS_GPU_VARIATION'] = ''
+                'mlc_cuda_device_prop', {}).get('Global memory')
+            if gpu_memory:
+                gpu_memory_size = str(
+                    int((float(gpu_memory) / (1024 * 1024 * 1024) + 7) / 8) * 8)
+                env['MLC_NVIDIA_GPU_MEMORY'] = gpu_memory_size
+                env['MLC_NVIDIA_HARNESS_GPU_VARIATION'] = ''
 
     if 'cmd' in i['input']:
         state['mlperf_inference_run_cmd'] = "mlcr " + \
