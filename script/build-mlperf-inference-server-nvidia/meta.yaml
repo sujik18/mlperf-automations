@@ -226,8 +226,8 @@ variations:
       pycuda:
         version: "2024.1"
       numpy:
-        version_max: 1.26.999
-        version_max_usable: 1.26.4
+        version_max: "1.26.999"
+        version_max_usable: "1.26.4"
 
 
 versions:
