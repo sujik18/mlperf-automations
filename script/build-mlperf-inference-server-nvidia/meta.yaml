@@ -131,18 +131,18 @@ deps:
     names:
     - nvidia-scratch-space
 
+  - tags: get,generic-python-lib,_package.numpy
+    names:
+    - numpy
 
 post_deps:
   # Detect nvidia system
   - tags: add,custom,system,nvidia
     names:
     - custom-system-nvidia
-    - nvidia-inference-common-code
     skip_if_env:
       MLC_CUSTOM_SYSTEM_NVIDIA:
       - "no"
-      - False
-      - "False"
 
 variations:
   # Target devices
@@ -161,12 +161,6 @@ variations:
       MLC_MLPERF_DEVICE: cuda
       MLC_MLPERF_DEVICE_LIB_NAMESPEC: cudart
 
-  ctuning:
-    group: code
-    default: true
-    add_deps_recursive:
-      nvidia-inference-common-code:
-        tags: _ctuning
   go:
     group: code
     add_deps_recursive:
@@ -231,6 +225,10 @@ variations:
     add_deps_recursive:
       pycuda:
         version: "2024.1"
+      numpy:
+        version_max: "1.26.999"
+        version_max_usable: "1.26.4"
+
 
 versions:
   r2.1: {}

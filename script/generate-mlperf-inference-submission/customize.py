@@ -116,6 +116,9 @@ def generate_submission(env, state, inp, submission_division, logger):
     if 'MLC_MLPERF_SUBMISSION_SYSTEM_TYPE' in env:
         system_meta_tmp['system_type'] = env['MLC_MLPERF_SUBMISSION_SYSTEM_TYPE']
 
+    if 'MLC_MLPERF_SUBMISSION_SYSTEM_STATUS' in env:
+        system_meta_tmp['status'] = env['MLC_MLPERF_SUBMISSION_SYSTEM_STATUS']
+
     if submission_division != "":
         system_meta_tmp['division'] = submission_division
         division = submission_division
@@ -166,6 +169,21 @@ def generate_submission(env, state, inp, submission_division, logger):
     if not os.path.isdir(path_submission):
         os.makedirs(path_submission)
 
+    # Save empty calibration.md file in the root directory and make it
+    # available for the submitters to fill
+    try:
+        calibration_readme_path = os.path.join(
+            path_submission, "calibration.md")
+        with open(calibration_readme_path, "w") as fp:
+            fp.write("MLPerf Inference Calibration and Quantization Details\n")
+        logger.info(
+            f"Created calibration.md file at {calibration_readme_path}")
+    except Exception as e:
+        logger.error(f"Error creating calibration.md file: {e}")
+        return {'return': 1, 'error': f"Error creating calibration.md file: {e}"}
+
+    logger.info(
+        f"Created calibration.md file at {calibration_readme_path}")
     # SUT base
     system = env.get('MLC_HW_NAME', 'default').replace(' ', '_')
 
