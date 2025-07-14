@@ -429,7 +429,12 @@ variations:
       image_name: mlperf-inference-nvidia-v5.0-common
       build_env:
         ENV: release
-        
+    deps:
+    - names:
+      - numpy
+      tags: get,generic-python-lib,_package.numpy
+      version_max: "1.26.999"
+      version_max_usable: "1.26.4"
     update_meta_if_env:
       - enable_if_env:
           MLC_HOST_PLATFORM_FLAVOR:
