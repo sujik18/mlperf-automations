@@ -124,6 +124,8 @@ variations:
         tags: _wg-inference
       mlperf-inference-submission-checker:
         tags: _wg-inference
+    default_env:
+      MLC_MLPERF_SUBMISSION_CHECKER_VERSION: v5.1
     deps:
       - names:
         - inference-src
@@ -140,6 +142,8 @@ variations:
         tags: _wg-automotive
       mlperf-inference-submission-checker:
         tags: _wg-automotive
+    default_env:
+      MLC_MLPERF_SUBMISSION_CHECKER_VERSION: v0.5
     deps:
       - names:
         - automotive-src
