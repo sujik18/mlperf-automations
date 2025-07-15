@@ -4467,7 +4467,7 @@ pip install mlcflow
 
         from script.doc import generate_doc
         return generate_doc(self, i)
-    
+
     ############################################################
 
     def lint(self, i):
