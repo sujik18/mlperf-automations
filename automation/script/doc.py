@@ -64,7 +64,8 @@ def generate_doc(self_module, input_params):
         if r['return'] > 0:
             continue
         else:
-            generated_readme_paths.append(os.path.join(script_directory, "README.md"))
+            generated_readme_paths.append(
+                os.path.join(script_directory, "README.md"))
 
     return {'return': 0, 'generated_readme_paths': generated_readme_paths}
 
