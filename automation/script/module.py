@@ -3405,7 +3405,8 @@ class ScriptAutomation(Automation):
                 for t in update_tags_from_env_with_prefix:
                     for key in update_tags_from_env_with_prefix[t]:
                         if str(d.get('env', {}).get(key, '')).strip() != '':
-                            if isinstance(d.get('env')[key], (str, int, float)):
+                            if isinstance(
+                                    d.get('env')[key], (str, int, float)):
                                 d['tags'] += "," + t + str(d.get('env')[key])
                             elif isinstance(d.get('env')[key], list):
                                 for item in d.get('env')[key]:
