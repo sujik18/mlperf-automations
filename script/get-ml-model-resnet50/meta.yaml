@@ -30,7 +30,6 @@ prehook_deps:
   update_tags_from_env_with_prefix:
     _url.:
     - MLC_PACKAGE_URL
-    - MLC_PACKAGE_URL1
 print_env_at_the_end:
   MLC_ML_MODEL_FILE_WITH_PATH: Path to the ML model
 tags:
