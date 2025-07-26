@@ -34,15 +34,24 @@ def display_help(self_module, input_params):
     if not scripts_list:
         return {'return': 1, 'error': 'No scripts were found'}
 
+    generic_inputs = self_module.input_flags_converted_to_env
+
     # Step 4: Iterate over scripts and generate help output
     for script in sorted(scripts_list, key=lambda x: x.meta.get('alias', '')):
         metadata = script.meta
-        print_script_help(metadata)
+        script_path = script.path
+        print_script_help(
+            metadata,
+            script_path,
+            generic_inputs,
+            env,
+            self_module)
 
     return {'return': 0}
 
 
-def print_script_help(metadata):
+def print_script_help(metadata, script_path, generic_inputs, env, self_module):
+    print("")
     print(f"Script Name: {metadata.get('alias', metadata['uid'])}")
     print(f"Tags: {', '.join(metadata.get('tags', []))}")
     # Print the run commands
@@ -55,11 +64,57 @@ def print_script_help(metadata):
     input_description = metadata.get('input_description', {})
     default_env = metadata.get('default_env', {})
 
-    reverse_map = defaultdict(list)
-    for k, v in input_mapping.items():
-        reverse_map[v].append(k)
+    print_input_details(input_mapping, input_description, default_env)
+
+    print("")
+    print("Generic Inputs for all Scripts:")
+    print("")
+    print_input_descriptions(generic_inputs)
+
+    variations = metadata.get('variations', {})
+
+    if variations:
+        print_variations_help(variations)
+    else:
+        print("    - No variations.")
+
+    print("\n" + "=" * 60 + "\n")  # Separator for clarity
+
+    print(
+        f"""Script meta file path: {os.path.join(script_path, "meta.yaml")}""")
+    customize_path = os.path.join(script_path, "customize.py")
+    if os.path.exists(customize_path):
+        print(f"""Script customize file path: {customize_path}""")
+    else:
+        print(f"""Script customize file can be created at: {customize_path}""")
+
+    run_script_name = self_module._get_script_name(env, script_path)
+    run_script_path = os.path.join(script_path, run_script_name)
+    if os.path.exists(run_script_path):
+        print(f"""Script run file path: {run_script_path}""")
+
+    print("\n" + "=" * 60 + "\n")  # Separator for clarity
+
+
+def print_input_details(input_mapping, input_description, default_env):
+
+    for i in input_mapping:
+        if i not in input_description or input_description[i].get(
+                'env', '') != input_mapping[i]:
+            if i not in input_description:
+                input_description[i] = {}
+            input_description[i]['env_key'] = input_mapping[i]
+
+    keys_to_delete = [
+        key for key in input_description if key not in input_mapping and "." not in key]
+    for key in keys_to_delete:
+        del input_description[key]
 
     if input_description:
+        reverse_map = defaultdict(list)
+        for k, v in input_mapping.items():
+            reverse_map[v].append(k)
+
         for i in input_description:
             if i in input_mapping and input_mapping[i] in default_env:
                 input_description[i]['default'] = default_env[input_mapping[i]]
@@ -72,24 +127,36 @@ def print_script_help(metadata):
                     if alias in input_description:
                         input_description[alias] = {}
                         input_description[alias]['alias'] = canonical
-                        input_description[alias]['desc'] = f"""Alias for {canonical}"""
+                        input_description[alias]['desc'] = f"""Alias for --{canonical}"""
+                        input_description[alias]['env_key'] = mapped_env
 
-    for key, value in input_mapping.items():
-        desc = input_description.get(key, {}).get(
-            'desc', 'No description available')
-        default = input_description.get(key, {}).get('default', 'None')
+    print_input_descriptions(input_description)
+
+    return
+
+
+def print_input_descriptions(input_descriptions):
+
+    if not input_descriptions:
+        print("\tNo inputs")
+
+    for key in input_descriptions:
+        field = input_descriptions[key]
+        env_key = field.get('env_key', f"""MLC_TMP_{key.upper()}""")
+        desc = field.get('desc')
+        default = field.get('default', 'None')
+        choices = field.get("choices", "")
+        dtype = infer_type(field)
         # Use .ljust(15) to ensure the key occupies 15 characters minimum
-        print(
-            f"    --{key.ljust(26)} : maps to --env.{value}\n{' '.ljust(35)}{desc}\n{' '.ljust(35)}Default: {default}\n")
-
-    variations = metadata.get('variations', {})
-
-    if variations:
-        print_variations_help(variations)
-    else:
-        print("    - No variations.")
-
-    print("\n" + "=" * 40 + "\n")  # Separator for clarity
+        print(f"\t--{key.ljust(26)}: maps to --env.{env_key}")
+        if desc:
+            print(f"\t{' '.ljust(30)}Desc: {desc}")
+        print(f"\t{' '.ljust(30)}Default: {default}")
+        if choices:
+            print(f"\t{' '.ljust(30)}Choices: {choices}")
+        if dtype:
+            print(f"\t{' '.ljust(30)}Type: {dtype}")
+        print("")
 
 
 def print_variations_help(variations):
@@ -139,7 +206,7 @@ def print_variations_help(variations):
 
         if bases.get(var):
             base_str = ", ".join(bases[var])
-            output += f" [Base: {base_str}]"
+            output += f" [base: {base_str}]"
 
         if group != "ungrouped" and main_variations[var].get("default", False):
             output += " [Default]"
@@ -166,10 +233,12 @@ def print_run_commands(metadata):
 
     print("")
     print(f"""
-        * Inputs can be appended to the run command directly or as their --env.key mapping.
+        * Any input can be appended to the run command directly or using its --env.key mapping.
         * --env.key is useful to modify the input of a dependent script for which direct input may not be there in the main script.
+        * Any variation can be selected by adding it to the tags using the _ prefix.
+          For example, mlcr get,generic-python-lib,_panda turns on the panda variation for the get-generic-python-lib script.
         * --adr.<dep_name> can be used to modify the dependency(ies) with the name dep_name.
-          For example, --adr.compiler.tags=gcc adds the tags 'gcc' to any dependency under the name compiler.
+          For example, --adr.compiler.tags=gcc adds the tag 'gcc' to any dependency with the name compiler.
     """)
 
 
