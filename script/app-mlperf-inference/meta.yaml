@@ -2116,7 +2116,7 @@ variations:
       nvidia-mitten-git-src:
         tags: _sha.e5574192b3ae76910b6824a9275d14a4158d8afa
       pycuda:
-        version: "2024.1"
+        version_min: "2024.1"
     default_env:
       MLC_SKIP_SYS_UTILS: 'yes'
       MLC_REGENERATE_MEASURE_FILES: 'yes'
@@ -2140,7 +2140,7 @@ variations:
       nvidia-mitten-git-src:
         tags: _sha.e5574192b3ae76910b6824a9275d14a4158d8afa
       pycuda:
-        version: "2024.1"
+        version_min: "2024.1"
     default_env:
       MLC_SKIP_SYS_UTILS: 'yes'
       MLC_REGENERATE_MEASURE_FILES: 'yes'
