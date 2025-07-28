@@ -1510,7 +1510,6 @@ variations:
       - tags: get,generic-python-lib,_package.setuptools-scm
       - tags: get,generic-python-lib,_package.librosa
       - tags: get,generic-python-lib,_package.transformers
-        version_max: "4.52.4"
       - tags: get,generic-python-lib,_package.openai-whisper
       # - tags: get,generic-python-lib,_package.evaluate
       # - tags: get,generic-python-lib,_package.absl-py
@@ -1521,7 +1520,7 @@ variations:
           - "yes"
         names:
           - whisper-model
-      - tags: get,dataset,whisper,_preprocessed,_mlc,_r2_downloader
+      - tags: get,dataset,whisper,_preprocessed
         names:
           - whisper-dataset
         skip_if_env:
