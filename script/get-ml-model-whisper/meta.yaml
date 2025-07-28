@@ -52,7 +52,7 @@ variations:
         _url.:
         - MLC_DOWNLOAD_URL
   rclone:
-    add_deps_recursive:
+    add_deps:
       dae:
         tags: _rclone
         env:
@@ -72,7 +72,7 @@ variations:
     default: true
     group: download-tool
   r2_downloader:
-    add_deps_recursive:
+    add_deps:
       dae:
         tags: _r2_downloader
         env:
