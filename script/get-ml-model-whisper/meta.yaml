@@ -24,6 +24,7 @@ tests:
   run_inputs:
   - variations_list:
     - huggingface,dry-run
+
 uid: 3bea2356e97f47b1
 
 prehook_deps:
@@ -81,6 +82,6 @@ variations:
   dry-run,rclone:
     env:
       MLC_DOWNLOAD_EXTRA_OPTIONS: --dry-run
-  dry-run,r2_downloader:
+  dry-run,r2-downloader:
     env:
       MLC_DOWNLOAD_EXTRA_OPTIONS: -x
