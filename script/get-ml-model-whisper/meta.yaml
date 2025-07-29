@@ -7,13 +7,12 @@ env:
   MLC_ML_MODEL_WEIGHT_TRANSFORMATIONS: 'no'
   MLC_ML_MODEL_DATASET: whisper
 input_mapping:
-  checkpoint: WHISPER_CHECKPOINT_PATH
+  checkpoint: MLC_ML_MODEL_WHISPER_PATH
 new_env_keys:
-- MLC_ML_MODEL_*
-- WHISPER_CHECKPOINT_PATH
-- MLC_WHISPER_FINAL_SAFE_TENSORS_PATH
+- MLC_ML_MODEL_WHISPER_PATH
+- MLC_ML_MODEL_FILE_WITH_PATH
 print_env_at_the_end:
-  WHISPER_CHECKPOINT_PATH: Whisper checkpoint path
+  MLC_ML_MODEL_WHISPER_PATH: Whisper checkpoint path
 tags:
 - get-ml-model-whisper
 - get
@@ -23,7 +22,9 @@ tags:
 tests:
   run_inputs:
   - variations_list:
-    - huggingface,dry-run
+    - rclone,mlc,dry-run
+    - r2-downloader,mlc,dry-run
+    - huggingface
 
 uid: 3bea2356e97f47b1
 
@@ -85,3 +86,52 @@ variations:
   dry-run,r2-downloader:
     env:
       MLC_DOWNLOAD_EXTRA_OPTIONS: -x
+  mlc:
+    default: true
+    env:
+      MLC_DOWNLOAD_SRC: mlcommons
+    group: download-src
+    prehook_deps:
+    - enable_if_env:
+        MLC_TMP_REQUIRE_DOWNLOAD:
+        - 'yes'
+      env:
+        MLC_DOWNLOAD_FINAL_ENV_NAME: MLC_ML_MODEL_WHISPER_PATH
+        MLC_EXTRACT_FINAL_ENV_NAME: MLC_ML_MODEL_WHISPER_PATH
+      extra_cache_tags: ml,model,whisper
+      force_cache: true
+      force_env_keys:
+      - MLC_OUTDIRNAME
+      names:
+      - whisper-model-dae
+      tags: download-and-extract
+      update_tags_from_env_with_prefix:
+        _url.:
+        - MLC_DOWNLOAD_URL
+  rclone:
+    adr:
+      whisper-model-dae:
+        tags: _rclone
+        env:
+          MLC_DOWNLOAD_URL: 'mlc-inference:mlcommons-inference-wg-public/Whisper/model/'
+    prehook_deps:
+      - enable_if_env:
+          MLC_TMP_REQUIRE_DOWNLOAD:
+          - true
+        tags: get,rclone
+      - enable_if_env:
+          MLC_TMP_REQUIRE_DOWNLOAD:
+          - true
+        env:
+          MLC_RCLONE_DRIVE_FOLDER_ID: 17CpM5eU8tjrxh_LpH_BTNTeT37PhzcnC
+        force_cache: true
+        tags: get,rclone-config,_mlc-inference
+    default: true
+    group: download-tool
+  r2-downloader:
+    adr:
+      whisper-model-dae:
+        tags: _r2-downloader
+        env:
+          MLC_DOWNLOAD_URL: 'https://inference.mlcommons-storage.org/metadata/whisper-model.uri'
+    group: download-tool
