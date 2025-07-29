@@ -41,8 +41,8 @@ prehook_deps:
   names:
   - hf-zoo
   tags: get,ml-model,huggingface,zoo,_clone-repo
-  force_env_keys:
-    - MLC_OUTDIRNAME
+- force_env_keys:
+  - MLC_OUTDIRNAME
 
 variations:
   fp32:
@@ -54,7 +54,7 @@ variations:
     group: precision
 
   huggingface:
-    group: download-source
+    group: download-src
     env:
       MLC_DOWNLOAD_SRC: huggingface
 
@@ -115,17 +115,17 @@ variations:
         env:
           MLC_DOWNLOAD_URL: 'mlc-inference:mlcommons-inference-wg-public/Whisper/model/'
     prehook_deps:
-      - enable_if_env:
-          MLC_TMP_REQUIRE_DOWNLOAD:
-          - true
-        tags: get,rclone
-      - enable_if_env:
-          MLC_TMP_REQUIRE_DOWNLOAD:
-          - true
-        env:
-          MLC_RCLONE_DRIVE_FOLDER_ID: 17CpM5eU8tjrxh_LpH_BTNTeT37PhzcnC
-        force_cache: true
-        tags: get,rclone-config,_mlc-inference
+    - enable_if_env:
+        MLC_TMP_REQUIRE_DOWNLOAD:
+        - true
+      tags: get,rclone
+    - enable_if_env:
+        MLC_TMP_REQUIRE_DOWNLOAD:
+        - true
+      env:
+        MLC_RCLONE_DRIVE_FOLDER_ID: 17CpM5eU8tjrxh_LpH_BTNTeT37PhzcnC
+      force_cache: true
+      tags: get,rclone-config,_mlc-inference
     default: true
     group: download-tool
   r2-downloader:
