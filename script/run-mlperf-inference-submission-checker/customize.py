@@ -65,7 +65,8 @@ def preprocess(i):
 
     extra_args = ' ' + env.get('MLC_MLPERF_SUBMISSION_CHECKER_EXTRA_ARGS', '')
 
-    if (is_true(env.get('MLC_TAR_SUBMISSION_DIR')) or env.get('MLC_MLPERF_SUBMITTER_ID', '') != '') and "skip-extra-files-in-root-check" not in extra_args:
+    if (is_true(env.get('MLC_TAR_SUBMISSION_DIR')) or env.get('MLC_MLPERF_SUBMITTER_ID',
+                                                              '') != '') and "skip-extra-files-in-root-check" not in extra_args:
         extra_args += " --skip-extra-files-in-root-check "
 
     x_submitter = ' --submitter ' + q + submitter + q if submitter != '' else ''

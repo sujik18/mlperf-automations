@@ -5,6 +5,7 @@ import json
 import shutil
 import tempfile
 
+
 def preprocess(i):
 
     os_info = i['os_info']
@@ -29,7 +30,9 @@ def preprocess(i):
     with tempfile.TemporaryDirectory() as tmpdir:
         tmp_file_path = os.path.join(tmpdir, "submission.tar.gz")
 
-        shutil.copy(file_path, tmp_file_path) #use tmp_file_path to prevent long file paths which causes issue during upload
+        # use tmp_file_path to prevent long file paths which causes issue
+        # during upload
+        shutil.copy(file_path, tmp_file_path)
 
         r = get_signed_url(
             server,
