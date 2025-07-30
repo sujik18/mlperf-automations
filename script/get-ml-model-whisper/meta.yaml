@@ -43,7 +43,11 @@ prehook_deps:
   tags: get,ml-model,huggingface,zoo,_clone-repo
 - force_env_keys:
   - MLC_OUTDIRNAME
+  names:
+  - whisper-outdir-setup
+  tags: setup,ml-model
 
+  
 variations:
   fp32:
     default: true
