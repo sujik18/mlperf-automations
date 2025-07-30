@@ -93,6 +93,7 @@ variations:
         force_cache: true
         names:
           - dae
+          - llama3-model-download
         tags: download-and-extract
         force_env_keys:
           - MLC_OUTDIRNAME  
@@ -105,13 +106,13 @@ variations:
     env:
       MLC_DOWNLOAD_URL: mlc-llama3-1:inference/<<<MLC_ML_MODEL_NAME>>>
     adr:
-      dae:
+      llama3-model-download:
         extra_cache_tags: llama3,dataset,rclone
   mlc,r2-downloader:
     env:
       MLC_DOWNLOAD_URL: https://llama3-1.mlcommons-storage.org/metadata/<<<MLC_ML_MODEL_R2_HOSTED_NAME>>>.uri
     adr:
-      dae:
+      llama3-model-download:
         extra_cache_tags: llama3,dataset,rclone
   dry-run:
     group: run-mode
