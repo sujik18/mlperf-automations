@@ -2,7 +2,8 @@ import requests
 from mlc import utils
 import os
 import json
-
+import shutil
+import tempfile
 
 def preprocess(i):
 
@@ -25,26 +26,31 @@ def preprocess(i):
                 env['MLC_TMP_CURRENT_PATH'],
                 file_path))
 
-    r = get_signed_url(
-        server,
-        benchmark,
-        submitter_id,
-        submitter_name,
-        file_path)
-    if r['return'] > 0:
-        return r
+    with tempfile.TemporaryDirectory() as tmpdir:
+        tmp_file_path = os.path.join(tmpdir, "submission.tar.gz")
 
-    signed_url = r['signed_url']
-    submission_id = r['submission_id']
+        shutil.copy(file_path, tmp_file_path) #use tmp_file_path to prevent long file paths which causes issue during upload
 
-    r = upload_file_to_signed_url(file_path, signed_url, logger)
-    if r['return'] > 0:
-        return r
+        r = get_signed_url(
+            server,
+            benchmark,
+            submitter_id,
+            submitter_name,
+            tmp_file_path)
+        if r['return'] > 0:
+            return r
 
-    r = trigger_submission_checker(
-        server, submitter_id, benchmark, submission_id, logger)
-    if r['return'] > 0:
-        return r
+        signed_url = r['signed_url']
+        submission_id = r['submission_id']
+
+        r = upload_file_to_signed_url(tmp_file_path, signed_url, logger)
+        if r['return'] > 0:
+            return r
+
+        r = trigger_submission_checker(
+            server, submitter_id, benchmark, submission_id, logger)
+        if r['return'] > 0:
+            return r
 
     return {'return': 0}
 
