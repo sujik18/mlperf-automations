@@ -405,7 +405,7 @@ def generate_submission(env, state, inp, submission_division, logger):
                     "mlperf_log_summary.txt",
                     "mlperf_log_detail.txt"]
                 perf_run_dir = os.path.join(
-                        result_scenario_path, "performance", "run_1")
+                    result_scenario_path, "performance", "run_1")
                 missing = [
                     f for f in files_to_check_in_perf_dir
                     if not os.path.exists(os.path.join(perf_run_dir, f))
@@ -414,14 +414,14 @@ def generate_submission(env, state, inp, submission_division, logger):
                     logger.warning(
                         f"""Missing file(s) in {perf_run_dir}: {', '.join(missing)}, Skipping directory: {result_scenario_path}""")
                     continue
-                
+
                 files_to_check_in_acc_dir = [
                     "mlperf_log_summary.txt",
                     "mlperf_log_detail.txt",
                     "mlperf_log_accuracy.json",
                     "accuracy.txt"]
                 acc_run_dir = os.path.join(
-                        result_scenario_path, "accuracy")
+                    result_scenario_path, "accuracy")
                 missing = [
                     f for f in files_to_check_in_acc_dir
                     if not os.path.exists(os.path.join(acc_run_dir, f))
@@ -431,13 +431,15 @@ def generate_submission(env, state, inp, submission_division, logger):
                         f"""Missing file(s) in {acc_run_dir}: {', '.join(missing)}, Skipping directory: {result_scenario_path}""")
                     continue
 
-                if not os.path.exists(os.path.join(perf_run_dir, "user.conf")) and not os.path.exists(os.path.join(result_scenario_path, "user.conf")):
+                if not os.path.exists(os.path.join(perf_run_dir, "user.conf")) and not os.path.exists(
+                        os.path.join(result_scenario_path, "user.conf")):
                     logger.warning(
                         f"""Missing user.conf in both {os.path.join(perf_run_dir, "user.conf")} and {os.path.join(result_scenario_path, "user.conf")}. Skipping directory: {result_scenario_path}"""
                     )
                     continue
-                
-                if not os.path.exists(os.path.join(perf_run_dir, "measurements.json")) and not os.path.exists(os.path.join(result_scenario_path, "measurements.json")):
+
+                if not os.path.exists(os.path.join(perf_run_dir, "measurements.json")) and not os.path.exists(
+                        os.path.join(result_scenario_path, "measurements.json")):
                     logger.warning(
                         f"""Missing measurements.json in both {os.path.join(perf_run_dir, "measurements.json")} and {os.path.join(result_scenario_path, "measurements.json")}. Skipping directory: {result_scenario_path}"""
                     )
