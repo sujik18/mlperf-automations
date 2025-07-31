@@ -939,7 +939,7 @@ variations:
           - waymo-dataset
       - tags: get,ml-model,pointpainting
         enable_if_env:
-          MLC_USE_DATASET_FROM_HOST:
+          MLC_USE_ML_MODEL_FROM_HOST:
           - 'yes'
         names:
           - pointpainting-model
