@@ -412,7 +412,7 @@ def generate_submission(env, state, inp, submission_division, logger):
                 ]
                 if missing:
                     logger.warning(
-                        f"Missing file(s) in {perf_run_dir}: {', '.join(missing)}, Skipping directory: {result_scenario_path}")
+                        f"""Missing file(s) in {perf_run_dir}: {', '.join(missing)}, Skipping directory: {result_scenario_path}""")
                     continue
                 
                 files_to_check_in_acc_dir = [
@@ -428,18 +428,18 @@ def generate_submission(env, state, inp, submission_division, logger):
                 ]
                 if missing:
                     logger.warning(
-                        f"Missing file(s) in {acc_run_dir}: {', '.join(missing)}, Skipping directory: {result_scenario_path}")
+                        f"""Missing file(s) in {acc_run_dir}: {', '.join(missing)}, Skipping directory: {result_scenario_path}""")
                     continue
 
                 if not os.path.exists(os.path.join(perf_run_dir, "user.conf")) and not os.path.exists(os.path.join(result_scenario_path, "user.conf")):
                     logger.warning(
-                        f"Missing user.conf in both {os.path.join(perf_run_dir, "user.conf")} and {os.path.join(result_scenario_path, "user.conf")}. Skipping directory: {result_scenario_path}"
+                        f"""Missing user.conf in both {os.path.join(perf_run_dir, "user.conf")} and {os.path.join(result_scenario_path, "user.conf")}. Skipping directory: {result_scenario_path}"""
                     )
                     continue
                 
                 if not os.path.exists(os.path.join(perf_run_dir, "measurements.json")) and not os.path.exists(os.path.join(result_scenario_path, "measurements.json")):
                     logger.warning(
-                        f"Missing measurements.json in both {os.path.join(perf_run_dir, "measurements.json")} and {os.path.join(result_scenario_path, "measurements.json")}. Skipping directory: {result_scenario_path}"
+                        f"""Missing measurements.json in both {os.path.join(perf_run_dir, "measurements.json")} and {os.path.join(result_scenario_path, "measurements.json")}. Skipping directory: {result_scenario_path}"""
                     )
                     continue
 
