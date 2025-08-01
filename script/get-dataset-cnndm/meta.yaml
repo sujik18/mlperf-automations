@@ -132,7 +132,7 @@ variations:
         extra_cache_tags: cnndm,dataset,llama3,val,edge
     env:
       MLC_DATASET_CNNDM_FILENAME: cnn_eval_5000.json
-      MLC_DOWNLOAD_URL: mlc-inference:mlcommons-inference-wg-public/llama3.1_8b/<<<MLC_DATASET_CNNDM_FILENAME>>>
+      MLC_DOWNLOAD_URL: mlc-inference:mlcommons-inference-wg-public/llama3.1_8b/datasets/<<<MLC_DATASET_CNNDM_FILENAME>>>
       MLC_DOWNLOAD_FINAL_ENV_NAME: MLC_DATASET_CNNDM_EVAL_PATH
       MLC_EXTRACT_FINAL_ENV_NAME: MLC_DATASET_CNNDM_EVAL_PATH
   validation,edge,llama3,mlc,r2-downloader:
@@ -150,7 +150,7 @@ variations:
         extra_cache_tags: cnndm,dataset,llama3,val,datacenter
     env:
       MLC_DATASET_CNNDM_FILENAME: cnn_eval.json
-      MLC_DOWNLOAD_URL: mlc-inference:mlcommons-inference-wg-public/llama3.1_8b/<<<MLC_DATASET_CNNDM_FILENAME>>>
+      MLC_DOWNLOAD_URL: mlc-inference:mlcommons-inference-wg-public/llama3.1_8b/datasets/<<<MLC_DATASET_CNNDM_FILENAME>>>
       MLC_DOWNLOAD_FINAL_ENV_NAME: MLC_DATASET_CNNDM_EVAL_PATH
       MLC_EXTRACT_FINAL_ENV_NAME: MLC_DATASET_CNNDM_EVAL_PATH
   validation,datacenter,llama3,mlc,r2-downloader:
