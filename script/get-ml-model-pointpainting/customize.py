@@ -12,9 +12,9 @@ def preprocess(i):
         return {'return': 1, 'error': 'Script not supported in windows yet!'}
 
     if env.get('MLC_ML_MODEL_POINT_PAINTING_PATH', '') != '':
-        if not os.path.exists(env['MLC_ML_MODEL_POINT_PAINTING']):
+        if not os.path.exists(env['MLC_ML_MODEL_POINT_PAINTING_PATH']):
             return {
-                'return': 1, 'error': f"Provided model path {env['MLC_ML_MODEL_POINT_PAINTING']} does not exist."}
+                'return': 1, 'error': f"Provided model path {env['MLC_ML_MODEL_POINT_PAINTING_PATH']} does not exist."}
 
     if env.get('MLC_ML_MODEL_DPLAB_RESNET50_PATH', '') != '':
         if not os.path.exists(env['MLC_ML_MODEL_DPLAB_RESNET50_PATH']):
