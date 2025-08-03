@@ -223,6 +223,8 @@ variations:
         tags: _int32
       llama3_1-405b-accuracy-script:
         tags: _int32
+      llama3_1-8b-accuracy-script:
+        tags: _int32
     env:
       MLC_MLPERF_PYTHON: 'yes'
       MLC_MLPERF_IMPLEMENTATION: mlcommons_python
@@ -937,7 +939,7 @@ variations:
           - waymo-dataset
       - tags: get,ml-model,pointpainting
         enable_if_env:
-          MLC_USE_DATASET_FROM_HOST:
+          MLC_USE_ML_MODEL_FROM_HOST:
           - 'yes'
         names:
           - pointpainting-model
@@ -1012,7 +1014,7 @@ variations:
           MLC_USE_DATASET_FROM_HOST:
           - 'yes'
   
-  llama3.1-8b-edge:
+  llama3_1-8b-edge:
     base:
     - llama3_1-8b_
     add_deps_recursive:
