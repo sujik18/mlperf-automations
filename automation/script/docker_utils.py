@@ -40,9 +40,9 @@ def process_mounts(mounts, env, docker_settings, f_run_cmd, run_state):
     if 'mounts' in docker_settings:
         mounts.extend(docker_settings['mounts'])
 
-    for key in [ "MLC_INPUT", "MLC_OUTPUT", "MLC_OUTDIRNAME" ]:
-        if "${{ "+key+" }}:${{ "+key+" }}" not in mounts:
-            mounts.append("${{ "+key+" }}:${{ "+key+" }}")
+    for key in ["MLC_INPUT", "MLC_OUTPUT", "MLC_OUTDIRNAME"]:
+        if "${{ " + key + " }}:${{ " + key + " }}" not in mounts:
+            mounts.append("${{ " + key + " }}:${{ " + key + " }}")
 
     docker_input_mapping = docker_settings.get("input_mapping", {})
     container_env_string = ""
@@ -186,7 +186,8 @@ def prepare_docker_inputs(input_params, docker_settings,
     return docker_inputs, dockerfile_path
 
 
-def update_docker_environment(docker_settings, env, host_env_keys, container_env_string):
+def update_docker_environment(
+        docker_settings, env, host_env_keys, container_env_string):
     """
     Updates the Docker environment variables and build arguments.
 
