@@ -63,7 +63,7 @@ def preprocess(i):
         CMD += " 2> nul"
     else:
         CMD += " 2> /dev/null || true "
-   
+
     logger.info('  ' + CMD)
     logger.info('')
 
