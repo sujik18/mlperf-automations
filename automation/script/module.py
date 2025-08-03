@@ -67,6 +67,19 @@ class ScriptAutomation(Automation):
                                'MLC_GIT_*',
                                'MLC_RENEW_CACHE_ENTRY']
 
+        self.host_env_keys = [
+            "GH_TOKEN",
+            "ftp_proxy",
+            "FTP_PROXY",
+            "http_proxy",
+            "HTTP_PROXY",
+            "https_proxy",
+            "HTTPS_PROXY",
+            "no_proxy",
+            "NO_PROXY",
+            "socks_proxy",
+            "SOCKS_PROXY"]
+
         self.input_flags_converted_to_tmp_env = {
             'path': {'desc': 'Filesystem path to search for executable', 'default': ''}}
 
@@ -486,19 +499,7 @@ class ScriptAutomation(Automation):
                                'append_unique': True})
 
         # take some env from the user environment
-        keys = [
-            "GH_TOKEN",
-            "ftp_proxy",
-            "FTP_PROXY",
-            "http_proxy",
-            "HTTP_PROXY",
-            "https_proxy",
-            "HTTPS_PROXY",
-            "no_proxy",
-            "NO_PROXY",
-            "socks_proxy",
-            "SOCKS_PROXY"]
-        for key in keys:
+        for key in self.host_env_keys:
             if os.environ.get(key, '') != '' and env.get(key, '') == '':
                 env[key] = os.environ[key]
 
