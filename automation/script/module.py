@@ -1755,9 +1755,10 @@ class ScriptAutomation(Automation):
                         env['MLC_TMP_CURRENT_PATH'], env['MLC_OUTDIRNAME'])
                     env['MLC_OUTDIRNAME'] = c_outdirname
 
-                if not os.path.exists(c_outdirname):
-                    os.makedirs(c_outdirname)
-                os.chdir(c_outdirname)
+                if not fake_run: #prevent permission error inside docker runs
+                    if not os.path.exists(c_outdirname):
+                        os.makedirs(c_outdirname)
+                    os.chdir(c_outdirname)
 
             # Check if pre-process and detect
             if 'preprocess' in dir(customize_code) and not fake_run:
