@@ -107,7 +107,7 @@ variations:
         - MLC_DOWNLOAD_URL
   rclone:
     adr:
-      dae:
+      whisper-model-dae:
         tags: _rclone
         env:
           MLC_DOWNLOAD_URL: 'mlc-inference:mlcommons-inference-wg-public/Whisper/model/'
@@ -127,7 +127,7 @@ variations:
     group: download-tool
   r2-downloader:
     adr:
-      dae:
+      whisper-model-dae:
         tags: _r2-downloader
         env:
           MLC_DOWNLOAD_URL: 'https://inference.mlcommons-storage.org/metadata/whisper-model.uri'
