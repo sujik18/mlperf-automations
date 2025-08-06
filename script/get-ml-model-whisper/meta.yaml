@@ -101,7 +101,7 @@ variations:
       force_env_keys:
       - MLC_OUTDIRNAME
       names:
-      - dae
+      - whisper-model-dae
       tags: download-and-extract
       update_tags_from_env_with_prefix:
         _url.:
