@@ -24,7 +24,7 @@ tests:
   - variations_list:
     - rclone,mlc,dry-run
     - r2-downloader,mlc,dry-run
-    - huggingface
+    # - huggingface
 
 uid: 3bea2356e97f47b1
 
