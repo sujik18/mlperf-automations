@@ -85,6 +85,7 @@ variations:
     env:
       MLC_DOWNLOAD_EXTRA_OPTIONS: -x
   mlc:
+    default: true
     env:
       MLC_DOWNLOAD_SRC: mlcommons
     group: download-src
