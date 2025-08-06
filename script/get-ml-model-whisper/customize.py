@@ -20,13 +20,13 @@ def preprocess(i):
         # Normalize and expand the path
         checkpoint_path = os.path.abspath(os.path.expanduser(checkpoint_path))
         env['MLC_ML_MODEL_WHISPER_PATH'] = checkpoint_path
-        
+
         if not os.path.exists(checkpoint_path):
             return {
                 'return': 1,
                 'error': f"Provided Whisper model path '{checkpoint_path}' does not exist."
             }
-        
+
         if not os.path.isdir(checkpoint_path):
             return {
                 'return': 1,
