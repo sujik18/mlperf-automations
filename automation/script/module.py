@@ -4873,7 +4873,7 @@ def find_cached_script(i):
                 }
                 env_tmp = copy.deepcopy(env)
                 path_to_cached_state_file = os.path.join(cached_script.path,
-                                                             self_obj.file_with_cached_state)
+                                                         self_obj.file_with_cached_state)
 
                 r = utils.load_json(file_name=path_to_cached_state_file)
                 if r['return'] > 0:
