@@ -21,10 +21,11 @@ def preprocess(i):
 
     return {'return': 0}
 
+
 def postprocess(i):
-    
+
     env = i['env']
     if env.get('MLC_GIT_REPO_CURRENT_HASH', '') != '':
         env['MLC_GCC_SRC_REPO_COMMIT'] = env['MLC_GIT_REPO_CURRENT_HASH']
-    
+
     return {'return': 0}
