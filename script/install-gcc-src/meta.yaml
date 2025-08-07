@@ -26,6 +26,9 @@ deps:
     - MLC_GIT_CHECKOUT_TAG
 env:
   MLC_GIT_URL: git://gcc.gnu.org/git/gcc.git
+
+new_env_keys:
+  - MLC_GCC_*
 post_deps:
 - skip_if_env:
     MLC_REQUIRE_INSTALL:

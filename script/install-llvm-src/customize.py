@@ -83,4 +83,7 @@ def postprocess(i):
         if os.path.isdir(path_include):
             env['+C_INCLUDE_PATH'] = [path_include]
 
+    if env.get('MLC_GIT_REPO_CURRENT_HASH', '') != '':
+        env['MLC_LLVM_SRC_REPO_COMMIT'] = env['MLC_GIT_REPO_CURRENT_HASH']
+
     return {'return': 0}
