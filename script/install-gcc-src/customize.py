@@ -22,6 +22,11 @@ def preprocess(i):
     else:
         env['MLC_GCC_TARGET_STRING'] = ''
 
+    if env.get('MLC_GCC_HOST', '') != '':
+        env['MLC_GCC_HOST_STRING'] = f""" --target={env['MLC_GCC_HOST']} """
+    else:
+        env['MLC_GCC_HOST_STRING'] = ''
+
     env['MLC_GCC_INSTALLED_PATH'] = os.path.join(os.getcwd(), 'install', 'bin')
 
     return {'return': 0}

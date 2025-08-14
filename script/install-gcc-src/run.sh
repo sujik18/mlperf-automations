@@ -23,7 +23,7 @@ cd src
 cd ../build
 
 
-cmd="../src/configure --prefix="${INSTALL_DIR}" ${MLC_GCC_TARGET_STRING} --with-gcc-major-version-only --disable-multilib"
+cmd="../src/configure --prefix="${INSTALL_DIR}" ${MLC_GCC_TARGET_STRING} ${MLC_GCC_HOST_STRING} --with-gcc-major-version-only --disable-multilib"
 echo $cmd
 eval $cmd
 
