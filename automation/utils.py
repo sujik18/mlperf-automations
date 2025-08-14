@@ -41,7 +41,7 @@ def get_host_os_info(i={}):
     pbits = str(8 * struct.calcsize("P"))
 
     if platform.system().lower().startswith('win'):
-        platform = 'windows'
+        platform_name = 'windows'
         info['bat_ext'] = '.bat'
         info['set_env'] = 'set ${key}=${value}'
         info['env_separator'] = ';'
