@@ -41,6 +41,7 @@ mlcr generate,submission,mlperf,mlperf-inference,inference,mlcommons,inference-s
 | Name | Description | Choices | Default |
 |------|-------------|---------|------|
 | `--analyzer_settings_file` |  |  | `` |
+| `--status` |  |  | `` |
 | `--category` |  |  | `` |
 | `--clean` |  |  | `` |
 | `--dashboard` |  |  | `` |

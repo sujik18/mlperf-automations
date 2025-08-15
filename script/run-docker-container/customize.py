@@ -33,7 +33,7 @@ def preprocess(i):
                     'tags': env['MLC_DOCKER_RUN_SCRIPT_TAGS']})
     if len(r['list']) < 1:
         raise Exception(
-            'CM script with tags ' +
+            'MLC script with tags ' +
             env['MLC_DOCKER_RUN_SCRIPT_TAGS'] +
             ' not found!')
 
@@ -62,7 +62,8 @@ def preprocess(i):
     if os_info['platform'] == 'windows':
         CMD += " 2> nul"
     else:
-        CMD += " 2> /dev/null"
+        CMD += " 2> /dev/null || true "
+
     logger.info('  ' + CMD)
     logger.info('')
 
@@ -100,7 +101,7 @@ def preprocess(i):
         if os_info['platform'] == 'windows':
             CMD += " 2> nul"
         else:
-            CMD += " 2> /dev/null"
+            CMD += " 2> /dev/null || true"
 
         logger.info('')
         logger.info('Checking Docker images:')

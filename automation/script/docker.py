@@ -103,7 +103,7 @@ def dockerfile(self_module, input_params):
         deps = docker_settings.get('build_deps', [])
         if deps:
             r = self_module._run_deps(
-                deps, [], env, {}, {}, {}, {}, '', [], '', False, '',
+                deps, [], env, {}, {}, {}, add_deps_recursive, '', [], '', False, '',
                 show_time, ' ', run_state)
             if r['return'] > 0:
                 return r
@@ -336,7 +336,7 @@ def docker_run(self_module, i):
         deps = docker_settings.get('deps', [])
         if deps:
             r = self_module._run_deps(
-                deps, [], env, {}, {}, {}, {}, '', [], '', False, '',
+                deps, [], env, {}, {}, {}, add_deps_recursive, '', [], '', False, '',
                 show_time, ' ', run_state)
             if r['return'] > 0:
                 return r
@@ -394,7 +394,7 @@ def docker_run(self_module, i):
         container_env_string = res['container_env_string']
 
         res = update_docker_environment(
-            docker_settings, env, container_env_string)
+            docker_settings, env, self_module.host_env_keys, container_env_string)
         if res['return'] > 0:
             return res
 

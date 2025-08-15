@@ -24,8 +24,15 @@ deps:
     - MLC_GIT_CHECKOUT_SHA
     _tag.:
     - MLC_GIT_CHECKOUT_TAG
+input_mapping:
+  targets: MLC_GCC_TARGET 
+  host: MLC_GCC_HOST
+
 env:
   MLC_GIT_URL: git://gcc.gnu.org/git/gcc.git
+
+new_env_keys:
+  - MLC_GCC_*
 post_deps:
 - skip_if_env:
     MLC_REQUIRE_INSTALL:
@@ -37,6 +44,10 @@ tags:
 - gcc
 - src-gcc
 uid: faae0ebd6e1242db
+docker:
+  skip_run_cmd: true
+  pre_run_cmds:
+    - mlc pull repo
 tests:
   run_inputs:
     - {}
