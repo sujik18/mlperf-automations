@@ -3,6 +3,7 @@ from mlc import utils
 import os
 import subprocess
 
+
 def preprocess(i):
 
     env = i['env']
@@ -18,10 +19,9 @@ def preprocess(i):
 
     if is_true(env.get('MLC_JEMALLOC_STATS')):
         configure_command += " --enable-stats "
-    
+
     if is_true(env.get('MLC_JEMALLOC_PROF')):
         configure_command += " --enable-prof "
-
 
     if env.get('MLC_JEMALLOC_CONFIG', '') != '':
         configure_command += f""" {env['MLC_JEMALLOC_CONFIG'].replace("'", "")} """
