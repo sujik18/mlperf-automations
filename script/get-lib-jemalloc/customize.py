@@ -1,7 +1,7 @@
+from utils import *
 from mlc import utils
 import os
 import subprocess
-
 
 def preprocess(i):
 
@@ -15,6 +15,14 @@ def preprocess(i):
         configure_command += f""" --with-lg-quantum={env['MLC_JEMALLOC_LG_QUANTUM']} """
     if env.get('MLC_JEMALLOC_LG_PAGE', '') != '':
         configure_command += f""" --with-lg-page={env['MLC_JEMALLOC_LG_PAGE']} """
+
+    if is_true(env.get('MLC_JEMALLOC_STATS')):
+        configure_command += " --enable-stats "
+    
+    if is_true(env.get('MLC_JEMALLOC_PROF')):
+        configure_command += " --enable-prof "
+
+
     if env.get('MLC_JEMALLOC_CONFIG', '') != '':
         configure_command += f""" {env['MLC_JEMALLOC_CONFIG'].replace("'", "")} """
 
