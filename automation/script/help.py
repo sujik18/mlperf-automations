@@ -42,7 +42,8 @@ def display_help(self_module, input_params):
 
     else:
         # Step 4: Iterate over scripts and generate help output
-        for script in sorted(scripts_list, key=lambda x: x.meta.get('alias', '')):
+        for script in sorted(
+                scripts_list, key=lambda x: x.meta.get('alias', '')):
             metadata = script.meta
             script_path = script.path
             print_script_help(
