@@ -2870,6 +2870,8 @@ class ScriptAutomation(Automation):
             if i.get(key):
                 ii[key] = i[key]
 
+        if i.get('all'):
+            ii['all'] = i['all']
         r = super(ScriptAutomation, self).search(ii)
         if r['return'] > 0:
             return r
