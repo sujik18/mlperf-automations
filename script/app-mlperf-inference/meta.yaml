@@ -2136,10 +2136,10 @@ variations:
       reproducibility
     add_deps_recursive:
       nvidia-inference-common-code:
-        tags: _custom,_v5.1-dev
+        tags: _mlcommons,_v5.1-dev
       nvidia-inference-server:
         version: r5.0
-        tags: _custom
+        tags: _mlcommons
       nvidia-harness:   
         tags: _v5.0
       intel-harness:
