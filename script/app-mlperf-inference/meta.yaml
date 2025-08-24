@@ -529,6 +529,14 @@ variations:
             _tp-size.:
               - MLC_NVIDIA_TP_SIZE
 
+  nvidia-original,r5.1-dev_default,llama2-70b_:
+    docker:
+      deps:
+        - tags: get,ml-model,llama2-70b,_nvidia,_fp8,_v5.0
+          update_tags_from_env_with_prefix:
+            _tp-size.:
+              - MLC_NVIDIA_TP_SIZE
+
   nvidia-original:
     docker:
       interactive: True
