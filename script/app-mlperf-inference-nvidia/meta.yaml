@@ -1286,6 +1286,10 @@ variations:
   gpu_memory.80,v5.0+,num-gpus.2,llama2-70b,offline,run_harness:
     default_variations:
       batch-size: batch_size."llama2-70b:1024"
+
+  gpu_memory.80,v5.0+,num-gpus.8,llama2-70b,offline,run_harness:
+    default_variations:
+      batch-size: batch_size."llama2-70b:4096"
       
   gpu_memory.16,pre5.0,gptj_,offline,run_harness:
     default_variations:
