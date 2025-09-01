@@ -19,7 +19,7 @@ def preprocess(i):
         env['+LIBRARY_PATH'].append(os.path.join(
             env['MLC_TENSORRT_INSTALL_PATH'], "lib"))
 
-    if is_true(env.get('BUILD_TRTLLM')): 
+    if is_true(env.get('BUILD_TRTLLM')):
         hpcx_paths = []
         if os.path.exists("/opt/hpcx/ucx/lib"):
             hpcx_paths.append("/opt/hpcx/ucx/lib")
@@ -27,7 +27,6 @@ def preprocess(i):
             hpcx_paths.append("/opt/hpcx/ucc/lib")
         if os.path.exists("/opt/hpcx/ompi/lib"):
             hpcx_paths.append("/opt/hpcx/ompi/lib")
-        
 
     cxxflags = [
         "-Wno-error=switch",
