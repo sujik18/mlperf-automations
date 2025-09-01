@@ -1,6 +1,7 @@
 from mlc import utils
 import os
 import shutil
+from utils import *
 
 
 def preprocess(i):
@@ -17,6 +18,16 @@ def preprocess(i):
     if 'MLC_TENSORRT_INSTALL_PATH' in env:
         env['+LIBRARY_PATH'].append(os.path.join(
             env['MLC_TENSORRT_INSTALL_PATH'], "lib"))
+
+    if is_true(env.get('BUILD_TRTLLM')): 
+        hpcx_paths = []
+        if os.path.exists("/opt/hpcx/ucx/lib"):
+            hpcx_paths.append("/opt/hpcx/ucx/lib")
+        if os.path.exists("/opt/hpcx/ucc/lib"):
+            hpcx_paths.append("/opt/hpcx/ucc/lib")
+        if os.path.exists("/opt/hpcx/ompi/lib"):
+            hpcx_paths.append("/opt/hpcx/ompi/lib")
+        
 
     cxxflags = [
         "-Wno-error=switch",
@@ -38,6 +49,7 @@ def preprocess(i):
         env['+ CXXFLAGS'] = []
 
     env['+ CXXFLAGS'] += cxxflags
+    env['+LD_LIBRARY_PATH'] = hpcx_paths + env['+LD_LIBRARY_PATH']
     return {'return': 0}
 
 
