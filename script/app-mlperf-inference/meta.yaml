@@ -583,7 +583,7 @@ variations:
       cnndm-accuracy-script:
         tags: _int32
     env:
-      BUILD_TRTLLM: 0
+      BUILD_TRTLLM: 1
       MLC_MLPERF_IMPLEMENTATION: nvidia
       MLC_SQUAD_ACCURACY_DTYPE: float16
       MLC_IMAGENET_ACCURACY_DTYPE: int32
