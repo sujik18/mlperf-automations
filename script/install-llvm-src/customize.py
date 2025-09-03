@@ -66,7 +66,8 @@ def preprocess(i):
             if target_triple != '':
                 target_triple_string = f""" -DLLVM_DEFAULT_TARGET_TRIPLE="{target_triple}" """
             else:
-                if env.get('MLC_HOST_OS_TYPE', '') == 'darwin' and 'flang' in enable_projects:
+                if env.get('MLC_HOST_OS_TYPE',
+                           '') == 'darwin' and 'flang' in enable_projects:
                     target_triple = get_target_triple()
                     target_triple_string = f""" -DLLVM_DEFAULT_TARGET_TRIPLE="{target_triple}" """
                     compiler_rt_target_triple_string = f""" -DCOMPILER_RT_DEFAULT_TARGET_TRIPLE="{target_triple}" """
@@ -91,7 +92,7 @@ def preprocess(i):
 
 def get_target_triple():
     machine = platform.machine()       # e.g. 'arm64' or 'x86_64'
-    system = platform.system().lower() # e.g. 'darwin', 'linux'
+    system = platform.system().lower()  # e.g. 'darwin', 'linux'
     release = platform.release()       # e.g. '24.6.0'
 
     if system == "darwin":
@@ -103,8 +104,6 @@ def get_target_triple():
         return f"{machine}-pc-windows-msvc"
     else:
         return f"{machine}-{system}-{release}"
-
-
 
 
 def postprocess(i):
