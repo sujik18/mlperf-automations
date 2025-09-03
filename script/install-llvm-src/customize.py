@@ -15,7 +15,7 @@ def preprocess(i):
     q = '"' if os_info['platform'] == 'windows' else "'"
 
     clang_file_name = "clang"
-    extra_cmake_options = ''
+    extra_cmake_options = env.get('MLC_LLVM_EXTRA_CMAKE_OPTIONS', '')
 
     if env.get('MLC_LLVM_INSTALLED_PATH', '') != '' and os.path.exists(
             env.get('MLC_LLVM_INSTALLED_PATH')):
@@ -52,8 +52,13 @@ def preprocess(i):
 
             targets_to_build = env.get('MLC_LLVM_TARGETS_TO_BUILD', 'X86')
             cross_compile_options = env.get('MLC_LLVM_CROSS_COMPILE_FLAGS', '')
+            target_triple = env.get('MLC_LLVM_TARGET_TRIPLE, '')
+            if target_triple != '':
+                target_triple_string = f""" -DLLVM_DEFAULT_TARGET_TRIPLE="{target_triple}" """
+            else:
+                target_triple_string = ""
 
-            cmake_cmd = f"""cmake {os.path.join(env["MLC_LLVM_SRC_REPO_PATH"], "llvm")} -GNinja -DCMAKE_BUILD_TYPE={llvm_build_type} -DLLVM_ENABLE_PROJECTS={q}{enable_projects}{q} -DLLVM_ENABLE_RUNTIMES={q}{enable_runtimes}{q} -DCMAKE_INSTALL_PREFIX={q}{install_prefix}{q} -DLLVM_ENABLE_RTTI=ON  -DLLVM_INSTALL_UTILS=ON -DLLVM_TARGETS_TO_BUILD={targets_to_build} {cross_compile_options} {extra_cmake_options}"""
+            cmake_cmd = f"""cmake {os.path.join(env["MLC_LLVM_SRC_REPO_PATH"], "llvm")} -GNinja -DCMAKE_BUILD_TYPE={llvm_build_type} -DLLVM_ENABLE_PROJECTS={q}{enable_projects}{q} -DLLVM_ENABLE_RUNTIMES={q}{enable_runtimes}{q} -DCMAKE_INSTALL_PREFIX={q}{install_prefix}{q} -DLLVM_ENABLE_RTTI=ON  -DLLVM_INSTALL_UTILS=ON -DLLVM_TARGETS_TO_BUILD={targets_to_build} {cross_compile_options} {target_triple_string} {extra_cmake_options}"""
 
             env['MLC_LLVM_CMAKE_CMD'] = cmake_cmd
 
