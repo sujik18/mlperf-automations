@@ -64,6 +64,7 @@ input_mapping:
   gpu_name: MLC_NVIDIA_GPU_NAME
   nvidia_llama2_dataset_file_path: MLC_NVIDIA_LLAMA_DATASET_FILE_PATH
   tp_size: MLC_NVIDIA_TP_SIZE
+  pp_size: MLC_NVIDIA_PP_SIZE
   use_dataset_from_host: MLC_USE_DATASET_FROM_HOST
 
 predeps: False
@@ -327,6 +328,8 @@ variations:
           update_tags_from_env_with_prefix:
             _tp-size.:
               - MLC_NVIDIA_TP_SIZE
+            _pp-size.:
+              - MLC_NVIDIA_PP_SIZE
           skip_if_env:
             MLC_MLPERF_NVIDIA_SKIP_LLAMA2_70B:
               - "yes"
@@ -508,6 +511,8 @@ variations:
           update_tags_from_env_with_prefix:
             _tp-size.:
               - MLC_NVIDIA_TP_SIZE
+            _pp-size.:
+              - MLC_NVIDIA_PP_SIZE
     env:
       BUILD_TRTLLM: 1
 
@@ -518,6 +523,8 @@ variations:
           update_tags_from_env_with_prefix:
             _tp-size.:
               - MLC_NVIDIA_TP_SIZE
+            _pp-size.:
+              - MLC_NVIDIA_PP_SIZE
     env:
       BUILD_TRTLLM: 1
   
@@ -528,6 +535,8 @@ variations:
           update_tags_from_env_with_prefix:
             _tp-size.:
               - MLC_NVIDIA_TP_SIZE
+            _pp-size.:
+              - MLC_NVIDIA_PP_SIZE
 
   nvidia-original,r5.1-dev_default,llama2-70b_:
     docker:
@@ -536,6 +545,8 @@ variations:
           update_tags_from_env_with_prefix:
             _tp-size.:
               - MLC_NVIDIA_TP_SIZE
+            _pp-size.:
+              - MLC_NVIDIA_PP_SIZE
 
   nvidia-original:
     docker:
@@ -2322,3 +2333,4 @@ docker:
     intel_gptj_int8_model_path: MLC_MLPERF_INFERENCE_INTEL_GPTJ_INT8_MODEL_PATH
     nvidia_llama2_dataset_file_path: MLC_NVIDIA_LLAMA_DATASET_FILE_PATH
     tp_size: MLC_NVIDIA_TP_SIZE
+    pp_size: MLC_NVIDIA_PP_SIZE
