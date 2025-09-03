@@ -101,7 +101,7 @@ deps:
   # Detect rapidjson-dev
   - tags: get,generic,sys-util,_rapidjson-dev
 
-  - tags: get,generic,sys-util,_git-lfs
+  - tags: get,generic,sys-util,_ccache
     enable_if_env:
       BUILD_TRTLLM: 
         - 'yes'
