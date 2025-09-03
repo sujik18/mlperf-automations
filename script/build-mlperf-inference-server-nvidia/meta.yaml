@@ -103,7 +103,8 @@ deps:
 
   - tags: get,generic,sys-util,_git-lfs
     enable_if_env:
-      BUILD_TRTLLM: 1
+      BUILD_TRTLLM: 
+        - 'yes'
 
 
   # Download Nvidia Submission Code
