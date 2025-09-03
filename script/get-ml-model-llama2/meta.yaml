@@ -83,6 +83,7 @@ variations:
   generic:
     env:
       MLC_NVIDIA_TP_SIZE: 2
+      MLC_NVIDIA_PP_SIZE: 1
     group: gpu
   int8:
     env:
@@ -270,6 +271,10 @@ variations:
   tp-size.#:
     env:
       MLC_NVIDIA_TP_SIZE: '#'
+    group: gpu
+  pp-size.#:
+    env:
+      MLC_NVIDIA_PP_SIZE: '#'
     group: gpu
   uint8:
     env:
