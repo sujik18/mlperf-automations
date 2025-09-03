@@ -64,6 +64,7 @@ variations:
     group: repo
     env:
       MLC_GIT_URL: https://github.com/iains/gcc-darwin-arm64
+      MLC_GCC_WITH_SYSROOT: '`xcrun --show-sdk-path`'
   master:
     group: version
     env:
