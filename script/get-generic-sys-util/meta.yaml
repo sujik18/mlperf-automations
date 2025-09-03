@@ -316,7 +316,7 @@ variations:
     new_env_keys:
     - MLC_CCACHE_VERSION
     state:
-      git-lfs:
+      ccache:
         apt: ccache
         brew: ccache
         dnf: ccache
