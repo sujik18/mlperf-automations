@@ -49,6 +49,7 @@ def preprocess(i):
 
     env['+ CXXFLAGS'] += cxxflags
     env['+LD_LIBRARY_PATH'] = hpcx_paths + env['+LD_LIBRARY_PATH']
+    env['+PYTHONPATH'] = []
     return {'return': 0}
 
 
