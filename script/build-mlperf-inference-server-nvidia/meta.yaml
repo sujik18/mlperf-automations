@@ -101,6 +101,10 @@ deps:
   # Detect rapidjson-dev
   - tags: get,generic,sys-util,_rapidjson-dev
 
+  - tags: get,generic,sys-util,_git-lfs
+    enable_if_env:
+      BUILD_TRTLLM: 1
+
 
   # Download Nvidia Submission Code
   - tags: get,nvidia,mlperf,inference,common-code
