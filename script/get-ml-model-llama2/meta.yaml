@@ -271,11 +271,9 @@ variations:
   tp-size.#:
     env:
       MLC_NVIDIA_TP_SIZE: '#'
-    group: gpu
   pp-size.#:
     env:
       MLC_NVIDIA_PP_SIZE: '#'
-    group: gpu
   uint8:
     env:
       MLC_ML_MODEL_INPUT_DATA_TYPES: uint8
