@@ -335,7 +335,7 @@ def preprocess(i):
             'preprocessed_data',
             'open_orca',
             'open_orca_gpt4_tokenized_llama.calibration_1000.pkl')
-        
+
         tmp_tp_size = env['MLC_NVIDIA_TP_SIZE']
         tmp_pp_size = env['MLC_NVIDIA_PP_SIZE']
         if tmp_tp_size == "1":
