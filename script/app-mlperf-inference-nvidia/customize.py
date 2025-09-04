@@ -321,19 +321,19 @@ def preprocess(i):
         # path to which the data file is present
         target_data_path = os.path.join(
             env['MLPERF_SCRATCH_PATH'],
-            'preprocessed_data',
-            'open_orca')
+            'data',
+            'llama2-70b')
         # path to the dataset file
         target_data_file_path = os.path.join(
             env['MLPERF_SCRATCH_PATH'],
-            'preprocessed_data',
-            'open_orca',
+            'data',
+            'llama2-70b',
             'open_orca_gpt4_tokenized_llama.sampled_24576.pkl')
 
         target_calibration_data_file_path = os.path.join(
             env['MLPERF_SCRATCH_PATH'],
-            'preprocessed_data',
-            'open_orca',
+            'data',
+            'llama2-70b',
             'open_orca_gpt4_tokenized_llama.calibration_1000.pkl')
 
         tmp_tp_size = env['MLC_NVIDIA_TP_SIZE']
