@@ -330,6 +330,7 @@ def preprocess(i):
             'open_orca',
             'open_orca_gpt4_tokenized_llama.sampled_24576.pkl')
         tmp_tp_size = env['MLC_NVIDIA_TP_SIZE']
+        tmp_pp_size = env['MLC_NVIDIA_PP_SIZE']
         if tmp_tp_size == "1":
             fp8_model_path = os.path.join(
                 env['MLPERF_SCRATCH_PATH'],
@@ -343,7 +344,7 @@ def preprocess(i):
                 'models',
                 'Llama2',
                 'fp8-quantized-ammo',
-                f'llama2-70b-chat-hf-tp{tmp_tp_size}pp1-fp8')
+                f'llama2-70b-chat-hf-tp{tmp_tp_size}pp{tmp_pp_size}-fp8')
         if not os.path.exists(target_data_file_path):
             if env.get('MLC_NVIDIA_LLAMA_DATASET_FILE_PATH', '') == '':
                 return {
