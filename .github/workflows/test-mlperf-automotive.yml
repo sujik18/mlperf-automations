@@ -26,7 +26,11 @@ jobs:
           echo "RCLONE_CONFIG_MLC_COGNATA_SERVICE_ACCOUNT_CREDENTIALS=${{ steps.op-load-secrets.outputs.GDRIVE_SERVICE_ACCOUNT_KEY }}" >> $GITHUB_ENV
           echo "RCLONE_CONFIG_MLC_NUSCENES_SERVICE_ACCOUNT_CREDENTIALS=${{ steps.op-load-secrets.outputs.GDRIVE_SERVICE_ACCOUNT_KEY }}" >> $GITHUB_ENV
       - name: Run MLPerf
+        shell: bash
+        env:
+          REPO: ${{ github.event.pull_request.head.repo.html_url }}
+          BRANCH: ${{ github.event.pull_request.head.ref }}
         run: |
           pip install mlcflow
-          mlc pull repo ${{ github.event.pull_request.head.repo.html_url }} --branch=${{ github.event.pull_request.head.ref }}
+          mlc pull repo "$REPO" --branch="$BRANCH"
           mlc test script app,mlperf,automotive
