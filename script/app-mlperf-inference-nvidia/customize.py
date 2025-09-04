@@ -329,6 +329,13 @@ def preprocess(i):
             'preprocessed_data',
             'open_orca',
             'open_orca_gpt4_tokenized_llama.sampled_24576.pkl')
+
+        target_calibration_data_file_path = os.path.join(
+            env['MLPERF_SCRATCH_PATH'],
+            'preprocessed_data',
+            'open_orca',
+            'open_orca_gpt4_tokenized_llama.calibration_1000.pkl')
+        
         tmp_tp_size = env['MLC_NVIDIA_TP_SIZE']
         tmp_pp_size = env['MLC_NVIDIA_PP_SIZE']
         if tmp_tp_size == "1":
@@ -345,14 +352,26 @@ def preprocess(i):
                 'Llama2',
                 'fp8-quantized-ammo',
                 f'llama2-70b-chat-hf-tp{tmp_tp_size}pp{tmp_pp_size}-fp8')
+
+        # check the presence of validation dataset
         if not os.path.exists(target_data_file_path):
-            if env.get('MLC_NVIDIA_LLAMA_DATASET_FILE_PATH', '') == '':
+            if env.get('MLC_DATASET_OPENORCA_PREPROCESSED_PATH', '') == '':
                 return {
-                    'return': 1, 'error': 'Please specify the path to LLAMA2 dataset (pickle file)'}
+                    'return': 1, 'error': 'Llama2 70B validation dataset not present.'}
             if not os.path.exists(target_data_path):
                 cmds.append(f"mkdir {target_data_path}")
             cmds.append(
-                f"ln -sf {env['MLC_NVIDIA_LLAMA_DATASET_FILE_PATH']} {target_data_file_path}")
+                f"ln -sf {env['MLC_DATASET_OPENORCA_PREPROCESSED_PATH']} {target_data_file_path}")
+
+        # check the presence of calibration dataset
+        if not os.path.exists(target_calibration_data_file_path):
+            if env.get('MLC_DATASET_OPENORCA_CALIBRATION_PATH', '') == '':
+                return {
+                    'return': 1, 'error': 'Llama2 70B calibration dataset not present.'}
+            if not os.path.exists(target_data_path):
+                cmds.append(f"mkdir {target_data_path}")
+            cmds.append(
+                f"ln -sf {env['MLC_DATASET_OPENORCA_CALIBRATION_PATH']} {target_data_file_path}")
 
         model_name = "llama2-70b"
         model_path = fp8_model_path
