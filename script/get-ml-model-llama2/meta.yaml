@@ -48,10 +48,6 @@ tests:
     - r2-downloader,70b,mlc,dry-run
     - r2-downloader,7b,mlc,dry-run
 variations:
-  L40s:
-    env:
-      MLC_NVIDIA_TP_SIZE: 4
-    group: gpu
   amd:
     default_env:
       MLC_LLAMA2_QUANTIZATION_DEVICE: ''
@@ -80,11 +76,6 @@ variations:
       MLC_ML_MODEL_PRECISION: fp8
       MLC_ML_MODEL_WEIGHT_DATA_TYPES: fp8
     group: precision
-  generic:
-    env:
-      MLC_NVIDIA_TP_SIZE: 2
-      MLC_NVIDIA_PP_SIZE: 1
-    group: gpu
   int8:
     env:
       MLC_ML_MODEL_INPUT_DATA_TYPES: int8
@@ -243,6 +234,8 @@ variations:
   pytorch,nvidia:
     default_variations:
       precision: fp8
+      tp-size: tp-size.2
+      pp-size: pp-size.1
     deps:
     - names:
       - cuda
@@ -270,9 +263,11 @@ variations:
   tp-size.#:
     env:
       MLC_NVIDIA_TP_SIZE: '#'
+    group: tp-size
   pp-size.#:
     env:
       MLC_NVIDIA_PP_SIZE: '#'
+    group: pp-size
   uint8:
     env:
       MLC_ML_MODEL_INPUT_DATA_TYPES: uint8
