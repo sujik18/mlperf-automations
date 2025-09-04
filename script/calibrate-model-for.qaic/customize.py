@@ -79,7 +79,8 @@ def construct_calibration_cmd(env):
     cmd = env['MLC_QAIC_EXEC_PATH'] + " "
     if is_true(env.get('MLC_CREATE_INPUT_BATCH', '')):
         cmd += " -input-list-file=batched_input_files  -batchsize=" + batchsize + " "
-    cmd += compiler_params + " -dump-profile=profile.yaml -model=" + env['MLC_ML_MODEL_FILE_WITH_PATH']
+    cmd += compiler_params + " -dump-profile=profile.yaml -model=" + \
+        env['MLC_ML_MODEL_FILE_WITH_PATH']
 
     return {'return': 0, 'cmd': cmd}
 
@@ -124,11 +125,11 @@ def postprocess(i):
 
     output_layer_names_conf[1] = [
         "TopK_570/:0",
-            "TopK_572/:0",
-            "TopK_574/:0",
-            "TopK_576/:0",
-            "TopK_578/:0"
-        ]
+        "TopK_572/:0",
+        "TopK_574/:0",
+        "TopK_576/:0",
+        "TopK_578/:0"
+    ]
 
     if env.get('MLC_QAIC_MODEL_NAME', '') == "retinanet":
         with open(profile_file_path, "r") as stream:
@@ -139,7 +140,6 @@ def postprocess(i):
                 output_max_val_conf = -sys.maxsize
                 docs = yaml.load_all(stream, yaml.FullLoader)
                 for doc in docs:
-
 
                     if isinstance(doc, list):
                         node_names = [k['NodeOutputName'] for k in doc]
@@ -205,13 +205,13 @@ def postprocess(i):
                 conf_scale, conf_offset = get_scale_offset(
                     output_min_val_conf, output_max_val_conf)
                 env['MLC_QAIC_MODEL_RETINANET_LOC_SCALE'] = loc_scale
-                env['MLC_QAIC_MODEL_RETINANET_LOC_OFFSET'] = loc_offset - 128  # to uint8 is done in NMS code
+                env['MLC_QAIC_MODEL_RETINANET_LOC_OFFSET'] = loc_offset - \
+                    128  # to uint8 is done in NMS code
                 env['MLC_QAIC_MODEL_RETINANET_CONF_SCALE'] = conf_scale
-                env['MLC_QAIC_MODEL_RETINANET_CONF_OFFSET'] = conf_offset - 128  # to uint8 is done in NMS code
+                env['MLC_QAIC_MODEL_RETINANET_CONF_OFFSET'] = conf_offset - \
+                    128  # to uint8 is done in NMS code
 
             except yaml.YAMLError as exc:
                 return {'return': 1, 'error': exc}
 
     return {'return': 0}
-
-
