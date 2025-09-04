@@ -18,12 +18,6 @@ if [[ "${MLC_MLPERF_INFERENCE_VERSION}" =~ ^[5-9]\.[0-9]+(-dev)?$ ]]; then
   find . -type f -exec sed -i "s|/work/|${MLC_MLPERF_INFERENCE_NVIDIA_CODE_PATH}/|g" {} +
 fi
 
-if [[ ${BUILD_TRTLLM} == "1" ]]; then
- echo "initialising git lfs"
- git lfs install && git lfs pull
- test $? -eq 0 || exit $?
-fi
-
 echo ${MLC_MAKE_BUILD_COMMAND}
 SKIP_DRIVER_CHECK=1 make ${MLC_MAKE_BUILD_COMMAND}
 
