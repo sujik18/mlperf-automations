@@ -67,6 +67,19 @@ class ScriptAutomation(Automation):
                                'MLC_GIT_*',
                                'MLC_RENEW_CACHE_ENTRY']
 
+        self.host_env_keys = [
+            "GH_TOKEN",
+            "ftp_proxy",
+            "FTP_PROXY",
+            "http_proxy",
+            "HTTP_PROXY",
+            "https_proxy",
+            "HTTPS_PROXY",
+            "no_proxy",
+            "NO_PROXY",
+            "socks_proxy",
+            "SOCKS_PROXY"]
+
         self.input_flags_converted_to_tmp_env = {
             'path': {'desc': 'Filesystem path to search for executable', 'default': ''}}
 
@@ -486,19 +499,7 @@ class ScriptAutomation(Automation):
                                'append_unique': True})
 
         # take some env from the user environment
-        keys = [
-            "GH_TOKEN",
-            "ftp_proxy",
-            "FTP_PROXY",
-            "http_proxy",
-            "HTTP_PROXY",
-            "https_proxy",
-            "HTTPS_PROXY",
-            "no_proxy",
-            "NO_PROXY",
-            "socks_proxy",
-            "SOCKS_PROXY"]
-        for key in keys:
+        for key in self.host_env_keys:
             if os.environ.get(key, '') != '' and env.get(key, '') == '':
                 env[key] = os.environ[key]
 
@@ -528,12 +529,6 @@ class ScriptAutomation(Automation):
         for key in ["automation", "artifact", "item", "details"]:
             if i.get(key):
                 ii[key] = i[key]
-
-        # if cm run script without tags/artifact and with --help
-        if len(ii.get('parsed_artifact', [])) == 0 and ii.get(
-                'tags', '') == '' and i.get('help', False):
-            return utils.call_internal_module(
-                self, __file__, 'module_help', 'print_help', {'meta': {}, 'path': ''})
 
         r = self.search(ii)
         if r['return'] > 0:
@@ -791,8 +786,7 @@ class ScriptAutomation(Automation):
 
         # Check if has --help
         if i.get('help', False):
-            return utils.call_internal_module(self, __file__, 'module_help', 'print_help', {
-                                              'meta': meta, 'path': path})
+            return self.help(i)
 
         run_state['script_id'] = meta['alias'] + "," + meta['uid']
         run_state['script_tags'] = script_tags
@@ -1391,6 +1385,7 @@ class ScriptAutomation(Automation):
                       'script_alias': meta['alias'],
                       'extra_tags': ",".join(extra_cache_tags),
                       'tags': ','.join(tmp_tags),
+                      'exact_tags_match': True,
                       'meta': cached_meta,
                       'force': True}
 
@@ -1760,9 +1755,10 @@ class ScriptAutomation(Automation):
                         env['MLC_TMP_CURRENT_PATH'], env['MLC_OUTDIRNAME'])
                     env['MLC_OUTDIRNAME'] = c_outdirname
 
-                if not os.path.exists(c_outdirname):
-                    os.makedirs(c_outdirname)
-                os.chdir(c_outdirname)
+                if not fake_run:  # prevent permission error inside docker runs
+                    if not os.path.exists(c_outdirname):
+                        os.makedirs(c_outdirname)
+                    os.chdir(c_outdirname)
 
             # Check if pre-process and detect
             if 'preprocess' in dir(customize_code) and not fake_run:
@@ -2461,6 +2457,7 @@ class ScriptAutomation(Automation):
 
                 variation_meta = variations[variation_tag]
                 if variation_tag_dynamic_suffix:
+                    variation_meta = copy.deepcopy(variation_meta)
                     self._update_variation_meta_with_dynamic_suffix(
                         variation_meta, variation_tag_dynamic_suffix)
 
@@ -2573,7 +2570,63 @@ class ScriptAutomation(Automation):
         return {'return': 0, 'variation_tags_string': variation_tags_string,
                 'explicit_variation_tags': explicit_variation_tags, 'warnings': warnings}
 
+    def _add_base_variations(
+        self,
+        variation_name,
+        variations,
+        variation_tags,
+        tmp_variations,
+        excluded_variation_tags
+    ):
+        """
+        Adds base variations for a given variation_name into variation_tags
+        and updates tmp_variations if valid.
+        """
+
+        if "base" not in variations[variation_name]:
+            return {'return': 0}
+
+        for base_variation in variations[variation_name]["base"]:
+            tag_to_append = None
+            dynamic_base_variation = False
+            dynamic_base_variation_already_added = False
+
+            # Handle dynamic variation
+            if base_variation not in variations:
+                base_variation_dynamic = self._get_name_for_dynamic_variation_tag(
+                    base_variation)
+                if not base_variation_dynamic or base_variation_dynamic not in variations:
+                    return {
+                        'return': 1,
+                        'error': f'Variation "{base_variation}" specified as base variation of "{variation_name}" is not existing'
+                    }
+                dynamic_base_variation = True
+                base_prefix = base_variation_dynamic.split(".")[0] + "."
+
+                # We allow repeated dynamic variations like _patch.1,_patch.2,_patch.3
+                # for tag in variation_tags:
+                #    if tag.startswith(base_prefix):
+                #        dynamic_base_variation_already_added = True
+                #        break
+
+            # Append if not already added
+            if base_variation not in variation_tags and not dynamic_base_variation_already_added:
+                tag_to_append = base_variation
+
+            # Validate exclusion list
+            if tag_to_append:
+                if tag_to_append in excluded_variation_tags:
+                    return {
+                        'return': 1,
+                        'error': f'Variation "{tag_to_append}" specified as base variation for the variation is in the excluded list "{variation_name}"'
+                    }
+                variation_tags.append(tag_to_append)
+                tmp_variations[tag_to_append] = False
+
+        return {'return': 0}
+
     ##########################################################################
+
     def _update_variation_tags_from_variations(
             self, variation_tags, variations, variation_groups, excluded_variation_tags):
 
@@ -2611,40 +2664,15 @@ class ScriptAutomation(Automation):
                         variation_name = self._get_name_for_dynamic_variation_tag(
                             variation_name)
 
-                    # TODO: Move this to a function and apply it for combination of variations too
-                    # base variations are automatically turned on. Only
-                    # variations outside of any variation group can be added as
-                    # a base_variation
-                    if "base" in variations[variation_name]:
-                        base_variations = variations[variation_name]["base"]
-                        for base_variation in base_variations:
-                            dynamic_base_variation = False
-                            dynamic_base_variation_already_added = False
-                            if base_variation not in variations:
-                                base_variation_dynamic = self._get_name_for_dynamic_variation_tag(
-                                    base_variation)
-                                if not base_variation_dynamic or base_variation_dynamic not in variations:
-                                    return {'return': 1, 'error': 'Variation "{}" specified as base variation of "{}" is not existing'.format(
-                                        base_variation, variation_name)}
-                                else:
-                                    dynamic_base_variation = True
-                                    base_prefix = base_variation_dynamic.split(".")[
-                                        0] + "."
-                                    for x in variation_tags:
-                                        if x.startswith(base_prefix):
-                                            dynamic_base_variation_already_added = True
-
-                            if base_variation not in variation_tags and not dynamic_base_variation_already_added:
-                                tag_to_append = base_variation
-
-                            if tag_to_append:
-                                if tag_to_append in excluded_variation_tags:
-                                    return {'return': 1, 'error': 'Variation "{}" specified as base variation for the variation is in the excluded list "{}" '.format(
-                                        tag_to_append, variation_name)}
-                                variation_tags.append(tag_to_append)
-                                tmp_variations[tag_to_append] = False
-
-                            tag_to_append = None
+                    result = self._add_base_variations(
+                        variation_name,
+                        variations,
+                        variation_tags,
+                        tmp_variations,
+                        excluded_variation_tags
+                    )
+                    if result.get('return', 0) > 0:
+                        return result
 
                     # default_variations dictionary specifies the
                     # default_variation for each variation group. A default
@@ -2675,6 +2703,16 @@ class ScriptAutomation(Automation):
                         if all_present:
                             combined_variation_meta = variations[combined_variation]
                             tmp_combined_variations[combined_variation] = True
+
+                            result = self._add_base_variations(
+                                combined_variation,
+                                variations,
+                                variation_tags,
+                                tmp_combined_variations,
+                                excluded_variation_tags
+                            )
+                            if result.get('return', 0) > 0:
+                                return result
 
                             r = self._get_variation_tags_from_default_variations(
                                 combined_variation_meta,
@@ -2832,6 +2870,8 @@ class ScriptAutomation(Automation):
             if i.get(key):
                 ii[key] = i[key]
 
+        if i.get('all'):
+            ii['all'] = i['all']
         r = super(ScriptAutomation, self).search(ii)
         if r['return'] > 0:
             return r
@@ -3363,9 +3403,18 @@ class ScriptAutomation(Automation):
                 for t in update_tags_from_env_with_prefix:
                     for key in update_tags_from_env_with_prefix[t]:
                         if str(d.get('env', {}).get(key, '')).strip() != '':
-                            d['tags'] += "," + t + str(d.get('env')[key])
+                            if isinstance(
+                                    d.get('env')[key], (str, int, float)):
+                                d['tags'] += "," + t + str(d.get('env')[key])
+                            elif isinstance(d.get('env')[key], list):
+                                for item in d.get('env')[key]:
+                                    d['tags'] += "," + t + str(item)
                         elif str(env.get(key, '')).strip() != '':
-                            d['tags'] += "," + t + str(env[key])
+                            if isinstance(env[key], (str, int, float)):
+                                d['tags'] += "," + t + str(env[key])
+                            elif isinstance(env[key], list):
+                                for item in env[key]:
+                                    d['tags'] += "," + t + str(item)
 
                 for key in clean_env_keys_deps:
                     if '?' in key or '*' in key:
@@ -3404,8 +3453,18 @@ class ScriptAutomation(Automation):
 
                 update_tags_from_env = d.get("update_tags_from_env", [])
                 for t in update_tags_from_env:
-                    if env.get(t, '').strip() != '':
-                        d['tags'] += "," + env[t]
+                    if str(d.get('env', {}).get(t, '')).strip() != '':
+                        if isinstance(d.get('env')[t], (str, int, float)):
+                            d['tags'] += "," + str(d.get('env')[t])
+                        elif isinstance(d.get('env')[t], list):
+                            for item in d.get('env')[t]:
+                                d['tags'] += "," + str(item)
+                    elif str(env.get(t, '')).strip() != '':
+                        if isinstance(env[t], (str, int, float)):
+                            d['tags'] += "," + str(env[t])
+                        elif isinstance(env[t], list):
+                            for item in env[t]:
+                                d['tags'] += "," + str(item)
 
                 update_tags_if_env = d.get("update_tags_if_env", [])
                 for t in update_tags_if_env:
@@ -4470,6 +4529,42 @@ pip install mlcflow
 
     ############################################################
 
+    def help(self, i):
+        """
+        Document MLC script.
+
+        Args:
+          (MLC input dict):
+
+          (out) (str): if 'con', output to console
+
+          parsed_artifact (list): prepared in MLC CLI or MLC access function
+                                    [ (artifact alias, artifact UID) ] or
+                                    [ (artifact alias, artifact UID), (artifact repo alias, artifact repo UID) ]
+
+          (repos) (str): list of repositories to search for automations
+
+          (output_dir) (str): output directory (../docs by default)
+
+        Returns:
+          (MLC return dict):
+
+          * return (int): return code == 0 if no error and >0 if error
+          * (error) (str): error string if return>0
+
+        """
+
+        from script.help import display_help
+        return display_help(self, i)
+
+    ############################################################
+
+    def lint(self, i):
+        from script.lint import lint_meta
+        return lint_meta(self, i)
+
+    ############################################################
+
     def dockerfile(self, i):
         from script.docker import dockerfile
         return dockerfile(self, i)
@@ -4539,6 +4634,9 @@ pip install mlcflow
                     os.remove(xx)
 
         return {'return': 0}
+
+    def _get_script_name(self, env, path, filename="run"):
+        return get_script_name(env, path, filename)
 
 
 def get_version_tag_from_version(version, cached_tags):
@@ -4775,10 +4873,28 @@ def find_cached_script(i):
                     'customize_code': customize_code,
                     'customize_common_input': customize_common_input
                 }
+                env_tmp = copy.deepcopy(env)
+                path_to_cached_state_file = os.path.join(cached_script.path,
+                                                         self_obj.file_with_cached_state)
+
+                r = utils.load_json(file_name=path_to_cached_state_file)
+                if r['return'] > 0:
+                    continue
+
+                cached_meta = r.get("meta")
+                if not cached_meta:
+                    continue
+                new_env = cached_meta.get("new_env", {})
+                if new_env:
+                    env_tmp.update(new_env)
+                state_tmp = copy.deepcopy(state)
+                new_state = cached_meta.get("new_state", {})
+                if new_state:
+                    state_tmp.update(new_state)
 
                 deps = meta.get('deps')
                 if deps:
-                    r = self_obj._call_run_deps(deps, self_obj.local_env_keys, meta.get('local_env_keys', []), env, state, const, const_state, add_deps_recursive,
+                    r = self_obj._call_run_deps(deps, self_obj.local_env_keys, meta.get('local_env_keys', []), env_tmp, state_tmp, const, const_state, add_deps_recursive,
                                                 recursion_spaces + extra_recursion_spaces,
                                                 remembered_selections, variation_tags_string, True, '', show_time, extra_recursion_spaces, {})
                     if r['return'] > 0:
@@ -4786,7 +4902,7 @@ def find_cached_script(i):
 
                 ii = {
                     'run_script_input': run_script_input,
-                    'env': env,
+                    'env': env_tmp,
                     'script_name': 'validate_cache',
                     'detect_version': True
                 }

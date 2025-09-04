@@ -15,7 +15,7 @@ def preprocess(i):
 
     if env["MLC_DOCKER_OS"] not in ["ubuntu", "rhel", "arch"]:
         return {
-            'return': 1, 'error': f"Specified docker OS: {env['MLC_DOCKER_OS']}. Currently only ubuntu, rhel and arch are supported in CM docker"}
+            'return': 1, 'error': f"Specified docker OS: {env['MLC_DOCKER_OS']}. Currently only ubuntu, rhel and arch are supported in MLC docker"}
 
     path = i['run_script_input']['path']
 
@@ -227,7 +227,7 @@ def preprocess(i):
     if env.get('MLC_DOCKER_EXTRA_SYS_DEPS', '') != '':
         f.write('RUN ' + env['MLC_DOCKER_EXTRA_SYS_DEPS'] + EOL)
 
-    if env['MLC_DOCKER_OS'] == "ubuntu":
+    if env['MLC_DOCKER_OS'] == "ubuntu" and False:  # Turning this off as we are using venv
         if int(str(env['MLC_DOCKER_OS_VERSION']).split('.')[0]) >= 23:
             if "--break-system-packages" not in env.get(
                     'MLC_DOCKER_PIP_INSTALL_EXTRA_FLAGS', ''):
@@ -264,7 +264,7 @@ def preprocess(i):
         env['MLC_DOCKER_USE_DEFAULT_USER'] = 'yes'
 
     if docker_user and not is_true(
-            env.get('MLC_DOCKER_USE_DEFAULT_USER', '') and docker_user != 'root'):
+            env.get('MLC_DOCKER_USE_DEFAULT_USER', '')) and docker_user != 'root':
 
         f.write('RUN groupadd -g $GID -o ' + docker_group + EOL)
 
@@ -293,7 +293,8 @@ def preprocess(i):
     dockerfile_env_input_string = ""
     for docker_env_key in dockerfile_env:
         dockerfile_env_input_string = dockerfile_env_input_string + " --env." + \
-            docker_env_key + "=" + str(dockerfile_env[docker_env_key])
+            docker_env_key + "=" + \
+            str(dockerfile_env[docker_env_key]).replace("\n", "\\n")
 
     workdir = env.get('WORKDIR', '')
     if workdir == '':
