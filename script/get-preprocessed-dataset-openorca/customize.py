@@ -10,18 +10,17 @@ def preprocess(i):
 
     if is_true(str(env.get('MLC_DATASET_PREPROCESSED_BY_MLC', ''))):
         run_dir = os.getcwd()
+        run_cmd = ''
         if is_true(env.get('MLC_DATASET_CALIBRATION', '')):
             env['MLC_DATASET_CALIBRATION_PATH'] = os.path.join(
                 env['MLC_OPENORCA_PREPROCESSED_ROOT'],
                 "open_orca_gpt4_tokenized_llama.calibration_1000.pkl.gz")
-            env['MLC_GET_DEPENDENT_CACHED_PATH'] = env['MLC_DATASET_CALIBRATION_PATH']
-            env['MLC_DATASET_OPENORCA_CALIBRATION_PATH'] = env['MLC_DATASET_CALIBRATION_PATH']
+            run_cmd = f"gzip -dk {env['MLC_DATASET_CALIBRATION_PATH']}"
         else:
             env['MLC_DATASET_PREPROCESSED_PATH'] = os.path.join(
                 env['MLC_OPENORCA_PREPROCESSED_ROOT'],
                 "open_orca_gpt4_tokenized_llama.sampled_24576.pkl.gz")
-            env['MLC_GET_DEPENDENT_CACHED_PATH'] = env['MLC_DATASET_PREPROCESSED_PATH']
-            env['MLC_DATASET_OPENORCA_PREPROCESSED_PATH'] = env['MLC_DATASET_PREPROCESSED_PATH']
+            run_cmd = f"gzip -dk {env['MLC_DATASET_PREPROCESSED_PATH']}"
         # run_cmd = f"gunzip -k {env['MLC_DATASET_PREPROCESSED_PATH']}"
         run_cmd = ''
     else:
@@ -52,4 +51,20 @@ def preprocess(i):
 def postprocess(i):
     env = i['env']
 
+    if is_true(str(env.get('MLC_DATASET_PREPROCESSED_BY_MLC', ''))):
+        run_dir = os.getcwd()
+        run_cmd = ''
+        if is_true(env.get('MLC_DATASET_CALIBRATION', '')):
+            env['MLC_DATASET_CALIBRATION_PATH'] = os.path.join(
+                env['MLC_OPENORCA_PREPROCESSED_ROOT'],
+                "open_orca_gpt4_tokenized_llama.calibration_1000.pkl")
+            env['MLC_GET_DEPENDENT_CACHED_PATH'] = env['MLC_DATASET_CALIBRATION_PATH']
+            env['MLC_DATASET_OPENORCA_CALIBRATION_PATH'] = env['MLC_DATASET_CALIBRATION_PATH']
+        else:
+            env['MLC_DATASET_PREPROCESSED_PATH'] = os.path.join(
+                env['MLC_OPENORCA_PREPROCESSED_ROOT'],
+                "open_orca_gpt4_tokenized_llama.sampled_24576.pkl")
+            env['MLC_GET_DEPENDENT_CACHED_PATH'] = env['MLC_DATASET_PREPROCESSED_PATH']
+            env['MLC_DATASET_OPENORCA_PREPROCESSED_PATH'] = env['MLC_DATASET_PREPROCESSED_PATH']
+        
     return {'return': 0}
