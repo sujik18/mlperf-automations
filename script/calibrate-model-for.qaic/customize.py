@@ -79,8 +79,7 @@ def construct_calibration_cmd(env):
     cmd = env['MLC_QAIC_EXEC_PATH'] + " "
     if is_true(env.get('MLC_CREATE_INPUT_BATCH', '')):
         cmd += " -input-list-file=batched_input_files  -batchsize=" + batchsize + " "
-    cmd += compiler_params + " -dump-profile=profile.yaml -model=" + \
-        env['MLC_ML_MODEL_FILE_WITH_PATH']
+    cmd += compiler_params + " -dump-profile=profile.yaml -model=" + env['MLC_ML_MODEL_FILE_WITH_PATH']
 
     return {'return': 0, 'cmd': cmd}
 
@@ -142,7 +141,7 @@ def postprocess(i):
                 for doc in docs:
 
 
-if isinstance(doc,                     if )
+                    if isinstance(doc, list):
                         node_names = [k['NodeOutputName'] for k in doc]
                         oindex = None
 
