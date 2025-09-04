@@ -49,7 +49,7 @@ jobs:
         REPO: ${{ github.event.pull_request.head.repo.html_url }}
         BRANCH: ${{ github.event.pull_request.head.ref }}
       run: |
-        mlc pull repo "$REPO" --branch="$BRANCH"
+        mlc pull repo $REPO --branch=$BRANCH
 
     - name: Test MLPerf Inference Retinanet using ${{ matrix.backend }} on ${{ matrix.os }}
       if: matrix.os == 'windows-latest'
