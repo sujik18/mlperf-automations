@@ -371,7 +371,7 @@ def preprocess(i):
             if not os.path.exists(target_data_path):
                 cmds.append(f"mkdir -p {target_data_path}")
             cmds.append(
-                f"ln -sf {env['MLC_DATASET_OPENORCA_CALIBRATION_PATH']} {target_data_file_path}")
+                f"ln -sf {env['MLC_DATASET_OPENORCA_CALIBRATION_PATH']} {target_calibration_data_file_path}")
 
         model_name = "llama2-70b"
         model_path = fp8_model_path
