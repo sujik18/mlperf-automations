@@ -713,7 +713,7 @@ def preprocess(i):
             run_config += f" --use_fp8"
 
         if "llama2" in env["MLC_MODEL"]:
-            run_config += f" --fp8_quant_model_path={fp8_model_path}"
+            run_config += f" --checkpoint_dir={fp8_model_path}"
             run_config += f" --tensor_parallelism={tmp_tp_size}"
             run_config += f" --pipeline_parallelism={tmp_tp_size}"
 
