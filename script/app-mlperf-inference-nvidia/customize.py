@@ -570,6 +570,10 @@ def preprocess(i):
         if gpu_inference_streams:
             run_config += f" --gpu_inference_streams={gpu_inference_streams}"
 
+        model_precision = env.get('MLC_MLPERF_MODEL_PRECISION').replace('float', 'fp')
+        if model_precision:
+            run_config += f" --precision={model_precision}"
+            
         dla_copy_streams = env.get(
             'MLC_MLPERF_NVIDIA_HARNESS_DLA_COPY_STREAMS')
         if dla_copy_streams:
