@@ -355,6 +355,8 @@ variations:
     group: batchsize-format-change
   v5.0+:
     group: batchsize-format-change
+    env:
+      MLC_MLPERF_INFERENCE_POST_5_0: "yes"
   v5.0:
     base:
       - v5.0+
