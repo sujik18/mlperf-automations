@@ -249,6 +249,7 @@ variations:
     - names:
       - nvidia-inference-common-code
       tags: get,nvidia,inference,common-code
+    - tags: get,preprocessed,dataset,openorca,_calibration,_mlc
     - names:
       - python
       - python3
