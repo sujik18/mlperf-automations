@@ -775,7 +775,7 @@ def preprocess(i):
         run_config += " --no_audit_verify"
 
         cmds.append(f"""make {make_command} RUN_ARGS=' --benchmarks={model_name} --scenarios={scenario} {test_mode_string} {run_config} {extra_build_engine_options_string} {extra_run_options_string}'""")
-    logger.info(cmds)
+    print(cmds)
     run_cmd = " && ".join(cmds)
     env['MLC_MLPERF_RUN_CMD'] = run_cmd
     env['MLC_RUN_CMD'] = run_cmd
