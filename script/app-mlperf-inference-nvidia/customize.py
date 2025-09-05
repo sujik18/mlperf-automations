@@ -721,7 +721,7 @@ def preprocess(i):
                 run_config += f" --trtllm_build_flags={shlex.quote(flags_json)}"
             else:
                 run_config += f" --tensor_parallelism={tmp_tp_size}"
-                run_config += f" --pipeline_parallelism={tmp_tp_size}"
+                run_config += f" --pipeline_parallelism={tmp_pp_size}"
 
         enable_sort = env.get('MLC_MLPERF_NVIDIA_HARNESS_ENABLE_SORT')
         if enable_sort and not is_false(enable_sort):
