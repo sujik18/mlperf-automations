@@ -9,7 +9,7 @@ def preprocess(i):
     env = i['env']
 
     if is_true(str(env.get('MLC_DATASET_PREPROCESSED_BY_MLC', ''))):
-        run_dir = os.getcwd()
+        run_dir = env['MLC_OPENORCA_PREPROCESSED_ROOT']
         run_cmd = ''
         if is_true(env.get('MLC_DATASET_CALIBRATION', '')):
             env['MLC_DATASET_CALIBRATION_PATH'] = os.path.join(
