@@ -630,6 +630,8 @@ variations:
         update_tags_from_env_with_prefix:
           "_gpu_memory." :
             - MLC_NVIDIA_GPU_MEMORY
+          "_num-gpus.":
+            - MLC_CUDA_NUM_DEVICES
         update_tags_from_env:
           - MLC_NVIDIA_HARNESS_GPU_VARIATION
 
