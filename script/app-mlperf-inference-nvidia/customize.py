@@ -716,9 +716,10 @@ def preprocess(i):
         if "llama2" in env["MLC_MODEL"]:
             run_config += f" --checkpoint_dir={fp8_model_path}"
             if env.get('MLC_MLPERF_INFERENCE_POST_5_0'):
-                flags_json = json.dumps({"tensor_parallelism": tmp_tp_size, "pipeline_parallelism": tmp_pp_size})
+                flags_json = json.dumps(
+                    {"tensor_parallelism": tmp_tp_size, "pipeline_parallelism": tmp_pp_size})
                 run_config += f" --trtllm_build_flags={shlex.quote(flags_json)}"
-            else:    
+            else:
                 run_config += f" --tensor_parallelism={tmp_tp_size}"
                 run_config += f" --pipeline_parallelism={tmp_tp_size}"
 
