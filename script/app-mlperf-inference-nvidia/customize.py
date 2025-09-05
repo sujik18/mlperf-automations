@@ -710,6 +710,7 @@ def preprocess(i):
         if "llama2" in env["MLC_MODEL"]:
             run_config += f" --fp8_quant_model_path={fp8_model_path}"
             run_config += f" --tensor_parallelism={tmp_tp_size}"
+            run_config += f" --pipeline_parallelism={tmp_tp_size}"
 
         enable_sort = env.get('MLC_MLPERF_NVIDIA_HARNESS_ENABLE_SORT')
         if enable_sort and not is_false(enable_sort):
