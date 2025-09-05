@@ -1876,6 +1876,12 @@ variations:
   fp32:
     alias: float32
 
+  fp4:
+    alias: float4
+
+  fp8:
+    alias: float8
+
   float32:
     group: precision
     default: true
@@ -1888,6 +1894,16 @@ variations:
       kilt-harness:
         tags: _fp32
 
+  float4:
+    group: precision
+    env:
+      MLC_MLPERF_MODEL_PRECISION: float4
+
+  float8:
+    group: precision
+    env:
+      MLC_MLPERF_MODEL_PRECISION: float8
+      
   float16:
     group: precision
     env:
