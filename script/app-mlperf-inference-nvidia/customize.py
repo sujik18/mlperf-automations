@@ -789,7 +789,7 @@ def preprocess(i):
         hpcx_paths.append("/opt/hpcx/ucc/lib")
 
     env['+LD_LIBRARY_PATH'] = hpcx_paths + env['+LD_LIBRARY_PATH']
-
+    env['+PYTHONPATH'] = []
     #    print(env)
 
     return {'return': 0}
