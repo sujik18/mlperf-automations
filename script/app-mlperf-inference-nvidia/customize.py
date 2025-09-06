@@ -788,7 +788,7 @@ def preprocess(i):
     if os.path.exists("/opt/hpcx/ucc/lib"):
         hpcx_paths.append("/opt/hpcx/ucc/lib")
     if os.path.exists("/opt/hpcx/ompi/lib"):
-            hpcx_paths.append("/opt/hpcx/ompi/lib")
+        hpcx_paths.append("/opt/hpcx/ompi/lib")
 
     env['+LD_LIBRARY_PATH'] = hpcx_paths + env['+LD_LIBRARY_PATH']
     env['+PYTHONPATH'] = []
