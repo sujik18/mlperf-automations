@@ -382,7 +382,8 @@ def preprocess(i):
 
         if not os.path.exists(preprocessed_data_for_accuracy_checker):
             if not os.path.exists(preprocessed_data_for_accuracy_checker):
-                cmds.append(f"mkdir -p {preprocessed_data_for_accuracy_checker}")
+                cmds.append(
+                    f"mkdir -p {preprocessed_data_for_accuracy_checker}")
             cmds.append(
                 f"ln -sf {env['MLC_DATASET_OPENORCA_PREPROCESSED_PATH']} {preprocessed_data_for_accuracy_checker}")
 
