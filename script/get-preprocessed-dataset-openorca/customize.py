@@ -48,9 +48,10 @@ def preprocess(i):
 
 def postprocess(i):
     env = i['env']
-    
+
     if is_true(str(env.get('MLC_DATASET_PREPROCESSED_BY_MLC', ''))):
-        env['PREPROCESSED_DATA_DIR'] = os.path.dirname(env['MLC_OPENORCA_PREPROCESSED_ROOT'])
+        env['PREPROCESSED_DATA_DIR'] = os.path.dirname(
+            env['MLC_OPENORCA_PREPROCESSED_ROOT'])
         if is_true(env.get('MLC_DATASET_CALIBRATION', '')):
             env['MLC_DATASET_CALIBRATION_PATH'] = os.path.join(
                 env['MLC_OPENORCA_PREPROCESSED_ROOT'],
