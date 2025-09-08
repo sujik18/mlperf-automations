@@ -331,6 +331,12 @@ def preprocess(i):
             'llama2-70b',
             'open_orca_gpt4_tokenized_llama.sampled_24576.pkl')
 
+        preprocessed_data_for_accuracy_checker = os.path.join(
+            env['MLPERF_SCRATCH_PATH'],
+            'preprocessed_data',
+            'open_orca',
+            'open_orca_gpt4_tokenized_llama.sampled_24576.pkl')
+
         target_calibration_data_file_path = os.path.join(
             env['MLPERF_SCRATCH_PATH'],
             'data',
@@ -373,6 +379,12 @@ def preprocess(i):
                 cmds.append(f"mkdir -p {target_data_path}")
             cmds.append(
                 f"ln -sf {env['MLC_DATASET_OPENORCA_CALIBRATION_PATH']} {target_calibration_data_file_path}")
+
+        if not os.path.exists(preprocessed_data_for_accuracy_checker):
+            if not os.path.exists(preprocessed_data_for_accuracy_checker):
+                cmds.append(f"mkdir -p {preprocessed_data_for_accuracy_checker}")
+            cmds.append(
+                f"ln -sf {env['MLC_DATASET_OPENORCA_PREPROCESSED_PATH']} {preprocessed_data_for_accuracy_checker}")
 
         model_name = "llama2-70b"
         model_path = fp8_model_path
