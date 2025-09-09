@@ -17,10 +17,10 @@ make -C docker build
 test $? -eq 0 || exit $?
 
 if [ "${MLC_NVIDIA_TP_SIZE}" -eq 1 ]; then
-  RUN_CMD="bash -c 'git lfs install && git lfs pull && python3 scripts/build_wheel.py -a=${MLC_GPU_ARCH} --clean --install --use_ccache --benchmarks --trt_root /usr/local/tensorrt/ && python examples/quantization/quantize.py --dtype=float16  --output_dir=/mnt/models/Llama2/fp8-quantized-ammo/llama2-70b-chat-hf-tp${MLC_NVIDIA_TP_SIZE}pp${MLC_NVIDIA_PP_SIZE}-fp8-02072024 --model_dir=/mnt/models/Llama2/Llama-2-70b-chat-hf --qformat=fp8 --kv_cache_dtype=fp8 --tp_size ${MLC_NVIDIA_TP_SIZE} --pp_size ${MLC_NVIDIA_PP_SIZE} --calib_dataset=${MLC_DATASET_OPENORCA_CALIBRATION_PATH}'"
+  RUN_CMD="bash -c 'git lfs install && git lfs pull && python3 scripts/build_wheel.py -a=${MLC_GPU_ARCH} --clean --install --use_ccache --benchmarks --trt_root /usr/local/tensorrt/ && python examples/quantization/quantize.py --dtype=float16  --output_dir=/mnt/models/Llama2/fp8-quantized-ammo/llama2-70b-chat-hf-tp${MLC_NVIDIA_TP_SIZE}pp${MLC_NVIDIA_PP_SIZE}-fp8-02072024 --model_dir=/mnt/models/Llama2/Llama-2-70b-chat-hf --qformat=fp8 --kv_cache_dtype=fp8 --tp_size ${MLC_NVIDIA_TP_SIZE} --pp_size ${MLC_NVIDIA_PP_SIZE} --calib_dataset=${MLC_PREPROCESSED_CALIBRATION_DATASET_PATH}'"
   echo "$RUN_CMD"
 else
-  RUN_CMD="bash -c 'git lfs install && git lfs pull && python3 scripts/build_wheel.py -a=${MLC_GPU_ARCH} --clean --install --use_ccache --benchmarks --trt_root /usr/local/tensorrt/ && python examples/quantization/quantize.py --dtype=float16  --output_dir=/mnt/models/Llama2/fp8-quantized-ammo/llama2-70b-chat-hf-tp${MLC_NVIDIA_TP_SIZE}pp${MLC_NVIDIA_PP_SIZE}-fp8 --model_dir=/mnt/models/Llama2/Llama-2-70b-chat-hf --qformat=fp8 --kv_cache_dtype=fp8 --tp_size ${MLC_NVIDIA_TP_SIZE} --pp_size ${MLC_NVIDIA_PP_SIZE} --calib_dataset=${MLC_DATASET_OPENORCA_CALIBRATION_PATH}'"
+  RUN_CMD="bash -c 'git lfs install && git lfs pull && python3 scripts/build_wheel.py -a=${MLC_GPU_ARCH} --clean --install --use_ccache --benchmarks --trt_root /usr/local/tensorrt/ && python examples/quantization/quantize.py --dtype=float16  --output_dir=/mnt/models/Llama2/fp8-quantized-ammo/llama2-70b-chat-hf-tp${MLC_NVIDIA_TP_SIZE}pp${MLC_NVIDIA_PP_SIZE}-fp8 --model_dir=/mnt/models/Llama2/Llama-2-70b-chat-hf --qformat=fp8 --kv_cache_dtype=fp8 --tp_size ${MLC_NVIDIA_TP_SIZE} --pp_size ${MLC_NVIDIA_PP_SIZE} --calib_dataset=${MLC_PREPROCESSED_CALIBRATION_DATASET_PATH}'"
   echo "$RUN_CMD"
 fi
 # TODO: check whether --device nvidia.com/gpu=all would work for docker
