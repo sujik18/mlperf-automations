@@ -242,7 +242,7 @@ variations:
       tags: get,cuda
     - tags: get,nvidia,scratch,space
       names:
-        - nvidia-scratch-space
+        - mlperf-inference-nvidia-scratch-space
     - tags: get,cuda-devices,_with-pycuda
     - env: {}
       force_new_env_keys:
