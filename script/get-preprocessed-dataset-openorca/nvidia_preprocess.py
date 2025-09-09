@@ -25,12 +25,11 @@ from datasets import Dataset
 
 G_MAX_INPUT_TOK_LEN = 2048
 G_LLAMA2_EOS = 2
-SUBDIR_NAME = "llama2-70b"
 
 
 def preprocess_data(data_dir, preprocessed_data_dir):
-    data_dir = Path(data_dir) / SUBDIR_NAME
-    preprocessed_data_dir = Path(preprocessed_data_dir) / SUBDIR_NAME
+    data_dir = Path(data_dir)
+    preprocessed_data_dir = Path(preprocessed_data_dir)
     preprocessed_data_dir.mkdir(parents=True, exist_ok=True)
 
     # Load inference data
