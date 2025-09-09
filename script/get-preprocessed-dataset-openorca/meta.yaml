@@ -8,6 +8,10 @@ default_env:
   MLC_DATASET_CALIBRATION: 'no'
 deps:
 - tags: get,sys-utils-mlc
+  skip_if_env:
+    MLC_DATASET_PREPROCESSED_BY_MLC:
+    - 'on'
+    - 'yes'
 - names:
   - python
   - python3
