@@ -52,9 +52,13 @@ jobs:
 
     steps:
       - name: Process meta.yaml file
+        shell: bash
+        env:
+          REPO: ${{ github.event.pull_request.head.repo.html_url }}
+          BRANCH: ${{ github.event.pull_request.head.ref }}
         run: |
           echo "Processing ${{ matrix.file_info.file }} with run number ${{ matrix.file_info.num_run }}"
 
           pip install mlcflow
-          mlc pull repo ${{ github.event.pull_request.head.repo.html_url }} --branch=${{ github.event.pull_request.head.ref }}
-          mlc test script ${{ matrix.file_info.uid}} --test_input_index=${{ matrix.file_info.num_run }} --docker_mlc_repo=${{ github.event.pull_request.head.repo.html_url }} --docker_mlc_repo_branch=${{ github.event.pull_request.head.ref }} --quiet
+          mlc pull repo "$REPO" --branch="$BRANCH"
+          mlc test script ${{ matrix.file_info.uid}} --test_input_index=${{ matrix.file_info.num_run }} --docker_mlc_repo="$REPO" --docker_mlc_repo_branch="$BRANCH" --quiet
