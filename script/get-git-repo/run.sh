@@ -64,7 +64,7 @@ if [ ! -z ${MLC_GIT_PR_TO_APPLY} ]; then
   git fetch origin ${MLC_GIT_PR_TO_APPLY}:tmp-apply
 fi
 
-IFS='#' read -r -a cherrypicks <<< "${MLC_GIT_CHERRYPICKS}"
+IFS=';' read -r -a cherrypicks <<< "${MLC_GIT_CHERRYPICKS}"
 for cherrypick in "${cherrypicks[@]}"
 do
   echo ""
@@ -73,7 +73,7 @@ do
   test $? -eq 0 || exit $?
 done
 
-IFS='#' read -r -a submodules <<< "${MLC_GIT_SUBMODULES}"
+IFS=';' read -r -a submodules <<< "${MLC_GIT_SUBMODULES}"
 
 for submodule in "${submodules[@]}"
 do
@@ -84,7 +84,7 @@ do
 done
 
 if [ ${MLC_GIT_PATCH} == "yes" ]; then
-  IFS='#' read -r -a patch_files <<< ${MLC_GIT_PATCH_FILEPATHS}
+  IFS=';' read -r -a patch_files <<< ${MLC_GIT_PATCH_FILEPATHS}
   for patch_file in "${patch_files[@]}"
   do
     echo ""
