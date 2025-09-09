@@ -56,6 +56,10 @@ def postprocess(i):
             env['MLC_DATASET_CALIBRATION_PATH'] = os.path.join(
                 env['MLC_OPENORCA_PREPROCESSED_ROOT'],
                 "open_orca_gpt4_tokenized_llama.calibration_1000.pkl")
+            env['MLC_PREPROCESSED_CALIBRATION_DATASET_PATH'] = os.path.join(
+                env['MLC_OPENORCA_PREPROCESSED_ROOT'],
+                "preprocessed_data",
+                "mlperf_llama2_openorca_calibration_1k")
             env['MLC_GET_DEPENDENT_CACHED_PATH'] = env['MLC_DATASET_CALIBRATION_PATH']
             env['MLC_DATASET_OPENORCA_CALIBRATION_PATH'] = env['MLC_DATASET_CALIBRATION_PATH']
         else:

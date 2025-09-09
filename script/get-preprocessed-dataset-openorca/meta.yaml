@@ -38,6 +38,30 @@ deps:
 - names:
   - transformers
   tags: get,generic-python-lib,_package.transformers
+- names:
+  - datasets
+  tags: get,generic-python-lib,_package.datasets
+  version_max: 2.19.2
+  enable_if_env:
+    MLC_DATASET_PREPROCESSED_BY_MLC:
+    - 'on'
+    - 'yes'
+- names:
+  - numpy
+  tags: get,generic-python-lib,_package.numpy
+  version_max: 1.26.4
+  enable_if_env:
+    MLC_DATASET_PREPROCESSED_BY_MLC:
+    - 'on'
+    - 'yes'
+- names:
+  - pandas
+  tags: get,generic-python-lib,_package.pandas
+  version_max: 2.2.2
+  enable_if_env:
+    MLC_DATASET_PREPROCESSED_BY_MLC:
+    - 'on'
+    - 'yes'
 - skip_if_env:
     MLC_DATASET_PREPROCESSED_BY_MLC:
     - 'on'
@@ -69,6 +93,7 @@ variations:
     new_env_keys:
     - MLC_DATASET_CALIBRATION_PATH
     - MLC_DATASET_OPENORCA_CALIBRATION_PATH
+    - MLC_PREPROCESSED_CALIBRATION_DATASET_PATH
   full:
     ad:
       dataset-original:
