@@ -37,7 +37,8 @@ def preprocess_data(data_dir, preprocessed_data_dir):
     inference_pkl_path = data_dir / "open_orca_gpt4_tokenized_llama.sampled_24576.pkl"
     df = pd.read_pickle(inference_pkl_path)
     toks = df['tok_input'].to_list()
-    toks_np = np.ones((len(toks), G_MAX_INPUT_TOK_LEN), dtype=np.int32) * G_LLAMA2_EOS
+    toks_np = np.ones((len(toks), G_MAX_INPUT_TOK_LEN),
+                      dtype=np.int32) * G_LLAMA2_EOS
     tok_len_np = df['tok_input_length'].to_numpy().astype(np.int32)
 
     for i, q in enumerate(toks):
@@ -65,7 +66,8 @@ def preprocess_data(data_dir, preprocessed_data_dir):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Preprocess Llama2 data for TensorRT")
+    parser = argparse.ArgumentParser(
+        description="Preprocess Llama2 data for TensorRT")
     parser.add_argument(
         "--data_dir", "-d",
         help="Path to the input open_orca pickle file",
