@@ -341,7 +341,9 @@ def preprocess(i):
             EOL)
 
         f.write(EOL + '# Register MLC repository' + EOL)
-        f.write('RUN mlc pull repo --url={} {token_string} --quiet'.format(docker_repo_dest) + EOL)
+        f.write(
+            'RUN mlc pull repo --url={} {token_string} --quiet'.format(docker_repo_dest) +
+            EOL)
         f.write(EOL)
 
     else:

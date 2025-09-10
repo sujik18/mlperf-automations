@@ -308,7 +308,7 @@ def docker_run(self_module, i):
         docker_settings_default_env = docker_settings.get('default_env', {})
         for key in docker_settings_default_env:
             env.setdefault(key, docker_settings_default_env[key])
-        
+
         state['docker'] = docker_settings
         run_state = {
             'deps': [], 'fake_deps': [], 'parent': None,
