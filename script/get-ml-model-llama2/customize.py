@@ -1,4 +1,5 @@
 from mlc import utils
+from utils import is_true
 import os
 
 
@@ -8,13 +9,17 @@ def preprocess(i):
     env = i['env']
 
     if env.get('MLC_TMP_ML_MODEL_PROVIDER', '') == 'nvidia':
-        i['run_script_input']['script_name'] = 'run-nvidia'
-        gpu_arch = int(
-            float(
-                env['MLC_CUDA_DEVICE_PROP_GPU_COMPUTE_CAPABILITY']) *
-            10)
-        env['MLC_GPU_ARCH'] = gpu_arch
-        env['MLC_TMP_REQUIRE_DOWNLOAD'] = 'no'
+        if is_true(env.get('MLC_ML_MODEL_QUANTIZE_LOCALLY')):
+            i['run_script_input']['script_name'] = 'run-nvidia'
+            gpu_arch = int(
+                float(
+                    env['MLC_CUDA_DEVICE_PROP_GPU_COMPUTE_CAPABILITY']) *
+                10)
+            env['MLC_GPU_ARCH'] = gpu_arch
+            env['MLC_TMP_REQUIRE_DOWNLOAD'] = 'no'
+        else:
+            run_cmd = f"ln -sf {env['LLAMA2_CHECKPOINT_PATH']} {env['MLC_NVIDIA_MLPERF_SCRATCH_PATH']}/models/Llama2/fp8-quantized-ammo/llama-2-70b-chat-hf-tp{env['MLC_NVIDIA_TP_SIZE']}pp{env['MLC_NVIDIA_PP_SIZE']}-{env['MLC_ML_MODEL_PRECISION']}"
+            env['MLC_RUN_CMD'] = run_cmd
     else:
         path = env.get('LLAMA2_CHECKPOINT_PATH', '').strip()
 
@@ -37,11 +42,14 @@ def postprocess(i):
 
     env = i['env']
     if env.get('MLC_DOWNLOAD_MODE', '') != "dry":
-        if env.get('LLAMA2_CHECKPOINT_PATH', '') == '':
-            env['LLAMA2_CHECKPOINT_PATH'] = env['MLC_ML_MODEL_PATH']
+        if is_true(env.get('MLC_ML_MODEL_QUANTIZE_LOCALLY')):
+            if env.get('LLAMA2_CHECKPOINT_PATH', '') == '':
+                env['LLAMA2_CHECKPOINT_PATH'] = env['MLC_ML_MODEL_PATH']
+            else:
+                env['MLC_ML_MODEL_PATH'] = env['LLAMA2_CHECKPOINT_PATH']
+            env['MLC_ML_MODEL_LLAMA2_FILE_WITH_PATH'] = env['LLAMA2_CHECKPOINT_PATH']
+            env['MLC_GET_DEPENDENT_CACHED_PATH'] = env['MLC_ML_MODEL_PATH']
         else:
-            env['MLC_ML_MODEL_PATH'] = env['LLAMA2_CHECKPOINT_PATH']
-        env['MLC_ML_MODEL_LLAMA2_FILE_WITH_PATH'] = env['LLAMA2_CHECKPOINT_PATH']
-        env['MLC_GET_DEPENDENT_CACHED_PATH'] = env['MLC_ML_MODEL_PATH']
+            env['LLAMA2_PRE_QUANTIZED_CHECKPOINT_PATH'] = env['LLAMA2_CHECKPOINT_PATH']
 
     return {'return': 0}
