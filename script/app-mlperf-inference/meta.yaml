@@ -336,11 +336,11 @@ variations:
           skip_if_env:
             MLC_MLPERF_NVIDIA_SKIP_LLAMA2_70B:
               - "yes"
-        - tags: get,dataset,preprocessed,openorca,_calibration,_mlcommons
+        - tags: get,dataset,preprocessed,openorca,_calibration,_mlcommons,_nvidia
           skip_if_env:
             MLC_MLPERF_NVIDIA_SKIP_LLAMA2_70B:
               - "yes"
-        - tags: get,dataset,preprocessed,openorca,_validation,_mlcommons
+        - tags: get,dataset,preprocessed,openorca,_validation,_mlcommons,_nvidia
           skip_if_env:
             MLC_MLPERF_NVIDIA_SKIP_LLAMA2_70B:
               - "yes"
@@ -526,8 +526,8 @@ variations:
               - MLC_NVIDIA_TP_SIZE
             _pp-size.:
               - MLC_NVIDIA_PP_SIZE
-        - tags: get,dataset,preprocessed,openorca,_calibration,_mlcommons
-        - tags: get,dataset,preprocessed,openorca,_validation,_mlcommons
+        - tags: get,dataset,preprocessed,openorca,_calibration,_mlcommons,_nvidia
+        - tags: get,dataset,preprocessed,openorca,_validation,_mlcommons,_nvidia
     env:
       BUILD_TRTLLM: 1
 
@@ -542,8 +542,8 @@ variations:
               - MLC_NVIDIA_TP_SIZE
             _pp-size.:
               - MLC_NVIDIA_PP_SIZE
-        - tags: get,dataset,preprocessed,openorca,_calibration,_mlcommons
-        - tags: get,dataset,preprocessed,openorca,_validation,_mlcommons
+        - tags: get,dataset,preprocessed,openorca,_calibration,_mlcommons,_nvidia
+        - tags: get,dataset,preprocessed,openorca,_validation,_mlcommons,_nvidia
     env:
       BUILD_TRTLLM: 1
   
@@ -558,8 +558,8 @@ variations:
               - MLC_NVIDIA_TP_SIZE
             _pp-size.:
               - MLC_NVIDIA_PP_SIZE
-        - tags: get,dataset,preprocessed,openorca,_calibration,_mlcommons
-        - tags: get,dataset,preprocessed,openorca,_validation,_mlcommons
+        - tags: get,dataset,preprocessed,openorca,_calibration,_mlcommons,_nvidia
+        - tags: get,dataset,preprocessed,openorca,_validation,_mlcommons,_nvidia
 
   nvidia-original,r5.1-dev_default,llama2-70b_:
     default_variations:
@@ -574,8 +574,8 @@ variations:
               - MLC_NVIDIA_TP_SIZE
             _pp-size.:
               - MLC_NVIDIA_PP_SIZE
-        - tags: get,dataset,preprocessed,openorca,_calibration,_mlcommons
-        - tags: get,dataset,preprocessed,openorca,_validation,_mlcommons
+        - tags: get,dataset,preprocessed,openorca,_calibration,_mlcommons,_nvidia
+        - tags: get,dataset,preprocessed,openorca,_validation,_mlcommons,_nvidia
       env:
         BUILD_TRTLLM: 1
 
