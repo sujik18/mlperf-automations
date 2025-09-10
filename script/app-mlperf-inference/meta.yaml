@@ -326,6 +326,8 @@ variations:
             MLC_MLPERF_NVIDIA_SKIP_GPTJ:
               - "yes"
         - tags: get,ml-model,llama2-70b,_nvidia,_fp8
+          names:
+            - llama2-model  
           update_tags_from_env_with_prefix:
             _tp-size.:
               - MLC_NVIDIA_TP_SIZE
@@ -517,6 +519,8 @@ variations:
       image_name: mlperf-inference-nvidia-v4.1-dev-llm
       deps:
         - tags: get,ml-model,llama2-70b,_nvidia,_fp8
+          names:
+            - llama2-model  
           update_tags_from_env_with_prefix:
             _tp-size.:
               - MLC_NVIDIA_TP_SIZE
@@ -531,6 +535,8 @@ variations:
     docker:
       deps:
         - tags: get,ml-model,llama2-70b,_nvidia,_fp8
+          names:
+            - llama2-model  
           update_tags_from_env_with_prefix:
             _tp-size.:
               - MLC_NVIDIA_TP_SIZE
@@ -545,6 +551,8 @@ variations:
     docker:
       deps:
         - tags: get,ml-model,llama2-70b,_nvidia,_fp8
+          names:
+            - llama2-model  
           update_tags_from_env_with_prefix:
             _tp-size.:
               - MLC_NVIDIA_TP_SIZE
@@ -554,9 +562,13 @@ variations:
         - tags: get,dataset,preprocessed,openorca,_validation,_mlcommons
 
   nvidia-original,r5.1-dev_default,llama2-70b_:
+    default_variations:
+      precision: float8
     docker:
       deps:
         - tags: get,ml-model,llama2-70b,_nvidia,_fp8,_v5.0
+          names:
+            - llama2-model  
           update_tags_from_env_with_prefix:
             _tp-size.:
               - MLC_NVIDIA_TP_SIZE
@@ -1331,6 +1343,8 @@ variations:
             MLC_USE_MODEL_FROM_HOST:
             - 'yes'
           tags: get,ml-model,llama2
+          names:
+            - llama2-model  
         - tags: get,dataset,preprocessed,openorca,_calibration,_mlcommons
           enable_if_any_env:
             MLC_USE_DATASET_FROM_HOST:
@@ -1352,6 +1366,8 @@ variations:
             MLC_USE_MODEL_FROM_HOST:
             - 'yes'
           tags: get,ml-model,llama2,_amd,_pytorch
+          names:
+            - llama2-model  
   
   mixtral-8x7b:
     group:
@@ -2347,6 +2363,7 @@ docker:
    - "${{ GPTJ_CHECKPOINT_PATH }}:${{ GPTJ_CHECKPOINT_PATH }}"
    - "${{ MLC_CRITEO_PREPROCESSED_PATH }}:${{ MLC_CRITEO_PREPROCESSED_PATH }}"
    - "${{ LLAMA2_CHECKPOINT_PATH }}:${{ LLAMA2_CHECKPOINT_PATH }}"
+   - "${{ LLAMA2_PRE_QUANTIZED_CHECKPOINT_PATH }}:${{ LLAMA2_PRE_QUANTIZED_CHECKPOINT_PATH }}"
    - "${{ MLC_DATASET_OPENORCA_PREPROCESSED_PATH }}:${{ MLC_DATASET_OPENORCA_PREPROCESSED_PATH }}"
    - "${{ MLC_DATASET_OPENORCA_CALIBRATION_PATH }}:${{ MLC_DATASET_OPENORCA_CALIBRATION_PATH }}"
    - "${{ MLC_NVIDIA_LLAMA_DATASET_FILE_PATH }}:${{ MLC_NVIDIA_LLAMA_DATASET_FILE_PATH }}"

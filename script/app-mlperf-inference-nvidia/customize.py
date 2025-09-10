@@ -336,11 +336,12 @@ def preprocess(i):
             'open_orca',
             'open_orca_gpt4_tokenized_llama.sampled_24576.pkl')
 
-        target_calibration_data_file_path = os.path.join(
-            env['MLPERF_SCRATCH_PATH'],
-            'data',
-            'llama2-70b',
-            'open_orca_gpt4_tokenized_llama.calibration_1000.pkl')
+        if not env.get('LLAMA2_PRE_QUANTIZED_CHECKPOINT_PATH'):
+            target_calibration_data_file_path = os.path.join(
+                env['MLPERF_SCRATCH_PATH'],
+                'data',
+                'llama2-70b',
+                'open_orca_gpt4_tokenized_llama.calibration_1000.pkl')
 
         tmp_tp_size = env['MLC_NVIDIA_TP_SIZE']
         tmp_pp_size = env['MLC_NVIDIA_PP_SIZE']
@@ -370,14 +371,15 @@ def preprocess(i):
                 f"ln -sf {env['MLC_DATASET_OPENORCA_PREPROCESSED_PATH']} {target_data_file_path}")
 
         # check the presence of calibration dataset
-        if not os.path.exists(target_calibration_data_file_path):
-            if env.get('MLC_DATASET_OPENORCA_CALIBRATION_PATH', '') == '':
-                return {
-                    'return': 1, 'error': 'Llama2 70B calibration dataset not present.'}
-            if not os.path.exists(target_data_path):
-                cmds.append(f"mkdir -p {target_data_path}")
-            cmds.append(
-                f"ln -sf {env['MLC_DATASET_OPENORCA_CALIBRATION_PATH']} {target_calibration_data_file_path}")
+        if not env.get('LLAMA2_PRE_QUANTIZED_CHECKPOINT_PATH'):
+            if not os.path.exists(target_calibration_data_file_path):
+                if env.get('MLC_DATASET_OPENORCA_CALIBRATION_PATH', '') == '':
+                    return {
+                        'return': 1, 'error': 'Llama2 70B calibration dataset not present.'}
+                if not os.path.exists(target_data_path):
+                    cmds.append(f"mkdir -p {target_data_path}")
+                cmds.append(
+                    f"ln -sf {env['MLC_DATASET_OPENORCA_CALIBRATION_PATH']} {target_calibration_data_file_path}")
 
         if not os.path.exists(preprocessed_data_for_accuracy_checker):
             if not os.path.exists(preprocessed_data_for_accuracy_checker):
