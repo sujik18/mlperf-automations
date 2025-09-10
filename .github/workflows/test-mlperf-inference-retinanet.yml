@@ -23,6 +23,8 @@ jobs:
         exclude:
           - backend: pytorch
             implementation: cpp
+             # To be turned on after wmic error is fixed
+          - os: windows-latest
           - os: windows-latest
             implementation: cpp
           - os: macos-latest

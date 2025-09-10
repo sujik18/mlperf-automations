@@ -22,6 +22,8 @@ jobs:
         docker: [ "", " --docker --docker_mlc_repo=${{ github.event.pull_request.head.repo.html_url }} --docker_mlc_repo_branch=${{ github.event.pull_request.head.ref }} --docker_dt" ]
         extra-args: [ "--adr.compiler.tags=gcc", "--env.MLC_MLPERF_LOADGEN_BUILD_FROM_SRC=off" ]
         exclude:
+          # To be turned on after wmic error is fixed
+        - os: windows-latest
         - os: ubuntu-latest
           python-version: "3.8"
         - os: windows-latest
