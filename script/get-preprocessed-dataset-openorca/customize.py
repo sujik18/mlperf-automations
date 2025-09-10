@@ -11,16 +11,14 @@ def preprocess(i):
     if is_true(str(env.get('MLC_DATASET_PREPROCESSED_BY_MLC', ''))):
         run_dir = env['MLC_OPENORCA_PREPROCESSED_ROOT']
         run_cmd = ''
-        if is_true(env.get('MLC_DATASET_CALIBRATION', '')):
-            env['MLC_DATASET_CALIBRATION_PATH'] = os.path.join(
-                env['MLC_OPENORCA_PREPROCESSED_ROOT'],
-                "open_orca_gpt4_tokenized_llama.calibration_1000.pkl.gz")
-            run_cmd = f"gzip -dk {env['MLC_DATASET_CALIBRATION_PATH']}"
-        else:
-            env['MLC_DATASET_PREPROCESSED_PATH'] = os.path.join(
-                env['MLC_OPENORCA_PREPROCESSED_ROOT'],
-                "open_orca_gpt4_tokenized_llama.sampled_24576.pkl.gz")
-            run_cmd = f"gzip -dk {env['MLC_DATASET_PREPROCESSED_PATH']}"
+        env['MLC_DATASET_CALIBRATION_PATH'] = os.path.join(
+            env['MLC_OPENORCA_PREPROCESSED_ROOT'],
+            "open_orca_gpt4_tokenized_llama.calibration_1000.pkl.gz")
+        run_cmd = f"gzip -dkf {env['MLC_DATASET_CALIBRATION_PATH']}"
+        env['MLC_DATASET_PREPROCESSED_PATH'] = os.path.join(
+            env['MLC_OPENORCA_PREPROCESSED_ROOT'],
+            "open_orca_gpt4_tokenized_llama.sampled_24576.pkl.gz")
+        run_cmd += f"gzip -dkf {env['MLC_DATASET_PREPROCESSED_PATH']}"
     else:
         inference_src = env['MLC_MLPERF_INFERENCE_SOURCE']
         run_dir = os.path.join(inference_src, 'language', 'llama2-70b')
