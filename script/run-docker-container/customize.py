@@ -179,7 +179,10 @@ def postprocess(i):
     if env.get('MLC_DOCKER_ADD_NUM_GPUS', '') != '':
         run_opts += " --gpus={}".format(env['MLC_DOCKER_ADD_NUM_GPUS'])
     elif env.get('MLC_DOCKER_ADD_ALL_GPUS', '') != '':
-        run_opts += " --gpus=all"
+        if env.get('MLC_CONTAINER_TOOL') == "podman":
+            run_opts += " --device nvidia.com/gpu=all"
+        else:
+            run_opts += " --gpus=all"
 
     if env.get('MLC_DOCKER_SHM_SIZE', '') != '':
         run_opts += " --shm-size={}".format(env['MLC_DOCKER_SHM_SIZE'])

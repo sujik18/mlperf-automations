@@ -321,15 +321,30 @@ def preprocess(i):
         # path to which the data file is present
         target_data_path = os.path.join(
             env['MLPERF_SCRATCH_PATH'],
-            'preprocessed_data',
-            'open_orca')
+            'data',
+            'llama2-70b')
         # path to the dataset file
         target_data_file_path = os.path.join(
+            env['MLPERF_SCRATCH_PATH'],
+            'data',
+            'llama2-70b',
+            'open_orca_gpt4_tokenized_llama.sampled_24576.pkl')
+
+        preprocessed_data_for_accuracy_checker = os.path.join(
             env['MLPERF_SCRATCH_PATH'],
             'preprocessed_data',
             'open_orca',
             'open_orca_gpt4_tokenized_llama.sampled_24576.pkl')
+
+        if not env.get('LLAMA2_PRE_QUANTIZED_CHECKPOINT_PATH'):
+            target_calibration_data_file_path = os.path.join(
+                env['MLPERF_SCRATCH_PATH'],
+                'data',
+                'llama2-70b',
+                'open_orca_gpt4_tokenized_llama.calibration_1000.pkl')
+
         tmp_tp_size = env['MLC_NVIDIA_TP_SIZE']
+        tmp_pp_size = env['MLC_NVIDIA_PP_SIZE']
         if tmp_tp_size == "1":
             fp8_model_path = os.path.join(
                 env['MLPERF_SCRATCH_PATH'],
@@ -343,15 +358,35 @@ def preprocess(i):
                 'models',
                 'Llama2',
                 'fp8-quantized-ammo',
-                f'llama2-70b-chat-hf-tp{tmp_tp_size}pp1-fp8')
+                f'llama2-70b-chat-hf-tp{tmp_tp_size}pp{tmp_pp_size}-fp8')
+
+        # check the presence of validation dataset
         if not os.path.exists(target_data_file_path):
-            if env.get('MLC_NVIDIA_LLAMA_DATASET_FILE_PATH', '') == '':
+            if env.get('MLC_DATASET_OPENORCA_PREPROCESSED_PATH', '') == '':
                 return {
-                    'return': 1, 'error': 'Please specify the path to LLAMA2 dataset (pickle file)'}
+                    'return': 1, 'error': 'Llama2 70B validation dataset not present.'}
             if not os.path.exists(target_data_path):
-                cmds.append(f"mkdir {target_data_path}")
+                cmds.append(f"mkdir -p {target_data_path}")
             cmds.append(
-                f"ln -sf {env['MLC_NVIDIA_LLAMA_DATASET_FILE_PATH']} {target_data_file_path}")
+                f"ln -sf {env['MLC_DATASET_OPENORCA_PREPROCESSED_PATH']} {target_data_file_path}")
+
+        # check the presence of calibration dataset
+        if not env.get('LLAMA2_PRE_QUANTIZED_CHECKPOINT_PATH'):
+            if not os.path.exists(target_calibration_data_file_path):
+                if env.get('MLC_DATASET_OPENORCA_CALIBRATION_PATH', '') == '':
+                    return {
+                        'return': 1, 'error': 'Llama2 70B calibration dataset not present.'}
+                if not os.path.exists(target_data_path):
+                    cmds.append(f"mkdir -p {target_data_path}")
+                cmds.append(
+                    f"ln -sf {env['MLC_DATASET_OPENORCA_CALIBRATION_PATH']} {target_calibration_data_file_path}")
+
+        if not os.path.exists(preprocessed_data_for_accuracy_checker):
+            if not os.path.exists(preprocessed_data_for_accuracy_checker):
+                cmds.append(
+                    f"mkdir -p {os.path.dirname(preprocessed_data_for_accuracy_checker)}")
+            cmds.append(
+                f"ln -sf {env['MLC_DATASET_OPENORCA_PREPROCESSED_PATH']} {preprocessed_data_for_accuracy_checker}")
 
         model_name = "llama2-70b"
         model_path = fp8_model_path
@@ -550,6 +585,11 @@ def preprocess(i):
         if gpu_inference_streams:
             run_config += f" --gpu_inference_streams={gpu_inference_streams}"
 
+        model_precision = env.get(
+            'MLC_MLPERF_MODEL_PRECISION').replace('float', 'fp')
+        if model_precision:
+            run_config += f" --precision={model_precision}"
+
         dla_copy_streams = env.get(
             'MLC_MLPERF_NVIDIA_HARNESS_DLA_COPY_STREAMS')
         if dla_copy_streams:
@@ -688,8 +728,12 @@ def preprocess(i):
             run_config += f" --use_fp8"
 
         if "llama2" in env["MLC_MODEL"]:
-            run_config += f" --fp8_quant_model_path={fp8_model_path}"
-            run_config += f" --tensor_parallelism={tmp_tp_size}"
+            run_config += f" --checkpoint_dir={fp8_model_path}"
+            if env.get('MLC_MLPERF_INFERENCE_POST_5_0'):
+                run_config += f" --trtllm_build_flags=tensor_parallelism:{tmp_tp_size},pipeline_parallelism:{tmp_pp_size}"
+            else:
+                run_config += f" --tensor_parallelism={tmp_tp_size}"
+                run_config += f" --pipeline_parallelism={tmp_pp_size}"
 
         enable_sort = env.get('MLC_MLPERF_NVIDIA_HARNESS_ENABLE_SORT')
         if enable_sort and not is_false(enable_sort):
@@ -757,9 +801,11 @@ def preprocess(i):
         hpcx_paths.append("/opt/hpcx/ucx/lib")
     if os.path.exists("/opt/hpcx/ucc/lib"):
         hpcx_paths.append("/opt/hpcx/ucc/lib")
+    if os.path.exists("/opt/hpcx/ompi/lib"):
+        hpcx_paths.append("/opt/hpcx/ompi/lib")
 
     env['+LD_LIBRARY_PATH'] = hpcx_paths + env['+LD_LIBRARY_PATH']
-
+    env['+PYTHONPATH'] = []
     #    print(env)
 
     return {'return': 0}

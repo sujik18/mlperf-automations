@@ -28,6 +28,8 @@ default_env:
   MLC_TEST_QUERY_COUNT: '10'
   MLC_MLPERF_QUANTIZATION: off
   MLC_GET_PLATFORM_DETAILS: no
+  MLC_NVIDIA_TP_SIZE: "2"
+  MLC_NVIDIA_PP_SIZE: "1"
 
 env:
   MLC_MLPERF_PRINT_SUMMARY: "no"
@@ -62,8 +64,8 @@ input_mapping:
   readme: MLC_MLPERF_README
   debug: MLC_DEBUG_SCRIPT_BENCHMARK_PROGRAM
   gpu_name: MLC_NVIDIA_GPU_NAME
-  nvidia_llama2_dataset_file_path: MLC_NVIDIA_LLAMA_DATASET_FILE_PATH
   tp_size: MLC_NVIDIA_TP_SIZE
+  pp_size: MLC_NVIDIA_PP_SIZE
   use_dataset_from_host: MLC_USE_DATASET_FROM_HOST
 
 predeps: False
@@ -324,9 +326,21 @@ variations:
             MLC_MLPERF_NVIDIA_SKIP_GPTJ:
               - "yes"
         - tags: get,ml-model,llama2-70b,_nvidia,_fp8
+          names:
+            - llama2-model  
           update_tags_from_env_with_prefix:
             _tp-size.:
               - MLC_NVIDIA_TP_SIZE
+            _pp-size.:
+              - MLC_NVIDIA_PP_SIZE
+          skip_if_env:
+            MLC_MLPERF_NVIDIA_SKIP_LLAMA2_70B:
+              - "yes"
+        - tags: get,dataset,preprocessed,openorca,_calibration,_mlcommons,_nvidia
+          skip_if_env:
+            MLC_MLPERF_NVIDIA_SKIP_LLAMA2_70B:
+              - "yes"
+        - tags: get,dataset,preprocessed,openorca,_validation,_mlcommons,_nvidia
           skip_if_env:
             MLC_MLPERF_NVIDIA_SKIP_LLAMA2_70B:
               - "yes"
@@ -505,9 +519,15 @@ variations:
       image_name: mlperf-inference-nvidia-v4.1-dev-llm
       deps:
         - tags: get,ml-model,llama2-70b,_nvidia,_fp8
+          names:
+            - llama2-model  
           update_tags_from_env_with_prefix:
             _tp-size.:
               - MLC_NVIDIA_TP_SIZE
+            _pp-size.:
+              - MLC_NVIDIA_PP_SIZE
+        - tags: get,dataset,preprocessed,openorca,_calibration,_mlcommons,_nvidia
+        - tags: get,dataset,preprocessed,openorca,_validation,_mlcommons,_nvidia
     env:
       BUILD_TRTLLM: 1
 
@@ -515,9 +535,15 @@ variations:
     docker:
       deps:
         - tags: get,ml-model,llama2-70b,_nvidia,_fp8
+          names:
+            - llama2-model  
           update_tags_from_env_with_prefix:
             _tp-size.:
               - MLC_NVIDIA_TP_SIZE
+            _pp-size.:
+              - MLC_NVIDIA_PP_SIZE
+        - tags: get,dataset,preprocessed,openorca,_calibration,_mlcommons,_nvidia
+        - tags: get,dataset,preprocessed,openorca,_validation,_mlcommons,_nvidia
     env:
       BUILD_TRTLLM: 1
   
@@ -525,9 +551,33 @@ variations:
     docker:
       deps:
         - tags: get,ml-model,llama2-70b,_nvidia,_fp8
+          names:
+            - llama2-model  
           update_tags_from_env_with_prefix:
             _tp-size.:
               - MLC_NVIDIA_TP_SIZE
+            _pp-size.:
+              - MLC_NVIDIA_PP_SIZE
+        - tags: get,dataset,preprocessed,openorca,_calibration,_mlcommons,_nvidia
+        - tags: get,dataset,preprocessed,openorca,_validation,_mlcommons,_nvidia
+
+  nvidia-original,r5.1-dev_default,llama2-70b_:
+    default_variations:
+      precision: float8
+    docker:
+      deps:
+        - tags: get,ml-model,llama2-70b,_nvidia,_fp8,_v5.0
+          names:
+            - llama2-model  
+          update_tags_from_env_with_prefix:
+            _tp-size.:
+              - MLC_NVIDIA_TP_SIZE
+            _pp-size.:
+              - MLC_NVIDIA_PP_SIZE
+        - tags: get,dataset,preprocessed,openorca,_calibration,_mlcommons,_nvidia
+        - tags: get,dataset,preprocessed,openorca,_validation,_mlcommons,_nvidia
+      env:
+        BUILD_TRTLLM: 1
 
   nvidia-original:
     docker:
@@ -594,6 +644,8 @@ variations:
         update_tags_from_env_with_prefix:
           "_gpu_memory." :
             - MLC_NVIDIA_GPU_MEMORY
+          "_num-gpus.":
+            - MLC_CUDA_NUM_DEVICES
         update_tags_from_env:
           - MLC_NVIDIA_HARNESS_GPU_VARIATION
 
@@ -1293,6 +1345,16 @@ variations:
             MLC_USE_MODEL_FROM_HOST:
             - 'yes'
           tags: get,ml-model,llama2
+          names:
+            - llama2-model  
+        - tags: get,dataset,preprocessed,openorca,_calibration,_mlcommons
+          enable_if_any_env:
+            MLC_USE_DATASET_FROM_HOST:
+            - 'yes'
+        - tags: get,dataset,preprocessed,openorca,_validation,_mlcommons
+          enable_if_any_env:
+            MLC_USE_DATASET_FROM_HOST:
+            - 'yes'
 
   llama2-70b_,amd:
     docker:
@@ -1306,6 +1368,8 @@ variations:
             MLC_USE_MODEL_FROM_HOST:
             - 'yes'
           tags: get,ml-model,llama2,_amd,_pytorch
+          names:
+            - llama2-model  
   
   mixtral-8x7b:
     group:
@@ -1830,6 +1894,12 @@ variations:
   fp32:
     alias: float32
 
+  fp4:
+    alias: float4
+
+  fp8:
+    alias: float8
+
   float32:
     group: precision
     default: true
@@ -1842,6 +1912,16 @@ variations:
       kilt-harness:
         tags: _fp32
 
+  float4:
+    group: precision
+    env:
+      MLC_MLPERF_MODEL_PRECISION: float4
+
+  float8:
+    group: precision
+    env:
+      MLC_MLPERF_MODEL_PRECISION: float8
+      
   float16:
     group: precision
     env:
@@ -2128,10 +2208,10 @@ variations:
       reproducibility
     add_deps_recursive:
       nvidia-inference-common-code:
-        tags: _custom,_v5.1-dev
+        tags: _mlcommons,_v5.1-dev
       nvidia-inference-server:
         version: r5.0
-        tags: _custom
+        tags: _mlcommons
       nvidia-harness:   
         tags: _v5.0
       intel-harness:
@@ -2285,6 +2365,9 @@ docker:
    - "${{ GPTJ_CHECKPOINT_PATH }}:${{ GPTJ_CHECKPOINT_PATH }}"
    - "${{ MLC_CRITEO_PREPROCESSED_PATH }}:${{ MLC_CRITEO_PREPROCESSED_PATH }}"
    - "${{ LLAMA2_CHECKPOINT_PATH }}:${{ LLAMA2_CHECKPOINT_PATH }}"
+   - "${{ LLAMA2_PRE_QUANTIZED_CHECKPOINT_PATH }}:${{ LLAMA2_PRE_QUANTIZED_CHECKPOINT_PATH }}"
+   - "${{ MLC_DATASET_OPENORCA_PREPROCESSED_PATH }}:${{ MLC_DATASET_OPENORCA_PREPROCESSED_PATH }}"
+   - "${{ MLC_DATASET_OPENORCA_CALIBRATION_PATH }}:${{ MLC_DATASET_OPENORCA_CALIBRATION_PATH }}"
    - "${{ MLC_NVIDIA_LLAMA_DATASET_FILE_PATH }}:${{ MLC_NVIDIA_LLAMA_DATASET_FILE_PATH }}"
    - "${{ SDXL_CHECKPOINT_PATH }}:${{ SDXL_CHECKPOINT_PATH }}"
    - "${{ MLC_DATASET_KITS19_PREPROCESSED_PATH }}:${{ MLC_DATASET_KITS19_PREPROCESSED_PATH }}"
@@ -2314,3 +2397,4 @@ docker:
     intel_gptj_int8_model_path: MLC_MLPERF_INFERENCE_INTEL_GPTJ_INT8_MODEL_PATH
     nvidia_llama2_dataset_file_path: MLC_NVIDIA_LLAMA_DATASET_FILE_PATH
     tp_size: MLC_NVIDIA_TP_SIZE
+    pp_size: MLC_NVIDIA_PP_SIZE

@@ -9,21 +9,16 @@ def preprocess(i):
     env = i['env']
 
     if is_true(str(env.get('MLC_DATASET_PREPROCESSED_BY_MLC', ''))):
-        run_dir = os.getcwd()
-        if is_true(env.get('MLC_DATASET_CALIBRATION', '')):
-            env['MLC_DATASET_CALIBRATION_PATH'] = os.path.join(
-                env['MLC_OPENORCA_PREPROCESSED_ROOT'],
-                "open_orca_gpt4_tokenized_llama.calibration_1000.pkl.gz")
-            env['MLC_GET_DEPENDENT_CACHED_PATH'] = env['MLC_DATASET_CALIBRATION_PATH']
-            env['MLC_DATASET_OPENORCA_CALIBRATION_PATH'] = env['MLC_DATASET_CALIBRATION_PATH']
-        else:
-            env['MLC_DATASET_PREPROCESSED_PATH'] = os.path.join(
-                env['MLC_OPENORCA_PREPROCESSED_ROOT'],
-                "open_orca_gpt4_tokenized_llama.sampled_24576.pkl.gz")
-            env['MLC_GET_DEPENDENT_CACHED_PATH'] = env['MLC_DATASET_PREPROCESSED_PATH']
-            env['MLC_DATASET_OPENORCA_PREPROCESSED_PATH'] = env['MLC_DATASET_PREPROCESSED_PATH']
-        # run_cmd = f"gunzip -k {env['MLC_DATASET_PREPROCESSED_PATH']}"
+        run_dir = env['MLC_OPENORCA_PREPROCESSED_ROOT']
         run_cmd = ''
+        env['MLC_DATASET_CALIBRATION_PATH'] = os.path.join(
+            env['MLC_OPENORCA_PREPROCESSED_ROOT'],
+            "open_orca_gpt4_tokenized_llama.calibration_1000.pkl.gz")
+        run_cmd = f"gzip -dkf {env['MLC_DATASET_CALIBRATION_PATH']}"
+        env['MLC_DATASET_PREPROCESSED_PATH'] = os.path.join(
+            env['MLC_OPENORCA_PREPROCESSED_ROOT'],
+            "open_orca_gpt4_tokenized_llama.sampled_24576.pkl.gz")
+        run_cmd += f" && gzip -dkf {env['MLC_DATASET_PREPROCESSED_PATH']}"
     else:
         inference_src = env['MLC_MLPERF_INFERENCE_SOURCE']
         run_dir = os.path.join(inference_src, 'language', 'llama2-70b')
@@ -51,5 +46,27 @@ def preprocess(i):
 
 def postprocess(i):
     env = i['env']
+
+    if is_true(str(env.get('MLC_DATASET_PREPROCESSED_BY_MLC', ''))):
+        env['PREPROCESSED_DATA_DIR'] = os.path.dirname(
+            env['MLC_OPENORCA_PREPROCESSED_ROOT'])
+        if is_true(env.get('MLC_DATASET_CALIBRATION', '')):
+            env['MLC_DATASET_CALIBRATION_PATH'] = os.path.join(
+                env['MLC_OPENORCA_PREPROCESSED_ROOT'],
+                "open_orca_gpt4_tokenized_llama.calibration_1000.pkl")
+            if env.get('MLC_TMP_DATASET_PREPROCESS_STEP_PROVIDER',
+                       '') == "nvidia":
+                env['MLC_NVIDIA_PREPROCESSED_CALIBRATION_DATASET_PATH'] = os.path.join(
+                    env['MLC_OPENORCA_PREPROCESSED_ROOT'],
+                    "preprocessed_data",
+                    "mlperf_llama2_openorca_calibration_1k")
+            env['MLC_GET_DEPENDENT_CACHED_PATH'] = env['MLC_DATASET_CALIBRATION_PATH']
+            env['MLC_DATASET_OPENORCA_CALIBRATION_PATH'] = env['MLC_DATASET_CALIBRATION_PATH']
+        else:
+            env['MLC_DATASET_PREPROCESSED_PATH'] = os.path.join(
+                env['MLC_OPENORCA_PREPROCESSED_ROOT'],
+                "open_orca_gpt4_tokenized_llama.sampled_24576.pkl")
+            env['MLC_GET_DEPENDENT_CACHED_PATH'] = env['MLC_DATASET_PREPROCESSED_PATH']
+            env['MLC_DATASET_OPENORCA_PREPROCESSED_PATH'] = env['MLC_DATASET_PREPROCESSED_PATH']
 
     return {'return': 0}
