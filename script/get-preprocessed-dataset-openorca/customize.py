@@ -18,7 +18,7 @@ def preprocess(i):
         env['MLC_DATASET_PREPROCESSED_PATH'] = os.path.join(
             env['MLC_OPENORCA_PREPROCESSED_ROOT'],
             "open_orca_gpt4_tokenized_llama.sampled_24576.pkl.gz")
-        run_cmd += f"gzip -dkf {env['MLC_DATASET_PREPROCESSED_PATH']}"
+        run_cmd += f" && gzip -dkf {env['MLC_DATASET_PREPROCESSED_PATH']}"
     else:
         inference_src = env['MLC_MLPERF_INFERENCE_SOURCE']
         run_dir = os.path.join(inference_src, 'language', 'llama2-70b')
