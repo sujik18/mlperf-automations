@@ -5,8 +5,8 @@ echo "Set pp size is ${MLC_NVIDIA_PP_SIZE}"
 
 if [[ ! -e ${MLC_NVIDIA_MLPERF_SCRATCH_PATH}/models/Llama2/Llama-2-70b-chat-hf ]]; then
   mkdir -p ${MLC_NVIDIA_MLPERF_SCRATCH_PATH}/models/Llama2/Llama-2-70b-chat-hf
-  ln -sf ${LLAMA2_CHECKPOINT_PATH}/* ${MLC_NVIDIA_MLPERF_SCRATCH_PATH}/models/Llama2/Llama-2-70b-chat-hf
-  test $? -eq 0 || exit $?
+  cd ${LLAMA2_CHECKPOINT_PATH}
+  cp -r ${LLAMA2_CHECKPOINT_PATH}/* ${MLC_NVIDIA_MLPERF_SCRATCH_PATH}/models/Llama2/Llama-2-70b-chat-hf
 fi
 
 echo "cd ${MLC_TENSORRT_LLM_CHECKOUT_PATH}"
