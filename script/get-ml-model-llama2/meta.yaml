@@ -210,7 +210,7 @@ variations:
       MLC_TMP_ML_MODEL_PROVIDER: nvidia
     deps:
       - tags: get,nvidia,scratch,space
-      names:
+        names:
         - mlperf-inference-nvidia-scratch-space
     group: model-provider
   pytorch:
