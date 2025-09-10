@@ -54,7 +54,7 @@ def postprocess(i):
             env['MLC_DATASET_CALIBRATION_PATH'] = os.path.join(
                 env['MLC_OPENORCA_PREPROCESSED_ROOT'],
                 "open_orca_gpt4_tokenized_llama.calibration_1000.pkl")
-            if env.get('MLC_TMP_ML_MODEL_PROVIDER', '') == "nvidia":
+            if env.get('MLC_TMP_DATASET_PREPROCESS_STEP_PROVIDER', '') == "nvidia":
                 env['MLC_NVIDIA_PREPROCESSED_CALIBRATION_DATASET_PATH'] = os.path.join(
                     env['MLC_OPENORCA_PREPROCESSED_ROOT'],
                     "preprocessed_data",
