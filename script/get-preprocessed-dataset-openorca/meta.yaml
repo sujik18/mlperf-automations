@@ -97,7 +97,6 @@ variations:
     new_env_keys:
     - MLC_DATASET_CALIBRATION_PATH
     - MLC_DATASET_OPENORCA_CALIBRATION_PATH
-    - MLC_PREPROCESSED_CALIBRATION_DATASET_PATH
   full:
     ad:
       dataset-original:
@@ -138,3 +137,10 @@ variations:
     - MLC_DATASET_PREPROCESSED_PATH
     - MLC_DATASET_OPENORCA_PREPROCESSED_PATH
     - PREPROCESSED_DATA_DIR
+  nvidia:
+    group: preprocess-step-provider
+    env:
+      MLC_TMP_DATASET_PREPROCESS_STEP_PROVIDER: nvidia
+  nvidia,calibration:
+    new_env_keys:
+    - - MLC_NVIDIA_PREPROCESSED_CALIBRATION_DATASET_PATH
