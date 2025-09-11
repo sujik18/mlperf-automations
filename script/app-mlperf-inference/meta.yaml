@@ -576,8 +576,8 @@ variations:
               - MLC_NVIDIA_PP_SIZE
         - tags: get,dataset,preprocessed,openorca,_calibration,_mlcommons,_nvidia
         - tags: get,dataset,preprocessed,openorca,_validation,_mlcommons,_nvidia
-      env:
-        BUILD_TRTLLM: 1
+    env:
+      BUILD_TRTLLM: 1
 
   nvidia-original:
     docker:
