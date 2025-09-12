@@ -74,8 +74,8 @@ mlcr app,vision,language,mlcommons,mlperf,inference,generic
 | `--singlestream_target_latency` |  |  | `` |
 | `--multistream_target_latency` |  |  | `` |
 | `--gpu_name` |  |  | `` |
-| `--nvidia_llama2_dataset_file_path` |  |  | `` |
-| `--tp_size` |  |  | `` |
+| `--tp_size` |  |  | `2` |
+| `--pp_size` |  |  | `1` |
 | `--use_dataset_from_host` |  |  | `` |
 ### Generic Script Inputs
 
@@ -182,6 +182,8 @@ mlcr app,vision,language,mlcommons,mlperf,inference,generic
 - `bfloat16`
 - `float16`
 - `float32` (alias: fp32) (default)
+- `float4` (alias: fp4)
+- `float8` (alias: fp8)
 - `int4`
 - `int8` (alias: quantized)
 - `uint8`

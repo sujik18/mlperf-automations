@@ -355,6 +355,8 @@ variations:
     group: batchsize-format-change
   v5.0+:
     group: batchsize-format-change
+    env:
+      MLC_MLPERF_INFERENCE_POST_5_0: "yes"
   v5.0:
     base:
       - v5.0+
@@ -1279,13 +1281,17 @@ variations:
       MLC_MLPERF_NVIDIA_HARNESS_NUM_SORT_SEGMENTS: '2'
       MLC_MLPERF_NVIDIA_HARNESS_SKIP_POSTPROCESS: True
 
-  gpu_memory.80,pre5.0,num-gpus.2,llama2-70b,offline,run_harness:
+  gpu_memory.80,pre5.0,num-gpus.2,llama2-70b_,offline,run_harness:
     default_variations:
       batch-size: batch_size.896
 
-  gpu_memory.80,v5.0+,num-gpus.2,llama2-70b,offline,run_harness:
+  gpu_memory.80,v5.0+,num-gpus.2,llama2-70b_,offline,run_harness:
     default_variations:
       batch-size: batch_size."llama2-70b:1024"
+
+  gpu_memory.80,v5.0+,num-gpus.8,llama2-70b_,offline,run_harness:
+    default_variations:
+      batch-size: batch_size."llama2-70b:4096"
       
   gpu_memory.16,pre5.0,gptj_,offline,run_harness:
     default_variations:

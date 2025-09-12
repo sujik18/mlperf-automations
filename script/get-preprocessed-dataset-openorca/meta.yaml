@@ -8,6 +8,10 @@ default_env:
   MLC_DATASET_CALIBRATION: 'no'
 deps:
 - tags: get,sys-utils-mlc
+  skip_if_env:
+    MLC_DATASET_PREPROCESSED_BY_MLC:
+    - 'on'
+    - 'yes'
 - names:
   - python
   - python3
@@ -38,6 +42,30 @@ deps:
 - names:
   - transformers
   tags: get,generic-python-lib,_package.transformers
+- names:
+  - datasets
+  tags: get,generic-python-lib,_package.datasets
+  version_max: 2.19.2
+  enable_if_env:
+    MLC_DATASET_PREPROCESSED_BY_MLC:
+    - 'on'
+    - 'yes'
+- names:
+  - numpy
+  tags: get,generic-python-lib,_package.numpy
+  version_max: 1.26.4
+  enable_if_env:
+    MLC_DATASET_PREPROCESSED_BY_MLC:
+    - 'on'
+    - 'yes'
+- names:
+  - pandas
+  tags: get,generic-python-lib,_package.pandas
+  version_max: 2.2.2
+  enable_if_env:
+    MLC_DATASET_PREPROCESSED_BY_MLC:
+    - 'on'
+    - 'yes'
 - skip_if_env:
     MLC_DATASET_PREPROCESSED_BY_MLC:
     - 'on'
@@ -87,7 +115,7 @@ variations:
       extra_cache_tags: openorca,preprocessed,dataset
       force_cache: true
       names:
-      - dae
+      - dae-openorca
       tags: download-and-extract,_rclone
       update_tags_from_env_with_prefix:
         _url.:
@@ -108,3 +136,11 @@ variations:
     new_env_keys:
     - MLC_DATASET_PREPROCESSED_PATH
     - MLC_DATASET_OPENORCA_PREPROCESSED_PATH
+    - PREPROCESSED_DATA_DIR
+  nvidia:
+    group: preprocess-step-provider
+    env:
+      MLC_TMP_DATASET_PREPROCESS_STEP_PROVIDER: nvidia
+  nvidia,calibration:
+    new_env_keys:
+    - MLC_NVIDIA_PREPROCESSED_CALIBRATION_DATASET_PATH
