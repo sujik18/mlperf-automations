@@ -3443,7 +3443,7 @@ class ScriptAutomation(Automation):
                                 env[kk] = tmp_env[kk]
                     elif key in tmp_env:
                         env[key] = tmp_env[key]
-                
+
                 if d.get("reuse_version", False):
                     for k in tmp_env:
                         if k.startswith('MLC_VERSION'):
