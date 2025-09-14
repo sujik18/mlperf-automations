@@ -4838,13 +4838,19 @@ def find_cached_script(i):
 
         for cached_script in found_cached_scripts:
             skip_cached_script = False
+            dependent_paths = []
             dependent_cached_path = cached_script.meta.get(
-                'dependent_cached_path', '')
+                'dependent_cached_path')
             if dependent_cached_path:
+                dependent_paths.append(dependent_cached_path)
+            dependent_cached_paths = cached_script.meta.get(
+                'dependent_cached_paths', '').split(':')
+            dependent_paths += [p for p in dependent_cached_paths if p]
+            for dep in dependent_paths:
                 if not os.path.exists(dependent_cached_path):
                     # TODO Need to restrict the below check to within container
                     # env
-                    i['tmp_dep_cached_path'] = dependent_cached_path
+                    i['tmp_dep_cached_path'] = dep
                     from script import docker_utils
                     r = docker_utils.get_container_path_script(i)
                     if not os.path.exists(r['value_env']):
@@ -4853,7 +4859,10 @@ def find_cached_script(i):
                             recursion_spaces +
                             '  - Skipping cached entry as the dependent path {} is missing!'.format(r['value_env']))
                         skip_cached_script = True
-                        continue
+                        break
+
+            if skip_cached_script:
+                continue
 
             os_info = self_obj.os_info
 
