@@ -314,6 +314,20 @@ variations:
         brew: git-lfs
         dnf: git-lfs
         yum: git-lfs
+  ccache:
+    env:
+      MLC_SYS_UTIL_NAME: ccache
+      MLC_SYS_UTIL_VERSION_CMD: ccache --version
+      MLC_SYS_UTIL_VERSION_RE: "ccache version ([0-9.]+)"
+      MLC_TMP_VERSION_DETECT_GROUP_NUMBER: 0
+    new_env_keys:
+    - MLC_CCACHE_VERSION
+    state:
+      ccache:
+        apt: ccache
+        brew: ccache
+        dnf: ccache
+        yum: ccache
   glog-dev:
     env:
       MLC_SYS_UTIL_NAME: glog-dev
@@ -698,6 +712,8 @@ variations:
     state:
       postfix:
         apt: postfix
+        dnf: postfix
+        yum: postfix
   psmisc:
     env:
       MLC_SYS_UTIL_NAME: psmisc
