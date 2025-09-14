@@ -215,14 +215,14 @@ def update_docker_environment(
     # Add host group ID if specified in the Docker settings and not on Windows
     if not is_false(docker_settings.get('pass_group_id')) and os.name != 'nt':
         env['+ MLC_DOCKER_BUILD_ARGS'].append(
-            f"GID=\\\" $(id -g $USER) \\\""
+            f"GID=\" $(id -g $USER) \""
         )
 
     # Add host user ID if specified in the Docker settings and not on Windows
     if not is_false(docker_settings.get(
             'use_host_user_id')) and os.name != 'nt':
         env['+ MLC_DOCKER_BUILD_ARGS'].append(
-            f"UID=\\\" $(id -u $USER) \\\""
+            f"UID=\" $(id -u $USER) \""
         )
 
     return {'return': 0}
@@ -349,7 +349,7 @@ def regenerate_script_cmd(i):
                 continue
 
             value = command_dict[key]
-            quote = '\\"' if full_key in quote_keys else ""
+            quote = '"' if full_key in quote_keys else ""
 
             # Recursively process nested dictionaries.
             if isinstance(value, dict):
@@ -363,14 +363,15 @@ def regenerate_script_cmd(i):
             # Process lists by concatenating values with commas.
             elif isinstance(value, list):
                 list_values = ",".join(
-                    f"{quote}{str(item)}{quote}" for item in value)
+                    quote_if_needed(
+                        item, quote) for item in value)
                 command_line += f" --{full_key},={list_values}"
             # Process scalar values.
             else:
                 if full_key in ['s', 'v']:
                     command_line += f" -{full_key}"
                 else:
-                    command_line += f" --{full_key}={quote}{str(value)}{quote}"
+                    command_line += f" --{full_key}={quote_if_needed(value, quote)}"
 
         return command_line
 

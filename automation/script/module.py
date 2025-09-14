@@ -2041,7 +2041,7 @@ class ScriptAutomation(Automation):
                             cached_meta['dependent_cached_path'] = dependent_cached_path
 
                 if run_state.get('cache_expiration'):  # convert to seconds
-                    cached_meta['cache_expiration'] = utils.parse_expiration(
+                    cached_meta['cache_expiration'] = parse_expiration(
                         run_state['cache_expiration'])
 
                 ii = {'action': 'update',
@@ -3154,9 +3154,8 @@ class ScriptAutomation(Automation):
                 if os.name == 'nt':
                     script.append('set ' + k + '=' + v)
                 else:
-                    if ' ' in v:
-                        v = '"' + v + '"'
-                    script.append('export ' + k + '=' + v)
+                    safe_v = quote_if_needed(v)
+                    script.append('export ' + k + '=' + safe_v)
 
             script.append('')
 
@@ -5290,7 +5289,7 @@ def prepare_and_run_script_with_postprocessing(i, postprocess="postprocess"):
         if r['return'] > 0:
             return r
 
-        # Save file to run without CM
+        # Save file to run without MLC
         if debug_script_tags != '' and all(
                 item in found_script_tags for item in debug_script_tags.split(',')):
 
@@ -5596,10 +5595,12 @@ def convert_env_to_script(env, os_info, start_script=None):
                 os_info['env_var'].replace(
                     'env_var', key)}"""
 
+        env_quote = os_info['env_quote']
         # Replace placeholders in the platform-specific environment command
+        # and escapes any quote in the env value
         env_command = os_info['set_env'].replace(
             '${key}', key).replace(
-            '${value}', str(env_value))
+            '${value}', str(env_value).replace(env_quote, f"""\\{env_quote}"""))
         script.append(env_command)
 
     return script
