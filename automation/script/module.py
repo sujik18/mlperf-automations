@@ -799,6 +799,7 @@ class ScriptAutomation(Automation):
         run_state['script_repo_git'] = script_item.repo.meta.get(
             'git', False)
         run_state['cache'] = meta.get('cache', False)
+        run_state['cache_expiration'] = meta.get('cache_expiration', False)
 
         if not recursion:
             run_state['script_entry_repo_to_report_errors'] = meta.get(
@@ -2038,6 +2039,10 @@ class ScriptAutomation(Automation):
                         if not os.path.samefile(
                                 cached_path, dependent_cached_path):
                             cached_meta['dependent_cached_path'] = dependent_cached_path
+
+                if run_state.get('cache_expiration'):  # convert to seconds
+                    cached_meta['cache_expiration'] = utils.parse_expiration(
+                        run_state['cache_expiration'])
 
                 ii = {'action': 'update',
                       'target': 'cache',
@@ -5045,7 +5050,7 @@ def update_env_with_values(env, fail_on_not_found=False, extra_env=None):
         # No placeholders found
         if not placeholders:
             # Special handling for MLC_GIT_URL
-            if key == 'MLC_GIT_URL' and env.get('MLC_GIT_AUTH', "no") == "yes":
+            if key == 'MLC_GIT_URL' and is_true(env.get('MLC_GIT_AUTH')):
                 if env.get('MLC_GH_TOKEN',
                            '') and '@' not in env['MLC_GIT_URL']:
                     params = {"token": env['MLC_GH_TOKEN']}
@@ -5877,6 +5882,9 @@ def update_state_from_meta(meta, env, state, const, const_state, deps, post_deps
 
     if meta.get('cache', '') != '':
         run_state['cache'] = meta['cache']
+
+    if meta.get('cache_expiration', '') != '':
+        run_state['cache_expiration'] = meta['cache_expiration']
 
     default_env = meta.get('default_env', {})
     for key in default_env:
