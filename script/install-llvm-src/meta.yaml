@@ -108,6 +108,7 @@ variations:
       +MLC_LLVM_ENABLE_RUNTIMES: 
         - libcxx
         - libcxxabi
+        - libunwind
   no-libcxx:
     group: libcxx
   lld:
