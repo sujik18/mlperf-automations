@@ -105,9 +105,9 @@ variations:
     group: libcxx
     default: true
     env:
-      +MLC_LLVM_ENABLE_PROJECTS:
+      +MLC_LLVM_ENABLE_RUNTIMES: 
         - libcxx
-        - libcabi
+        - libcxxabi
   no-libcxx:
     group: libcxx
   lld:
