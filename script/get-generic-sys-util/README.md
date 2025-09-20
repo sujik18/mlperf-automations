@@ -84,6 +84,7 @@ mlcr get,sys-util,generic,generic-sys-util
 - `gcc-11`
 - `gcc-9`
 - `gflags-dev`
+- `gfortran-aarch64-linux-gnu`
 - `git-lfs`
 - `glog-dev`
 - `ipmitool`
