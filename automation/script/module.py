@@ -816,7 +816,7 @@ class ScriptAutomation(Automation):
         input_mapping = meta.get('input_mapping', {})
         new_env_keys_from_meta = []
         new_state_keys_from_meta = []
-       
+
         docker_settings = meta.get('docker')
 
         found_script_item = utils.assemble_object(
@@ -846,7 +846,7 @@ class ScriptAutomation(Automation):
             env.setdefault(key, script_item_default_env[key])
 
         # for update_meta_if_env
-        
+
         r = update_state_from_meta(
             meta,
             env,
@@ -863,12 +863,13 @@ class ScriptAutomation(Automation):
             i)
         if r['return'] > 0:
             return r
-        
-        deps = meta.get('deps', []) #taking from meta or else deps with same names will be ignored
+
+        # taking from meta or else deps with same names will be ignored
+        deps = meta.get('deps', [])
         post_deps = meta.get('post_deps', [])
         prehook_deps = meta.get('prehook_deps', [])
         posthook_deps = meta.get('posthook_deps', [])
-        
+
         # Store the default_version in run_state -> may be overridden by
         # variations
         default_version = meta.get(
