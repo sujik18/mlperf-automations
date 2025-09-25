@@ -762,7 +762,6 @@ class ScriptAutomation(Automation):
         # print(meta)
         path = script_item.path
 
-        
         # Check min MLC version requirement
         min_mlc_version = meta.get('min_mlc_version', '').strip()
         if min_mlc_version != '':
@@ -809,8 +808,7 @@ class ScriptAutomation(Automation):
                 'alias', '')
             run_state['script_entry_repo_git'] = script_item.repo.meta.get(
                 'git', False)
-        
-        
+
         deps = meta.get('deps', [])
         post_deps = meta.get('post_deps', [])
         prehook_deps = meta.get('prehook_deps', [])
@@ -900,22 +898,22 @@ class ScriptAutomation(Automation):
 
         # for update_meta_if_env
         r = update_state_from_meta(
-                meta,
-                env,
-                state,
-                const,
-                const_state,
-                deps,
-                post_deps,
-                prehook_deps,
-                posthook_deps,
-                new_env_keys_from_meta,
-                new_state_keys_from_meta,
-                run_state,
-                i)
+            meta,
+            env,
+            state,
+            const,
+            const_state,
+            deps,
+            post_deps,
+            prehook_deps,
+            posthook_deps,
+            new_env_keys_from_meta,
+            new_state_keys_from_meta,
+            run_state,
+            i)
         if r['return'] > 0:
             return r
-        
+
         variations = script_item.meta.get('variations', {})
         state['docker'] = meta.get('docker', {})
 
