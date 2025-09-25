@@ -818,8 +818,7 @@ class ScriptAutomation(Automation):
         new_state_keys_from_meta = []
 
         docker_settings = meta.get('docker')
-        
-        
+
         found_script_item = utils.assemble_object(
             meta['alias'], meta['uid'])
 
@@ -864,7 +863,6 @@ class ScriptAutomation(Automation):
         if r['return'] > 0:
             return r
 
-
         # Store the default_version in run_state -> may be overridden by
         # variations
         default_version = meta.get(
@@ -899,7 +897,6 @@ class ScriptAutomation(Automation):
 
         # VARIATIONS OVERWRITE current ENV but not input keys (they become
         # const)
-
 
         variations = script_item.meta.get('variations', {})
         state['docker'] = meta.get('docker', {})
