@@ -1,4 +1,4 @@
-# README for get-generic-sys-util
+# README for get-generic-python-lib
 This README is automatically generated. Add custom content in [info.md](info.md). Please follow the [script execution document](https://docs.mlcommons.org/mlcflow/targets/script/execution-flow/) to understand more about the MLC script execution.
 
 `mlcflow` stores all local data under `$HOME/MLC` by default. So, if there is space constraint on the home directory and you have more space on say `/mnt/$USER`, you can do
@@ -33,15 +33,16 @@ mlc pull repo mlcommons@mlperf-automations --pat=<Your Private Access Token>
 ## Run Commands
 
 ```bash
-mlcr get,sys-util,generic,generic-sys-util
+mlcr get generic-python-lib
 ```
 
 ### Script Inputs
 
 | Name | Description | Choices | Default |
 |------|-------------|---------|------|
-| `--fail_safe` |  |  | `` |
-| `--ignore_missing` |  |  | `` |
+| `--extra_index_url` |  |  | `` |
+| `--force_install` |  |  | `` |
+| `--index_url` |  |  | `` |
 ### Generic Script Inputs
 
 | Name | Description | Choices | Default |
@@ -62,80 +63,112 @@ mlcr get,sys-util,generic,generic-sys-util
 | `--verify_ssl` | Verify SSL |  | `False` |
 ## Variations
 
-### Mode
-
-- `detect` (default)
-- `install`
-
 ### Ungrouped
 
-- `autoconf`
-- `bzip2`
-- `ccache`
-- `cmake`
-- `coreutils`
-- `crossbuild-essential-arm64`
-- `dmidecode`
-- `ffmpeg`
-- `flex`
-- `g++-11`
-- `g++-12`
-- `g++-9`
-- `gcc-11`
-- `gcc-9`
-- `gflags-dev`
-- `gfortran-12-aarch64-linux-gnu`
-- `gfortran-aarch64-linux-gnu`
-- `git-lfs`
-- `glog-dev`
-- `ipmitool`
-- `libboost-all-dev`
-- `libbz2-dev`
-- `libev-dev`
-- `libffi`
-- `libffi-dev`
-- `libffi7`
-- `libffi8`
-- `libgdbm-dev`
-- `libgl`
-- `libgl1-mesa-glx`
-- `libgmock-dev`
-- `liblzma-dev`
-- `libmkl-dev`
-- `libmpfr-dev`
-- `libncurses-dev`
-- `libnuma-dev`
-- `libpci-dev`
-- `libpng-dev`
-- `libre2-dev`
-- `libreadline-dev`
-- `libsm6`
-- `libsqlite3-dev`
-- `libssl-dev`
-- `libudev-dev`
-- `libxext6`
-- `linux-tools`
-- `md5sha1sum`
-- `ninja-build`
-- `nlohmann-json3-dev`
-- `ntpdate`
-- `numactl`
-- `nvidia-cuda-toolkit`
-- `pkg-config`
-- `postfix`
-- `psmisc`
-- `rapidjson-dev`
-- `rsync`
-- `screen`
+- `Pillow`
+- `anthropic`
+- `apache-tvm`
+- `apex`
+- `async_timeout`
+- `attr`
+- `attrs`
+- `boto3`
+- `cloudpickle`
+- `cmind`
+- `colored`
+- `conda.#` _(# can be substituted dynamically)_
+- `cupy`
+- `custom-python`
+- `cxx11-abi`
+- `datasets`
+- `decorator`
+- `deepsparse`
+- `dllogger`
+- `extra-index-url.#` _(# can be substituted dynamically)_
+- `fiftyone`
+- `find_links_url.#` _(# can be substituted dynamically)_
+- `google-api-python-client`
+- `google-auth-oauthlib`
+- `google-generativeai`
+- `groq`
+- `huggingface_hub`
+- `index-url.#` _(# can be substituted dynamically)_
+- `inflect`
+- `jax`
+- `jax_cuda`
+- `librosa`
+- `matplotlib`
+- `mlperf_loadgen`
+- `mlperf_logging`
+- `mpld3`
+- `mxeval`
+- `nibabel`
+- `no-deps`
+- `numpy`
+- `nvidia-apex`
+- `nvidia-apex-from-src`
+- `nvidia-dali`
+- `nvidia-pycocotools` (base: pycocotools)
+- `nvidia-pyindex`
+- `nvidia-tensorrt`
+- `onnx`
+- `onnx-graphsurgeon`
+- `onnxruntime`
+- `onnxruntime_gpu`
+- `openai`
+- `opencv-python`
+- `package.#` _(# can be substituted dynamically)_
+- `pandas`
+- `path.#` _(# can be substituted dynamically)_
+- `pdfplumber`
+- `pillow`
+- `pip`
+- `polygraphy`
+- `pre`
+- `protobuf`
+- `psutil`
+- `pycocotools`
+- `pycuda`
+- `python-dotenv`
+- `quark-amd`
+- `ray`
+- `requests`
+- `rocm`
+- `safetensors`
+- `scikit-learn`
+- `scipy`
+- `scons`
+- `setfit`
+- `setuptools`
+- `six`
+- `sklearn`
 - `sox`
-- `systemd`
-- `tk-dev`
-- `transmission`
-- `unzip`
-- `vim-common`
-- `wget`
-- `wkhtmltopdf`
-- `xfonts-base`
-- `xz`
-- `zlib`
-- `zlib1g-dev`
+- `sparsezoo`
+- `streamlit`
+- `streamlit_option_menu`
+- `tensorboard`
+- `tensorflow`
+- `tensorrt`
+- `tflite`
+- `tflite-runtime`
+- `tokenization`
+- `toml`
+- `torch`
+- `torch_cuda`
+- `torch_tensorrt`
+- `torchaudio`
+- `torchaudio_cuda`
+- `torchvision`
+- `torchvision_cuda`
+- `tornado`
+- `tqdm`
+- `transformers`
+- `typing_extensions`
+- `ujson`
+- `unidecode`
+- `url.#` _(# can be substituted dynamically)_
+- `wandb`
+- `west`
+- `whl-url.#` _(# can be substituted dynamically)_
+- `xgboost`
+- `xlsxwriter`

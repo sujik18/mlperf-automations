@@ -809,14 +809,15 @@ class ScriptAutomation(Automation):
             run_state['script_entry_repo_git'] = script_item.repo.meta.get(
                 'git', False)
 
-        deps = meta.get('deps', [])
-        post_deps = meta.get('post_deps', [])
-        prehook_deps = meta.get('prehook_deps', [])
-        posthook_deps = meta.get('posthook_deps', [])
+        deps = []
+        post_deps = []
+        prehook_deps = []
+        posthook_deps = []
         input_mapping = meta.get('input_mapping', {})
+        new_env_keys_from_meta = []
+        new_state_keys_from_meta = []
+
         docker_settings = meta.get('docker')
-        new_env_keys_from_meta = meta.get('new_env_keys', [])
-        new_state_keys_from_meta = meta.get('new_state_keys', [])
 
         found_script_item = utils.assemble_object(
             meta['alias'], meta['uid'])
@@ -844,22 +845,30 @@ class ScriptAutomation(Automation):
         for key in script_item_default_env:
             env.setdefault(key, script_item_default_env[key])
 
-        # Force env from meta['env'] as a CONST
-        # (env OVERWRITE)
-        script_item_env = meta.get('env', {})
-        # print(f"script meta env= {script_item_env}")
+        # for update_meta_if_env
 
-        utils.merge_dicts({'dict1': env,
-                           'dict2': script_item_env,
-                           'append_lists': True,
-                           'append_unique': True})
-        # print(f"env = {env}")
+        r = update_state_from_meta(
+            meta,
+            env,
+            state,
+            const,
+            const_state,
+            deps,
+            post_deps,
+            prehook_deps,
+            posthook_deps,
+            new_env_keys_from_meta,
+            new_state_keys_from_meta,
+            run_state,
+            i)
+        if r['return'] > 0:
+            return r
 
-        script_item_state = meta.get('state', {})
-        utils.merge_dicts({'dict1': state,
-                           'dict2': script_item_state,
-                           'append_lists': True,
-                           'append_unique': True})
+        # taking from meta or else deps with same names will be ignored
+        deps = meta.get('deps', [])
+        post_deps = meta.get('post_deps', [])
+        prehook_deps = meta.get('prehook_deps', [])
+        posthook_deps = meta.get('posthook_deps', [])
 
         # Store the default_version in run_state -> may be overridden by
         # variations
@@ -5604,7 +5613,7 @@ def convert_env_to_script(env, os_info, start_script=None):
                 os_info['env_var'].replace(
                     'env_var', key)}"""
 
-        env_quote = os_info['env_quote']
+        env_quote = os_info.get('env_quote', '"')
         # Replace placeholders in the platform-specific environment command
         # and escapes any quote in the env value
         env_command = os_info['set_env'].replace(

@@ -57,6 +57,8 @@ mlcr run-mlperf,inference
 | `--adr.mlperf-power-client.power_server` | MLPerf Power server IP address |  | `192.168.0.15` |
 | `--adr.mlperf-power-client.port` | MLPerf Power server port |  | `4950` |
 | `--results_dir` | Alias for output_dir |  | `` |
+| `--use_dataset_from_host` | Run the dataset download script on the host machine and mount the dataset into the Docker container to avoid repeated downloads. | [True, False] | `no` |
+| `--use_model_from_host` | Run the model download script on the host machine and mount the model files into the Docker container to avoid repeated downloads. | [True, False] | `no` |
 | `--adr.compiler.tags` | Compiler for loadgen and any C/C++ part of implementation |  | `` |
 | `--adr.inference-src-loadgen.env.MLC_GIT_URL` | Git URL for MLPerf inference sources to build LoadGen (to enable non-reference implementations) |  | `` |
 | `--adr.inference-src.env.MLC_GIT_URL` | Git URL for MLPerf inference sources to run benchmarks (to enable non-reference implementations) |  | `` |
@@ -133,13 +135,14 @@ mlcr run-mlperf,inference
 | `--max_test_duration` |  |  | `` |
 | `--all_models` |  |  | `` |
 | `--criteo_day23_raw_data_path` |  |  | `` |
-| `--use_dataset_from_host` |  |  | `` |
-| `--use_model_from_host` |  |  | `` |
 | `--rgat_checkpoint_path` |  |  | `` |
 | `--pointpainting_checkpoint_path` |  |  | `` |
 | `--deeplab_resnet50_path` |  |  | `` |
 | `--waymo_path` |  |  | `` |
 | `--nm_model_zoo_stub` |  |  | `` |
+| `--use_service_account` |  |  | `` |
+| `--client_id` |  |  | `` |
+| `--client_secret` |  |  | `` |
 ### Generic Script Inputs
 
 | Name | Description | Choices | Default |
@@ -171,6 +174,7 @@ mlcr run-mlperf,inference
 - `r4.1-dev`
 - `r5.0`
 - `r5.0-dev`
+- `r5.1`
 - `r5.1-dev` (default)
 
 ### Mode
