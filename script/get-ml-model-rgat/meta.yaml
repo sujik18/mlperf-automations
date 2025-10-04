@@ -77,3 +77,18 @@ variations:
       MLC_ML_MODEL_STARTING_WEIGHTS_FILENAME: https://github.com/mlcommons/inference/tree/master/graph/R-GAT#download-model-using-mlc-r2-downloader
       MLC_DOWNLOAD_URL: https://inference.mlcommons-storage.org/metadata/rgat-model.uri
       MLC_DOWNLOAD_FILENAME: RGAT
+  dry-run:
+    env:
+      MLC_DOWNLOAD_MODE: dry
+    group: run-mode
+  dry-run,rclone:
+    env:
+      MLC_DOWNLOAD_EXTRA_OPTIONS: --dry-run
+  dry-run,r2-downloader:
+    env:
+      MLC_DOWNLOAD_EXTRA_OPTIONS: -x
+tests:
+  run_inputs:
+  - variations_list:
+    - rclone,mlcommons,fp32,dry-run
+    - r2-downloader,mlcommons,fp32,dry-run
