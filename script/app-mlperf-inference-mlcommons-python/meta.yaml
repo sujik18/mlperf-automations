@@ -701,7 +701,7 @@ deps:
       - waymo-dataset
 
   ## llama3_1 dataset
-  - tags: get,dataset,mlperf,inference,llama3,_validation
+  - tags: get,dataset,mlperf,inference,llama3,_validation,_r2-downloader
     names:
       - llama3_1-dataset
       - llama3-dataset
