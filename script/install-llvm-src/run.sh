@@ -28,7 +28,7 @@ if [ ! -d "${INSTALL_DIR}" ] || [ ${MLC_LLVM_CONDA_ENV} == "yes" ]; then
 
     echo "${MLC_LLVM_CMAKE_CMD}"
     eval "${MLC_LLVM_CMAKE_CMD}"
-    ninja
+    ninja ${MLC_LLVM_CHECK_ALL}
     if [ "${?}" != "0" ]; then exit 1; fi
     ninja install
     if [ "${?}" != "0" ]; then exit 1; fi
