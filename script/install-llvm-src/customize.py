@@ -16,13 +16,14 @@ def preprocess(i):
     q = '"' if os_info['platform'] == 'windows' else "'"
 
     clang_file_name = "clang"
-    
+
     if env.get('+MLC_LLVM_CMAKE_OPTIONS', '') != '':
         cmake_options = " ".join(env['+MLC_LLVM_CMAKE_OPTIONS'])
     else:
         cmake_options = ''
-    
-    extra_cmake_options = cmake_options + env.get('MLC_LLVM_EXTRA_CMAKE_OPTIONS', '')
+
+    extra_cmake_options = cmake_options + \
+        env.get('MLC_LLVM_EXTRA_CMAKE_OPTIONS', '')
 
     if env.get('MLC_LLVM_INSTALLED_PATH', '') != '' and os.path.exists(
             env.get('MLC_LLVM_INSTALLED_PATH')):
