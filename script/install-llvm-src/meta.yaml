@@ -78,6 +78,7 @@ variations:
     env:
       MLC_GIT_CHECKOUT_TAG: '#'
   branch.#:
+    cache_expiration: 5d
     env:
       MLC_GIT_CHECKOUT: '#'
   clang:
