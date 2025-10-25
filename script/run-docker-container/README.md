@@ -66,6 +66,8 @@ mlcr run,docker,container
 | `--interactive` |  |  | `` |
 | `--it` |  |  | `` |
 | `--mounts` |  |  | `` |
+| `--use_host_user_id` |  |  | `` |
+| `--use_host_group_id` |  |  | `` |
 | `--pass_user_id` |  |  | `` |
 | `--pass_user_group` |  |  | `` |
 | `--port_maps` |  |  | `` |
