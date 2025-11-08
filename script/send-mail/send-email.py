@@ -39,7 +39,8 @@ def send_email(subject, to_addresses, cc_addresses, bcc_addresses, content_file,
             part = MIMEBase('application', 'octet-stream')
             part.set_payload(file.read())
             encoders.encode_base64(part)
-            attachment_name = os.path.basename(attachment) if use_attachment_basenames else attachment
+            attachment_name = os.path.basename(
+                attachment) if use_attachment_basenames else attachment
             part.add_header(
                 'Content-Disposition',
                 f'attachment; filename={attachment_name}')
@@ -135,4 +136,4 @@ if __name__ == '__main__':
         args.smtp_server,
         args.email,
         args.password,
-        use_attachment_basenames = args.use_attachment_basenames)
+        use_attachment_basenames=args.use_attachment_basenames)
