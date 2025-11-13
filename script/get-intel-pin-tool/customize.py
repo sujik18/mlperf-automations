@@ -22,7 +22,7 @@ def preprocess(i):
     if 'MLC_INTEL_PINTOOL_BIN_WITH_PATH' not in env:
         if env.get('MLC_INTEL_PINTOOL_DIR_PATH', '') != '':
             pintool_path = env['MLC_INTEL_PINTOOL_DIR_PATH']
-            if os.path.exists(os.path.join(pintool_path, 'pin')):
+            if os.path.exists(os.path.join(pintool_path, exe)):
                 env['MLC_TMP_PATH'] = pintool_path
 
         r = i['automation'].find_artifact({'file_name': exe,
@@ -45,6 +45,7 @@ def detect_version(i):
                                        'env_key': 'MLC_INTEL_PINTOOL_VERSION',
                                        'which_env': i['env']})
     if r['return'] > 0:
+        print(r)
         return r
     version = r['version']
 
