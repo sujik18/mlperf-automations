@@ -33,7 +33,7 @@ mlc pull repo mlcommons@mlperf-automations --pat=<Your Private Access Token>
 ## Run Commands
 
 ```bash
-mlcr get-intel-pin-tool,get-intel-pintool,get,intel,pintool,pin
+mlcr get-intel-pin-tool,get-intel-pintool,get,intel,pintool,pin,tool
 ```
 
 ### Script Inputs
