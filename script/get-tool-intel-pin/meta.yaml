@@ -1,4 +1,4 @@
-alias: get-intel-pin-tool
+alias: get-tool-intel-pin
 automation_alias: script
 automation_uid: 5b4e0237da074764
 cache: true
@@ -29,12 +29,6 @@ post_deps: []
 posthook_deps: []
 tags:
 - get-intel-pin-tool
-- get-intel-pintool
-- get
-- intel
-- pintool
-- pin
-- tool
 tests:
   run_inputs:
   - {}
