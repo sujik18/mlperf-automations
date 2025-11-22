@@ -45,7 +45,6 @@ def preprocess(i):
 
     if 'MLC_UPROF_BIN_WITH_PATH' not in env:
 
-
         if env.get('MLC_UPROF_DIR_PATH', '') != '':
             uprof_path = env['MLC_UPROF_DIR_PATH']
             if os.path.exists(os.path.join(uprof_path, 'bin', exe)):
