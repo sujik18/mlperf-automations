@@ -160,7 +160,7 @@ def print_input_descriptions(input_descriptions):
         line.append(f"--{key.ljust(26)}: maps to --env.{env_key}")
         if default:
             line.append(f"{' '.ljust(30)}Default: {default}")
-        #if dtype:
+        # if dtype:
         #    line.append(f"{' '.ljust(30)}Type: {dtype}")
         if choices:
             line.append(f"{' '.ljust(30)}Choices: {choices}")
@@ -169,6 +169,7 @@ def print_input_descriptions(input_descriptions):
 
         print("\t" + "\t\n\t".join(line))
         print("")
+
 
 def print_variations_help(variations):
     # Data structures
