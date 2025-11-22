@@ -254,7 +254,7 @@ class ScriptAutomation(Automation):
         # Check if has --help
         if i.get('help', False):
             return self.help(i)
-        
+
         # Check if save input/output to file
         repro = i.get('repro', False)
         repro_prefix = ''
@@ -791,7 +791,6 @@ class ScriptAutomation(Automation):
 
         env['MLC_TMP_CURRENT_SCRIPT_REPO_PATH'] = script_repo_path
         env['MLC_TMP_CURRENT_SCRIPT_REPO_PATH_WITH_PREFIX'] = script_repo_path_with_prefix
-
 
         run_state['script_id'] = meta['alias'] + "," + meta['uid']
         run_state['script_tags'] = script_tags
