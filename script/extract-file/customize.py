@@ -216,7 +216,7 @@ def postprocess(i):
     env = i['env']
 
     extract_to_folder = env.get('MLC_EXTRACT_TO_FOLDER')
-    
+
     extract_path = env.get('MLC_EXTRACT_PATH', '')
     folderpath = None
     extracted_file = env.get('MLC_EXTRACT_EXTRACTED_FILENAME', '')
@@ -242,11 +242,10 @@ def postprocess(i):
         if os.path.exists(os.path.join(filepath, extract_to_folder)):
             filepath = os.path.join(filepath, extract_to_folder)
 
-
     if not os.path.exists(filepath):
         return {
             'return': 1, 'error': 'Path {} was not created or doesn\'t exist'.format(filepath)}
-    
+
     # Check if only a single folder is created and if so, export the folder
     # name
     if folderpath:
@@ -263,8 +262,10 @@ def postprocess(i):
 
     # Set external environment variable with the final path
     if env.get('MLC_EXTRACT_FINAL_ENV_NAME', '') != '':
-        if is_true(env.get('MLC_EXTRACT_USE_SUBDIR_PATH')) and env.get('MLC_EXTRACT_EXTRACTED_SUBDIR_PATH', '') != '':
-            env[env['MLC_EXTRACT_FINAL_ENV_NAME']] = env['MLC_EXTRACT_EXTRACTED_SUBDIR_PATH']
+        if is_true(env.get('MLC_EXTRACT_USE_SUBDIR_PATH')) and env.get(
+                'MLC_EXTRACT_EXTRACTED_SUBDIR_PATH', '') != '':
+            env[env['MLC_EXTRACT_FINAL_ENV_NAME']
+                ] = env['MLC_EXTRACT_EXTRACTED_SUBDIR_PATH']
         else:
             env[env['MLC_EXTRACT_FINAL_ENV_NAME']] = filepath
 
@@ -276,7 +277,6 @@ def postprocess(i):
         archive_filepath = env.get('MLC_EXTRACT_FILEPATH', '')
         if archive_filepath != '' and os.path.isfile(archive_filepath):
             os.remove(archive_filepath)
-
 
     # Since may change directory, check if need to clean some temporal files
     automation.clean_some_tmp_files({'env': env})
