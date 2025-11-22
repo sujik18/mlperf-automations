@@ -26,12 +26,14 @@ def display_help(self_module, input_params):
     generic_inputs = self_module.input_flags_converted_to_env
 
     # Step 2: Search for scripts
-    search_result = self_module.search(input_params.copy())
-    if search_result['return'] > 0:
-        return search_result
 
-    scripts_list = search_result['list']
-    if not scripts_list:
+    r = self_module._select_script(input_params)
+    if r['return'] > 0:
+        return r
+
+    script = r['script']
+
+    if not script:
 
         print("")
         print("Please use script tags or alias/uid to get help for a specific script")
@@ -41,17 +43,14 @@ def display_help(self_module, input_params):
         print_input_descriptions(generic_inputs)
 
     else:
-        # Step 4: Iterate over scripts and generate help output
-        for script in sorted(
-                scripts_list, key=lambda x: x.meta.get('alias', '')):
-            metadata = script.meta
-            script_path = script.path
-            print_script_help(
-                metadata,
-                script_path,
-                generic_inputs,
-                env,
-                self_module)
+        metadata = script.meta
+        script_path = script.path
+        print_script_help(
+            metadata,
+            script_path,
+            generic_inputs,
+            env,
+            self_module)
 
     return {'return': 0}
 
