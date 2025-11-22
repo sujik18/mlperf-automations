@@ -146,24 +146,29 @@ def print_input_descriptions(input_descriptions):
     if not input_descriptions:
         print("\tNo inputs")
 
-    for key in input_descriptions:
+    for key in sorted(input_descriptions):
         field = input_descriptions[key]
         env_key = field.get('env_key', f"""MLC_TMP_{key.upper()}""")
         desc = field.get('desc')
-        default = field.get('default', 'None')
+        default = field.get('default', None)
         choices = field.get("choices", "")
         dtype = infer_type(field)
-        # Use .ljust(15) to ensure the key occupies 15 characters minimum
-        print(f"\t--{key.ljust(26)}: maps to --env.{env_key}")
-        if desc:
-            print(f"\t{' '.ljust(30)}Desc: {desc}")
-        print(f"\t{' '.ljust(30)}Default: {default}")
-        if choices:
-            print(f"\t{' '.ljust(30)}Choices: {choices}")
-        if dtype:
-            print(f"\t{' '.ljust(30)}Type: {dtype}")
-        print("")
 
+        line = []
+
+        # Use .ljust(15) to ensure the key occupies 15 characters minimum
+        line.append(f"--{key.ljust(26)}: maps to --env.{env_key}")
+        if default:
+            line.append(f"{' '.ljust(30)}Default: {default}")
+        #if dtype:
+        #    line.append(f"{' '.ljust(30)}Type: {dtype}")
+        if choices:
+            line.append(f"{' '.ljust(30)}Choices: {choices}")
+        if desc:
+            line.append(f"{' '.ljust(30)}Desc: {desc}")
+
+        print("\t" + "\t\n\t".join(line))
+        print("")
 
 def print_variations_help(variations):
     # Data structures
