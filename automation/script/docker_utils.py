@@ -171,7 +171,7 @@ def prepare_docker_inputs(input_params, docker_settings,
     docker_base_image = docker_inputs.get('base_image')
     docker_path = docker_inputs.get('path')
     if not docker_path:
-        docker_path = script_path
+        docker_path = os.getcwd()
     docker_filename_suffix = (
         docker_base_image.replace('/', '-').replace(':', '-')
         if docker_base_image else f"{docker_inputs['os']}_{docker_inputs['os_version']}"
