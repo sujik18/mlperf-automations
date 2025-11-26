@@ -122,14 +122,15 @@ def process_mounts(mounts, env, docker_settings, f_run_cmd, run_state):
 
 
 def prepare_docker_inputs(input_params, docker_settings,
-                          script_path, run_stage=False):
+                          script, run_stage, mlc):
     """
     Prepares Docker-specific inputs such as Dockerfile path and runtime options.
 
     Args:
         i: Input dictionary with user-specified overrides.
         docker_settings: Docker-specific settings from the script's metadata.
-        script_path: Path to the script being executed.
+        script: Script being executed.
+        mlc: MLC action object
 
     Returns:
         Tuple with Docker inputs dictionary and Dockerfile path or None in case of an error.
@@ -171,7 +172,12 @@ def prepare_docker_inputs(input_params, docker_settings,
     docker_base_image = docker_inputs.get('base_image')
     docker_path = docker_inputs.get('path')
     if not docker_path:
-        docker_path = os.getcwd()
+        script_meta = script.meta
+        script_uid = script_meta['uid']
+        script_alias = script_meta.get('alias')
+        folder_name = f"""{script_alias}_{script_uid[:5]}"""
+        docker_path = os.path.join(mlc.repos_path, 'local', 'docker', folder_name)
+        #docker_path = os.getcwd()
     docker_filename_suffix = (
         docker_base_image.replace('/', '-').replace(':', '-')
         if docker_base_image else f"{docker_inputs['os']}_{docker_inputs['os_version']}"

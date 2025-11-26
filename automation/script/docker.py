@@ -155,7 +155,7 @@ def dockerfile(self_module, input_params):
 
     # Prepare Docker-specific inputs
     docker_inputs, dockerfile_path = prepare_docker_inputs(
-        input_params, docker_settings, script_directory)
+        input_params, docker_settings, script, False, self_module.action_object)
 
     # Handle optional dependencies and comments
     if input_params.get('print_deps'):
@@ -392,7 +392,7 @@ def docker_run(self_module, i):
 
     # Prepare Docker-specific inputs
     docker_inputs, dockerfile_path = prepare_docker_inputs(
-        i, docker_settings, script_path, True)
+        i, docker_settings, script, True, self_module.action_object)
 
     if docker_inputs is None:
         return {'return': 1, 'error': 'Error preparing Docker inputs'}
