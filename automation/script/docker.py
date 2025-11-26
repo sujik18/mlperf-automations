@@ -194,7 +194,7 @@ def dockerfile(self_module, input_params):
 
     if docker_inputs.get('mlc_repo_path', '') != '':
         mlc_docker_input['mlc_repo_path'] = docker_inputs['mlc_repo_path']
-    
+
     docker_v = False
     docker_s = False
     if is_true(input_params.get(
