@@ -173,7 +173,8 @@ def dockerfile(self_module, input_params):
         comments = []
 
     # Push Docker image if specified
-    if str(input_params.get('docker_push_image')).lower() in [ 'true', 'yes', '1']:
+    if str(input_params.get('docker_push_image')
+           ).lower() in ['true', 'yes', '1']:
         env['MLC_DOCKER_PUSH_IMAGE'] = 'yes'
 
     dockerfile_env = docker_inputs.get('env', {})
@@ -193,7 +194,6 @@ def dockerfile(self_module, input_params):
 
     if docker_inputs.get('mlc_repo_path', '') != '':
         mlc_docker_input['mlc_repo_path'] = docker_inputs['mlc_repo_path']
-    
 
     docker_v = False
     docker_s = False

@@ -89,7 +89,8 @@ def preprocess(i):
 
         repo_name = os.path.basename(mlc_repo_path)
         # Create mlc_repo directory relative to the build context
-        repo_build_context_path = os.path.join(build_context_dir, "mlc_repo", repo_name)
+        repo_build_context_path = os.path.join(
+            build_context_dir, "mlc_repo", repo_name)
 
         # Remove existing directory if it exists
         if os.path.exists(repo_build_context_path):
@@ -330,7 +331,7 @@ def preprocess(i):
 
     f.write(EOL + '# Download MLC repo for scripts' + EOL)
     pat = env.get('MLC_GH_TOKEN', '')
-    
+
     if pat != '':
         token_string = f" --pat={pat}"
     else:
@@ -347,7 +348,7 @@ def preprocess(i):
         f.write(
             'RUN mlc add repo {} --quiet'.format(docker_repo_dest) +
             EOL)
-        #f.write(
+        # f.write(
         #    'RUN mlc pull repo --url={} {} --quiet'.format(docker_repo_dest, token_string) +
         #    EOL)
         f.write(EOL)
