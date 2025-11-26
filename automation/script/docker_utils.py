@@ -176,8 +176,9 @@ def prepare_docker_inputs(input_params, docker_settings,
         script_uid = script_meta['uid']
         script_alias = script_meta.get('alias')
         folder_name = f"""{script_alias}_{script_uid[:5]}"""
-        docker_path = os.path.join(mlc.repos_path, 'local', 'docker', folder_name)
-        #docker_path = os.getcwd()
+        docker_path = os.path.join(
+            mlc.repos_path, 'local', 'docker', folder_name)
+        # docker_path = os.getcwd()
     docker_filename_suffix = (
         docker_base_image.replace('/', '-').replace(':', '-')
         if docker_base_image else f"{docker_inputs['os']}_{docker_inputs['os_version']}"
