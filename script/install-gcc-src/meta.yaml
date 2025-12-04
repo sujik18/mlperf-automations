@@ -52,6 +52,9 @@ tests:
   run_inputs:
     - {}
 variations:
+  extra.#:
+    env:
+      MLC_GCC_EXTRA_CONFIGURE_STRING: '#'
   mainline:
     group: repo
     default: true
