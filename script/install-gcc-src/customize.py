@@ -37,7 +37,7 @@ def preprocess(i):
     else:
         env['MLC_GCC_SYSROOT_STRING'] = ''
 
-    if env.get('MLC_GCC_EXTRA_CONFIGURE_STRING', '') != '':
+    if env.get('MLC_GCC_EXTRA_CONFIGURE_STRING', '') == '':
         env['MLC_GCC_EXTRA_CONFIGURE_STRING'] = ''
 
     if env.get('+MLC_GCC_EXTRA_CONFIGURE_LIST'):
