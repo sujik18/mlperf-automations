@@ -100,7 +100,7 @@ class ScriptAutomation(Automation):
                                              'verify_ssl': {'desc': 'Verify SSL', 'default': False}
                                              }
 
-    ############################################################
+    #################################################################
 
     def run(self, i):
         """
@@ -250,6 +250,10 @@ class ScriptAutomation(Automation):
         import copy
         import time
         import shutil
+
+        # Check if has --help
+        if i.get('help', False):
+            return self.help(i)
 
         # Check if save input/output to file
         repro = i.get('repro', False)
@@ -787,10 +791,6 @@ class ScriptAutomation(Automation):
 
         env['MLC_TMP_CURRENT_SCRIPT_REPO_PATH'] = script_repo_path
         env['MLC_TMP_CURRENT_SCRIPT_REPO_PATH_WITH_PREFIX'] = script_repo_path_with_prefix
-
-        # Check if has --help
-        if i.get('help', False):
-            return self.help(i)
 
         run_state['script_id'] = meta['alias'] + "," + meta['uid']
         run_state['script_tags'] = script_tags
@@ -1723,9 +1723,9 @@ class ScriptAutomation(Automation):
             # Assemble PIP versions
             pip_version_string = ''
 
-            pip_version = env.get('MLC_VERSION', '')
-            pip_version_min = env.get('MLC_VERSION_MIN', '')
-            pip_version_max = env.get('MLC_VERSION_MAX', '')
+            pip_version = str(env.get('MLC_VERSION', ''))
+            pip_version_min = str(env.get('MLC_VERSION_MIN', ''))
+            pip_version_max = str(env.get('MLC_VERSION_MAX', ''))
 
             if pip_version != '':
                 pip_version_string = '==' + pip_version
@@ -4501,6 +4501,11 @@ pip install mlcflow
 
         if r['match'].lastindex and r['match'].lastindex >= group_number:
             version = r['match'].group(group_number)
+            if i.get(
+                    'group_number_extra') and r['match'].lastindex >= i['group_number_extra']:
+                join_string = i.get('group_join_string', '-')
+                group_number_extra = i['group_number_extra']
+                version += f"{join_string}{r['match'].group(group_number_extra)}"
         else:
             return {'return': 1, 'error': 'Invalid version detection group number. Version was not detected. Last index of match = {}. Given group number = {}'.format(
                 r['match'].lastindex, group_number)}
@@ -4786,6 +4791,7 @@ def relaxed_subset(v, variation_tags):
 def get_version_tag_from_version(version, cached_tags):
     tags_to_add = []
     if version != '':
+        version = str(version)
         if 'version-' + version not in cached_tags:
             cached_tags.append('version-' + version)
         if '-git-' in version:

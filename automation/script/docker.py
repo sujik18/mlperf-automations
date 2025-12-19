@@ -30,6 +30,9 @@ def dockerfile(self_module, input_params):
     tag_values = input_params.get('tags', '').split(",")
     variation_tags = [tag[1:] for tag in tag_values if tag.startswith("_")]
 
+    if is_quiet_mode:
+        env['MLC_QUIET'] = 'yes'
+
     r = self_module._select_script(input_params)
     if r['return'] > 0:
         return r
@@ -155,7 +158,7 @@ def dockerfile(self_module, input_params):
 
     # Prepare Docker-specific inputs
     docker_inputs, dockerfile_path = prepare_docker_inputs(
-        input_params, docker_settings, script_directory)
+        input_params, docker_settings, script, False, self_module.action_object)
 
     # Handle optional dependencies and comments
     if input_params.get('print_deps'):
@@ -173,7 +176,8 @@ def dockerfile(self_module, input_params):
         comments = []
 
     # Push Docker image if specified
-    if input_params.get('docker_push_image') in [True, 'True', 'yes']:
+    if str(input_params.get('docker_push_image')
+           ).lower() in ['true', 'yes', '1']:
         env['MLC_DOCKER_PUSH_IMAGE'] = 'yes'
 
     dockerfile_env = docker_inputs.get('env', {})
@@ -190,6 +194,9 @@ def dockerfile(self_module, input_params):
         'dockerfile_build_env': dockerfile_build_env,
         'quiet': True, 'real_run': True
     }
+
+    if docker_inputs.get('mlc_repo_path', '') != '':
+        mlc_docker_input['mlc_repo_path'] = docker_inputs['mlc_repo_path']
 
     docker_v = False
     docker_s = False
@@ -246,6 +253,9 @@ def docker_run(self_module, i):
     show_time = i.get('show_time', False)
     logger = self_module.logger
     env = i.get('env', {})
+
+    if quiet:
+        env['MLC_QUIET'] = 'yes'
 
     regenerate_docker_file = not i.get('docker_noregenerate', False)
     rebuild_docker_image = i.get('docker_rebuild', False)
@@ -388,7 +398,7 @@ def docker_run(self_module, i):
 
     # Prepare Docker-specific inputs
     docker_inputs, dockerfile_path = prepare_docker_inputs(
-        i, docker_settings, script_path, True)
+        i, docker_settings, script, True, self_module.action_object)
 
     if docker_inputs is None:
         return {'return': 1, 'error': 'Error preparing Docker inputs'}
