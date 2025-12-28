@@ -628,7 +628,7 @@ def validate_dependent_paths(ctx, cached_script):
     for dep in dependent_paths:
         if os.path.exists(dep):
             continue
-        
+
         # TODO Need to restrict the below check to within container
         # env
         ctx.env['tmp_dep_cached_path'] = dep
@@ -695,7 +695,6 @@ def run_validate_cache_if_present(ctx, cached_script):
             ctx.self.local_env_keys,
             ctx.meta.get('local_env_keys', []),
             ctx.recursion_spaces + ctx.extra_recursion_spaces,
-            ctx.remembered_selections,
             ctx.variation_tags_string,
             True,
             '',
