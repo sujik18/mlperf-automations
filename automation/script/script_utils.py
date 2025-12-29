@@ -404,12 +404,12 @@ def get_version_tag_from_version(version, cached_tags):
     return {'return': 0}
 
 
-def prepare_cache_tags(ctx):
+def prepare_cache_tags(i):
     '''
     Prepare cache tags for searching and creating cache entries
     '''
-    ctx.logger.debug(
-        ctx.recursion_spaces +
+    i['logger'].debug(
+        i['recursion_spaces'] +
         f'  - Preparing cache tags...'
     )
     cached_tags = []
@@ -419,24 +419,24 @@ def prepare_cache_tags(ctx):
     # It will be gradually enhanced with more "knowledge"  ...
 
     # script tags
-    if len(ctx.script_tags) > 0:
-        for x in ctx.script_tags:
+    if len(i['script_tags']) > 0:
+        for x in i['script_tags']:
             if x not in cached_tags:
                 cached_tags.append(x)
 
     # found tags
-    if len(ctx.found_script_tags) > 0:
-        for x in ctx.found_script_tags:
+    if len(i['found_script_tags']) > 0:
+        for x in i['found_script_tags']:
             if x not in cached_tags:
                 cached_tags.append(x)
 
     explicit_cached_tags = cached_tags.copy()
 
     # explicit variations
-    if len(ctx.explicit_variation_tags) > 0:
+    if len(i['explicit_variation_tags']) > 0:
         explicit_variation_tags_string = ''
 
-        for t in ctx.explicit_variation_tags:
+        for t in i['explicit_variation_tags']:
             if explicit_variation_tags_string != '':
                 explicit_variation_tags_string += ','
             if t.startswith("-"):
@@ -448,15 +448,15 @@ def prepare_cache_tags(ctx):
             if x not in explicit_cached_tags:
                 explicit_cached_tags.append(x)
 
-        ctx.logger.debug(
-            ctx.recursion_spaces +
+        i['logger'].debug(
+            i['recursion_spaces'] +
             '    - Prepared explicit variations: {}'.format(explicit_variation_tags_string))
 
     # normal variations
-    if len(ctx.variation_tags) > 0:
+    if len(i['variation_tags']) > 0:
         variation_tags_string = ''
 
-        for t in ctx.variation_tags:
+        for t in i['variation_tags']:
             if variation_tags_string != '':
                 variation_tags_string += ','
             if t.startswith("-"):
@@ -468,34 +468,34 @@ def prepare_cache_tags(ctx):
             if x not in cached_tags:
                 cached_tags.append(x)
 
-        ctx.logger.debug(
-            ctx.recursion_spaces +
+        i['logger'].debug(
+            i['recursion_spaces'] +
             '    - Prepared variations: {}'.format(variation_tags_string))
 
     # version tags
-    r = get_version_tag_from_version(ctx.version, cached_tags)
+    r = get_version_tag_from_version(i['version'], cached_tags)
     if r['return'] > 0:
         return r
 
-    r = get_version_tag_from_version(ctx.version, explicit_cached_tags)
+    r = get_version_tag_from_version(i['version'], explicit_cached_tags)
     if r['return'] > 0:
         return r
 
     # Add extra cache tags (such as "virtual" for python)
-    if len(ctx.extra_cache_tags) > 0:
-        for t in ctx.extra_cache_tags:
+    if len(i['extra_cache_tags']) > 0:
+        for t in i['extra_cache_tags']:
             if t not in cached_tags:
                 cached_tags.append(t)
                 explicit_cached_tags.append(t)
 
     # env-driven tags
     # Add tags from deps (will be also duplicated when creating new cache entry)
-    extra_cache_tags_from_env = ctx.meta.get('extra_cache_tags_from_env', [])
+    extra_cache_tags_from_env = i['meta'].get('extra_cache_tags_from_env', [])
     for extra_cache_tags in extra_cache_tags_from_env:
         key = extra_cache_tags['env']
         prefix = extra_cache_tags.get('prefix', '')
 
-        v = ctx.env.get(key, '').strip()
+        v = i['env'].get(key, '').strip()
         if v != '':
             for t in v.split(','):
                 x = 'deps-' + prefix + t
@@ -506,7 +506,7 @@ def prepare_cache_tags(ctx):
     return cached_tags, explicit_cached_tags
 
 
-def search_cache(ctx, explicit_cached_tags):
+def search_cache(i, explicit_cached_tags):
     '''
     Search for cached script outputs based on prepared cache tags
     '''
@@ -514,11 +514,11 @@ def search_cache(ctx, explicit_cached_tags):
     if len(explicit_cached_tags) > 0:
         search_tags += ',' + ','.join(explicit_cached_tags)
 
-    ctx.logger.debug(
-        ctx.recursion_spaces +
+    i['logger'].debug(
+        i['recursion_spaces'] +
         '    - Searching for cached script outputs with the following tags: {}'.format(search_tags))
 
-    r = ctx.self.cache_action.access({
+    r = i['self'].cache_action.access({
         'action': 'search',
         'target_name': 'cache',
         'tags': search_tags
@@ -529,49 +529,49 @@ def search_cache(ctx, explicit_cached_tags):
     return search_tags, r['list']
 
 
-def apply_remembered_cache_selection(ctx, search_tags, found_cached_scripts):
+def apply_remembered_cache_selection(i, search_tags, found_cached_scripts):
     '''
     Apply remembered cache selection if any
     '''
-    if ctx.skip_remembered_selections or len(found_cached_scripts) <= 1:
-        ctx.logger.debug(
-            ctx.recursion_spaces +
+    if i['skip_remembered_selections'] or len(found_cached_scripts) <= 1:
+        i['logger'].debug(
+            i['recursion_spaces'] +
             f'  - Skipping remembered cache selections...'
         )
         return found_cached_scripts
 
-    for selection in ctx.remembered_selections:
+    for selection in i['remembered_selections']:
         if selection['type'] == 'cache' and set(selection['tags'].split(',')) == set(search_tags.split(',')):
             tmp_version_in_cached_script = selection['cached_script'].meta.get('version', '')
             skip_cached_script = check_versions(
-                ctx.self.action_object,
+                i['self'].action_object,
                 tmp_version_in_cached_script,
-                ctx.version_min,
-                ctx.version_max
+                i['version_min'],
+                i['version_max']
             )
             if skip_cached_script:
                 return {'return': 2, 'error': 'The version of the previously remembered selection for a given script ({}) mismatches the newly requested one'.format(
                     tmp_version_in_cached_script)}
             else:
                 found_cached_scripts = [selection['cached_script']]
-                ctx.logger.debug(
-                    ctx.recursion_spaces +
+                i['logger'].debug(
+                    i['recursion_spaces'] +
                     '  - Found remembered selection with tags "{}"!'.format(search_tags))
                 return [selection['cached_script']]
             
     return found_cached_scripts
 
 
-def validate_cached_scripts(ctx, found_cached_scripts):
+def validate_cached_scripts(i, found_cached_scripts):
     '''
     Validate found cached scripts and return only valid ones
     '''
     valid = []
     if len(found_cached_scripts) > 0:
         for cached_script in found_cached_scripts:
-            if is_cached_entry_valid(ctx, cached_script):
-                ctx.logger.debug(
-                    ctx.recursion_spaces + 
+            if is_cached_entry_valid(i, cached_script):
+                i['logger'].debug(
+                    i['recursion_spaces'] + 
                     f'  - Validated cached entry: {cached_script.path}'
                 )
                 valid.append(cached_script)
@@ -579,17 +579,17 @@ def validate_cached_scripts(ctx, found_cached_scripts):
     return valid
 
 
-def is_cached_entry_valid(ctx, cached_script):
+def is_cached_entry_valid(i, cached_script):
     '''
     Validate a cached script entry
     Returns True if valid, False otherwise
     '''
     # Check dependent paths
-    if not validate_dependent_paths(ctx, cached_script):
+    if not validate_dependent_paths(i, cached_script):
         return False
     
     # Run validate_cache script if present
-    detected_version = run_validate_cache_if_present(ctx, cached_script)
+    detected_version = run_validate_cache_if_present(i, cached_script)
     # Get cached version
     cached_version = cached_script.meta.get('version', '')
 
@@ -599,14 +599,14 @@ def is_cached_entry_valid(ctx, cached_script):
     
     # check_versions returns True if cache should be skipped
     return not check_versions(
-        ctx.self.action_object,
+        i['self'].action_object,
         cached_version,
-        ctx.version_min,
-        ctx.version_max
+        i['version_min'],
+        i['version_max']
     )
 
 
-def validate_dependent_paths(ctx, cached_script):
+def validate_dependent_paths(i, cached_script):
     '''
     Validate dependent paths for a cached script entry
     Returns True if all dependent paths are present, False otherwise
@@ -631,12 +631,12 @@ def validate_dependent_paths(ctx, cached_script):
 
         # TODO Need to restrict the below check to within container
         # env
-        ctx.env['tmp_dep_cached_path'] = dep
+        i['env']['tmp_dep_cached_path'] = dep
         from script import docker_utils
-        r = docker_utils.get_container_path_script(ctx.env)
+        r = docker_utils.get_container_path_script(i['env'])
         if not os.path.exists(r.get('value_env', '')):
-            ctx.logger.debug(
-                ctx.recursion_spaces +
+            i['logger'].debug(
+                i['recursion_spaces'] +
                 f'  - Skipping cached entry as dependent path is missing: {r.get("value_env")}'
             )
             return False
@@ -644,33 +644,33 @@ def validate_dependent_paths(ctx, cached_script):
     return True
 
 
-def run_validate_cache_if_present(ctx, cached_script):
+def run_validate_cache_if_present(i, cached_script):
     '''
     Run validate_cache script if present in the script directory
     Returns detected version if validation passes, None otherwise
     '''
     import copy
 
-    ctx.logger.debug(
-        ctx.recursion_spaces +
+    i['logger'].debug(
+        i['recursion_spaces'] +
         f'  - Validating cached entry: {cached_script.path}'
     )
-    os_info = ctx.self.os_info
+    os_info = i['self'].os_info
     # Bat extension for this host OS
     bat_ext = os_info['bat_ext']
-    script_path = ctx.found_script_path
+    script_path = i['found_script_path']
 
     validate_script = os.path.join(script_path, f'validate_cache{bat_ext}')
     if not os.path.exists(validate_script):
         return None
 
     # reconstruct env/state from cached metadata
-    env_tmp = copy.deepcopy(ctx.env)
-    state_tmp = copy.deepcopy(ctx.state)
+    env_tmp = copy.deepcopy(i['env'])
+    state_tmp = copy.deepcopy(i['state'])
 
     path_to_cached_state_file = os.path.join(
         cached_script.path,
-        ctx.self.file_with_cached_state
+        i['self'].file_with_cached_state
     )
 
     r = utils.load_json(file_name=path_to_cached_state_file)
@@ -688,18 +688,18 @@ def run_validate_cache_if_present(ctx, cached_script):
         state_tmp.update(new_state)
 
     # re-run deps
-    deps = ctx.meta.get('deps')
+    deps = i['meta'].get('deps')
     if deps:
-        r = ctx.self._call_run_deps(
+        r = i['self']._call_run_deps(
             deps,
-            ctx.self.local_env_keys,
-            ctx.meta.get('local_env_keys', []),
-            ctx.recursion_spaces + ctx.extra_recursion_spaces,
-            ctx.variation_tags_string,
+            i['self'].local_env_keys,
+            i['meta'].get('local_env_keys', []),
+            i['recursion_spaces'] + i['extra_recursion_spaces'],
+            i['variation_tags_string'],
             True,
             '',
-            ctx.show_time,
-            ctx.extra_recursion_spaces,
+            i['show_time'],
+            i['extra_recursion_spaces'],
             {}
         )
         if r['return'] > 0:
@@ -709,15 +709,15 @@ def run_validate_cache_if_present(ctx, cached_script):
         'path': script_path,
         'bat_ext': bat_ext,
         'os_info': os_info,
-        'recursion_spaces': ctx.recursion_spaces,
-        'tmp_file_run': ctx.self.tmp_file_run,
-        'self': ctx.self,
-        'meta': ctx.meta,
-        'customize_code': ctx.customize_code,
-        'customize_common_input': ctx.customize_common_input,
+        'recursion_spaces': i['recursion_spaces'],
+        'tmp_file_run': i['self'].tmp_file_run,
+        'self': i['self'],
+        'meta': i['meta'],
+        'customize_code': i['customize_code'],
+        'customize_common_input': i['customize_common_input'],
     }
 
-    r = ctx.self.run_native_script({
+    r = i['self'].run_native_script({
         'run_script_input': run_script_input,
         'env': env_tmp,
         'script_name': 'validate_cache',

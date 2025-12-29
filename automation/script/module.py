@@ -10,7 +10,6 @@
 import re
 import os
 import logging
-from types import SimpleNamespace
 
 from mlc.main import Automation
 from mlc.main import CacheAction
@@ -950,37 +949,34 @@ class ScriptAutomation(Automation):
         if cache:
             # TBD - need to reuse and prune cache_list instead of a new CM
             # search inside find_cached_script
-            ctx = SimpleNamespace(
-                self=self,
-                recursion_spaces=self.recursion_spaces,
-                extra_recursion_spaces=extra_recursion_spaces,
-                add_deps_recursive=add_deps_recursive,
-                script_tags=script_tags,
-                found_script_tags=found_script_tags,
-                found_script_path=path,
-                customize_code=customize_code,
-                customize_common_input=customize_common_input,
-                variation_tags=variation_tags,
-                variation_tags_string=variation_tags_string,
-                explicit_variation_tags=explicit_variation_tags,
-                version=version,
-                version_min=version_min,
-                version_max=version_max,
-                extra_cache_tags=extra_cache_tags,
-                new_cache_entry=new_cache_entry,
-                meta=meta,
-                env=env,
-                state=state,
-                const=const,
-                const_state=const_state,
-                skip_remembered_selections=skip_remembered_selections,
-                remembered_selections=self.remembered_selections,
-                quiet=quiet,
-                show_time=show_time,
-                logger=self.action_object.logger
-            )
-
-            r = find_cached_script(ctx)
+            r = find_cached_script({'self': self,
+                                    'extra_recursion_spaces': extra_recursion_spaces,
+                                    'add_deps_recursive': add_deps_recursive,
+                                    'script_tags': script_tags,
+                                    'found_script_tags': found_script_tags,
+                                    'found_script_path': path,
+                                    'customize_code': customize_code,
+                                    'customize_common_input': customize_common_input,
+                                    'variation_tags': variation_tags,
+                                    'variation_tags_string': variation_tags_string,
+                                    'explicit_variation_tags': explicit_variation_tags,
+                                    'version': version,
+                                    'version_min': version_min,
+                                    'version_max': version_max,
+                                    'extra_cache_tags': extra_cache_tags,
+                                    'new_cache_entry': new_cache_entry,
+                                    'meta': meta,
+                                    'env': env,
+                                    'state': state,
+                                    'const': const,
+                                    'const_state': const_state,
+                                    'recursion_spaces': self.recursion_spaces,
+                                    'skip_remembered_selections': skip_remembered_selections,
+                                    'remembered_selections': self.remembered_selections,
+                                    'quiet': quiet,
+                                    'show_time': show_time,
+                                    'logger': self.action_object.logger
+                                    })
             if r['return'] > 0:
                 return r
 
@@ -4530,7 +4526,7 @@ def relaxed_subset(v, variation_tags):
 
 ##############################################################################
 
-def find_cached_script(ctx):
+def find_cached_script(i):
     """
     Internal automation function: find cached script
 
@@ -4550,21 +4546,21 @@ def find_cached_script(ctx):
     # 3. Search cache
     # 4. Apply remembered cache selection
     # 5. Validate cached scripts
-    
-    ctx.logger.debug(ctx.recursion_spaces + '  - Checking if script execution is already cached ...')
 
-    cached_tags, explicit_cached_tags = prepare_cache_tags(ctx)
+    i['logger'].debug(i['recursion_spaces'] + '  - Checking if script execution is already cached ...')
 
-    if ctx.new_cache_entry:
-        ctx.logger.debug(
-            ctx.recursion_spaces +
+    cached_tags, explicit_cached_tags = prepare_cache_tags(i)
+
+    if i['new_cache_entry']:
+        i['logger'].debug(
+            i['recursion_spaces'] +
             f'  - New cache entry requested, skipping cache search.'
         )
         return { 'return': 0, 'cached_tags': cached_tags, 'search_tags': '', 'found_cached_scripts': [] }
 
-    search_tags, found_cached_scripts = search_cache(ctx, explicit_cached_tags)
-    found_cached_scripts = apply_remembered_cache_selection(ctx, search_tags, found_cached_scripts)
-    found_cached_scripts = validate_cached_scripts(ctx, found_cached_scripts)
+    search_tags, found_cached_scripts = search_cache(i, explicit_cached_tags)
+    found_cached_scripts = apply_remembered_cache_selection(i, search_tags, found_cached_scripts)
+    found_cached_scripts = validate_cached_scripts(i, found_cached_scripts)
 
     return {'return': 0, 'cached_tags': cached_tags,
             'search_tags': search_tags, 'found_cached_scripts': found_cached_scripts}
@@ -5737,7 +5733,6 @@ def detect_state_diff(env, saved_env, new_env_keys,
 
     return {'return': 0, 'env': env, 'new_env': new_env,
             'state': state, 'new_state': new_state}
-
 
 
 
