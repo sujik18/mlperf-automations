@@ -16,6 +16,7 @@ from mlc.main import CacheAction
 import mlc.utils as utils
 from utils import *
 from script.script_utils import *
+from script.cache_utils import *
 
 
 class ScriptAutomation(Automation):
@@ -949,6 +950,7 @@ class ScriptAutomation(Automation):
         if cache:
             # TBD - need to reuse and prune cache_list instead of a new CM
             # search inside find_cached_script
+
             r = find_cached_script({'self': self,
                                     'extra_recursion_spaces': extra_recursion_spaces,
                                     'add_deps_recursive': add_deps_recursive,
@@ -1081,8 +1083,8 @@ class ScriptAutomation(Automation):
                     ###########################################################
                     # IF REUSE FROM CACHE - update env and state from cache!
                     cached_state = r['meta']
-
-                    r = self._fix_cache_paths(cached_state['new_env'])
+                    cached_path = self.action_object.local_cache_path
+                    r = fix_cache_paths(cached_path,cached_state['new_env'])
                     if r['return'] > 0:
                         return r
                     new_env = r['new_env']
@@ -2029,46 +2031,6 @@ class ScriptAutomation(Automation):
             return r
 
         return {'return': 0}
-
-    ##########################################################################
-    def _fix_cache_paths(self, env):
-
-        current_cache_path = self.action_object.local_cache_path
-
-        new_env = env  # just a reference
-
-        for key, val in new_env.items():
-            # Check for a path separator in a string and determine the
-            # separator
-            if isinstance(val, str) and any(sep in val for sep in [
-                    "/local/cache/", "\\local\\cache\\"]):
-                sep = "/" if "/local/cache/" in val else "\\"
-
-                path_split = val.split(sep)
-                repo_entry_index = path_split.index("local")
-                loaded_cache_path = sep.join(
-                    path_split[0:repo_entry_index + 2])
-                if loaded_cache_path != current_cache_path and os.path.exists(
-                        current_cache_path):
-                    new_env[key] = val.replace(
-                        loaded_cache_path, current_cache_path).replace(sep, "/")
-
-            elif isinstance(val, list):
-                for i, val2 in enumerate(val):
-                    if isinstance(val2, str) and any(sep in val2 for sep in [
-                            "/local/cache/", "\\local\\cache\\"]):
-                        sep = "/" if "/local/cache/" in val2 else "\\"
-
-                        path_split = val2.split(sep)
-                        repo_entry_index = path_split.index("local")
-                        loaded_cache_path = sep.join(
-                            path_split[0:repo_entry_index + 2])
-                        if loaded_cache_path != current_cache_path and os.path.exists(
-                                current_cache_path):
-                            new_env[key][i] = val2.replace(
-                                loaded_cache_path, current_cache_path).replace(sep, "/")
-
-        return {'return': 0, 'new_env': new_env}
 
     ##########################################################################
     def _dump_version_info_for_script(
